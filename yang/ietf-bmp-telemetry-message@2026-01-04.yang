@@ -46,7 +46,9 @@ module ietf-bmp-telemetry-message {
     "Author:    Thomas Graf
                 <mailto:thomas.graf@swisscom.com>
                 Paolo Lucente
-                <mailto:paolo@ntt.net>";
+                <mailto:paolo@ntt.net>
+                Leonardo Rodoni
+                <mailto:leonardo.rodoni@swisscom.com>";
 
   description
     "Adds BMP specific subscription metadata to the data collection
@@ -240,7 +242,7 @@ module ietf-bmp-telemetry-message {
     }
   }
 	
-  sx:augment-structure "/tm:message/tm:telemetry-message-metadata" {
+  sx:structure message {
     description
       "Augments telemetry-message-metadata with BMP specific
        subscription metadata";

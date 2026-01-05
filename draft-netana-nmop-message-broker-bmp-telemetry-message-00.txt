@@ -5,8 +5,10 @@
 NMOP                                                            TG. Graf
 Internet-Draft                                                  Swisscom
 Intended status: Standards Track                             PL. Lucente
-Expires: 8 July 2026                                                 NTT
-                                                          4 January 2026
+Expires: 9 July 2026                                                 NTT
+                                                              LR. Rodoni
+                                                                Swisscom
+                                                          5 January 2026
 
 
              BMP YANG Model for Network Telemetry Messages
@@ -33,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 July 2026.
+   This Internet-Draft will expire on 9 July 2026.
 
 Copyright Notice
 
@@ -51,9 +53,7 @@ Copyright Notice
 
 
 
-
-
-Graf & Lucente             Expires 8 July 2026                  [Page 1]
+Graf, et al.               Expires 9 July 2026                  [Page 1]
 
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
@@ -64,20 +64,20 @@ Table of Contents
    2.  Conventions and Definitions . . . . . . . . . . . . . . . . .   3
      2.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  BMP YANG Modules  . . . . . . . . . . . . . . . . . . . . . .   4
-     3.1.  BMP BGP RIB YANG Submodules . . . . . . . . . . . . . . .  34
-   4.  YANG Message Broker BMP Indexing and Topic Naming . . . . . .  62
-     4.1.  BMP Message Keys and Indexes  . . . . . . . . . . . . . .  62
-     4.2.  Message Broker BMP Topic Naming . . . . . . . . . . . . .  63
-       4.2.1.  YANG Message Broker Producer  . . . . . . . . . . . .  64
-       4.2.2.  YANG Message Broker Consumer  . . . . . . . . . . . .  64
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  64
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  65
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  66
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  66
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  68
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  69
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  69
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  70
+     3.1.  BMP BGP RIB YANG Submodules . . . . . . . . . . . . . . .  32
+   4.  YANG Message Broker BMP Indexing and Topic Naming . . . . . .  60
+     4.1.  BMP Message Keys and Indexes  . . . . . . . . . . . . . .  60
+     4.2.  Message Broker BMP Topic Naming . . . . . . . . . . . . .  61
+       4.2.1.  YANG Message Broker Producer  . . . . . . . . . . . .  61
+       4.2.2.  YANG Message Broker Consumer  . . . . . . . . . . . .  61
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  62
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  63
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  64
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  64
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  66
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  66
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  66
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  67
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Graf & Lucente             Expires 8 July 2026                  [Page 2]
+Graf, et al.               Expires 9 July 2026                  [Page 2]
 
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
@@ -165,7 +165,7 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
 
-Graf & Lucente             Expires 8 July 2026                  [Page 3]
+Graf, et al.               Expires 9 July 2026                  [Page 3]
 
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
@@ -214,14 +214,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 3.  BMP YANG Modules
 
-   This document defines one BMP YANG module Figure 3, and 3 BGP RIB
-   submodules Section 3.1 which augments
-   [I-D.ietf-nmop-message-broker-telemetry-message] defined 'ietf-
+   This document defines one BMP YANG module Figure 2, and 3 BGP RIB
+   submodules Section 3.1 which is being used in the anydata "payload"
+   [I-D.ietf-nmop-message-broker-telemetry-message] defined in 'ietf-
    telemetry-message' YANG module.
 
 
 
-Graf & Lucente             Expires 8 July 2026                  [Page 4]
+Graf, et al.               Expires 9 July 2026                  [Page 4]
 
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
@@ -236,1297 +236,1151 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
    module: ietf-bmp-telemetry-message
 
-     augment-structure /tm:message/tm:telemetry-message-metadata:
+     structure message:
        +-- bmp-subscription
           +-- version?          uint8
           +-- (message-type)?
              +--:(route-monitoring)
              |  +-- route-monitoring
-             |     +-- per-peer
+             |     +-- peer-type?            uint8
+             |     +-- peer-flags?           uint8
+             |     +-- peer-distinguisher?
+             |     |     rt-types:route-distinguisher
+             |     +-- peer-address?         inet:ip-address
+             |     +-- peer-as?              uint32
+             |     +-- timestamp?            yang:date-and-time
              |     +-- rib
+             |        +-- attr-sets
+             |        |  +-- attr-set* [index]
+             |        |     +-- index         uint64
+             |        |     +-- attributes
+             |        |        +-- origin?
+             |        |        |     bt:bgp-origin-attr-type
+             |        |        +-- as-path
+             |        |        |  +-- segment*
+             |        |        |     +-- type?     identityref
+             |        |        |     +-- member*   inet:as-number
+             |        |        +-- next-hop?
+             |        |        |     inet:ip-address
+             |        |        +-- link-local-next-hop?
+             |        |        |     inet:ipv6-address
+             |        |        +-- med?                   uint32
+             |        |        +-- local-pref?            uint32
+             |        |        +-- as4-path
+             |        |        |  +-- segment*
+             |        |        |     +-- type?     identityref
+             |        |        |     +-- member*   inet:as-number
+             |        |        +-- aggregator
+             |        |        |  +-- as?           inet:as-number
+             |        |        |  +-- identifier?   yang:dotted-quad
+             |        |        +-- aggregator4
+
+
+
+Graf, et al.               Expires 9 July 2026                  [Page 5]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |        |        |  +-- as4?          inet:as-number
+             |        |        |  +-- identifier?   yang:dotted-quad
+             |        |        +-- atomic-aggregate?      boolean
+             |        |        +-- originator-id?
+             |        |        |     yang:dotted-quad
+             |        |        +-- cluster-list*
+             |        |        |     yang:dotted-quad
+             |        |        +-- aigp-metric?           uint64
+             |        +-- communities
+             |        |  +-- community* [index]
+             |        |     +-- index        uint64
+             |        |     +-- community*   union
+             |        +-- ext-communities
+             |        |  +-- ext-community* [index]
+             |        |     +-- index                uint64
+             |        |     +-- ext-community*
+             |        |     |     bct:bgp-ext-community-type
+             |        |     +-- ext-community-raw*   string
+             |        +-- ipv6-ext-communities
+             |        |  +-- ipv6-ext-community* [index]
+             |        |     +-- index                     uint64
+             |        |     +-- ipv6-ext-community*
+             |        |     |     bct:bgp-ipv6-ext-community-type
+             |        |     +-- ipv6-ext-community-raw*   string
+             |        +-- large-communities
+             |        |  +-- large-community* [index]
+             |        |     +-- index              uint64
+             |        |     +-- large-community*
+             |        |           bct:bgp-large-community-type
+             |        +-- afi-safis
+             |           +-- afi-safi* [name]
+             |              +-- name            identityref
+             |              +-- ipv4-unicast
+             |              |  +-- loc-rib
+             |              |  |  +-- routes
+             |              |  |     +-- route* [prefix origin path-id]
+             |              |  |        +-- prefix
+             |              |  |        |     inet:ipv4-prefix
+             |              |  |        +-- origin
+             |              |  |        |     union
+             |              |  |        +-- path-id
+             |              |  |        |     uint32
+             |              |  |        +-- attr-index?
+             |              |  |        |     leafref
+             |              |  |        +-- community-index?
+             |              |  |        |     leafref
+             |              |  |        +-- ext-community-index?
+             |              |  |        |     leafref
+
+
+
+Graf, et al.               Expires 9 July 2026                  [Page 6]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |              |  |        +-- large-community-index?
+             |              |  |        |     leafref
+             |              |  |        +-- last-modified?
+             |              |  |        |     yang:timeticks
+             |              |  |        +-- eligible-route?
+             |              |  |        |     boolean
+             |              |  |        +-- ineligible-reason?
+             |              |  |        |     identityref
+             |              |  |        +-- unknown-attributes
+             |              |  |        |  +-- unknown-attribute*
+             |              |  |        |        [attr-type]
+             |              |  |        |     +-- attr-type     uint8
+             |              |  |        |     +-- optional?     boolean
+             |              |  |        |     +-- transitive?   boolean
+             |              |  |        |     +-- partial?      boolean
+             |              |  |        |     +-- extended?     boolean
+             |              |  |        |     +-- attr-len?     uint16
+             |              |  |        |     +-- attr-value?   binary
+             |              |  |        +-- reject-reason?
+             |              |  |              union
+             |              |  +-- neighbors
+             |              |     +-- neighbor* [neighbor-address]
+             |              |        +-- neighbor-address
+             |              |        |     inet:ip-address
+             |              |        +-- adj-rib-in-pre
+             |              |        |  +-- routes
+             |              |        |     +-- route* [prefix path-id]
+             |              |        |        +-- prefix
+             |              |        |        |     inet:ipv4-prefix
+             |              |        |        +-- path-id
+             |              |        |        |     uint32
+             |              |        |        +-- attr-index?
+             |              |        |        |     leafref
+             |              |        |        +-- community-index?
+             |              |        |        |     leafref
+             |              |        |        +-- ext-community-index?
+             |              |        |        |     leafref
+             |              |        |        +-- large-community-index?
+             |              |        |        |     leafref
+             |              |        |        +-- last-modified?
+             |              |        |        |     yang:timeticks
+             |              |        |        +-- eligible-route?
+             |              |        |        |     boolean
+             |              |        |        +-- ineligible-reason?
+             |              |        |        |     identityref
+             |              |        |        +-- unknown-attributes
+             |              |        |        |  +-- unknown-attribute*
+             |              |        |        |        [attr-type]
+
+
+
+Graf, et al.               Expires 9 July 2026                  [Page 7]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |              |        |        |     +-- attr-type
+             |              |        |        |     |     uint8
+             |              |        |        |     +-- optional?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- transitive?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- partial?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- extended?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- attr-len?
+             |              |        |        |     |     uint16
+             |              |        |        |     +-- attr-value?
+             |              |        |        |           binary
+             |              |        |        +-- reject-reason?
+             |              |        |              union
+             |              |        +-- adj-rib-in-post
+             |              |        |  +-- routes
+             |              |        |     +-- route* [prefix path-id]
+             |              |        |        +-- prefix
+             |              |        |        |     inet:ipv4-prefix
+             |              |        |        +-- path-id
+             |              |        |        |     uint32
+             |              |        |        +-- attr-index?
+             |              |        |        |     leafref
+             |              |        |        +-- community-index?
+             |              |        |        |     leafref
+             |              |        |        +-- ext-community-index?
+             |              |        |        |     leafref
+             |              |        |        +-- large-community-index?
+             |              |        |        |     leafref
+             |              |        |        +-- last-modified?
+             |              |        |        |     yang:timeticks
+             |              |        |        +-- eligible-route?
+             |              |        |        |     boolean
+             |              |        |        +-- ineligible-reason?
+             |              |        |        |     identityref
+             |              |        |        +-- best-path?
+             |              |        |        |     boolean
+             |              |        |        +-- unknown-attributes
+             |              |        |        |  +-- unknown-attribute*
+             |              |        |        |        [attr-type]
+             |              |        |        |     +-- attr-type
+             |              |        |        |     |     uint8
+             |              |        |        |     +-- optional?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- transitive?
+             |              |        |        |     |     boolean
+
+
+
+Graf, et al.               Expires 9 July 2026                  [Page 8]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |              |        |        |     +-- partial?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- extended?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- attr-len?
+             |              |        |        |     |     uint16
+             |              |        |        |     +-- attr-value?
+             |              |        |        |           binary
+             |              |        |        +-- reject-reason?
+             |              |        |              union
+             |              |        +-- adj-rib-out-pre
+             |              |        |  +-- routes
+             |              |        |     +-- route* [prefix path-id]
+             |              |        |        +-- prefix
+             |              |        |        |     inet:ipv4-prefix
+             |              |        |        +-- path-id
+             |              |        |        |     uint32
+             |              |        |        +-- attr-index?
+             |              |        |        |     leafref
+             |              |        |        +-- community-index?
+             |              |        |        |     leafref
+             |              |        |        +-- ext-community-index?
+             |              |        |        |     leafref
+             |              |        |        +-- large-community-index?
+             |              |        |        |     leafref
+             |              |        |        +-- last-modified?
+             |              |        |        |     yang:timeticks
+             |              |        |        +-- eligible-route?
+             |              |        |        |     boolean
+             |              |        |        +-- ineligible-reason?
+             |              |        |        |     identityref
+             |              |        |        +-- unknown-attributes
+             |              |        |        |  +-- unknown-attribute*
+             |              |        |        |        [attr-type]
+             |              |        |        |     +-- attr-type
+             |              |        |        |     |     uint8
+             |              |        |        |     +-- optional?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- transitive?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- partial?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- extended?
+             |              |        |        |     |     boolean
+             |              |        |        |     +-- attr-len?
+             |              |        |        |     |     uint16
+             |              |        |        |     +-- attr-value?
+             |              |        |        |           binary
+
+
+
+Graf, et al.               Expires 9 July 2026                  [Page 9]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |              |        |        +-- reject-reason?
+             |              |        |              union
+             |              |        +-- adj-rib-out-post
+             |              |           +-- routes
+             |              |              +-- route* [prefix path-id]
+             |              |                 +-- prefix
+             |              |                 |     inet:ipv4-prefix
+             |              |                 +-- path-id
+             |              |                 |     uint32
+             |              |                 +-- attr-index?
+             |              |                 |     leafref
+             |              |                 +-- community-index?
+             |              |                 |     leafref
+             |              |                 +-- ext-community-index?
+             |              |                 |     leafref
+             |              |                 +-- large-community-index?
+             |              |                 |     leafref
+             |              |                 +-- last-modified?
+             |              |                 |     yang:timeticks
+             |              |                 +-- eligible-route?
+             |              |                 |     boolean
+             |              |                 +-- ineligible-reason?
+             |              |                 |     identityref
+             |              |                 +-- unknown-attributes
+             |              |                 |  +-- unknown-attribute*
+             |              |                 |        [attr-type]
+             |              |                 |     +-- attr-type
+             |              |                 |     |     uint8
+             |              |                 |     +-- optional?
+             |              |                 |     |     boolean
+             |              |                 |     +-- transitive?
+             |              |                 |     |     boolean
+             |              |                 |     +-- partial?
+             |              |                 |     |     boolean
+             |              |                 |     +-- extended?
+             |              |                 |     |     boolean
+             |              |                 |     +-- attr-len?
+             |              |                 |     |     uint16
+             |              |                 |     +-- attr-value?
+             |              |                 |           binary
+             |              |                 +-- reject-reason?
+             |              |                       union
+             |              +-- ipv6-unicast
+             |                 +-- loc-rib
+             |                 |  +-- routes
+             |                 |     +-- route* [prefix origin path-id]
+             |                 |        +-- prefix
+             |                 |        |     inet:ipv6-prefix
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 10]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |                 |        +-- origin
+             |                 |        |     union
+             |                 |        +-- path-id
+             |                 |        |     uint32
+             |                 |        +-- attr-index?
+             |                 |        |     leafref
+             |                 |        +-- community-index?
+             |                 |        |     leafref
+             |                 |        +-- ext-community-index?
+             |                 |        |     leafref
+             |                 |        +-- large-community-index?
+             |                 |        |     leafref
+             |                 |        +-- last-modified?
+             |                 |        |     yang:timeticks
+             |                 |        +-- eligible-route?
+             |                 |        |     boolean
+             |                 |        +-- ineligible-reason?
+             |                 |        |     identityref
+             |                 |        +-- unknown-attributes
+             |                 |        |  +-- unknown-attribute*
+             |                 |        |        [attr-type]
+             |                 |        |     +-- attr-type     uint8
+             |                 |        |     +-- optional?     boolean
+             |                 |        |     +-- transitive?   boolean
+             |                 |        |     +-- partial?      boolean
+             |                 |        |     +-- extended?     boolean
+             |                 |        |     +-- attr-len?     uint16
+             |                 |        |     +-- attr-value?   binary
+             |                 |        +-- reject-reason?
+             |                 |              union
+             |                 +-- neighbors
+             |                    +-- neighbor* [neighbor-address]
+             |                       +-- neighbor-address
+             |                       |     inet:ip-address
+             |                       +-- adj-rib-in-pre
+             |                       |  +-- routes
+             |                       |     +-- route* [prefix path-id]
+             |                       |        +-- prefix
+             |                       |        |     inet:ipv6-prefix
+             |                       |        +-- path-id
+             |                       |        |     uint32
+             |                       |        +-- attr-index?
+             |                       |        |     leafref
+             |                       |        +-- community-index?
+             |                       |        |     leafref
+             |                       |        +-- ext-community-index?
+             |                       |        |     leafref
+             |                       |        +-- large-community-index?
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 11]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |                       |        |     leafref
+             |                       |        +-- last-modified?
+             |                       |        |     yang:timeticks
+             |                       |        +-- eligible-route?
+             |                       |        |     boolean
+             |                       |        +-- ineligible-reason?
+             |                       |        |     identityref
+             |                       |        +-- unknown-attributes
+             |                       |        |  +-- unknown-attribute*
+             |                       |        |        [attr-type]
+             |                       |        |     +-- attr-type
+             |                       |        |     |     uint8
+             |                       |        |     +-- optional?
+             |                       |        |     |     boolean
+             |                       |        |     +-- transitive?
+             |                       |        |     |     boolean
+             |                       |        |     +-- partial?
+             |                       |        |     |     boolean
+             |                       |        |     +-- extended?
+             |                       |        |     |     boolean
+             |                       |        |     +-- attr-len?
+             |                       |        |     |     uint16
+             |                       |        |     +-- attr-value?
+             |                       |        |           binary
+             |                       |        +-- reject-reason?
+             |                       |              union
+             |                       +-- adj-rib-in-post
+             |                       |  +-- routes
+             |                       |     +-- route* [prefix path-id]
+             |                       |        +-- prefix
+             |                       |        |     inet:ipv6-prefix
+             |                       |        +-- path-id
+             |                       |        |     uint32
+             |                       |        +-- attr-index?
+             |                       |        |     leafref
+             |                       |        +-- community-index?
+             |                       |        |     leafref
+             |                       |        +-- ext-community-index?
+             |                       |        |     leafref
+             |                       |        +-- large-community-index?
+             |                       |        |     leafref
+             |                       |        +-- last-modified?
+             |                       |        |     yang:timeticks
+             |                       |        +-- eligible-route?
+             |                       |        |     boolean
+             |                       |        +-- ineligible-reason?
+             |                       |        |     identityref
+             |                       |        +-- best-path?
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 12]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |                       |        |     boolean
+             |                       |        +-- unknown-attributes
+             |                       |        |  +-- unknown-attribute*
+             |                       |        |        [attr-type]
+             |                       |        |     +-- attr-type
+             |                       |        |     |     uint8
+             |                       |        |     +-- optional?
+             |                       |        |     |     boolean
+             |                       |        |     +-- transitive?
+             |                       |        |     |     boolean
+             |                       |        |     +-- partial?
+             |                       |        |     |     boolean
+             |                       |        |     +-- extended?
+             |                       |        |     |     boolean
+             |                       |        |     +-- attr-len?
+             |                       |        |     |     uint16
+             |                       |        |     +-- attr-value?
+             |                       |        |           binary
+             |                       |        +-- reject-reason?
+             |                       |              union
+             |                       +-- adj-rib-out-pre
+             |                       |  +-- routes
+             |                       |     +-- route* [prefix path-id]
+             |                       |        +-- prefix
+             |                       |        |     inet:ipv6-prefix
+             |                       |        +-- path-id
+             |                       |        |     uint32
+             |                       |        +-- attr-index?
+             |                       |        |     leafref
+             |                       |        +-- community-index?
+             |                       |        |     leafref
+             |                       |        +-- ext-community-index?
+             |                       |        |     leafref
+             |                       |        +-- large-community-index?
+             |                       |        |     leafref
+             |                       |        +-- last-modified?
+             |                       |        |     yang:timeticks
+             |                       |        +-- eligible-route?
+             |                       |        |     boolean
+             |                       |        +-- ineligible-reason?
+             |                       |        |     identityref
+             |                       |        +-- unknown-attributes
+             |                       |        |  +-- unknown-attribute*
+             |                       |        |        [attr-type]
+             |                       |        |     +-- attr-type
+             |                       |        |     |     uint8
+             |                       |        |     +-- optional?
+             |                       |        |     |     boolean
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 13]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |                       |        |     +-- transitive?
+             |                       |        |     |     boolean
+             |                       |        |     +-- partial?
+             |                       |        |     |     boolean
+             |                       |        |     +-- extended?
+             |                       |        |     |     boolean
+             |                       |        |     +-- attr-len?
+             |                       |        |     |     uint16
+             |                       |        |     +-- attr-value?
+             |                       |        |           binary
+             |                       |        +-- reject-reason?
+             |                       |              union
+             |                       +-- adj-rib-out-post
+             |                          +-- routes
+             |                             +-- route* [prefix path-id]
+             |                                +-- prefix
+             |                                |     inet:ipv6-prefix
+             |                                +-- path-id
+             |                                |     uint32
+             |                                +-- attr-index?
+             |                                |     leafref
+             |                                +-- community-index?
+             |                                |     leafref
+             |                                +-- ext-community-index?
+             |                                |     leafref
+             |                                +-- large-community-index?
+             |                                |     leafref
+             |                                +-- last-modified?
+             |                                |     yang:timeticks
+             |                                +-- eligible-route?
+             |                                |     boolean
+             |                                +-- ineligible-reason?
+             |                                |     identityref
+             |                                +-- unknown-attributes
+             |                                |  +-- unknown-attribute*
+             |                                |        [attr-type]
+             |                                |     +-- attr-type
+             |                                |     |     uint8
+             |                                |     +-- optional?
+             |                                |     |     boolean
+             |                                |     +-- transitive?
+             |                                |     |     boolean
+             |                                |     +-- partial?
+             |                                |     |     boolean
+             |                                |     +-- extended?
+             |                                |     |     boolean
+             |                                |     +-- attr-len?
+             |                                |     |     uint16
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 14]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+             |                                |     +-- attr-value?
+             |                                |           binary
+             |                                +-- reject-reason?
+             |                                      union
              +--:(statistics-report)
              |  +-- statistics-report
-             |     +-- per-peer
-             |     +-- statistics
+             |     +-- peer-type?            uint8
+             |     +-- peer-flags?           uint8
+             |     +-- peer-distinguisher?
+             |     |     rt-types:route-distinguisher
+             |     +-- peer-address?         inet:ip-address
+             |     +-- peer-as?              uint32
+             |     +-- timestamp?            yang:date-and-time
+             |     +-- statistics-type?      string
+             |     +-- statistics-data?      uint64
              +--:(peer-down-notification)
              |  +-- peer-down-notification
-             |     +-- per-peer
+             |     +-- peer-type?            uint8
+             |     +-- peer-flags?           uint8
+             |     +-- peer-distinguisher?
+             |     |     rt-types:route-distinguisher
+             |     +-- peer-address?         inet:ip-address
+             |     +-- peer-as?              uint32
+             |     +-- timestamp?            yang:date-and-time
              +--:(peer-up-notification)
              |  +-- peer-up-notification
-             |     +-- per-peer
+             |     +-- peer-type?            uint8
+             |     +-- peer-flags?           uint8
+             |     +-- peer-distinguisher?
+             |     |     rt-types:route-distinguisher
+             |     +-- peer-address?         inet:ip-address
+             |     +-- peer-as?              uint32
+             |     +-- timestamp?            yang:date-and-time
              +--:(initiation-message)
              |  +-- initiation-message
-             |     +-- information
+             |     +-- string?      string
+             |     +-- sys-descr?   string
+             |     +-- sys-name?    string
              +--:(termination-message)
              |  +-- termination-message
-             |     +-- termination
+             |     +-- string?   string
+             |     +-- reason?   enumeration
              +--:(route-mirroring-message)
                 +-- route-mirroring-message
-                   +-- per-peer
+                   +-- peer-type?            uint8
+                   +-- peer-flags?           uint8
+                   +-- peer-distinguisher?
+                   |     rt-types:route-distinguisher
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 15]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   +-- peer-address?         inet:ip-address
+                   +-- peer-as?              uint32
+                   +-- timestamp?            yang:date-and-time
                    +-- rib
-                   +-- mirroring
+                   |  +-- attr-sets
+                   |  |  +-- attr-set* [index]
+                   |  |     +-- index         uint64
+                   |  |     +-- attributes
+                   |  |        +-- origin?
+                   |  |        |     bt:bgp-origin-attr-type
+                   |  |        +-- as-path
+                   |  |        |  +-- segment*
+                   |  |        |     +-- type?     identityref
+                   |  |        |     +-- member*   inet:as-number
+                   |  |        +-- next-hop?
+                   |  |        |     inet:ip-address
+                   |  |        +-- link-local-next-hop?
+                   |  |        |     inet:ipv6-address
+                   |  |        +-- med?                   uint32
+                   |  |        +-- local-pref?            uint32
+                   |  |        +-- as4-path
+                   |  |        |  +-- segment*
+                   |  |        |     +-- type?     identityref
+                   |  |        |     +-- member*   inet:as-number
+                   |  |        +-- aggregator
+                   |  |        |  +-- as?           inet:as-number
+                   |  |        |  +-- identifier?   yang:dotted-quad
+                   |  |        +-- aggregator4
+                   |  |        |  +-- as4?          inet:as-number
+                   |  |        |  +-- identifier?   yang:dotted-quad
+                   |  |        +-- atomic-aggregate?      boolean
+                   |  |        +-- originator-id?
+                   |  |        |     yang:dotted-quad
+                   |  |        +-- cluster-list*
+                   |  |        |     yang:dotted-quad
+                   |  |        +-- aigp-metric?           uint64
+                   |  +-- communities
+                   |  |  +-- community* [index]
+                   |  |     +-- index        uint64
+                   |  |     +-- community*   union
+                   |  +-- ext-communities
+                   |  |  +-- ext-community* [index]
+                   |  |     +-- index                uint64
+                   |  |     +-- ext-community*
+                   |  |     |     bct:bgp-ext-community-type
+                   |  |     +-- ext-community-raw*   string
+                   |  +-- ipv6-ext-communities
+                   |  |  +-- ipv6-ext-community* [index]
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 16]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   |  |     +-- index                     uint64
+                   |  |     +-- ipv6-ext-community*
+                   |  |     |     bct:bgp-ipv6-ext-community-type
+                   |  |     +-- ipv6-ext-community-raw*   string
+                   |  +-- large-communities
+                   |  |  +-- large-community* [index]
+                   |  |     +-- index              uint64
+                   |  |     +-- large-community*
+                   |  |           bct:bgp-large-community-type
+                   |  +-- afi-safis
+                   |     +-- afi-safi* [name]
+                   |        +-- name            identityref
+                   |        +-- ipv4-unicast
+                   |        |  +-- loc-rib
+                   |        |  |  +-- routes
+                   |        |  |     +-- route* [prefix origin path-id]
+                   |        |  |        +-- prefix
+                   |        |  |        |     inet:ipv4-prefix
+                   |        |  |        +-- origin
+                   |        |  |        |     union
+                   |        |  |        +-- path-id
+                   |        |  |        |     uint32
+                   |        |  |        +-- attr-index?
+                   |        |  |        |     leafref
+                   |        |  |        +-- community-index?
+                   |        |  |        |     leafref
+                   |        |  |        +-- ext-community-index?
+                   |        |  |        |     leafref
+                   |        |  |        +-- large-community-index?
+                   |        |  |        |     leafref
+                   |        |  |        +-- last-modified?
+                   |        |  |        |     yang:timeticks
+                   |        |  |        +-- eligible-route?
+                   |        |  |        |     boolean
+                   |        |  |        +-- ineligible-reason?
+                   |        |  |        |     identityref
+                   |        |  |        +-- unknown-attributes
+                   |        |  |        |  +-- unknown-attribute*
+                   |        |  |        |        [attr-type]
+                   |        |  |        |     +-- attr-type     uint8
+                   |        |  |        |     +-- optional?     boolean
+                   |        |  |        |     +-- transitive?   boolean
+                   |        |  |        |     +-- partial?      boolean
+                   |        |  |        |     +-- extended?     boolean
+                   |        |  |        |     +-- attr-len?     uint16
+                   |        |  |        |     +-- attr-value?   binary
+                   |        |  |        +-- reject-reason?
+                   |        |  |              union
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 17]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   |        |  +-- neighbors
+                   |        |     +-- neighbor* [neighbor-address]
+                   |        |        +-- neighbor-address
+                   |        |        |     inet:ip-address
+                   |        |        +-- adj-rib-in-pre
+                   |        |        |  +-- routes
+                   |        |        |     +-- route* [prefix path-id]
+                   |        |        |        +-- prefix
+                   |        |        |        |     inet:ipv4-prefix
+                   |        |        |        +-- path-id
+                   |        |        |        |     uint32
+                   |        |        |        +-- attr-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- community-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- ext-community-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- large-community-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- last-modified?
+                   |        |        |        |     yang:timeticks
+                   |        |        |        +-- eligible-route?
+                   |        |        |        |     boolean
+                   |        |        |        +-- ineligible-reason?
+                   |        |        |        |     identityref
+                   |        |        |        +-- unknown-attributes
+                   |        |        |        |  +-- unknown-attribute*
+                   |        |        |        |        [attr-type]
+                   |        |        |        |     +-- attr-type
+                   |        |        |        |     |     uint8
+                   |        |        |        |     +-- optional?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- transitive?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- partial?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- extended?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- attr-len?
+                   |        |        |        |     |     uint16
+                   |        |        |        |     +-- attr-value?
+                   |        |        |        |           binary
+                   |        |        |        +-- reject-reason?
+                   |        |        |              union
+                   |        |        +-- adj-rib-in-post
+                   |        |        |  +-- routes
+                   |        |        |     +-- route* [prefix path-id]
+                   |        |        |        +-- prefix
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 18]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   |        |        |        |     inet:ipv4-prefix
+                   |        |        |        +-- path-id
+                   |        |        |        |     uint32
+                   |        |        |        +-- attr-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- community-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- ext-community-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- large-community-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- last-modified?
+                   |        |        |        |     yang:timeticks
+                   |        |        |        +-- eligible-route?
+                   |        |        |        |     boolean
+                   |        |        |        +-- ineligible-reason?
+                   |        |        |        |     identityref
+                   |        |        |        +-- best-path?
+                   |        |        |        |     boolean
+                   |        |        |        +-- unknown-attributes
+                   |        |        |        |  +-- unknown-attribute*
+                   |        |        |        |        [attr-type]
+                   |        |        |        |     +-- attr-type
+                   |        |        |        |     |     uint8
+                   |        |        |        |     +-- optional?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- transitive?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- partial?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- extended?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- attr-len?
+                   |        |        |        |     |     uint16
+                   |        |        |        |     +-- attr-value?
+                   |        |        |        |           binary
+                   |        |        |        +-- reject-reason?
+                   |        |        |              union
+                   |        |        +-- adj-rib-out-pre
+                   |        |        |  +-- routes
+                   |        |        |     +-- route* [prefix path-id]
+                   |        |        |        +-- prefix
+                   |        |        |        |     inet:ipv4-prefix
+                   |        |        |        +-- path-id
+                   |        |        |        |     uint32
+                   |        |        |        +-- attr-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- community-index?
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 19]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   |        |        |        |     leafref
+                   |        |        |        +-- ext-community-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- large-community-index?
+                   |        |        |        |     leafref
+                   |        |        |        +-- last-modified?
+                   |        |        |        |     yang:timeticks
+                   |        |        |        +-- eligible-route?
+                   |        |        |        |     boolean
+                   |        |        |        +-- ineligible-reason?
+                   |        |        |        |     identityref
+                   |        |        |        +-- unknown-attributes
+                   |        |        |        |  +-- unknown-attribute*
+                   |        |        |        |        [attr-type]
+                   |        |        |        |     +-- attr-type
+                   |        |        |        |     |     uint8
+                   |        |        |        |     +-- optional?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- transitive?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- partial?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- extended?
+                   |        |        |        |     |     boolean
+                   |        |        |        |     +-- attr-len?
+                   |        |        |        |     |     uint16
+                   |        |        |        |     +-- attr-value?
+                   |        |        |        |           binary
+                   |        |        |        +-- reject-reason?
+                   |        |        |              union
+                   |        |        +-- adj-rib-out-post
+                   |        |           +-- routes
+                   |        |              +-- route* [prefix path-id]
+                   |        |                 +-- prefix
+                   |        |                 |     inet:ipv4-prefix
+                   |        |                 +-- path-id
+                   |        |                 |     uint32
+                   |        |                 +-- attr-index?
+                   |        |                 |     leafref
+                   |        |                 +-- community-index?
+                   |        |                 |     leafref
+                   |        |                 +-- ext-community-index?
+                   |        |                 |     leafref
+                   |        |                 +-- large-community-index?
+                   |        |                 |     leafref
+                   |        |                 +-- last-modified?
+                   |        |                 |     yang:timeticks
+                   |        |                 +-- eligible-route?
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 20]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   |        |                 |     boolean
+                   |        |                 +-- ineligible-reason?
+                   |        |                 |     identityref
+                   |        |                 +-- unknown-attributes
+                   |        |                 |  +-- unknown-attribute*
+                   |        |                 |        [attr-type]
+                   |        |                 |     +-- attr-type
+                   |        |                 |     |     uint8
+                   |        |                 |     +-- optional?
+                   |        |                 |     |     boolean
+                   |        |                 |     +-- transitive?
+                   |        |                 |     |     boolean
+                   |        |                 |     +-- partial?
+                   |        |                 |     |     boolean
+                   |        |                 |     +-- extended?
+                   |        |                 |     |     boolean
+                   |        |                 |     +-- attr-len?
+                   |        |                 |     |     uint16
+                   |        |                 |     +-- attr-value?
+                   |        |                 |           binary
+                   |        |                 +-- reject-reason?
+                   |        |                       union
+                   |        +-- ipv6-unicast
+                   |           +-- loc-rib
+                   |           |  +-- routes
+                   |           |     +-- route* [prefix origin path-id]
+                   |           |        +-- prefix
+                   |           |        |     inet:ipv6-prefix
+                   |           |        +-- origin
+                   |           |        |     union
+                   |           |        +-- path-id
+                   |           |        |     uint32
+                   |           |        +-- attr-index?
+                   |           |        |     leafref
+                   |           |        +-- community-index?
+                   |           |        |     leafref
+                   |           |        +-- ext-community-index?
+                   |           |        |     leafref
+                   |           |        +-- large-community-index?
+                   |           |        |     leafref
+                   |           |        +-- last-modified?
+                   |           |        |     yang:timeticks
+                   |           |        +-- eligible-route?
+                   |           |        |     boolean
+                   |           |        +-- ineligible-reason?
+                   |           |        |     identityref
+                   |           |        +-- unknown-attributes
+                   |           |        |  +-- unknown-attribute*
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 21]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   |           |        |        [attr-type]
+                   |           |        |     +-- attr-type     uint8
+                   |           |        |     +-- optional?     boolean
+                   |           |        |     +-- transitive?   boolean
+                   |           |        |     +-- partial?      boolean
+                   |           |        |     +-- extended?     boolean
+                   |           |        |     +-- attr-len?     uint16
+                   |           |        |     +-- attr-value?   binary
+                   |           |        +-- reject-reason?
+                   |           |              union
+                   |           +-- neighbors
+                   |              +-- neighbor* [neighbor-address]
+                   |                 +-- neighbor-address
+                   |                 |     inet:ip-address
+                   |                 +-- adj-rib-in-pre
+                   |                 |  +-- routes
+                   |                 |     +-- route* [prefix path-id]
+                   |                 |        +-- prefix
+                   |                 |        |     inet:ipv6-prefix
+                   |                 |        +-- path-id
+                   |                 |        |     uint32
+                   |                 |        +-- attr-index?
+                   |                 |        |     leafref
+                   |                 |        +-- community-index?
+                   |                 |        |     leafref
+                   |                 |        +-- ext-community-index?
+                   |                 |        |     leafref
+                   |                 |        +-- large-community-index?
+                   |                 |        |     leafref
+                   |                 |        +-- last-modified?
+                   |                 |        |     yang:timeticks
+                   |                 |        +-- eligible-route?
+                   |                 |        |     boolean
+                   |                 |        +-- ineligible-reason?
+                   |                 |        |     identityref
+                   |                 |        +-- unknown-attributes
+                   |                 |        |  +-- unknown-attribute*
+                   |                 |        |        [attr-type]
+                   |                 |        |     +-- attr-type
+                   |                 |        |     |     uint8
+                   |                 |        |     +-- optional?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- transitive?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- partial?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- extended?
+                   |                 |        |     |     boolean
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 22]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   |                 |        |     +-- attr-len?
+                   |                 |        |     |     uint16
+                   |                 |        |     +-- attr-value?
+                   |                 |        |           binary
+                   |                 |        +-- reject-reason?
+                   |                 |              union
+                   |                 +-- adj-rib-in-post
+                   |                 |  +-- routes
+                   |                 |     +-- route* [prefix path-id]
+                   |                 |        +-- prefix
+                   |                 |        |     inet:ipv6-prefix
+                   |                 |        +-- path-id
+                   |                 |        |     uint32
+                   |                 |        +-- attr-index?
+                   |                 |        |     leafref
+                   |                 |        +-- community-index?
+                   |                 |        |     leafref
+                   |                 |        +-- ext-community-index?
+                   |                 |        |     leafref
+                   |                 |        +-- large-community-index?
+                   |                 |        |     leafref
+                   |                 |        +-- last-modified?
+                   |                 |        |     yang:timeticks
+                   |                 |        +-- eligible-route?
+                   |                 |        |     boolean
+                   |                 |        +-- ineligible-reason?
+                   |                 |        |     identityref
+                   |                 |        +-- best-path?
+                   |                 |        |     boolean
+                   |                 |        +-- unknown-attributes
+                   |                 |        |  +-- unknown-attribute*
+                   |                 |        |        [attr-type]
+                   |                 |        |     +-- attr-type
+                   |                 |        |     |     uint8
+                   |                 |        |     +-- optional?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- transitive?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- partial?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- extended?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- attr-len?
+                   |                 |        |     |     uint16
+                   |                 |        |     +-- attr-value?
+                   |                 |        |           binary
+                   |                 |        +-- reject-reason?
+                   |                 |              union
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 23]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   |                 +-- adj-rib-out-pre
+                   |                 |  +-- routes
+                   |                 |     +-- route* [prefix path-id]
+                   |                 |        +-- prefix
+                   |                 |        |     inet:ipv6-prefix
+                   |                 |        +-- path-id
+                   |                 |        |     uint32
+                   |                 |        +-- attr-index?
+                   |                 |        |     leafref
+                   |                 |        +-- community-index?
+                   |                 |        |     leafref
+                   |                 |        +-- ext-community-index?
+                   |                 |        |     leafref
+                   |                 |        +-- large-community-index?
+                   |                 |        |     leafref
+                   |                 |        +-- last-modified?
+                   |                 |        |     yang:timeticks
+                   |                 |        +-- eligible-route?
+                   |                 |        |     boolean
+                   |                 |        +-- ineligible-reason?
+                   |                 |        |     identityref
+                   |                 |        +-- unknown-attributes
+                   |                 |        |  +-- unknown-attribute*
+                   |                 |        |        [attr-type]
+                   |                 |        |     +-- attr-type
+                   |                 |        |     |     uint8
+                   |                 |        |     +-- optional?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- transitive?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- partial?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- extended?
+                   |                 |        |     |     boolean
+                   |                 |        |     +-- attr-len?
+                   |                 |        |     |     uint16
+                   |                 |        |     +-- attr-value?
+                   |                 |        |           binary
+                   |                 |        +-- reject-reason?
+                   |                 |              union
+                   |                 +-- adj-rib-out-post
+                   |                    +-- routes
+                   |                       +-- route* [prefix path-id]
+                   |                          +-- prefix
+                   |                          |     inet:ipv6-prefix
+                   |                          +-- path-id
+                   |                          |     uint32
+                   |                          +-- attr-index?
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 24]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+                   |                          |     leafref
+                   |                          +-- community-index?
+                   |                          |     leafref
+                   |                          +-- ext-community-index?
+                   |                          |     leafref
+                   |                          +-- large-community-index?
+                   |                          |     leafref
+                   |                          +-- last-modified?
+                   |                          |     yang:timeticks
+                   |                          +-- eligible-route?
+                   |                          |     boolean
+                   |                          +-- ineligible-reason?
+                   |                          |     identityref
+                   |                          +-- unknown-attributes
+                   |                          |  +-- unknown-attribute*
+                   |                          |        [attr-type]
+                   |                          |     +-- attr-type
+                   |                          |     |     uint8
+                   |                          |     +-- optional?
+                   |                          |     |     boolean
+                   |                          |     +-- transitive?
+                   |                          |     |     boolean
+                   |                          |     +-- partial?
+                   |                          |     |     boolean
+                   |                          |     +-- extended?
+                   |                          |     |     boolean
+                   |                          |     +-- attr-len?
+                   |                          |     |     uint16
+                   |                          |     +-- attr-value?
+                   |                          |           binary
+                   |                          +-- reject-reason?
+                   |                                union
+                   +-- information?          enumeration
 
     Figure 1: YANG tree diagram for 'ietf-bmp-telemetry-message' module.
-
-module: ietf-telemetry-message
-
-  structure message:
-    +-- network-node-manifest {network-node-manifest}?
-    |  +-- name?               string
-    |  +-- vendor?             string
-
-
-
-Graf & Lucente             Expires 8 July 2026                  [Page 5]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |  +-- vendor-pen?         uint32
-    |  +-- software-version?   string
-    |  +-- software-flavor?    string
-    |  +-- os-version?         string
-    |  +-- os-type?            string
-    +-- telemetry-message-metadata
-    |  +-- node-export-timestamp?   yang:date-and-time
-    |  +-- collection-timestamp     yang:date-and-time
-    |  +-- notification-event       telemetry-notification-event-type
-    |  +-- sequence-number?         yang:counter32
-    |  +-- session-protocol         telemetry-session-protocol-type
-    |  +-- export-address           inet:host
-    |  +-- export-port?             inet:port-number
-    |  +-- collection-address?      inet:host
-    |  +-- collection-port?         inet:port-number
-    |  +-- bmp-subscription
-    |     +-- version?          uint8
-    |     +-- (message-type)?
-    |        +--:(route-monitoring)
-    |        |  +-- route-monitoring
-    |        |     +-- peer-type?            uint8
-    |        |     +-- peer-flags?           uint8
-    |        |     +-- peer-distinguisher?
-    |        |     |     rt-types:route-distinguisher
-    |        |     +-- peer-address?         inet:ip-address
-    |        |     +-- peer-as?              uint32
-    |        |     +-- timestamp?            yang:date-and-time
-    |        |     +-- rib
-    |        |        +-- attr-sets
-    |        |        |  +-- attr-set* [index]
-    |        |        |     +-- index         uint64
-    |        |        |     +-- attributes
-    |        |        |        +-- origin?
-    |        |        |        |     bt:bgp-origin-attr-type
-    |        |        |        +-- as-path
-    |        |        |        |  +-- segment*
-    |        |        |        |     +-- type?     identityref
-    |        |        |        |     +-- member*   inet:as-number
-    |        |        |        +-- next-hop?
-    |        |        |        |     inet:ip-address
-    |        |        |        +-- link-local-next-hop?
-    |        |        |        |     inet:ipv6-address
-    |        |        |        +-- med?                   uint32
-    |        |        |        +-- local-pref?            uint32
-    |        |        |        +-- as4-path
-    |        |        |        |  +-- segment*
-    |        |        |        |     +-- type?     identityref
-    |        |        |        |     +-- member*   inet:as-number
-
-
-
-Graf & Lucente             Expires 8 July 2026                  [Page 6]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |        |        +-- aggregator
-    |        |        |        |  +-- as?           inet:as-number
-    |        |        |        |  +-- identifier?   yang:dotted-quad
-    |        |        |        +-- aggregator4
-    |        |        |        |  +-- as4?          inet:as-number
-    |        |        |        |  +-- identifier?   yang:dotted-quad
-    |        |        |        +-- atomic-aggregate?      boolean
-    |        |        |        +-- originator-id?
-    |        |        |        |     yang:dotted-quad
-    |        |        |        +-- cluster-list*
-    |        |        |        |     yang:dotted-quad
-    |        |        |        +-- aigp-metric?           uint64
-    |        |        +-- communities
-    |        |        |  +-- community* [index]
-    |        |        |     +-- index        uint64
-    |        |        |     +-- community*   union
-    |        |        +-- ext-communities
-    |        |        |  +-- ext-community* [index]
-    |        |        |     +-- index                uint64
-    |        |        |     +-- ext-community*
-    |        |        |     |     bct:bgp-ext-community-type
-    |        |        |     +-- ext-community-raw*   string
-    |        |        +-- ipv6-ext-communities
-    |        |        |  +-- ipv6-ext-community* [index]
-    |        |        |     +-- index                     uint64
-    |        |        |     +-- ipv6-ext-community*
-    |        |        |     |     bct:bgp-ipv6-ext-community-type
-    |        |        |     +-- ipv6-ext-community-raw*   string
-    |        |        +-- large-communities
-    |        |        |  +-- large-community* [index]
-    |        |        |     +-- index              uint64
-    |        |        |     +-- large-community*
-    |        |        |           bct:bgp-large-community-type
-    |        |        +-- afi-safis
-    |        |           +-- afi-safi* [name]
-    |        |              +-- name            identityref
-    |        |              +-- ipv4-unicast
-    |        |              |  +-- loc-rib
-    |        |              |  |  +-- routes
-    |        |              |  |     +-- route*
-    |        |              |  |           [prefix origin path-id]
-    |        |              |  |        +-- prefix
-    |        |              |  |        |     inet:ipv4-prefix
-    |        |              |  |        +-- origin
-    |        |              |  |        |     union
-    |        |              |  |        +-- path-id
-    |        |              |  |        |     uint32
-    |        |              |  |        +-- attr-index?
-
-
-
-Graf & Lucente             Expires 8 July 2026                  [Page 7]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |              |  |        |     leafref
-    |        |              |  |        +-- community-index?
-    |        |              |  |        |     leafref
-    |        |              |  |        +-- ext-community-index?
-    |        |              |  |        |     leafref
-    |        |              |  |        +-- large-community-index?
-    |        |              |  |        |     leafref
-    |        |              |  |        +-- last-modified?
-    |        |              |  |        |     yang:timeticks
-    |        |              |  |        +-- eligible-route?
-    |        |              |  |        |     boolean
-    |        |              |  |        +-- ineligible-reason?
-    |        |              |  |        |     identityref
-    |        |              |  |        +-- unknown-attributes
-    |        |              |  |        |  +-- unknown-attribute*
-    |        |              |  |        |        [attr-type]
-    |        |              |  |        |     +-- attr-type     uint8
-    |        |              |  |        |     +-- optional?
-    |        |              |  |        |     |     boolean
-    |        |              |  |        |     +-- transitive?
-    |        |              |  |        |     |     boolean
-    |        |              |  |        |     +-- partial?
-    |        |              |  |        |     |     boolean
-    |        |              |  |        |     +-- extended?
-    |        |              |  |        |     |     boolean
-    |        |              |  |        |     +-- attr-len?
-    |        |              |  |        |     |     uint16
-    |        |              |  |        |     +-- attr-value?
-    |        |              |  |        |           binary
-    |        |              |  |        +-- reject-reason?
-    |        |              |  |              union
-    |        |              |  +-- neighbors
-    |        |              |     +-- neighbor* [neighbor-address]
-    |        |              |        +-- neighbor-address
-    |        |              |        |     inet:ip-address
-    |        |              |        +-- adj-rib-in-pre
-    |        |              |        |  +-- routes
-    |        |              |        |     +-- route*[prefix path-id]
-    |        |              |        |           [prefix path-id]
-    |        |              |        |        +-- prefix
-    |        |              |        |        |     inet:ipv4-prefix
-    |        |              |        |        +-- path-id
-    |        |              |        |        |     uint32
-    |        |              |        |        +-- attr-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- community-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- ext-community-index?
-
-
-
-Graf & Lucente             Expires 8 July 2026                  [Page 8]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- large-community-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- last-modified?
-    |        |              |        |        |     yang:timeticks
-    |        |              |        |        +-- eligible-route?
-    |        |              |        |        |     boolean
-    |        |              |        |        +-- ineligible-reason?
-    |        |              |        |        |     identityref
-    |        |              |        |        +-- unknown-attributes
-    |        |              |        |        |  +-- unknown-attribute*
-    |        |              |        |        |        [attr-type]
-    |        |              |        |        |     +-- attr-type
-    |        |              |        |        |     |     uint8
-    |        |              |        |        |     +-- optional?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- transitive?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- partial?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- extended?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- attr-len?
-    |        |              |        |        |     |     uint16
-    |        |              |        |        |     +-- attr-value?
-    |        |              |        |        |           binary
-    |        |              |        |        +-- reject-reason?
-    |        |              |        |              union
-    |        |              |        +-- adj-rib-in-post
-    |        |              |        |  +-- routes
-    |        |              |        |     +-- route*[prefix path-id]
-    |        |              |        |           [prefix path-id]
-    |        |              |        |        +-- prefix
-    |        |              |        |        |     inet:ipv4-prefix
-    |        |              |        |        +-- path-id
-    |        |              |        |        |     uint32
-    |        |              |        |        +-- attr-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- community-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- ext-community-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- large-community-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- last-modified?
-    |        |              |        |        |     yang:timeticks
-    |        |              |        |        +-- eligible-route?
-    |        |              |        |        |     boolean
-
-
-
-Graf & Lucente             Expires 8 July 2026                  [Page 9]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |              |        |        +-- ineligible-reason?
-    |        |              |        |        |     identityref
-    |        |              |        |        +-- best-path?
-    |        |              |        |        |     boolean
-    |        |              |        |        +-- unknown-attributes
-    |        |              |        |        |  +-- unknown-attribute*
-    |        |              |        |        |        [attr-type]
-    |        |              |        |        |     +-- attr-type
-    |        |              |        |        |     |     uint8
-    |        |              |        |        |     +-- optional?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- transitive?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- partial?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- extended?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- attr-len?
-    |        |              |        |        |     |     uint16
-    |        |              |        |        |     +-- attr-value?
-    |        |              |        |        |           binary
-    |        |              |        |        +-- reject-reason?
-    |        |              |        |              union
-    |        |              |        +-- adj-rib-out-pre
-    |        |              |        |  +-- routes
-    |        |              |        |     +-- route*[prefix path-id]
-    |        |              |        |           [prefix path-id]
-    |        |              |        |        +-- prefix
-    |        |              |        |        |     inet:ipv4-prefix
-    |        |              |        |        +-- path-id
-    |        |              |        |        |     uint32
-    |        |              |        |        +-- attr-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- community-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- ext-community-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- large-community-index?
-    |        |              |        |        |     leafref
-    |        |              |        |        +-- last-modified?
-    |        |              |        |        |     yang:timeticks
-    |        |              |        |        +-- eligible-route?
-    |        |              |        |        |     boolean
-    |        |              |        |        +-- ineligible-reason?
-    |        |              |        |        |     identityref
-    |        |              |        |        +-- unknown-attributes
-    |        |              |        |        |  +-- unknown-attribute*
-    |        |              |        |        |        [attr-type]
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 10]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |              |        |        |     +-- attr-type
-    |        |              |        |        |     |     uint8
-    |        |              |        |        |     +-- optional?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- transitive?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- partial?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- extended?
-    |        |              |        |        |     |     boolean
-    |        |              |        |        |     +-- attr-len?
-    |        |              |        |        |     |     uint16
-    |        |              |        |        |     +-- attr-value?
-    |        |              |        |        |           binary
-    |        |              |        |        +-- reject-reason?
-    |        |              |        |              union
-    |        |              |        +-- adj-rib-out-post
-    |        |              |           +-- routes
-    |        |              |              +-- route*[prefix path-id]
-    |        |              |                    [prefix path-id]
-    |        |              |                 +-- prefix
-    |        |              |                 |     inet:ipv4-prefix
-    |        |              |                 +-- path-id
-    |        |              |                 |     uint32
-    |        |              |                 +-- attr-index?
-    |        |              |                 |     leafref
-    |        |              |                 +-- community-index?
-    |        |              |                 |     leafref
-    |        |              |                 +-- ext-community-index?
-    |        |              |                 |     leafref
-    |        |              |                 +-- large-community-index?
-    |        |              |                 |     leafref
-    |        |              |                 +-- last-modified?
-    |        |              |                 |     yang:timeticks
-    |        |              |                 +-- eligible-route?
-    |        |              |                 |     boolean
-    |        |              |                 +-- ineligible-reason?
-    |        |              |                 |     identityref
-    |        |              |                 +-- unknown-attributes
-    |        |              |                 |  +-- unknown-attribute*
-    |        |              |                 |        [attr-type]
-    |        |              |                 |     +-- attr-type
-    |        |              |                 |     |     uint8
-    |        |              |                 |     +-- optional?
-    |        |              |                 |     |     boolean
-    |        |              |                 |     +-- transitive?
-    |        |              |                 |     |     boolean
-    |        |              |                 |     +-- partial?
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 11]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |              |                 |     |     boolean
-    |        |              |                 |     +-- extended?
-    |        |              |                 |     |     boolean
-    |        |              |                 |     +-- attr-len?
-    |        |              |                 |     |     uint16
-    |        |              |                 |     +-- attr-value?
-    |        |              |                 |           binary
-    |        |              |                 +-- reject-reason?
-    |        |              |                       union
-    |        |              +-- ipv6-unicast
-    |        |                 +-- loc-rib
-    |        |                 |  +-- routes
-    |        |                 |     +-- route*
-    |        |                 |           [prefix origin path-id]
-    |        |                 |        +-- prefix
-    |        |                 |        |     inet:ipv6-prefix
-    |        |                 |        +-- origin
-    |        |                 |        |     union
-    |        |                 |        +-- path-id
-    |        |                 |        |     uint32
-    |        |                 |        +-- attr-index?
-    |        |                 |        |     leafref
-    |        |                 |        +-- community-index?
-    |        |                 |        |     leafref
-    |        |                 |        +-- ext-community-index?
-    |        |                 |        |     leafref
-    |        |                 |        +-- large-community-index?
-    |        |                 |        |     leafref
-    |        |                 |        +-- last-modified?
-    |        |                 |        |     yang:timeticks
-    |        |                 |        +-- eligible-route?
-    |        |                 |        |     boolean
-    |        |                 |        +-- ineligible-reason?
-    |        |                 |        |     identityref
-    |        |                 |        +-- unknown-attributes
-    |        |                 |        |  +-- unknown-attribute*
-    |        |                 |        |        [attr-type]
-    |        |                 |        |     +-- attr-type     uint8
-    |        |                 |        |     +-- optional?
-    |        |                 |        |     |     boolean
-    |        |                 |        |     +-- transitive?
-    |        |                 |        |     |     boolean
-    |        |                 |        |     +-- partial?
-    |        |                 |        |     |     boolean
-    |        |                 |        |     +-- extended?
-    |        |                 |        |     |     boolean
-    |        |                 |        |     +-- attr-len?
-    |        |                 |        |     |     uint16
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 12]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |                 |        |     +-- attr-value?
-    |        |                 |        |           binary
-    |        |                 |        +-- reject-reason?
-    |        |                 |              union
-    |        |                 +-- neighbors
-    |        |                    +-- neighbor* [neighbor-address]
-    |        |                       +-- neighbor-address
-    |        |                       |     inet:ip-address
-    |        |                       +-- adj-rib-in-pre
-    |        |                       |  +-- routes
-    |        |                       |     +-- route*[prefix path-id]
-    |        |                       |           [prefix path-id]
-    |        |                       |        +-- prefix
-    |        |                       |        |     inet:ipv6-prefix
-    |        |                       |        +-- path-id
-    |        |                       |        |     uint32
-    |        |                       |        +-- attr-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- community-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- ext-community-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- large-community-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- last-modified?
-    |        |                       |        |     yang:timeticks
-    |        |                       |        +-- eligible-route?
-    |        |                       |        |     boolean
-    |        |                       |        +-- ineligible-reason?
-    |        |                       |        |     identityref
-    |        |                       |        +-- unknown-attributes
-    |        |                       |        |  +-- unknown-attribute*
-    |        |                       |        |        [attr-type]
-    |        |                       |        |     +-- attr-type
-    |        |                       |        |     |     uint8
-    |        |                       |        |     +-- optional?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- transitive?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- partial?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- extended?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- attr-len?
-    |        |                       |        |     |     uint16
-    |        |                       |        |     +-- attr-value?
-    |        |                       |        |           binary
-    |        |                       |        +-- reject-reason?
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 13]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |                       |              union
-    |        |                       +-- adj-rib-in-post
-    |        |                       |  +-- routes
-    |        |                       |     +-- route*[prefix path-id]
-    |        |                       |           [prefix path-id]
-    |        |                       |        +-- prefix
-    |        |                       |        |     inet:ipv6-prefix
-    |        |                       |        +-- path-id
-    |        |                       |        |     uint32
-    |        |                       |        +-- attr-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- community-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- ext-community-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- large-community-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- last-modified?
-    |        |                       |        |     yang:timeticks
-    |        |                       |        +-- eligible-route?
-    |        |                       |        |     boolean
-    |        |                       |        +-- ineligible-reason?
-    |        |                       |        |     identityref
-    |        |                       |        +-- best-path?
-    |        |                       |        |     boolean
-    |        |                       |        +-- unknown-attributes
-    |        |                       |        |  +-- unknown-attribute*
-    |        |                       |        |        [attr-type]
-    |        |                       |        |     +-- attr-type
-    |        |                       |        |     |     uint8
-    |        |                       |        |     +-- optional?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- transitive?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- partial?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- extended?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- attr-len?
-    |        |                       |        |     |     uint16
-    |        |                       |        |     +-- attr-value?
-    |        |                       |        |           binary
-    |        |                       |        +-- reject-reason?
-    |        |                       |              union
-    |        |                       +-- adj-rib-out-pre
-    |        |                       |  +-- routes
-    |        |                       |     +-- route*[prefix path-id]
-    |        |                       |           [prefix path-id]
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 14]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |                       |        +-- prefix
-    |        |                       |        |     inet:ipv6-prefix
-    |        |                       |        +-- path-id
-    |        |                       |        |     uint32
-    |        |                       |        +-- attr-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- community-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- ext-community-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- large-community-index?
-    |        |                       |        |     leafref
-    |        |                       |        +-- last-modified?
-    |        |                       |        |     yang:timeticks
-    |        |                       |        +-- eligible-route?
-    |        |                       |        |     boolean
-    |        |                       |        +-- ineligible-reason?
-    |        |                       |        |     identityref
-    |        |                       |        +-- unknown-attributes
-    |        |                       |        |  +-- unknown-attribute*
-    |        |                       |        |        [attr-type]
-    |        |                       |        |     +-- attr-type
-    |        |                       |        |     |     uint8
-    |        |                       |        |     +-- optional?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- transitive?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- partial?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- extended?
-    |        |                       |        |     |     boolean
-    |        |                       |        |     +-- attr-len?
-    |        |                       |        |     |     uint16
-    |        |                       |        |     +-- attr-value?
-    |        |                       |        |           binary
-    |        |                       |        +-- reject-reason?
-    |        |                       |              union
-    |        |                       +-- adj-rib-out-post
-    |        |                          +-- routes
-    |        |                             +-- route*[prefix path-id]
-    |        |                                   [prefix path-id]
-    |        |                                +-- prefix
-    |        |                                |     inet:ipv6-prefix
-    |        |                                +-- path-id
-    |        |                                |     uint32
-    |        |                                +-- attr-index?
-    |        |                                |     leafref
-    |        |                                +-- community-index?
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 15]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |                                |     leafref
-    |        |                                +-- ext-community-index?
-    |        |                                |     leafref
-    |        |                                +-- large-community-index?
-    |        |                                |     leafref
-    |        |                                +-- last-modified?
-    |        |                                |     yang:timeticks
-    |        |                                +-- eligible-route?
-    |        |                                |     boolean
-    |        |                                +-- ineligible-reason?
-    |        |                                |     identityref
-    |        |                                +-- unknown-attributes
-    |        |                                |  +-- unknown-attribute*
-    |        |                                |        [attr-type]
-    |        |                                |     +-- attr-type
-    |        |                                |     |     uint8
-    |        |                                |     +-- optional?
-    |        |                                |     |     boolean
-    |        |                                |     +-- transitive?
-    |        |                                |     |     boolean
-    |        |                                |     +-- partial?
-    |        |                                |     |     boolean
-    |        |                                |     +-- extended?
-    |        |                                |     |     boolean
-    |        |                                |     +-- attr-len?
-    |        |                                |     |     uint16
-    |        |                                |     +-- attr-value?
-    |        |                                |           binary
-    |        |                                +-- reject-reason?
-    |        |                                      union
-    |        +--:(statistics-report)
-    |        |  +-- statistics-report
-    |        |     +-- peer-type?            uint8
-    |        |     +-- peer-flags?           uint8
-    |        |     +-- peer-distinguisher?
-    |        |     |     rt-types:route-distinguisher
-    |        |     +-- peer-address?         inet:ip-address
-    |        |     +-- peer-as?              uint32
-    |        |     +-- timestamp?            yang:date-and-time
-    |        |     +-- statistics-type?      string
-    |        |     +-- statistics-data?      uint64
-    |        +--:(peer-down-notification)
-    |        |  +-- peer-down-notification
-    |        |     +-- peer-type?            uint8
-    |        |     +-- peer-flags?           uint8
-    |        |     +-- peer-distinguisher?
-    |        |     |     rt-types:route-distinguisher
-    |        |     +-- peer-address?         inet:ip-address
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 16]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |     +-- peer-as?              uint32
-    |        |     +-- timestamp?            yang:date-and-time
-    |        +--:(peer-up-notification)
-    |        |  +-- peer-up-notification
-    |        |     +-- peer-type?            uint8
-    |        |     +-- peer-flags?           uint8
-    |        |     +-- peer-distinguisher?
-    |        |     |     rt-types:route-distinguisher
-    |        |     +-- peer-address?         inet:ip-address
-    |        |     +-- peer-as?              uint32
-    |        |     +-- timestamp?            yang:date-and-time
-    |        +--:(initiation-message)
-    |        |  +-- initiation-message
-    |        |     +-- string?      string
-    |        |     +-- sys-descr?   string
-    |        |     +-- sys-name?    string
-    |        +--:(termination-message)
-    |        |  +-- termination-message
-    |        |     +-- string?   string
-    |        |     +-- reason?   enumeration
-    |        +--:(route-mirroring-message)
-    |           +-- route-mirroring-message
-    |              +-- peer-type?            uint8
-    |              +-- peer-flags?           uint8
-    |              +-- peer-distinguisher?
-    |              |     rt-types:route-distinguisher
-    |              +-- peer-address?         inet:ip-address
-    |              +-- peer-as?              uint32
-    |              +-- timestamp?            yang:date-and-time
-    |              +-- rib
-    |              |  +-- attr-sets
-    |              |  |  +-- attr-set* [index]
-    |              |  |     +-- index         uint64
-    |              |  |     +-- attributes
-    |              |  |        +-- origin?
-    |              |  |        |     bt:bgp-origin-attr-type
-    |              |  |        +-- as-path
-    |              |  |        |  +-- segment*
-    |              |  |        |     +-- type?     identityref
-    |              |  |        |     +-- member*   inet:as-number
-    |              |  |        +-- next-hop?
-    |              |  |        |     inet:ip-address
-    |              |  |        +-- link-local-next-hop?
-    |              |  |        |     inet:ipv6-address
-    |              |  |        +-- med?                   uint32
-    |              |  |        +-- local-pref?            uint32
-    |              |  |        +-- as4-path
-    |              |  |        |  +-- segment*
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 17]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |  |        |     +-- type?     identityref
-    |              |  |        |     +-- member*   inet:as-number
-    |              |  |        +-- aggregator
-    |              |  |        |  +-- as?           inet:as-number
-    |              |  |        |  +-- identifier?   yang:dotted-quad
-    |              |  |        +-- aggregator4
-    |              |  |        |  +-- as4?          inet:as-number
-    |              |  |        |  +-- identifier?   yang:dotted-quad
-    |              |  |        +-- atomic-aggregate?      boolean
-    |              |  |        +-- originator-id?
-    |              |  |        |     yang:dotted-quad
-    |              |  |        +-- cluster-list*
-    |              |  |        |     yang:dotted-quad
-    |              |  |        +-- aigp-metric?           uint64
-    |              |  +-- communities
-    |              |  |  +-- community* [index]
-    |              |  |     +-- index        uint64
-    |              |  |     +-- community*   union
-    |              |  +-- ext-communities
-    |              |  |  +-- ext-community* [index]
-    |              |  |     +-- index                uint64
-    |              |  |     +-- ext-community*
-    |              |  |     |     bct:bgp-ext-community-type
-    |              |  |     +-- ext-community-raw*   string
-    |              |  +-- ipv6-ext-communities
-    |              |  |  +-- ipv6-ext-community* [index]
-    |              |  |     +-- index                     uint64
-    |              |  |     +-- ipv6-ext-community*
-    |              |  |     |     bct:bgp-ipv6-ext-community-type
-    |              |  |     +-- ipv6-ext-community-raw*   string
-    |              |  +-- large-communities
-    |              |  |  +-- large-community* [index]
-    |              |  |     +-- index              uint64
-    |              |  |     +-- large-community*
-    |              |  |           bct:bgp-large-community-type
-    |              |  +-- afi-safis
-    |              |     +-- afi-safi* [name]
-    |              |        +-- name            identityref
-    |              |        +-- ipv4-unicast
-    |              |        |  +-- loc-rib
-    |              |        |  |  +-- routes
-    |              |        |  |     +-- route*
-    |              |        |  |           [prefix origin path-id]
-    |              |        |  |        +-- prefix
-    |              |        |  |        |     inet:ipv4-prefix
-    |              |        |  |        +-- origin
-    |              |        |  |        |     union
-    |              |        |  |        +-- path-id
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 18]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |        |  |        |     uint32
-    |              |        |  |        +-- attr-index?
-    |              |        |  |        |     leafref
-    |              |        |  |        +-- community-index?
-    |              |        |  |        |     leafref
-    |              |        |  |        +-- ext-community-index?
-    |              |        |  |        |     leafref
-    |              |        |  |        +-- large-community-index?
-    |              |        |  |        |     leafref
-    |              |        |  |        +-- last-modified?
-    |              |        |  |        |     yang:timeticks
-    |              |        |  |        +-- eligible-route?
-    |              |        |  |        |     boolean
-    |              |        |  |        +-- ineligible-reason?
-    |              |        |  |        |     identityref
-    |              |        |  |        +-- unknown-attributes
-    |              |        |  |        |  +-- unknown-attribute*
-    |              |        |  |        |        [attr-type]
-    |              |        |  |        |     +-- attr-type     uint8
-    |              |        |  |        |     +-- optional?
-    |              |        |  |        |     |     boolean
-    |              |        |  |        |     +-- transitive?
-    |              |        |  |        |     |     boolean
-    |              |        |  |        |     +-- partial?
-    |              |        |  |        |     |     boolean
-    |              |        |  |        |     +-- extended?
-    |              |        |  |        |     |     boolean
-    |              |        |  |        |     +-- attr-len?
-    |              |        |  |        |     |     uint16
-    |              |        |  |        |     +-- attr-value?
-    |              |        |  |        |           binary
-    |              |        |  |        +-- reject-reason?
-    |              |        |  |              union
-    |              |        |  +-- neighbors
-    |              |        |     +-- neighbor* [neighbor-address]
-    |              |        |        +-- neighbor-address
-    |              |        |        |     inet:ip-address
-    |              |        |        +-- adj-rib-in-pre
-    |              |        |        |  +-- routes
-    |              |        |        |     +-- route*[prefix path-id]
-    |              |        |        |           [prefix path-id]
-    |              |        |        |        +-- prefix
-    |              |        |        |        |     inet:ipv4-prefix
-    |              |        |        |        +-- path-id
-    |              |        |        |        |     uint32
-    |              |        |        |        +-- attr-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- community-index?
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 19]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- ext-community-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- large-community-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- last-modified?
-    |              |        |        |        |     yang:timeticks
-    |              |        |        |        +-- eligible-route?
-    |              |        |        |        |     boolean
-    |              |        |        |        +-- ineligible-reason?
-    |              |        |        |        |     identityref
-    |              |        |        |        +-- unknown-attributes
-    |              |        |        |        |  +-- unknown-attribute*
-    |              |        |        |        |        [attr-type]
-    |              |        |        |        |     +-- attr-type
-    |              |        |        |        |     |     uint8
-    |              |        |        |        |     +-- optional?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- transitive?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- partial?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- extended?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- attr-len?
-    |              |        |        |        |     |     uint16
-    |              |        |        |        |     +-- attr-value?
-    |              |        |        |        |           binary
-    |              |        |        |        +-- reject-reason?
-    |              |        |        |              union
-    |              |        |        +-- adj-rib-in-post
-    |              |        |        |  +-- routes
-    |              |        |        |     +-- route*[prefix path-id]
-    |              |        |        |           [prefix path-id]
-    |              |        |        |        +-- prefix
-    |              |        |        |        |     inet:ipv4-prefix
-    |              |        |        |        +-- path-id
-    |              |        |        |        |     uint32
-    |              |        |        |        +-- attr-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- community-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- ext-community-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- large-community-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- last-modified?
-    |              |        |        |        |     yang:timeticks
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 20]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |        |        |        +-- eligible-route?
-    |              |        |        |        |     boolean
-    |              |        |        |        +-- ineligible-reason?
-    |              |        |        |        |     identityref
-    |              |        |        |        +-- best-path?
-    |              |        |        |        |     boolean
-    |              |        |        |        +-- unknown-attributes
-    |              |        |        |        |  +-- unknown-attribute*
-    |              |        |        |        |        [attr-type]
-    |              |        |        |        |     +-- attr-type
-    |              |        |        |        |     |     uint8
-    |              |        |        |        |     +-- optional?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- transitive?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- partial?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- extended?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- attr-len?
-    |              |        |        |        |     |     uint16
-    |              |        |        |        |     +-- attr-value?
-    |              |        |        |        |           binary
-    |              |        |        |        +-- reject-reason?
-    |              |        |        |              union
-    |              |        |        +-- adj-rib-out-pre
-    |              |        |        |  +-- routes
-    |              |        |        |     +-- route*[prefix path-id]
-    |              |        |        |           [prefix path-id]
-    |              |        |        |        +-- prefix
-    |              |        |        |        |     inet:ipv4-prefix
-    |              |        |        |        +-- path-id
-    |              |        |        |        |     uint32
-    |              |        |        |        +-- attr-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- community-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- ext-community-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- large-community-index?
-    |              |        |        |        |     leafref
-    |              |        |        |        +-- last-modified?
-    |              |        |        |        |     yang:timeticks
-    |              |        |        |        +-- eligible-route?
-    |              |        |        |        |     boolean
-    |              |        |        |        +-- ineligible-reason?
-    |              |        |        |        |     identityref
-    |              |        |        |        +-- unknown-attributes
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 21]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |        |        |        |  +-- unknown-attribute*
-    |              |        |        |        |        [attr-type]
-    |              |        |        |        |     +-- attr-type
-    |              |        |        |        |     |     uint8
-    |              |        |        |        |     +-- optional?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- transitive?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- partial?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- extended?
-    |              |        |        |        |     |     boolean
-    |              |        |        |        |     +-- attr-len?
-    |              |        |        |        |     |     uint16
-    |              |        |        |        |     +-- attr-value?
-    |              |        |        |        |           binary
-    |              |        |        |        +-- reject-reason?
-    |              |        |        |              union
-    |              |        |        +-- adj-rib-out-post
-    |              |        |           +-- routes
-    |              |        |              +-- route*[prefix path-id]
-    |              |        |                    [prefix path-id]
-    |              |        |                 +-- prefix
-    |              |        |                 |     inet:ipv4-prefix
-    |              |        |                 +-- path-id
-    |              |        |                 |     uint32
-    |              |        |                 +-- attr-index?
-    |              |        |                 |     leafref
-    |              |        |                 +-- community-index?
-    |              |        |                 |     leafref
-    |              |        |                 +-- ext-community-index?
-    |              |        |                 |     leafref
-    |              |        |                 +-- large-community-index?
-    |              |        |                 |     leafref
-    |              |        |                 +-- last-modified?
-    |              |        |                 |     yang:timeticks
-    |              |        |                 +-- eligible-route?
-    |              |        |                 |     boolean
-    |              |        |                 +-- ineligible-reason?
-    |              |        |                 |     identityref
-    |              |        |                 +-- unknown-attributes
-    |              |        |                 |  +-- unknown-attribute*
-    |              |        |                 |        [attr-type]
-    |              |        |                 |     +-- attr-type
-    |              |        |                 |     |     uint8
-    |              |        |                 |     +-- optional?
-    |              |        |                 |     |     boolean
-    |              |        |                 |     +-- transitive?
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 22]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |        |                 |     |     boolean
-    |              |        |                 |     +-- partial?
-    |              |        |                 |     |     boolean
-    |              |        |                 |     +-- extended?
-    |              |        |                 |     |     boolean
-    |              |        |                 |     +-- attr-len?
-    |              |        |                 |     |     uint16
-    |              |        |                 |     +-- attr-value?
-    |              |        |                 |           binary
-    |              |        |                 +-- reject-reason?
-    |              |        |                       union
-    |              |        +-- ipv6-unicast
-    |              |           +-- loc-rib
-    |              |           |  +-- routes
-    |              |           |     +-- route*
-    |              |           |           [prefix origin path-id]
-    |              |           |        +-- prefix
-    |              |           |        |     inet:ipv6-prefix
-    |              |           |        +-- origin
-    |              |           |        |     union
-    |              |           |        +-- path-id
-    |              |           |        |     uint32
-    |              |           |        +-- attr-index?
-    |              |           |        |     leafref
-    |              |           |        +-- community-index?
-    |              |           |        |     leafref
-    |              |           |        +-- ext-community-index?
-    |              |           |        |     leafref
-    |              |           |        +-- large-community-index?
-    |              |           |        |     leafref
-    |              |           |        +-- last-modified?
-    |              |           |        |     yang:timeticks
-    |              |           |        +-- eligible-route?
-    |              |           |        |     boolean
-    |              |           |        +-- ineligible-reason?
-    |              |           |        |     identityref
-    |              |           |        +-- unknown-attributes
-    |              |           |        |  +-- unknown-attribute*
-    |              |           |        |        [attr-type]
-    |              |           |        |     +-- attr-type     uint8
-    |              |           |        |     +-- optional?
-    |              |           |        |     |     boolean
-    |              |           |        |     +-- transitive?
-    |              |           |        |     |     boolean
-    |              |           |        |     +-- partial?
-    |              |           |        |     |     boolean
-    |              |           |        |     +-- extended?
-    |              |           |        |     |     boolean
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 23]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |           |        |     +-- attr-len?
-    |              |           |        |     |     uint16
-    |              |           |        |     +-- attr-value?
-    |              |           |        |           binary
-    |              |           |        +-- reject-reason?
-    |              |           |              union
-    |              |           +-- neighbors
-    |              |              +-- neighbor* [neighbor-address]
-    |              |                 +-- neighbor-address
-    |              |                 |     inet:ip-address
-    |              |                 +-- adj-rib-in-pre
-    |              |                 |  +-- routes
-    |              |                 |     +-- route*[prefix path-id]
-    |              |                 |           [prefix path-id]
-    |              |                 |        +-- prefix
-    |              |                 |        |     inet:ipv6-prefix
-    |              |                 |        +-- path-id
-    |              |                 |        |     uint32
-    |              |                 |        +-- attr-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- community-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- ext-community-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- large-community-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- last-modified?
-    |              |                 |        |     yang:timeticks
-    |              |                 |        +-- eligible-route?
-    |              |                 |        |     boolean
-    |              |                 |        +-- ineligible-reason?
-    |              |                 |        |     identityref
-    |              |                 |        +-- unknown-attributes
-    |              |                 |        |  +-- unknown-attribute*
-    |              |                 |        |        [attr-type]
-    |              |                 |        |     +-- attr-type
-    |              |                 |        |     |     uint8
-    |              |                 |        |     +-- optional?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- transitive?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- partial?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- extended?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- attr-len?
-    |              |                 |        |     |     uint16
-    |              |                 |        |     +-- attr-value?
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 24]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |                 |        |           binary
-    |              |                 |        +-- reject-reason?
-    |              |                 |              union
-    |              |                 +-- adj-rib-in-post
-    |              |                 |  +-- routes
-    |              |                 |     +-- route*[prefix path-id]
-    |              |                 |           [prefix path-id]
-    |              |                 |        +-- prefix
-    |              |                 |        |     inet:ipv6-prefix
-    |              |                 |        +-- path-id
-    |              |                 |        |     uint32
-    |              |                 |        +-- attr-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- community-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- ext-community-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- large-community-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- last-modified?
-    |              |                 |        |     yang:timeticks
-    |              |                 |        +-- eligible-route?
-    |              |                 |        |     boolean
-    |              |                 |        +-- ineligible-reason?
-    |              |                 |        |     identityref
-    |              |                 |        +-- best-path?
-    |              |                 |        |     boolean
-    |              |                 |        +-- unknown-attributes
-    |              |                 |        |  +-- unknown-attribute*
-    |              |                 |        |        [attr-type]
-    |              |                 |        |     +-- attr-type
-    |              |                 |        |     |     uint8
-    |              |                 |        |     +-- optional?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- transitive?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- partial?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- extended?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- attr-len?
-    |              |                 |        |     |     uint16
-    |              |                 |        |     +-- attr-value?
-    |              |                 |        |           binary
-    |              |                 |        +-- reject-reason?
-    |              |                 |              union
-    |              |                 +-- adj-rib-out-pre
-    |              |                 |  +-- routes
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 25]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |                 |     +-- route*[prefix path-id]
-    |              |                 |           [prefix path-id]
-    |              |                 |        +-- prefix
-    |              |                 |        |     inet:ipv6-prefix
-    |              |                 |        +-- path-id
-    |              |                 |        |     uint32
-    |              |                 |        +-- attr-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- community-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- ext-community-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- large-community-index?
-    |              |                 |        |     leafref
-    |              |                 |        +-- last-modified?
-    |              |                 |        |     yang:timeticks
-    |              |                 |        +-- eligible-route?
-    |              |                 |        |     boolean
-    |              |                 |        +-- ineligible-reason?
-    |              |                 |        |     identityref
-    |              |                 |        +-- unknown-attributes
-    |              |                 |        |  +-- unknown-attribute*
-    |              |                 |        |        [attr-type]
-    |              |                 |        |     +-- attr-type
-    |              |                 |        |     |     uint8
-    |              |                 |        |     +-- optional?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- transitive?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- partial?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- extended?
-    |              |                 |        |     |     boolean
-    |              |                 |        |     +-- attr-len?
-    |              |                 |        |     |     uint16
-    |              |                 |        |     +-- attr-value?
-    |              |                 |        |           binary
-    |              |                 |        +-- reject-reason?
-    |              |                 |              union
-    |              |                 +-- adj-rib-out-post
-    |              |                    +-- routes
-    |              |                       +-- route*[prefix path-id]
-    |              |                             [prefix path-id]
-    |              |                          +-- prefix
-    |              |                          |     inet:ipv6-prefix
-    |              |                          +-- path-id
-    |              |                          |     uint32
-    |              |                          +-- attr-index?
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 26]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |              |                          |     leafref
-    |              |                          +-- community-index?
-    |              |                          |     leafref
-    |              |                          +-- ext-community-index?
-    |              |                          |     leafref
-    |              |                          +-- large-community-index?
-    |              |                          |     leafref
-    |              |                          +-- last-modified?
-    |              |                          |     yang:timeticks
-    |              |                          +-- eligible-route?
-    |              |                          |     boolean
-    |              |                          +-- ineligible-reason?
-    |              |                          |     identityref
-    |              |                          +-- unknown-attributes
-    |              |                          |  +-- unknown-attribute*
-    |              |                          |        [attr-type]
-    |              |                          |     +-- attr-type
-    |              |                          |     |     uint8
-    |              |                          |     +-- optional?
-    |              |                          |     |     boolean
-    |              |                          |     +-- transitive?
-    |              |                          |     |     boolean
-    |              |                          |     +-- partial?
-    |              |                          |     |     boolean
-    |              |                          |     +-- extended?
-    |              |                          |     |     boolean
-    |              |                          |     +-- attr-len?
-    |              |                          |     |     uint16
-    |              |                          |     +-- attr-value?
-    |              |                          |           binary
-    |              |                          +-- reject-reason?
-    |              |                                union
-    |              +-- information?          enumeration
-    +-- data-collection-manifest {data-collection-manifest}?
-    |  +-- name?               string
-    |  +-- vendor?             string
-    |  +-- vendor-pen?         uint32
-    |  +-- software-version?   string
-    |  +-- software-flavor?    string
-    |  +-- os-version?         string
-    |  +-- os-type?            string
-    +-- network-operator-metadata
-    |  +-- labels* [name]
-    |     +-- name       string
-    |     +-- (value)
-    |        +--:(number-choice)
-    |        |  +-- (number-choice)?
-    |        |     +--:(number-value)
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 27]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-    |        |        +-- number-value?   uint64
-    |        +--:(string-choice)
-    |        |  +-- (string-choice)?
-    |        |     +--:(string-value)
-    |        |        +-- string-value?   string
-    |        +--:(anydata-choice)
-    |           +-- (anydata-choice)?
-    |              +--:(anydata-values)
-    |                 +-- anydata-values?   anydata
-    +-- payload?                      anydata
-
-   Figure 2: Full ietf-telemetry-message tree with BMP YANG module
-                               augment
 
    <CODE BEGINS> file "ietf-bmp-telemetry-message@2026-01-04.yang"
    module ietf-bmp-telemetry-message {
@@ -1540,6 +1394,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          "draft-netana-nmop-message-broker-telemetry-message: Extensible
           YANG Model for Network Telemetry Messages";
      }
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 25]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
      import ietf-inet-types {
        prefix inet;
        reference
@@ -1562,14 +1424,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
      }
 
      include ietf-bmp-bgp-rib {
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 28]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
        revision-date 2026-01-04;
      }
      include ietf-bmp-bgp-rib-tables {
@@ -1585,13 +1439,25 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        "Author:    Thomas Graf
                    <mailto:thomas.graf@swisscom.com>
                    Paolo Lucente
-                   <mailto:paolo@ntt.net>";
+                   <mailto:paolo@ntt.net>
+                   Leonardo Rodoni
+                   <mailto:leonardo.rodoni@swisscom.com>";
+
+   leonardo.rodoni@swisscom.com
      description
        "Adds BMP specific subscription metadata to the data collection
-        protocol provenance of the ietf-telemetry-message envelope.
+           \t protocol provenance of the ietf-telemetry-message envelope.
 
         The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
         'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 26]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
         'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
         are to be interpreted as described in BCP 14 (RFC 2119)
         (RFC 8174) when, and only when, they appear in all
@@ -1616,16 +1482,8 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          "RFC XXXX";
      }
 
-     sx:augment-structure "/tm:message/tm:telemetry-message-metadata" {
+     sx:structure "message" {
        description
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 29]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
          "Augments telemetry-message-metadata with BMP specific
           subscription metadata";
        container bmp-subscription {
@@ -1648,6 +1506,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              container route-monitoring {
                uses per-peer;
                uses rib;
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 27]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
              }
            }
            case statistics-report {
@@ -1674,14 +1540,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            case termination-message {
              container termination-message {
                uses termination;
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 30]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
              }
            }
            case route-mirroring-message {
@@ -1704,6 +1562,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          type uint8;
          description
            "BMP peer type from per-peer header.";
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 28]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
          reference
            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
        }
@@ -1730,14 +1596,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          reference
            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2. The
                    \tremote IP address associated with the TCP session over which
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 31]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
                    \tthe encapsulated PDU was received.";
        }
        leaf peer-as {
@@ -1759,6 +1617,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
        }
      }
+
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 29]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
      grouping information {
        description
@@ -1786,14 +1652,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          type string {
            length "1..65535";
          }
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 32]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
          description
            "BMP sysName type. The Information field contains an ASCII
             string whose value MUST be set to be equal to the value of the
@@ -1816,6 +1674,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            "BMP string type. The Information field contains a free-form
             UTF-8 string.";
        }
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 30]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
        leaf reason {
          type enumeration {
            enum "administratively-closed" {
@@ -1842,14 +1708,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          "BMP Mirroring.";
        reference
          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.7.";
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 33]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
        leaf information {
          type enumeration {
            enum "error-pdu" {
@@ -1872,6 +1730,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          description
            "BMP statistics type. Defines the type of the statistic carried
                    \t\t in the Stat Data field.";
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 31]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
        }
        leaf statistics-data {
          type uint64;
@@ -1882,7 +1748,7 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    }
    <CODE ENDS>
 
-          Figure 3: BMP YANG 'ietf-bmp-telemetry-message' module.
+          Figure 2: BMP YANG 'ietf-bmp-telemetry-message' module.
 
 3.1.  BMP BGP RIB YANG Submodules
 
@@ -1898,14 +1764,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
       */
 
      import iana-bgp-types {
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 34]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
        prefix bt;
        reference
          "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
@@ -1928,12 +1786,22 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
      // groupings of annotations for each route or table
 
      organization
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 32]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
        "IETF Draft";
      contact
        "Author:    Thomas Graf
                    <mailto:thomas.graf@swisscom.com>
                    Paolo Lucente
-                   <mailto:paolo@ntt.net>";
+                   <mailto:paolo@ntt.net>
+                   Leonardo Rodoni
+                   <mailto:leonardo.rodoni@swisscom.com>";
 
      description
        "Defines a submodule for representing BGP Routing Information
@@ -1954,14 +1822,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
         adj-rib-in-post: This table is a per-neighbor table containing
         the routes received from the neighbor that are eligible for
         best-path selection after local input policy rules have been
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 35]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
         applied. The 'best-path' leaf is attached to the route selected
         by the BGP Decision Process (RFC 4271, Section 9.1).  Such
         routes may be present in the loc-rib table, described above,
@@ -1982,6 +1842,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
         policy rules have been applied.
 
         Copyright (c) 2026 IETF Trust and the persons identified as
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 33]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
         authors of the code. All rights reserved.
 
         Redistribution and use in source and binary forms, with or
@@ -2010,14 +1878,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
      grouping attr-set-attributes {
        description
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 36]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
          "A grouping for all BGP Path Attribute set parameters.";
 
        container attributes {
@@ -2038,6 +1898,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              "Enclosing container for the list of AS path segments.
 
               In the Adj-RIB-In or Adj-RIB-Out, this list should show
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 34]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
               the received or sent AS_PATH, respectively.  For
               example, if the local router is not 4-byte capable, this
               value should consist of 2-octet ASNs or the AS_TRANS
@@ -2066,14 +1934,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               AFI/SAFI can be represented as an IPv4/IPv6 address.";
            reference
              "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 37]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
               5.1.3.";
          }
          leaf link-local-next-hop {
@@ -2094,6 +1954,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            reference
              "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
               5.1.4.";
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 35]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
          }
          leaf local-pref {
            type uint32;
@@ -2122,14 +1990,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              uses bgp-as-path-segment;
              description
                "List of AS PATH segments";
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 38]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
            }
          }
          container aggregator {
@@ -2150,6 +2010,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
                 4.3, Path Attributes (g).";
            }
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 36]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
            leaf identifier {
              type yang:dotted-quad;
              description
@@ -2178,14 +2046,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              description
                "AS number of the autonomous system that performed the
                 aggregation (4-octet representation).  This value is
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 39]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
                 populated if an upstream router is not 4-octet capable.
                 Its semantics are similar to the AS4_PATH optional
                 transitive attribute";
@@ -2206,6 +2066,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                 RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
                 4.3, Path Attributes (g).";
            }
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 37]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
          }
          leaf atomic-aggregate {
            type boolean;
@@ -2234,14 +2102,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               passed.";
            reference
              "RFC 4456: BGP Route Reflection: An Alternative to Full
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 40]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
               Mesh Internal BGP (IBGP).";
          }
          leaf aigp-metric {
@@ -2262,6 +2122,13 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        container attr-sets {
          description
            "Enclosing container for the list of path attribute sets";
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 38]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
          list attr-set {
            key "index";
@@ -2290,14 +2157,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          uses attr-sets;
          container communities {
            description
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 41]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
              "Enclosing container for the list of community attribute
               sets.";
            list community {
@@ -2319,6 +2178,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          }
          container ext-communities {
            description
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 39]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
              "Enclosing container for the list of extended community
               attribute sets.";
            list ext-community {
@@ -2346,14 +2213,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              key "index";
              config false;
              description
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 42]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
                "List of path attributes that may be in use by multiple
                 routes in the table.";
              leaf index {
@@ -2375,6 +2234,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              key "index";
              config false;
              description
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 40]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
                "List of path attributes that may be in use by multiple
                 routes in the table.";
              leaf index {
@@ -2402,14 +2269,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                  base bt:afi-safi-type;
                }
                description
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 43]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
                  "AFI,SAFI name.";
              }
              container ipv4-unicast {
@@ -2431,6 +2290,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                       routing table.";
                    list route {
                      key "prefix origin path-id";
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 41]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
                      description
                        "List of routes in the table, keyed by the route
                         prefix, the route origin, and path-id. The route
@@ -2458,14 +2325,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                  config false;
                  description
                    "Enclosing container for neighbor list.";
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 44]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
                  list neighbor {
                    key "neighbor-address";
                    description
@@ -2487,6 +2346,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                    }
                    container adj-rib-in-post {
                      description
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 42]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
                        "Per-neighbor table containing the paths received
                         from the neighbor that are eligible for
                         best-path selection after local input policy
@@ -2514,14 +2381,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              container ipv6-unicast {
                when "derived-from-or-self(../name, 'bt:ipv6-unicast')" {
                  description
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 45]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
                    "Include this container for IPv6 unicast RIB.";
                }
                description
@@ -2543,6 +2402,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                         prefix, the route origin, and path-id. The route
                         origin can be either the neighbor address from
                         which the route was learned, or the source
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 43]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
                         protocol that injected the route. The path-id
                         distinguishes routes for the same prefix
                         received from a neighbor (e.g., if add-paths is
@@ -2570,14 +2437,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                    description
                      "List of neighbors (peers) of the local BGP
                       speaker.";
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 46]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
                    leaf neighbor-address {
                      type inet:ip-address;
                      description
@@ -2599,6 +2458,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                         best-path selection after local input policy
                         rules have been applied.";
                      uses ipv6-adj-rib-in-post;
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 44]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
                    }
                    container adj-rib-out-pre {
                      description
@@ -2626,15 +2493,7 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    }
    <CODE ENDS>
 
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 47]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
-              Figure 4: BMP YANG 'ietf-bmp-bgp-rib' submodule.
+              Figure 3: BMP YANG 'ietf-bmp-bgp-rib' submodule.
 
    <CODE BEGINS> file "ietf-bmp-bgp-rib-attributes@2026-01-04.yang"
    submodule ietf-bmp-bgp-rib-attributes {
@@ -2655,6 +2514,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        reference
          "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
      }
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 45]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
      import ietf-inet-types {
        prefix inet;
        reference
@@ -2669,7 +2536,9 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        "Author:    Thomas Graf
                    <mailto:thomas.graf@swisscom.com>
                    Paolo Lucente
-                   <mailto:paolo@ntt.net>";
+                   <mailto:paolo@ntt.net>
+                   Leonardo Rodoni
+                   <mailto:leonardo.rodoni@swisscom.com>";
 
      description
        "This submodule contains common data definitions for BGP
@@ -2682,14 +2551,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
         without modification, is permitted pursuant to, and subject to
         the license terms contained in, the Revised BSD License set
         forth in Section 4.c of the IETF Trust's Legal Provisions
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 48]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
         Relating to IETF Documents
         (https://trustee.ietf.org/license-info).
 
@@ -2709,6 +2570,13 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        reference
          "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
      }
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 46]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
      grouping bgp-as-path-segment {
        description
@@ -2738,14 +2606,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
             message which contained the prefix.";
 
          list unknown-attribute {
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 49]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
            key "attr-type";
            description
              "This list contains received attributes that are
@@ -2766,6 +2626,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            leaf transitive {
              type boolean;
              description
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 47]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
                "Defines whether an optional attribute is transitive
                 (if set to true) or non-transitive (if set to false).
                 For well-known attributes, the transitive flag must be
@@ -2794,14 +2662,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                "Defines whether the attribute length is one octet
                 (if set to false) or two octets (if set to true). Set in
                 the fourth high-order bit of the BGP attribute flags
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 50]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
                 octet.";
              reference
                "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
@@ -2822,6 +2682,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                 length of the attribute data in octets.  If the Extended
                 Length attribute flag is set, the length field is 2
                 octets, otherwise it is 1 octet";
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 48]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
              reference
                "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
            }
@@ -2850,14 +2718,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          type uint32;
          description
            "When the BGP speaker supports advertisement of multiple
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 51]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
             paths for a prefix, the path identifier is used to
             uniquely identify a route based on the combination of the
             prefix and path id.  In the Adj-RIB-In, the path-id value is
@@ -2878,6 +2738,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          type union {
            type bct:bgp-well-known-community-type;
            type bct:bgp-std-community-type;
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 49]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
          }
          description
            "List of standard or well-known BGP community
@@ -2906,14 +2774,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            pattern 'raw:([0-9A-F][0-9A-F]:){7}[0-9A-F][0-9A-F]';
          }
          description
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 52]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
            "ext-community type in raw format only.";
        }
      }
@@ -2933,6 +2793,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            "RFC 5701: IPv6 Address Specific BGP Extended Community
             Attribute, Section 3.";
        }
+
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 50]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
        leaf-list ipv6-ext-community-raw {
          type string {
@@ -2961,14 +2829,7 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    }
    <CODE ENDS>
 
-        Figure 5: BMP YANG 'ietf-bmp-bgp-rib-attributes' submodule.
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 53]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
+        Figure 4: BMP YANG 'ietf-bmp-bgp-rib-attributes' submodule.
 
    <CODE BEGINS> file "ietf-bmp-bgp-rib-tables@2026-01-04.yang"
    submodule ietf-bmp-bgp-rib-tables {
@@ -2989,6 +2850,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        reference
          "RFC 6991: Common YANG Data Types.";
      }
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 51]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
      import ietf-routing {
        prefix rt;
        reference
@@ -3011,21 +2880,15 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        "Author:    Thomas Graf
                    <mailto:thomas.graf@swisscom.com>
                    Paolo Lucente
-                   <mailto:paolo@ntt.net>";
+                   <mailto:paolo@ntt.net>
+                   Leonardo Rodoni
+                   <mailto:leonardo.rodoni@swisscom.com>";
 
      description
        "This submodule contains structural data definitions for
         BGP routing tables.
 
         Copyright (c) 2026 IETF Trust and the persons identified as
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 54]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
         authors of the code. All rights reserved.
 
         Redistribution and use in source and binary forms, with or
@@ -3043,6 +2906,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
         NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
         'MAY', and 'OPTIONAL' in this document are to be interpreted as
         described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 52]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
         they appear in all capitals, as shown here.";
 
      revision 2026-01-04 {
@@ -3074,14 +2945,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
             Section 9.1.";
        }
        leaf ineligible-reason {
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 55]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
          type identityref {
            base brt:ineligible-route-reason;
          }
@@ -3099,6 +2962,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        description
          "Data definitions for information attached to routes in the
           Adj-RIB-In post-policy table";
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 53]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
        leaf best-path {
          type boolean;
          default "false";
@@ -3130,14 +3001,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        description
          "Definitions of common references to attribute sets for
           multiple AFI-SAFIs for Adj-RIB tables.";
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 56]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
        leaf attr-index {
          type leafref {
            path "../../../../../../../../../attr-sets/"
@@ -3155,6 +3018,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          description
            "Reference to the community attribute for the route.";
        }
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 54]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
        leaf ext-community-index {
          type leafref {
            path "../../../../../../../../../ext-communities/"
@@ -3186,14 +3057,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          }
          description
            "Reference to the common attribute group for the
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 57]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
             route.";
        }
        leaf community-index {
@@ -3211,6 +3074,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          }
          description
            "Reference to the extended community attribute for the
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 55]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
             route.";
        }
        leaf large-community-index {
@@ -3242,14 +3113,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
             protocol, the origin indicates the source protocol for the
             route.";
        }
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 58]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
        leaf path-id {
          type uint32;
          description
@@ -3267,6 +3130,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
      }
 
      grouping clear-routes {
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 56]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
        description
          "Action to clear BGP routes.";
        container clear-routes {
@@ -3298,14 +3169,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          "Common structural grouping for each IPv4 Adj-RIB table.";
        container routes {
          config false;
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 59]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
          description
            "Enclosing container for list of routes in the routing
             table.";
@@ -3323,6 +3186,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            }
            uses bgp-adj-rib-attr-state;
            uses bgp-adj-rib-common-attr-refs;
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 57]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
            uses bgp-common-route-annotations-state;
            uses bgp-unknown-attr-top;
            uses rib-ext-route-annotations;
@@ -3354,14 +3225,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            uses bgp-adj-rib-attr-state;
            uses bgp-adj-rib-common-attr-refs;
            uses bgp-common-route-annotations-state;
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 60]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
            uses bgp-adj-rib-in-post-route-annotations-state;
            uses bgp-unknown-attr-top;
            uses rib-ext-route-annotations;
@@ -3379,6 +3242,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
             table.";
          list route {
            key "prefix path-id";
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 58]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
            description
              "List of routes in the table.";
            leaf prefix {
@@ -3410,14 +3281,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              "List of routes in the table.";
            leaf prefix {
              type inet:ipv6-prefix;
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 61]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
              description
                "Prefix for the route.";
            }
@@ -3433,7 +3296,15 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    }
    <CODE ENDS>
 
-          Figure 6: BMP YANG 'ietf-bmp-bgp-rib-tables' submodule.
+          Figure 5: BMP YANG 'ietf-bmp-bgp-rib-tables' submodule.
+
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 59]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
 4.  YANG Message Broker BMP Indexing and Topic Naming
 
@@ -3464,16 +3335,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    The Message Key not only used for Message indexing at the Message
    Producer but also at the Message Broker for topic compaction.
 
-
-
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 62]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
    For BMP, the network node hostname, what BMP Message Type the data
    reprents and apart from the initiation-message and termination-
    message the BMP index is used to generate the Message Key. The BMP
@@ -3493,6 +3354,13 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
       name, address family, name of the BGP RIB, "prefix" "origin"
       "path-id" route attributes, index of the used attr-set and
       information enumeration.
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 60]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
 4.2.  Message Broker BMP Topic Naming
 
@@ -3516,25 +3384,13 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
    project.environment.state.bmp.local-rib.route-monitoring
 
-      Figure 7: BMP BGP Local-RIB route-monitoring Topic Name Example
-
-
-
-
-
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 63]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
+      Figure 6: BMP BGP Local-RIB route-monitoring Topic Name Example
 
 4.2.1.  YANG Message Broker Producer
 
    For the Message Broker topic creation, the "message-type" contained
    data in "bmp-subscription" from "ietf-bmp-telemetry-message", YANG
-   module defined in Figure 3, notifications MUST be used to derive
+   module defined in Figure 2, notifications MUST be used to derive
    wherever subscribed BMP data is "statistics" "states" or "state-
    changes".
 
@@ -3551,7 +3407,16 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
    project.environment.states.bmp.*
 
-                 Figure 8: BMP Wildcard Topic Name Example
+                 Figure 7: BMP Wildcard Topic Name Example
+
+
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 61]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
 5.  IANA Considerations
 
@@ -3578,14 +3443,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
    *  URI: urn:ietf:params:xml:ns:yang:ietf-bmp-bgp-rib-tables
 
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 64]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
    *  Registrant Contact: The IESG.
 
    *  XML: N/A; the requested URI is an XML namespace.
@@ -3609,6 +3466,13 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    *  Prefix: bmptm
 
    *  Reference: RFC XXXX
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 62]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
    *  Name: ietf-bmp-bgp-rib-attributes
 
@@ -3634,14 +3498,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    The "ietf-bmp-telemetry-message" YANG module and "ietf-bmp-bgp-rib",
    "ietf-bmp-bgp-rib-attributes" and "ietf-bmp-bgp-rib-tables" YANG
    submodules defines one combined data model that are designed to be
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 65]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
    accessed via YANG-based management protocols, such as NETCONF
    [RFC6141] and RESTCONF [RFC8040].  These protocols have to use a
    secure transport layer (e.g., SSH [RFC4252], TLS [RFC8446], and QUIC
@@ -3666,6 +3522,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    Some of the readable data nodes in this YANG module may be considered
    sensitive or vulnerable in some network environments.  It is thus
    important to control read access (e.g., via get, get-config, or
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 63]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
    notification) to these data nodes.  Specifically, the following
    subtrees and data nodes have particular sensitivities/
    vulnerabilities:
@@ -3689,15 +3553,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               Authentication Protocol", RFC 4252, DOI 10.17487/RFC4252,
               January 2006, <https://www.rfc-editor.org/info/rfc4252>.
 
-
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 66]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
    [RFC6141]  Camarillo, G., Ed., Holmberg, C., and Y. Gao, "Re-INVITE
               and Target-Refresh Request Handling in the Session
               Initiation Protocol (SIP)", RFC 6141,
@@ -3720,6 +3575,16 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+
+
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 64]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
    [RFC8341]  Bierman, A. and M. Bjorklund, "Network Configuration
               Access Control Model", STD 91, RFC 8341,
@@ -3745,15 +3610,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               (BMP)", RFC 9069, DOI 10.17487/RFC9069, February 2022,
               <https://www.rfc-editor.org/info/rfc9069>.
 
-
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 67]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
    [I-D.ietf-nmop-terminology]
               Davis, N., Farrel, A., Graf, T., Wu, Q., and C. Yu, "Some
               Key Terms for Network Fault and Problem Management", Work
@@ -3777,6 +3633,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               03, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-nmop-
               message-broker-telemetry-message-03>.
+
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 65]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
    [I-D.netana-nmop-yang-message-broker-message-key]
               Graf, T., Elhassany, A., Feng, A. H., and B. Claise, "YANG
@@ -3803,13 +3667,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
               rfc8407bis-28>.
 
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 68]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
    [Deh22]    Dehghani, Z., "Data Mesh", O'Reilly Media,
               ISBN 9781492092391, March 2022,
               <https://www.oreilly.com/library/view/data-
@@ -3831,6 +3688,15 @@ Contributors
    which the BGP RIB submodules defined in Section 7.6 of
    [I-D.ietf-idr-bgp-model] have been obtained and adjusted for BMP
    integration.
+
+
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 66]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
 
    Mahesh Jethanandani
    Arrcus
@@ -3859,13 +3725,6 @@ Contributors
    Email: jhaas@pfrc.org
 
 
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 69]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
 Authors' Addresses
 
    Thomas Graf
@@ -3890,6 +3749,17 @@ Authors' Addresses
 
 
 
+Graf, et al.               Expires 9 July 2026                 [Page 67]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
+   Leonardo Rodoni
+   Swisscom
+   Binzring 17
+   CH-8045 Zurich
+   Switzerland
+   Email: leonardo.rodoni@swisscom.com
 
 
 
@@ -3917,4 +3787,22 @@ Authors' Addresses
 
 
 
-Graf & Lucente             Expires 8 July 2026                 [Page 70]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Graf, et al.               Expires 9 July 2026                 [Page 68]

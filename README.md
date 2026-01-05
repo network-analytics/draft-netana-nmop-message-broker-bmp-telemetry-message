@@ -12,7 +12,7 @@ $ yanglint yang/ietf-bmp-telemetry-message@2026-01-04.yang -f tree --tree-line-l
 
 Full tree validating the schemas
 ```bash
-yanglint -p yang/deps yang/ietf-bmp-telemetry-message@2026-01-04.yang yang/deps/ietf-telemetry-message@2025-10-19.yang -f tree --tree-line-length 69
+yanglint -p yang/deps yang/ietf-bmp-telemetry-message@2026-01-04.yang -f tree --tree-line-length 69
 ```
 
 Format for Datatracker

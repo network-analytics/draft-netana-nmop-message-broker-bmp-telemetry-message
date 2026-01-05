@@ -30,7 +30,9 @@ submodule ietf-bmp-bgp-rib-attributes {
     "Author:    Thomas Graf
                 <mailto:thomas.graf@swisscom.com>
                 Paolo Lucente
-                <mailto:paolo@ntt.net>";
+                <mailto:paolo@ntt.net>
+                Leonardo Rodoni
+                <mailto:leonardo.rodoni@swisscom.com>";
 
   description
     "This submodule contains common data definitions for BGP
