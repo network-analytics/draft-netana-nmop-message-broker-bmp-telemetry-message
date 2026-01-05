@@ -1,0 +1,696 @@
+root@daisy-playground-rh8 [ /tmp/draft-netana-nmop-message-broker-bmp-telemetry-message ] () # yanglint -p yang/deps yang/ietf-bmp-telemetry-message@2026-01-04.yang yang/deps/ietf-telemetry-message@2025-10-19.yang -f tree
+module: ietf-bmp-telemetry-message
+
+  augment-structure /tm:message/tm:telemetry-message-metadata:
+    +-- bmp-subscription
+       +-- version?          uint8
+       +-- (message-type)?
+          +--:(route-monitoring)
+          |  +-- route-monitoring
+          |     +-- per-peer
+          |     +-- rib
+          +--:(statistics-report)
+          |  +-- statistics-report
+          |     +-- per-peer
+          |     +-- statistics
+          +--:(peer-down-notification)
+          |  +-- peer-down-notification
+          |     +-- per-peer
+          +--:(peer-up-notification)
+          |  +-- peer-up-notification
+          |     +-- per-peer
+          +--:(initiation-message)
+          |  +-- initiation-message
+          |     +-- information
+          +--:(termination-message)
+          |  +-- termination-message
+          |     +-- termination
+          +--:(route-mirroring-message)
+             +-- route-mirroring-message
+                +-- per-peer
+                +-- rib
+                +-- mirroring
+
+module: ietf-telemetry-message
+
+  structure message:
+    +-- network-node-manifest {network-node-manifest}?
+    |  +-- name?               string
+    |  +-- vendor?             string
+    |  +-- vendor-pen?         uint32
+    |  +-- software-version?   string
+    |  +-- software-flavor?    string
+    |  +-- os-version?         string
+    |  +-- os-type?            string
+    +-- telemetry-message-metadata
+    |  +-- node-export-timestamp?   yang:date-and-time
+    |  +-- collection-timestamp     yang:date-and-time
+    |  +-- notification-event       telemetry-notification-event-type
+    |  +-- sequence-number?         yang:counter32
+    |  +-- session-protocol         telemetry-session-protocol-type
+    |  +-- export-address           inet:host
+    |  +-- export-port?             inet:port-number
+    |  +-- collection-address?      inet:host
+    |  +-- collection-port?         inet:port-number
+    |  +-- bmp-subscription
+    |     +-- version?          uint8
+    |     +-- (message-type)?
+    |        +--:(route-monitoring)
+    |        |  +-- route-monitoring
+    |        |     +-- peer-type?            uint8
+    |        |     +-- peer-flags?           uint8
+    |        |     +-- peer-distinguisher?   rt-types:route-distinguisher
+    |        |     +-- peer-address?         inet:ip-address
+    |        |     +-- peer-as?              uint32
+    |        |     +-- timestamp?            yang:date-and-time
+    |        |     +-- rib
+    |        |        +-- attr-sets
+    |        |        |  +-- attr-set* [index]
+    |        |        |     +-- index         uint64
+    |        |        |     +-- attributes
+    |        |        |        +-- origin?                bt:bgp-origin-attr-type
+    |        |        |        +-- as-path
+    |        |        |        |  +-- segment*
+    |        |        |        |     +-- type?     identityref
+    |        |        |        |     +-- member*   inet:as-number
+    |        |        |        +-- next-hop?              inet:ip-address
+    |        |        |        +-- link-local-next-hop?   inet:ipv6-address
+    |        |        |        +-- med?                   uint32
+    |        |        |        +-- local-pref?            uint32
+    |        |        |        +-- as4-path
+    |        |        |        |  +-- segment*
+    |        |        |        |     +-- type?     identityref
+    |        |        |        |     +-- member*   inet:as-number
+    |        |        |        +-- aggregator
+    |        |        |        |  +-- as?           inet:as-number
+    |        |        |        |  +-- identifier?   yang:dotted-quad
+    |        |        |        +-- aggregator4
+    |        |        |        |  +-- as4?          inet:as-number
+    |        |        |        |  +-- identifier?   yang:dotted-quad
+    |        |        |        +-- atomic-aggregate?      boolean
+    |        |        |        +-- originator-id?         yang:dotted-quad
+    |        |        |        +-- cluster-list*          yang:dotted-quad
+    |        |        |        +-- aigp-metric?           uint64
+    |        |        +-- communities
+    |        |        |  +-- community* [index]
+    |        |        |     +-- index        uint64
+    |        |        |     +-- community*   union
+    |        |        +-- ext-communities
+    |        |        |  +-- ext-community* [index]
+    |        |        |     +-- index                uint64
+    |        |        |     +-- ext-community*       bct:bgp-ext-community-type
+    |        |        |     +-- ext-community-raw*   string
+    |        |        +-- ipv6-ext-communities
+    |        |        |  +-- ipv6-ext-community* [index]
+    |        |        |     +-- index                     uint64
+    |        |        |     +-- ipv6-ext-community*       bct:bgp-ipv6-ext-community-type
+    |        |        |     +-- ipv6-ext-community-raw*   string
+    |        |        +-- large-communities
+    |        |        |  +-- large-community* [index]
+    |        |        |     +-- index              uint64
+    |        |        |     +-- large-community*   bct:bgp-large-community-type
+    |        |        +-- afi-safis
+    |        |           +-- afi-safi* [name]
+    |        |              +-- name            identityref
+    |        |              +-- ipv4-unicast
+    |        |              |  +-- loc-rib
+    |        |              |  |  +-- routes
+    |        |              |  |     +-- route* [prefix origin path-id]
+    |        |              |  |        +-- prefix                   inet:ipv4-prefix
+    |        |              |  |        +-- origin                   union
+    |        |              |  |        +-- path-id                  uint32
+    |        |              |  |        +-- attr-index?              -> ../../../../../../../attr-sets/attr-set/index
+    |        |              |  |        +-- community-index?         -> ../../../../../../../communities/community/index
+    |        |              |  |        +-- ext-community-index?     -> ../../../../../../../ext-communities/ext-community/index
+    |        |              |  |        +-- large-community-index?   -> ../../../../../../../large-communities/large-community/index
+    |        |              |  |        +-- last-modified?           yang:timeticks
+    |        |              |  |        +-- eligible-route?          boolean
+    |        |              |  |        +-- ineligible-reason?       identityref
+    |        |              |  |        +-- unknown-attributes
+    |        |              |  |        |  +-- unknown-attribute* [attr-type]
+    |        |              |  |        |     +-- attr-type     uint8
+    |        |              |  |        |     +-- optional?     boolean
+    |        |              |  |        |     +-- transitive?   boolean
+    |        |              |  |        |     +-- partial?      boolean
+    |        |              |  |        |     +-- extended?     boolean
+    |        |              |  |        |     +-- attr-len?     uint16
+    |        |              |  |        |     +-- attr-value?   binary
+    |        |              |  |        +-- reject-reason?           union
+    |        |              |  +-- neighbors
+    |        |              |     +-- neighbor* [neighbor-address]
+    |        |              |        +-- neighbor-address    inet:ip-address
+    |        |              |        +-- adj-rib-in-pre
+    |        |              |        |  +-- routes
+    |        |              |        |     +-- route* [prefix path-id]
+    |        |              |        |        +-- prefix                   inet:ipv4-prefix
+    |        |              |        |        +-- path-id                  uint32
+    |        |              |        |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |        |              |        |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |        |              |        |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |        |              |        |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |        |              |        |        +-- last-modified?           yang:timeticks
+    |        |              |        |        +-- eligible-route?          boolean
+    |        |              |        |        +-- ineligible-reason?       identityref
+    |        |              |        |        +-- unknown-attributes
+    |        |              |        |        |  +-- unknown-attribute* [attr-type]
+    |        |              |        |        |     +-- attr-type     uint8
+    |        |              |        |        |     +-- optional?     boolean
+    |        |              |        |        |     +-- transitive?   boolean
+    |        |              |        |        |     +-- partial?      boolean
+    |        |              |        |        |     +-- extended?     boolean
+    |        |              |        |        |     +-- attr-len?     uint16
+    |        |              |        |        |     +-- attr-value?   binary
+    |        |              |        |        +-- reject-reason?           union
+    |        |              |        +-- adj-rib-in-post
+    |        |              |        |  +-- routes
+    |        |              |        |     +-- route* [prefix path-id]
+    |        |              |        |        +-- prefix                   inet:ipv4-prefix
+    |        |              |        |        +-- path-id                  uint32
+    |        |              |        |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |        |              |        |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |        |              |        |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |        |              |        |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |        |              |        |        +-- last-modified?           yang:timeticks
+    |        |              |        |        +-- eligible-route?          boolean
+    |        |              |        |        +-- ineligible-reason?       identityref
+    |        |              |        |        +-- best-path?               boolean
+    |        |              |        |        +-- unknown-attributes
+    |        |              |        |        |  +-- unknown-attribute* [attr-type]
+    |        |              |        |        |     +-- attr-type     uint8
+    |        |              |        |        |     +-- optional?     boolean
+    |        |              |        |        |     +-- transitive?   boolean
+    |        |              |        |        |     +-- partial?      boolean
+    |        |              |        |        |     +-- extended?     boolean
+    |        |              |        |        |     +-- attr-len?     uint16
+    |        |              |        |        |     +-- attr-value?   binary
+    |        |              |        |        +-- reject-reason?           union
+    |        |              |        +-- adj-rib-out-pre
+    |        |              |        |  +-- routes
+    |        |              |        |     +-- route* [prefix path-id]
+    |        |              |        |        +-- prefix                   inet:ipv4-prefix
+    |        |              |        |        +-- path-id                  uint32
+    |        |              |        |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |        |              |        |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |        |              |        |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |        |              |        |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |        |              |        |        +-- last-modified?           yang:timeticks
+    |        |              |        |        +-- eligible-route?          boolean
+    |        |              |        |        +-- ineligible-reason?       identityref
+    |        |              |        |        +-- unknown-attributes
+    |        |              |        |        |  +-- unknown-attribute* [attr-type]
+    |        |              |        |        |     +-- attr-type     uint8
+    |        |              |        |        |     +-- optional?     boolean
+    |        |              |        |        |     +-- transitive?   boolean
+    |        |              |        |        |     +-- partial?      boolean
+    |        |              |        |        |     +-- extended?     boolean
+    |        |              |        |        |     +-- attr-len?     uint16
+    |        |              |        |        |     +-- attr-value?   binary
+    |        |              |        |        +-- reject-reason?           union
+    |        |              |        +-- adj-rib-out-post
+    |        |              |           +-- routes
+    |        |              |              +-- route* [prefix path-id]
+    |        |              |                 +-- prefix                   inet:ipv4-prefix
+    |        |              |                 +-- path-id                  uint32
+    |        |              |                 +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |        |              |                 +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |        |              |                 +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |        |              |                 +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |        |              |                 +-- last-modified?           yang:timeticks
+    |        |              |                 +-- eligible-route?          boolean
+    |        |              |                 +-- ineligible-reason?       identityref
+    |        |              |                 +-- unknown-attributes
+    |        |              |                 |  +-- unknown-attribute* [attr-type]
+    |        |              |                 |     +-- attr-type     uint8
+    |        |              |                 |     +-- optional?     boolean
+    |        |              |                 |     +-- transitive?   boolean
+    |        |              |                 |     +-- partial?      boolean
+    |        |              |                 |     +-- extended?     boolean
+    |        |              |                 |     +-- attr-len?     uint16
+    |        |              |                 |     +-- attr-value?   binary
+    |        |              |                 +-- reject-reason?           union
+    |        |              +-- ipv6-unicast
+    |        |                 +-- loc-rib
+    |        |                 |  +-- routes
+    |        |                 |     +-- route* [prefix origin path-id]
+    |        |                 |        +-- prefix                   inet:ipv6-prefix
+    |        |                 |        +-- origin                   union
+    |        |                 |        +-- path-id                  uint32
+    |        |                 |        +-- attr-index?              -> ../../../../../../../attr-sets/attr-set/index
+    |        |                 |        +-- community-index?         -> ../../../../../../../communities/community/index
+    |        |                 |        +-- ext-community-index?     -> ../../../../../../../ext-communities/ext-community/index
+    |        |                 |        +-- large-community-index?   -> ../../../../../../../large-communities/large-community/index
+    |        |                 |        +-- last-modified?           yang:timeticks
+    |        |                 |        +-- eligible-route?          boolean
+    |        |                 |        +-- ineligible-reason?       identityref
+    |        |                 |        +-- unknown-attributes
+    |        |                 |        |  +-- unknown-attribute* [attr-type]
+    |        |                 |        |     +-- attr-type     uint8
+    |        |                 |        |     +-- optional?     boolean
+    |        |                 |        |     +-- transitive?   boolean
+    |        |                 |        |     +-- partial?      boolean
+    |        |                 |        |     +-- extended?     boolean
+    |        |                 |        |     +-- attr-len?     uint16
+    |        |                 |        |     +-- attr-value?   binary
+    |        |                 |        +-- reject-reason?           union
+    |        |                 +-- neighbors
+    |        |                    +-- neighbor* [neighbor-address]
+    |        |                       +-- neighbor-address    inet:ip-address
+    |        |                       +-- adj-rib-in-pre
+    |        |                       |  +-- routes
+    |        |                       |     +-- route* [prefix path-id]
+    |        |                       |        +-- prefix                   inet:ipv6-prefix
+    |        |                       |        +-- path-id                  uint32
+    |        |                       |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |        |                       |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |        |                       |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |        |                       |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |        |                       |        +-- last-modified?           yang:timeticks
+    |        |                       |        +-- eligible-route?          boolean
+    |        |                       |        +-- ineligible-reason?       identityref
+    |        |                       |        +-- unknown-attributes
+    |        |                       |        |  +-- unknown-attribute* [attr-type]
+    |        |                       |        |     +-- attr-type     uint8
+    |        |                       |        |     +-- optional?     boolean
+    |        |                       |        |     +-- transitive?   boolean
+    |        |                       |        |     +-- partial?      boolean
+    |        |                       |        |     +-- extended?     boolean
+    |        |                       |        |     +-- attr-len?     uint16
+    |        |                       |        |     +-- attr-value?   binary
+    |        |                       |        +-- reject-reason?           union
+    |        |                       +-- adj-rib-in-post
+    |        |                       |  +-- routes
+    |        |                       |     +-- route* [prefix path-id]
+    |        |                       |        +-- prefix                   inet:ipv6-prefix
+    |        |                       |        +-- path-id                  uint32
+    |        |                       |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |        |                       |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |        |                       |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |        |                       |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |        |                       |        +-- last-modified?           yang:timeticks
+    |        |                       |        +-- eligible-route?          boolean
+    |        |                       |        +-- ineligible-reason?       identityref
+    |        |                       |        +-- best-path?               boolean
+    |        |                       |        +-- unknown-attributes
+    |        |                       |        |  +-- unknown-attribute* [attr-type]
+    |        |                       |        |     +-- attr-type     uint8
+    |        |                       |        |     +-- optional?     boolean
+    |        |                       |        |     +-- transitive?   boolean
+    |        |                       |        |     +-- partial?      boolean
+    |        |                       |        |     +-- extended?     boolean
+    |        |                       |        |     +-- attr-len?     uint16
+    |        |                       |        |     +-- attr-value?   binary
+    |        |                       |        +-- reject-reason?           union
+    |        |                       +-- adj-rib-out-pre
+    |        |                       |  +-- routes
+    |        |                       |     +-- route* [prefix path-id]
+    |        |                       |        +-- prefix                   inet:ipv6-prefix
+    |        |                       |        +-- path-id                  uint32
+    |        |                       |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |        |                       |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |        |                       |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |        |                       |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |        |                       |        +-- last-modified?           yang:timeticks
+    |        |                       |        +-- eligible-route?          boolean
+    |        |                       |        +-- ineligible-reason?       identityref
+    |        |                       |        +-- unknown-attributes
+    |        |                       |        |  +-- unknown-attribute* [attr-type]
+    |        |                       |        |     +-- attr-type     uint8
+    |        |                       |        |     +-- optional?     boolean
+    |        |                       |        |     +-- transitive?   boolean
+    |        |                       |        |     +-- partial?      boolean
+    |        |                       |        |     +-- extended?     boolean
+    |        |                       |        |     +-- attr-len?     uint16
+    |        |                       |        |     +-- attr-value?   binary
+    |        |                       |        +-- reject-reason?           union
+    |        |                       +-- adj-rib-out-post
+    |        |                          +-- routes
+    |        |                             +-- route* [prefix path-id]
+    |        |                                +-- prefix                   inet:ipv6-prefix
+    |        |                                +-- path-id                  uint32
+    |        |                                +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |        |                                +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |        |                                +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |        |                                +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |        |                                +-- last-modified?           yang:timeticks
+    |        |                                +-- eligible-route?          boolean
+    |        |                                +-- ineligible-reason?       identityref
+    |        |                                +-- unknown-attributes
+    |        |                                |  +-- unknown-attribute* [attr-type]
+    |        |                                |     +-- attr-type     uint8
+    |        |                                |     +-- optional?     boolean
+    |        |                                |     +-- transitive?   boolean
+    |        |                                |     +-- partial?      boolean
+    |        |                                |     +-- extended?     boolean
+    |        |                                |     +-- attr-len?     uint16
+    |        |                                |     +-- attr-value?   binary
+    |        |                                +-- reject-reason?           union
+    |        +--:(statistics-report)
+    |        |  +-- statistics-report
+    |        |     +-- peer-type?            uint8
+    |        |     +-- peer-flags?           uint8
+    |        |     +-- peer-distinguisher?   rt-types:route-distinguisher
+    |        |     +-- peer-address?         inet:ip-address
+    |        |     +-- peer-as?              uint32
+    |        |     +-- timestamp?            yang:date-and-time
+    |        |     +-- statistics-type?      string
+    |        |     +-- statistics-data?      uint64
+    |        +--:(peer-down-notification)
+    |        |  +-- peer-down-notification
+    |        |     +-- peer-type?            uint8
+    |        |     +-- peer-flags?           uint8
+    |        |     +-- peer-distinguisher?   rt-types:route-distinguisher
+    |        |     +-- peer-address?         inet:ip-address
+    |        |     +-- peer-as?              uint32
+    |        |     +-- timestamp?            yang:date-and-time
+    |        +--:(peer-up-notification)
+    |        |  +-- peer-up-notification
+    |        |     +-- peer-type?            uint8
+    |        |     +-- peer-flags?           uint8
+    |        |     +-- peer-distinguisher?   rt-types:route-distinguisher
+    |        |     +-- peer-address?         inet:ip-address
+    |        |     +-- peer-as?              uint32
+    |        |     +-- timestamp?            yang:date-and-time
+    |        +--:(initiation-message)
+    |        |  +-- initiation-message
+    |        |     +-- string?      string
+    |        |     +-- sys-descr?   string
+    |        |     +-- sys-name?    string
+    |        +--:(termination-message)
+    |        |  +-- termination-message
+    |        |     +-- string?   string
+    |        |     +-- reason?   enumeration
+    |        +--:(route-mirroring-message)
+    |           +-- route-mirroring-message
+    |              +-- peer-type?            uint8
+    |              +-- peer-flags?           uint8
+    |              +-- peer-distinguisher?   rt-types:route-distinguisher
+    |              +-- peer-address?         inet:ip-address
+    |              +-- peer-as?              uint32
+    |              +-- timestamp?            yang:date-and-time
+    |              +-- rib
+    |              |  +-- attr-sets
+    |              |  |  +-- attr-set* [index]
+    |              |  |     +-- index         uint64
+    |              |  |     +-- attributes
+    |              |  |        +-- origin?                bt:bgp-origin-attr-type
+    |              |  |        +-- as-path
+    |              |  |        |  +-- segment*
+    |              |  |        |     +-- type?     identityref
+    |              |  |        |     +-- member*   inet:as-number
+    |              |  |        +-- next-hop?              inet:ip-address
+    |              |  |        +-- link-local-next-hop?   inet:ipv6-address
+    |              |  |        +-- med?                   uint32
+    |              |  |        +-- local-pref?            uint32
+    |              |  |        +-- as4-path
+    |              |  |        |  +-- segment*
+    |              |  |        |     +-- type?     identityref
+    |              |  |        |     +-- member*   inet:as-number
+    |              |  |        +-- aggregator
+    |              |  |        |  +-- as?           inet:as-number
+    |              |  |        |  +-- identifier?   yang:dotted-quad
+    |              |  |        +-- aggregator4
+    |              |  |        |  +-- as4?          inet:as-number
+    |              |  |        |  +-- identifier?   yang:dotted-quad
+    |              |  |        +-- atomic-aggregate?      boolean
+    |              |  |        +-- originator-id?         yang:dotted-quad
+    |              |  |        +-- cluster-list*          yang:dotted-quad
+    |              |  |        +-- aigp-metric?           uint64
+    |              |  +-- communities
+    |              |  |  +-- community* [index]
+    |              |  |     +-- index        uint64
+    |              |  |     +-- community*   union
+    |              |  +-- ext-communities
+    |              |  |  +-- ext-community* [index]
+    |              |  |     +-- index                uint64
+    |              |  |     +-- ext-community*       bct:bgp-ext-community-type
+    |              |  |     +-- ext-community-raw*   string
+    |              |  +-- ipv6-ext-communities
+    |              |  |  +-- ipv6-ext-community* [index]
+    |              |  |     +-- index                     uint64
+    |              |  |     +-- ipv6-ext-community*       bct:bgp-ipv6-ext-community-type
+    |              |  |     +-- ipv6-ext-community-raw*   string
+    |              |  +-- large-communities
+    |              |  |  +-- large-community* [index]
+    |              |  |     +-- index              uint64
+    |              |  |     +-- large-community*   bct:bgp-large-community-type
+    |              |  +-- afi-safis
+    |              |     +-- afi-safi* [name]
+    |              |        +-- name            identityref
+    |              |        +-- ipv4-unicast
+    |              |        |  +-- loc-rib
+    |              |        |  |  +-- routes
+    |              |        |  |     +-- route* [prefix origin path-id]
+    |              |        |  |        +-- prefix                   inet:ipv4-prefix
+    |              |        |  |        +-- origin                   union
+    |              |        |  |        +-- path-id                  uint32
+    |              |        |  |        +-- attr-index?              -> ../../../../../../../attr-sets/attr-set/index
+    |              |        |  |        +-- community-index?         -> ../../../../../../../communities/community/index
+    |              |        |  |        +-- ext-community-index?     -> ../../../../../../../ext-communities/ext-community/index
+    |              |        |  |        +-- large-community-index?   -> ../../../../../../../large-communities/large-community/index
+    |              |        |  |        +-- last-modified?           yang:timeticks
+    |              |        |  |        +-- eligible-route?          boolean
+    |              |        |  |        +-- ineligible-reason?       identityref
+    |              |        |  |        +-- unknown-attributes
+    |              |        |  |        |  +-- unknown-attribute* [attr-type]
+    |              |        |  |        |     +-- attr-type     uint8
+    |              |        |  |        |     +-- optional?     boolean
+    |              |        |  |        |     +-- transitive?   boolean
+    |              |        |  |        |     +-- partial?      boolean
+    |              |        |  |        |     +-- extended?     boolean
+    |              |        |  |        |     +-- attr-len?     uint16
+    |              |        |  |        |     +-- attr-value?   binary
+    |              |        |  |        +-- reject-reason?           union
+    |              |        |  +-- neighbors
+    |              |        |     +-- neighbor* [neighbor-address]
+    |              |        |        +-- neighbor-address    inet:ip-address
+    |              |        |        +-- adj-rib-in-pre
+    |              |        |        |  +-- routes
+    |              |        |        |     +-- route* [prefix path-id]
+    |              |        |        |        +-- prefix                   inet:ipv4-prefix
+    |              |        |        |        +-- path-id                  uint32
+    |              |        |        |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |              |        |        |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |              |        |        |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |              |        |        |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |              |        |        |        +-- last-modified?           yang:timeticks
+    |              |        |        |        +-- eligible-route?          boolean
+    |              |        |        |        +-- ineligible-reason?       identityref
+    |              |        |        |        +-- unknown-attributes
+    |              |        |        |        |  +-- unknown-attribute* [attr-type]
+    |              |        |        |        |     +-- attr-type     uint8
+    |              |        |        |        |     +-- optional?     boolean
+    |              |        |        |        |     +-- transitive?   boolean
+    |              |        |        |        |     +-- partial?      boolean
+    |              |        |        |        |     +-- extended?     boolean
+    |              |        |        |        |     +-- attr-len?     uint16
+    |              |        |        |        |     +-- attr-value?   binary
+    |              |        |        |        +-- reject-reason?           union
+    |              |        |        +-- adj-rib-in-post
+    |              |        |        |  +-- routes
+    |              |        |        |     +-- route* [prefix path-id]
+    |              |        |        |        +-- prefix                   inet:ipv4-prefix
+    |              |        |        |        +-- path-id                  uint32
+    |              |        |        |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |              |        |        |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |              |        |        |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |              |        |        |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |              |        |        |        +-- last-modified?           yang:timeticks
+    |              |        |        |        +-- eligible-route?          boolean
+    |              |        |        |        +-- ineligible-reason?       identityref
+    |              |        |        |        +-- best-path?               boolean
+    |              |        |        |        +-- unknown-attributes
+    |              |        |        |        |  +-- unknown-attribute* [attr-type]
+    |              |        |        |        |     +-- attr-type     uint8
+    |              |        |        |        |     +-- optional?     boolean
+    |              |        |        |        |     +-- transitive?   boolean
+    |              |        |        |        |     +-- partial?      boolean
+    |              |        |        |        |     +-- extended?     boolean
+    |              |        |        |        |     +-- attr-len?     uint16
+    |              |        |        |        |     +-- attr-value?   binary
+    |              |        |        |        +-- reject-reason?           union
+    |              |        |        +-- adj-rib-out-pre
+    |              |        |        |  +-- routes
+    |              |        |        |     +-- route* [prefix path-id]
+    |              |        |        |        +-- prefix                   inet:ipv4-prefix
+    |              |        |        |        +-- path-id                  uint32
+    |              |        |        |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |              |        |        |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |              |        |        |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |              |        |        |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |              |        |        |        +-- last-modified?           yang:timeticks
+    |              |        |        |        +-- eligible-route?          boolean
+    |              |        |        |        +-- ineligible-reason?       identityref
+    |              |        |        |        +-- unknown-attributes
+    |              |        |        |        |  +-- unknown-attribute* [attr-type]
+    |              |        |        |        |     +-- attr-type     uint8
+    |              |        |        |        |     +-- optional?     boolean
+    |              |        |        |        |     +-- transitive?   boolean
+    |              |        |        |        |     +-- partial?      boolean
+    |              |        |        |        |     +-- extended?     boolean
+    |              |        |        |        |     +-- attr-len?     uint16
+    |              |        |        |        |     +-- attr-value?   binary
+    |              |        |        |        +-- reject-reason?           union
+    |              |        |        +-- adj-rib-out-post
+    |              |        |           +-- routes
+    |              |        |              +-- route* [prefix path-id]
+    |              |        |                 +-- prefix                   inet:ipv4-prefix
+    |              |        |                 +-- path-id                  uint32
+    |              |        |                 +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |              |        |                 +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |              |        |                 +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |              |        |                 +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |              |        |                 +-- last-modified?           yang:timeticks
+    |              |        |                 +-- eligible-route?          boolean
+    |              |        |                 +-- ineligible-reason?       identityref
+    |              |        |                 +-- unknown-attributes
+    |              |        |                 |  +-- unknown-attribute* [attr-type]
+    |              |        |                 |     +-- attr-type     uint8
+    |              |        |                 |     +-- optional?     boolean
+    |              |        |                 |     +-- transitive?   boolean
+    |              |        |                 |     +-- partial?      boolean
+    |              |        |                 |     +-- extended?     boolean
+    |              |        |                 |     +-- attr-len?     uint16
+    |              |        |                 |     +-- attr-value?   binary
+    |              |        |                 +-- reject-reason?           union
+    |              |        +-- ipv6-unicast
+    |              |           +-- loc-rib
+    |              |           |  +-- routes
+    |              |           |     +-- route* [prefix origin path-id]
+    |              |           |        +-- prefix                   inet:ipv6-prefix
+    |              |           |        +-- origin                   union
+    |              |           |        +-- path-id                  uint32
+    |              |           |        +-- attr-index?              -> ../../../../../../../attr-sets/attr-set/index
+    |              |           |        +-- community-index?         -> ../../../../../../../communities/community/index
+    |              |           |        +-- ext-community-index?     -> ../../../../../../../ext-communities/ext-community/index
+    |              |           |        +-- large-community-index?   -> ../../../../../../../large-communities/large-community/index
+    |              |           |        +-- last-modified?           yang:timeticks
+    |              |           |        +-- eligible-route?          boolean
+    |              |           |        +-- ineligible-reason?       identityref
+    |              |           |        +-- unknown-attributes
+    |              |           |        |  +-- unknown-attribute* [attr-type]
+    |              |           |        |     +-- attr-type     uint8
+    |              |           |        |     +-- optional?     boolean
+    |              |           |        |     +-- transitive?   boolean
+    |              |           |        |     +-- partial?      boolean
+    |              |           |        |     +-- extended?     boolean
+    |              |           |        |     +-- attr-len?     uint16
+    |              |           |        |     +-- attr-value?   binary
+    |              |           |        +-- reject-reason?           union
+    |              |           +-- neighbors
+    |              |              +-- neighbor* [neighbor-address]
+    |              |                 +-- neighbor-address    inet:ip-address
+    |              |                 +-- adj-rib-in-pre
+    |              |                 |  +-- routes
+    |              |                 |     +-- route* [prefix path-id]
+    |              |                 |        +-- prefix                   inet:ipv6-prefix
+    |              |                 |        +-- path-id                  uint32
+    |              |                 |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |              |                 |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |              |                 |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |              |                 |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |              |                 |        +-- last-modified?           yang:timeticks
+    |              |                 |        +-- eligible-route?          boolean
+    |              |                 |        +-- ineligible-reason?       identityref
+    |              |                 |        +-- unknown-attributes
+    |              |                 |        |  +-- unknown-attribute* [attr-type]
+    |              |                 |        |     +-- attr-type     uint8
+    |              |                 |        |     +-- optional?     boolean
+    |              |                 |        |     +-- transitive?   boolean
+    |              |                 |        |     +-- partial?      boolean
+    |              |                 |        |     +-- extended?     boolean
+    |              |                 |        |     +-- attr-len?     uint16
+    |              |                 |        |     +-- attr-value?   binary
+    |              |                 |        +-- reject-reason?           union
+    |              |                 +-- adj-rib-in-post
+    |              |                 |  +-- routes
+    |              |                 |     +-- route* [prefix path-id]
+    |              |                 |        +-- prefix                   inet:ipv6-prefix
+    |              |                 |        +-- path-id                  uint32
+    |              |                 |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |              |                 |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |              |                 |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |              |                 |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |              |                 |        +-- last-modified?           yang:timeticks
+    |              |                 |        +-- eligible-route?          boolean
+    |              |                 |        +-- ineligible-reason?       identityref
+    |              |                 |        +-- best-path?               boolean
+    |              |                 |        +-- unknown-attributes
+    |              |                 |        |  +-- unknown-attribute* [attr-type]
+    |              |                 |        |     +-- attr-type     uint8
+    |              |                 |        |     +-- optional?     boolean
+    |              |                 |        |     +-- transitive?   boolean
+    |              |                 |        |     +-- partial?      boolean
+    |              |                 |        |     +-- extended?     boolean
+    |              |                 |        |     +-- attr-len?     uint16
+    |              |                 |        |     +-- attr-value?   binary
+    |              |                 |        +-- reject-reason?           union
+    |              |                 +-- adj-rib-out-pre
+    |              |                 |  +-- routes
+    |              |                 |     +-- route* [prefix path-id]
+    |              |                 |        +-- prefix                   inet:ipv6-prefix
+    |              |                 |        +-- path-id                  uint32
+    |              |                 |        +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |              |                 |        +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |              |                 |        +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |              |                 |        +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |              |                 |        +-- last-modified?           yang:timeticks
+    |              |                 |        +-- eligible-route?          boolean
+    |              |                 |        +-- ineligible-reason?       identityref
+    |              |                 |        +-- unknown-attributes
+    |              |                 |        |  +-- unknown-attribute* [attr-type]
+    |              |                 |        |     +-- attr-type     uint8
+    |              |                 |        |     +-- optional?     boolean
+    |              |                 |        |     +-- transitive?   boolean
+    |              |                 |        |     +-- partial?      boolean
+    |              |                 |        |     +-- extended?     boolean
+    |              |                 |        |     +-- attr-len?     uint16
+    |              |                 |        |     +-- attr-value?   binary
+    |              |                 |        +-- reject-reason?           union
+    |              |                 +-- adj-rib-out-post
+    |              |                    +-- routes
+    |              |                       +-- route* [prefix path-id]
+    |              |                          +-- prefix                   inet:ipv6-prefix
+    |              |                          +-- path-id                  uint32
+    |              |                          +-- attr-index?              -> ../../../../../../../../../attr-sets/attr-set/index
+    |              |                          +-- community-index?         -> ../../../../../../../../../communities/community/index
+    |              |                          +-- ext-community-index?     -> ../../../../../../../../../ext-communities/ext-community/index
+    |              |                          +-- large-community-index?   -> ../../../../../../../../../large-communities/large-community/index
+    |              |                          +-- last-modified?           yang:timeticks
+    |              |                          +-- eligible-route?          boolean
+    |              |                          +-- ineligible-reason?       identityref
+    |              |                          +-- unknown-attributes
+    |              |                          |  +-- unknown-attribute* [attr-type]
+    |              |                          |     +-- attr-type     uint8
+    |              |                          |     +-- optional?     boolean
+    |              |                          |     +-- transitive?   boolean
+    |              |                          |     +-- partial?      boolean
+    |              |                          |     +-- extended?     boolean
+    |              |                          |     +-- attr-len?     uint16
+    |              |                          |     +-- attr-value?   binary
+    |              |                          +-- reject-reason?           union
+    |              +-- information?          enumeration
+    +-- data-collection-manifest {data-collection-manifest}?
+    |  +-- name?               string
+    |  +-- vendor?             string
+    |  +-- vendor-pen?         uint32
+    |  +-- software-version?   string
+    |  +-- software-flavor?    string
+    |  +-- os-version?         string
+    |  +-- os-type?            string
+    +-- network-operator-metadata
+    |  +-- labels* [name]
+    |     +-- name       string
+    |     +-- (value)
+    |        +--:(number-choice)
+    |        |  +-- (number-choice)?
+    |        |     +--:(number-value)
+    |        |        +-- number-value?   uint64
+    |        +--:(string-choice)
+    |        |  +-- (string-choice)?
+    |        |     +--:(string-value)
+    |        |        +-- string-value?   string
+    |        +--:(anydata-choice)
+    |           +-- (anydata-choice)?
+    |              +--:(anydata-values)
+    |                 +-- anydata-values?   anydata
+    +-- payload?                      anydata
