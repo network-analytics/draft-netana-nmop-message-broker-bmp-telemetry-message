@@ -1407,7 +1407,9 @@ module ietf-bmp-telemetry-message {
     "IETF Draft";
   contact
     "Author:    Thomas Graf
-                <mailto:thomas.graf@swisscom.com>";
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>";
   description
     "Adds BMP specific subscription metadata to the data collection
      protocol provenance of the ietf-telemetry-message envelope.
@@ -1709,7 +1711,9 @@ submodule ietf-bmp-bgp-rib {
     "IETF Draft";
   contact
     "Author:    Thomas Graf
-                <mailto:thomas.graf@swisscom.com>";
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>";
 
   description
     "Defines a submodule for representing BGP Routing Information
@@ -2342,7 +2346,9 @@ submodule ietf-bmp-bgp-rib-attributes {
     "IETF Draft";
   contact
     "Author:    Thomas Graf
-                <mailto:thomas.graf@swisscom.com>";
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>";
 
   description
     "This submodule contains common data definitions for BGP
@@ -2638,7 +2644,9 @@ submodule ietf-bmp-bgp-rib-tables {
     "IETF Draft";
   contact
     "Author:    Thomas Graf
-                <mailto:thomas.graf@swisscom.com>";
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>";
 
   description
     "This submodule contains structural data definitions for

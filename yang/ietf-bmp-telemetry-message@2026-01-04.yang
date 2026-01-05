@@ -44,7 +44,10 @@ module ietf-bmp-telemetry-message {
     "IETF Draft";
   contact
     "Author:    Thomas Graf
-                <mailto:thomas.graf@swisscom.com>";
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>";
+
   description
     "Adds BMP specific subscription metadata to the data collection
      protocol provenance of the ietf-telemetry-message envelope.

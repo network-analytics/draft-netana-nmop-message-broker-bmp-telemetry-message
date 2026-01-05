@@ -34,7 +34,9 @@ submodule ietf-bmp-bgp-rib {
     "IETF Draft";
   contact
     "Author:    Thomas Graf
-                <mailto:thomas.graf@swisscom.com>";
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>";
 
   description
     "Defines a submodule for representing BGP Routing Information

@@ -36,7 +36,9 @@ submodule ietf-bmp-bgp-rib-tables {
     "IETF Draft";
   contact
     "Author:    Thomas Graf
-                <mailto:thomas.graf@swisscom.com>";
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>";
 
   description
     "This submodule contains structural data definitions for

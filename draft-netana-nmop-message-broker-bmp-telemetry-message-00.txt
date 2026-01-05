@@ -68,7 +68,7 @@ Table of Contents
    4.  YANG Message Broker BMP Indexing and Topic Naming . . . . . .  62
      4.1.  BMP Message Keys and Indexes  . . . . . . . . . . . . . .  62
      4.2.  Message Broker BMP Topic Naming . . . . . . . . . . . . .  63
-       4.2.1.  YANG Message Broker Producer  . . . . . . . . . . . .  63
+       4.2.1.  YANG Message Broker Producer  . . . . . . . . . . . .  64
        4.2.2.  YANG Message Broker Consumer  . . . . . . . . . . . .  64
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  64
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  65
@@ -77,7 +77,7 @@ Table of Contents
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  68
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  69
    Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  69
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  69
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  70
 
 1.  Introduction
 
@@ -1583,7 +1583,9 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        "IETF Draft";
      contact
        "Author:    Thomas Graf
-                   <mailto:thomas.graf@swisscom.com>";
+                   <mailto:thomas.graf@swisscom.com>
+                   Paolo Lucente
+                   <mailto:paolo@ntt.net>";
      description
        "Adds BMP specific subscription metadata to the data collection
         protocol provenance of the ietf-telemetry-message envelope.
@@ -1616,8 +1618,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
      sx:augment-structure "/tm:message/tm:telemetry-message-metadata" {
        description
-         "Augments telemetry-message-metadata with BMP specific
-          subscription metadata";
 
 
 
@@ -1626,6 +1626,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 29]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+         "Augments telemetry-message-metadata with BMP specific
+          subscription metadata";
        container bmp-subscription {
          config false;
          description
@@ -1672,8 +1674,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            case termination-message {
              container termination-message {
                uses termination;
-             }
-           }
 
 
 
@@ -1682,6 +1682,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 30]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+             }
+           }
            case route-mirroring-message {
              container route-mirroring-message {
                uses per-peer;
@@ -1728,8 +1730,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          reference
            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2. The
                    \tremote IP address associated with the TCP session over which
-                   \tthe encapsulated PDU was received.";
-       }
 
 
 
@@ -1738,6 +1738,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 31]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+                   \tthe encapsulated PDU was received.";
+       }
        leaf peer-as {
          type uint32;
          description
@@ -1784,8 +1786,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          type string {
            length "1..65535";
          }
-         description
-           "BMP sysName type. The Information field contains an ASCII
 
 
 
@@ -1794,6 +1794,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 32]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+         description
+           "BMP sysName type. The Information field contains an ASCII
             string whose value MUST be set to be equal to the value of the
             sysName MIB-II RFC 1213 object.";
          reference
@@ -1840,8 +1842,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          "BMP Mirroring.";
        reference
          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.7.";
-       leaf information {
-         type enumeration {
 
 
 
@@ -1850,6 +1850,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 33]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+       leaf information {
+         type enumeration {
            enum "error-pdu" {
              value 0;
            }
@@ -1896,8 +1898,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
       */
 
      import iana-bgp-types {
-       prefix bt;
-       reference
 
 
 
@@ -1906,6 +1906,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 34]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+       prefix bt;
+       reference
          "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
      }
      import ietf-inet-types {
@@ -1929,7 +1931,9 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        "IETF Draft";
      contact
        "Author:    Thomas Graf
-                   <mailto:thomas.graf@swisscom.com>";
+                   <mailto:thomas.graf@swisscom.com>
+                   Paolo Lucente
+                   <mailto:paolo@ntt.net>";
 
      description
        "Defines a submodule for representing BGP Routing Information
@@ -1950,10 +1954,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
         adj-rib-in-post: This table is a per-neighbor table containing
         the routes received from the neighbor that are eligible for
         best-path selection after local input policy rules have been
-        applied. The 'best-path' leaf is attached to the route selected
-        by the BGP Decision Process (RFC 4271, Section 9.1).  Such
-        routes may be present in the loc-rib table, described above,
-        when local configuration determines that the BGP best-path will
 
 
 
@@ -1962,6 +1962,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 35]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+        applied. The 'best-path' leaf is attached to the route selected
+        by the BGP Decision Process (RFC 4271, Section 9.1).  Such
+        routes may be present in the loc-rib table, described above,
+        when local configuration determines that the BGP best-path will
         be used for that destination.
 
         adj-rib-in-post: This is a per-neighbor table containing the
@@ -2006,10 +2010,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
      grouping attr-set-attributes {
        description
-         "A grouping for all BGP Path Attribute set parameters.";
-
-       container attributes {
-         description
 
 
 
@@ -2018,6 +2018,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 36]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+         "A grouping for all BGP Path Attribute set parameters.";
+
+       container attributes {
+         description
            "A container for attribute set parameters.";
 
          leaf origin {
@@ -2062,10 +2066,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               AFI/SAFI can be represented as an IPv4/IPv6 address.";
            reference
              "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
-              5.1.3.";
-         }
-         leaf link-local-next-hop {
-           type inet:ipv6-address;
 
 
 
@@ -2074,6 +2074,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 37]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+              5.1.3.";
+         }
+         leaf link-local-next-hop {
+           type inet:ipv6-address;
            description
              "When both a global and a link-local next-hop are sent
               when following RFC 2545 procedures, this leaf contains
@@ -2118,10 +2122,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              uses bgp-as-path-segment;
              description
                "List of AS PATH segments";
-           }
-         }
-         container aggregator {
-           config false;
 
 
 
@@ -2130,6 +2130,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 38]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+           }
+         }
+         container aggregator {
+           config false;
            description
              "BGP attribute indicating the prefix has been
               aggregated by the specified AS and router.";
@@ -2174,10 +2178,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              description
                "AS number of the autonomous system that performed the
                 aggregation (4-octet representation).  This value is
-                populated if an upstream router is not 4-octet capable.
-                Its semantics are similar to the AS4_PATH optional
-                transitive attribute";
-             reference
 
 
 
@@ -2186,6 +2186,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 39]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+                populated if an upstream router is not 4-octet capable.
+                Its semantics are similar to the AS4_PATH optional
+                transitive attribute";
+             reference
                "RFC 6793: BGP Support for Four-octet AS Number Space,
                 Section 3,
                 RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
@@ -2230,10 +2234,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               passed.";
            reference
              "RFC 4456: BGP Route Reflection: An Alternative to Full
-              Mesh Internal BGP (IBGP).";
-         }
-         leaf aigp-metric {
-           type uint64;
 
 
 
@@ -2242,6 +2242,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 40]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+              Mesh Internal BGP (IBGP).";
+         }
+         leaf aigp-metric {
+           type uint64;
            description
              "BGP path attribute representing the accumulated IGP
               metric for the path";
@@ -2286,10 +2290,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          uses attr-sets;
          container communities {
            description
-             "Enclosing container for the list of community attribute
-              sets.";
-           list community {
-             key "index";
 
 
 
@@ -2298,6 +2298,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 41]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+             "Enclosing container for the list of community attribute
+              sets.";
+           list community {
+             key "index";
              config false;
              description
                "List of path attributes that may be in use by multiple
@@ -2342,10 +2346,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              key "index";
              config false;
              description
-               "List of path attributes that may be in use by multiple
-                routes in the table.";
-             leaf index {
-               type uint64;
 
 
 
@@ -2354,6 +2354,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 42]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+               "List of path attributes that may be in use by multiple
+                routes in the table.";
+             leaf index {
+               type uint64;
                description
                  "System generated index for each attribute set.  The
                   index is used to reference an attribute set from a
@@ -2398,10 +2402,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                  base bt:afi-safi-type;
                }
                description
-                 "AFI,SAFI name.";
-             }
-             container ipv4-unicast {
-               when "derived-from-or-self(../name, 'bt:ipv4-unicast')" {
 
 
 
@@ -2410,6 +2410,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 43]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+                 "AFI,SAFI name.";
+             }
+             container ipv4-unicast {
+               when "derived-from-or-self(../name, 'bt:ipv4-unicast')" {
                  description
                    "Include this container for IPv4 unicast RIB.";
                }
@@ -2454,10 +2458,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                  config false;
                  description
                    "Enclosing container for neighbor list.";
-                 list neighbor {
-                   key "neighbor-address";
-                   description
-                     "List of neighbors (peers) of the local BGP
 
 
 
@@ -2466,6 +2466,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 44]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+                 list neighbor {
+                   key "neighbor-address";
+                   description
+                     "List of neighbors (peers) of the local BGP
                       speaker.";
                    leaf neighbor-address {
                      type inet:ip-address;
@@ -2510,10 +2514,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              container ipv6-unicast {
                when "derived-from-or-self(../name, 'bt:ipv6-unicast')" {
                  description
-                   "Include this container for IPv6 unicast RIB.";
-               }
-               description
-                 "Routing tables for IPv6 unicast -- active when the
 
 
 
@@ -2522,6 +2522,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 45]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+                   "Include this container for IPv6 unicast RIB.";
+               }
+               description
+                 "Routing tables for IPv6 unicast -- active when the
                   afi-safi name is ipv6-unicast.";
 
                container loc-rib {
@@ -2566,10 +2570,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                    description
                      "List of neighbors (peers) of the local BGP
                       speaker.";
-                   leaf neighbor-address {
-                     type inet:ip-address;
-                     description
-                       "IP address of the BGP neighbor or peer.";
 
 
 
@@ -2578,6 +2578,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 46]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+                   leaf neighbor-address {
+                     type inet:ip-address;
+                     description
+                       "IP address of the BGP neighbor or peer.";
                    }
                    container adj-rib-in-pre {
                      description
@@ -2622,10 +2626,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    }
    <CODE ENDS>
 
-              Figure 4: BMP YANG 'ietf-bmp-bgp-rib' submodule.
-
-
-
 
 
 
@@ -2633,6 +2633,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 47]
 
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
+
+              Figure 4: BMP YANG 'ietf-bmp-bgp-rib' submodule.
 
    <CODE BEGINS> file "ietf-bmp-bgp-rib-attributes@2026-01-04.yang"
    submodule ietf-bmp-bgp-rib-attributes {
@@ -2665,7 +2667,9 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        "IETF Draft";
      contact
        "Author:    Thomas Graf
-                   <mailto:thomas.graf@swisscom.com>";
+                   <mailto:thomas.graf@swisscom.com>
+                   Paolo Lucente
+                   <mailto:paolo@ntt.net>";
 
      description
        "This submodule contains common data definitions for BGP
@@ -2678,10 +2682,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
         without modification, is permitted pursuant to, and subject to
         the license terms contained in, the Revised BSD License set
         forth in Section 4.c of the IETF Trust's Legal Provisions
-        Relating to IETF Documents
-        (https://trustee.ietf.org/license-info).
-
-        This version of this YANG module is part of RFC XXXX
 
 
 
@@ -2690,6 +2690,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 48]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+        Relating to IETF Documents
+        (https://trustee.ietf.org/license-info).
+
+        This version of this YANG module is part of RFC XXXX
         (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
         for full legal notices.
 
@@ -2734,10 +2738,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
             message which contained the prefix.";
 
          list unknown-attribute {
-           key "attr-type";
-           description
-             "This list contains received attributes that are
-              unrecognized or unsupported by the local router. The list
 
 
 
@@ -2746,6 +2746,10 @@ Graf & Lucente             Expires 8 July 2026                 [Page 49]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+           key "attr-type";
+           description
+             "This list contains received attributes that are
+              unrecognized or unsupported by the local router. The list
               may be empty.";
 
            leaf optional {
@@ -2790,10 +2794,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
                "Defines whether the attribute length is one octet
                 (if set to false) or two octets (if set to true). Set in
                 the fourth high-order bit of the BGP attribute flags
-                octet.";
-             reference
-               "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
-           }
 
 
 
@@ -2801,6 +2801,11 @@ Graf & Lucente             Expires 8 July 2026                 [Page 50]
 
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
+
+                octet.";
+             reference
+               "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
+           }
 
            leaf attr-type {
              type uint8;
@@ -2845,11 +2850,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          type uint32;
          description
            "When the BGP speaker supports advertisement of multiple
-            paths for a prefix, the path identifier is used to
-            uniquely identify a route based on the combination of the
-            prefix and path id.  In the Adj-RIB-In, the path-id value is
-            the value received in the update message.   In the Loc-RIB,
-            if used, it should represent a locally generated path-id
 
 
 
@@ -2858,6 +2858,11 @@ Graf & Lucente             Expires 8 July 2026                 [Page 51]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+            paths for a prefix, the path identifier is used to
+            uniquely identify a route based on the combination of the
+            prefix and path id.  In the Adj-RIB-In, the path-id value is
+            the value received in the update message.   In the Loc-RIB,
+            if used, it should represent a locally generated path-id
             value for the corresponding route.  In Adj-RIB-Out, it
             should be the value sent to a neighbor when add-paths is
             used, i.e., the capability has been negotiated.";
@@ -2901,11 +2906,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            pattern 'raw:([0-9A-F][0-9A-F]:){7}[0-9A-F][0-9A-F]';
          }
          description
-           "ext-community type in raw format only.";
-       }
-     }
-
-     grouping ipv6-ext-community-attributes {
 
 
 
@@ -2914,6 +2914,11 @@ Graf & Lucente             Expires 8 July 2026                 [Page 52]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+           "ext-community type in raw format only.";
+       }
+     }
+
+     grouping ipv6-ext-community-attributes {
        description
          "A grouping for all IPv6 extended community parameters.";
 
@@ -2957,11 +2962,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    <CODE ENDS>
 
         Figure 5: BMP YANG 'ietf-bmp-bgp-rib-attributes' submodule.
-
-
-
-
-
 
 
 
@@ -3009,15 +3009,15 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        "IETF Draft";
      contact
        "Author:    Thomas Graf
-                   <mailto:thomas.graf@swisscom.com>";
+                   <mailto:thomas.graf@swisscom.com>
+                   Paolo Lucente
+                   <mailto:paolo@ntt.net>";
 
      description
        "This submodule contains structural data definitions for
         BGP routing tables.
 
         Copyright (c) 2026 IETF Trust and the persons identified as
-        authors of the code. All rights reserved.
-
 
 
 
@@ -3025,6 +3025,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 54]
 
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
+
+        authors of the code. All rights reserved.
 
         Redistribution and use in source and binary forms, with or
         without modification, is permitted pursuant to, and subject to
@@ -3072,8 +3074,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
             Section 9.1.";
        }
        leaf ineligible-reason {
-         type identityref {
-           base brt:ineligible-route-reason;
 
 
 
@@ -3082,6 +3082,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 55]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+         type identityref {
+           base brt:ineligible-route-reason;
          }
          description
            "If the route is ineligible for selection for the best route
@@ -3128,8 +3130,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
        description
          "Definitions of common references to attribute sets for
           multiple AFI-SAFIs for Adj-RIB tables.";
-       leaf attr-index {
-         type leafref {
 
 
 
@@ -3138,6 +3138,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 56]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+       leaf attr-index {
+         type leafref {
            path "../../../../../../../../../attr-sets/"
               + "attr-set/index";
          }
@@ -3184,8 +3186,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          }
          description
            "Reference to the common attribute group for the
-            route.";
-       }
 
 
 
@@ -3194,6 +3194,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 57]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+            route.";
+       }
        leaf community-index {
          type leafref {
            path "../../../../../../../communities/community/"
@@ -3240,8 +3242,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
             protocol, the origin indicates the source protocol for the
             route.";
        }
-       leaf path-id {
-         type uint32;
 
 
 
@@ -3250,6 +3250,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 58]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+       leaf path-id {
+         type uint32;
          description
            "If the route is learned from a neighbor, the path-id
             corresponds to the path-id for the route in the
@@ -3296,8 +3298,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
          "Common structural grouping for each IPv4 Adj-RIB table.";
        container routes {
          config false;
-         description
-           "Enclosing container for list of routes in the routing
 
 
 
@@ -3306,6 +3306,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 59]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+         description
+           "Enclosing container for list of routes in the routing
             table.";
          list route {
            key "prefix path-id";
@@ -3352,8 +3354,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
            uses bgp-adj-rib-attr-state;
            uses bgp-adj-rib-common-attr-refs;
            uses bgp-common-route-annotations-state;
-           uses bgp-adj-rib-in-post-route-annotations-state;
-           uses bgp-unknown-attr-top;
 
 
 
@@ -3362,6 +3362,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 60]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+           uses bgp-adj-rib-in-post-route-annotations-state;
+           uses bgp-unknown-attr-top;
            uses rib-ext-route-annotations;
          }
        }
@@ -3408,8 +3410,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
              "List of routes in the table.";
            leaf prefix {
              type inet:ipv6-prefix;
-             description
-               "Prefix for the route.";
 
 
 
@@ -3418,6 +3418,8 @@ Graf & Lucente             Expires 8 July 2026                 [Page 61]
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
 
+             description
+               "Prefix for the route.";
            }
            uses bgp-adj-rib-attr-state;
            uses bgp-adj-rib-common-attr-refs;
@@ -3462,10 +3464,8 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    The Message Key not only used for Message indexing at the Message
    Producer but also at the Message Broker for topic compaction.
 
-   For BMP, the network node hostname, what BMP Message Type the data
-   reprents and apart from the initiation-message and termination-
-   message the BMP index is used to generate the Message Key. The BMP
-   index is calculated depending on BMP Message Type as following:
+
+
 
 
 
@@ -3473,6 +3473,11 @@ Graf & Lucente             Expires 8 July 2026                 [Page 62]
 
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
+
+   For BMP, the network node hostname, what BMP Message Type the data
+   reprents and apart from the initiation-message and termination-
+   message the BMP index is used to generate the Message Key. The BMP
+   index is calculated depending on BMP Message Type as following:
 
    *  peer-up-notification: "peer-distinguisher" and "peer-address".
 
@@ -3513,13 +3518,8 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
       Figure 7: BMP BGP Local-RIB route-monitoring Topic Name Example
 
-4.2.1.  YANG Message Broker Producer
 
-   For the Message Broker topic creation, the "message-type" contained
-   data in "bmp-subscription" from "ietf-bmp-telemetry-message", YANG
-   module defined in Figure 3, notifications MUST be used to derive
-   wherever subscribed BMP data is "statistics" "states" or "state-
-   changes".
+
 
 
 
@@ -3529,6 +3529,14 @@ Graf & Lucente             Expires 8 July 2026                 [Page 63]
 
 Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
+
+4.2.1.  YANG Message Broker Producer
+
+   For the Message Broker topic creation, the "message-type" contained
+   data in "bmp-subscription" from "ietf-bmp-telemetry-message", YANG
+   module defined in Figure 3, notifications MUST be used to derive
+   wherever subscribed BMP data is "statistics" "states" or "state-
+   changes".
 
 4.2.2.  YANG Message Broker Consumer
 
@@ -3570,6 +3578,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
    *  URI: urn:ietf:params:xml:ns:yang:ietf-bmp-bgp-rib-tables
 
+
+
+
+Graf & Lucente             Expires 8 July 2026                 [Page 64]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
    *  Registrant Contact: The IESG.
 
    *  XML: N/A; the requested URI is an XML namespace.
@@ -3578,13 +3594,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    Module Names registry [RFC3688]:
 
    *  Name: ietf-bmp-telemetry-message
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 64]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
 
    *  Namespace: urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message
 
@@ -3625,6 +3634,14 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    The "ietf-bmp-telemetry-message" YANG module and "ietf-bmp-bgp-rib",
    "ietf-bmp-bgp-rib-attributes" and "ietf-bmp-bgp-rib-tables" YANG
    submodules defines one combined data model that are designed to be
+
+
+
+Graf & Lucente             Expires 8 July 2026                 [Page 65]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
    accessed via YANG-based management protocols, such as NETCONF
    [RFC6141] and RESTCONF [RFC8040].  These protocols have to use a
    secure transport layer (e.g., SSH [RFC4252], TLS [RFC8446], and QUIC
@@ -3634,13 +3651,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
    provides the means to restrict access for particular NETCONF or
    RESTCONF users to a preconfigured subset of all available NETCONF or
    RESTCONF protocol operations and content.
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 65]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
 
    There are a number of data nodes defined in this YANG module that are
    writable/creatable/deletable (i.e., "config true", which is the
@@ -3679,6 +3689,15 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               Authentication Protocol", RFC 4252, DOI 10.17487/RFC4252,
               January 2006, <https://www.rfc-editor.org/info/rfc4252>.
 
+
+
+
+
+Graf & Lucente             Expires 8 July 2026                 [Page 66]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
    [RFC6141]  Camarillo, G., Ed., Holmberg, C., and Y. Gao, "Re-INVITE
               and Target-Refresh Request Handling in the Session
               Initiation Protocol (SIP)", RFC 6141,
@@ -3689,14 +3708,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               Monitoring Protocol (BMP)", RFC 7854,
               DOI 10.17487/RFC7854, June 2016,
               <https://www.rfc-editor.org/info/rfc7854>.
-
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 66]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
 
    [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
               RFC 7950, DOI 10.17487/RFC7950, August 2016,
@@ -3734,6 +3745,15 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               (BMP)", RFC 9069, DOI 10.17487/RFC9069, February 2022,
               <https://www.rfc-editor.org/info/rfc9069>.
 
+
+
+
+
+Graf & Lucente             Expires 8 July 2026                 [Page 67]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
    [I-D.ietf-nmop-terminology]
               Davis, N., Farrel, A., Graf, T., Wu, Q., and C. Yu, "Some
               Key Terms for Network Fault and Problem Management", Work
@@ -3746,14 +3766,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               Graf, T. and A. Elhassany, "An Architecture for YANG-Push
               to Message Broker Integration", Work in Progress,
               Internet-Draft, draft-ietf-nmop-yang-message-broker-
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 67]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
               integration-09, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-nmop-
               yang-message-broker-integration-09>.
@@ -3791,6 +3803,13 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
               <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
               rfc8407bis-28>.
 
+
+
+Graf & Lucente             Expires 8 July 2026                 [Page 68]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
    [Deh22]    Dehghani, Z., "Data Mesh", O'Reilly Media,
               ISBN 9781492092391, March 2022,
               <https://www.oreilly.com/library/view/data-
@@ -3801,14 +3820,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       January 2026
 
    [Pul16]    Guo, S. and M. Merli, "Apache Pulsar", Apache Software
               Foundation, January 2016, <https://pulsar.apache.org/>.
-
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 68]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
 
 Acknowledgements
 
@@ -3848,6 +3859,13 @@ Contributors
    Email: jhaas@pfrc.org
 
 
+
+
+Graf & Lucente             Expires 8 July 2026                 [Page 69]
+
+Internet-Draft     BMP YANG Network Telemetry Message       January 2026
+
+
 Authors' Addresses
 
    Thomas Graf
@@ -3858,30 +3876,12 @@ Authors' Addresses
    Email: thomas.graf@swisscom.com
 
 
-
-
-
-Graf & Lucente             Expires 8 July 2026                 [Page 69]
-
-Internet-Draft     BMP YANG Network Telemetry Message       January 2026
-
-
    Paolo
    NTT
    Veemweg 23
    3771 Barneveld
    Netherlands
    Email: paolo@ntt.net
-
-
-
-
-
-
-
-
-
-
 
 
 
