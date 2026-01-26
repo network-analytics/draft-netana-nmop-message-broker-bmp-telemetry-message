@@ -1,0 +1,59 @@
+{
+  "ietf-bmp-telemetry-message:message": {
+    "bmp-subscription": {
+      "version": 3,
+      "route-monitoring": {
+        "peer-address": "0.0.0.0",
+        "peer-as": 65001,
+        "timestamp": "2026-01-23T10:00:00Z",
+        "afi-safi-type": "iana-bgp-types:ipv6-unicast",
+        "rib-entry": {
+          "ipv6-unicast": {
+            "loc-rib": {
+              "route": {
+                "prefix": "2001:db8:abcd::/48",
+                "origin": "2001:db8::1",
+                "path-id": 0,
+                "attributes": {
+                  "origin": "igp",
+                  "as-path": {
+                    "segment": [
+                      {
+                        "type": "iana-bgp-types:as-sequence",
+                        "member": [
+                          65001,
+                          65100
+                        ]
+                      },
+                      {
+                        "type": "iana-bgp-types:as-set",
+                        "member": [
+                          65200,
+                          65210
+                        ]
+                      }
+                    ]
+                  },
+                  "next-hop": "2001:db8::fe",
+                  "local-pref": 100
+                },
+                "community": [
+                  "65001:10",
+                  "65001:20"
+                ],
+                "ext-community": [
+                  "route-target:65001:123"
+                ],
+                "large-community": [
+                  "65001:1:1",
+                  "65002:2:2"
+                ],
+                "eligible-route": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

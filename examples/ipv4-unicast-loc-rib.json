@@ -1,0 +1,43 @@
+{
+  "ietf-bmp-telemetry-message:message": {
+    "bmp-subscription": {
+      "version": 3,
+      "route-monitoring": {
+        "peer-address": "0.0.0.0",
+        "peer-as": 65001,
+        "timestamp": "2026-01-23T10:05:00Z",
+        "afi-safi-type": "iana-bgp-types:ipv4-unicast",
+        "rib-entry": {
+          "ipv4-unicast": {
+            "loc-rib": {
+              "route": {
+                "prefix": "198.51.100.0/24",
+                "origin": "ietf-routing:static",
+                "path-id": 0,
+                "attributes": {
+                  "origin": "igp",
+                  "next-hop": "198.51.100.1",
+                  "local-pref": 100,
+                  "med": 50,
+                  "atomic-aggregate": true,
+                  "aggregator": {
+                    "as": 65001,
+                    "identifier": "192.0.2.1"
+                  }
+                },
+                "community": [
+                  "65001:100",
+                  "65001:200"
+                ],
+                "large-community": [
+                  "65001:1:10"
+                ],
+                "eligible-route": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
