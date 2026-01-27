@@ -22,3 +22,8 @@ $ cat ietf-bmp-bgp-rib@2026-01-04.yang
 $ cat yang/ietf-bmp-bgp-rib-attributes@2026-01-04.yang
 $ cat yang/ietf-bmp-bgp-rib-tables@2026-01-04.yang
 ```
+
+Example JSON validation:
+```bash
+yanglint -e -Y yang/yang-lib.xml -p yang -t ext -k ietf-bmp-telemetry-message:structure:message  examples/ipv4-unicast-loc-rib.json -f json
+```
