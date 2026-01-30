@@ -30,13 +30,13 @@ module ietf-bmp-telemetry-message {
       "RFC 8791: YANG Data Structure Extensions";
   }
   include ietf-bmp-bgp-rib-entry {
-    revision-date 2026-01-26;
+    revision-date 2026-01-30;
   }
   include ietf-bmp-bgp-rib-tables {
-    revision-date 2026-01-26;
+    revision-date 2026-01-30;
   }
   include ietf-bmp-bgp-rib-attributes {
-    revision-date 2026-01-26;
+    revision-date 2026-01-30;
   }
 
   organization
@@ -72,7 +72,7 @@ module ietf-bmp-telemetry-message {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-01-26 {
+  revision 2026-01-30 {
     description
       "Initial revision.";
     reference
