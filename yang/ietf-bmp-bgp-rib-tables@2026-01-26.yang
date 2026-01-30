@@ -20,11 +20,6 @@ submodule ietf-bmp-bgp-rib-tables {
     reference
       "RFC 8022: A YANG Data Model for Routing Management.";
   }
-  import iana-bgp-types {
-    prefix bt;
-    reference
-      "RFC XXXX: YANG module for Border Gateway Protocol (BGP-4).";
-  }
   import iana-bgp-rib-types {
     prefix brt;
     reference
@@ -69,7 +64,7 @@ submodule ietf-bmp-bgp-rib-tables {
     description
       "Initial Version";
     reference
-      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+      "RFC XXXX";
   }
 
   grouping bgp-common-route-annotations-state {
@@ -224,7 +219,7 @@ submodule ietf-bmp-bgp-rib-tables {
       leaf prefix {
         type inet:ipv4-prefix;
         description
-          "Prefix for the route.";
+          "The IPv4 prefix corresponding to the route.";
       }
       uses bgp-adj-rib-attr-state;
       uses bgp-common-route-attributes;
@@ -245,7 +240,7 @@ submodule ietf-bmp-bgp-rib-tables {
       leaf prefix {
         type inet:ipv4-prefix;
         description
-          "Prefix for the route.";
+          "The IPv4 prefix corresponding to the route.";
       }
       uses bgp-adj-rib-attr-state;
       uses bgp-common-route-attributes;
@@ -266,7 +261,7 @@ submodule ietf-bmp-bgp-rib-tables {
       leaf prefix {
         type inet:ipv6-prefix;
         description
-          "Prefix for the route.";
+          "The IPv6 prefix corresponding to the route.";
       }
       uses bgp-adj-rib-attr-state;
       uses bgp-common-route-attributes;
@@ -287,7 +282,7 @@ submodule ietf-bmp-bgp-rib-tables {
       leaf prefix {
         type inet:ipv6-prefix;
         description
-          "Prefix for the route.";
+          "The IPv6 prefix corresponding to the route.";
       }
       uses bgp-adj-rib-attr-state;
       uses bgp-common-route-attributes;

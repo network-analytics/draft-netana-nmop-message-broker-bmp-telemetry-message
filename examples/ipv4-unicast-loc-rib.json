@@ -3,6 +3,7 @@
     "bmp-subscription": {
       "version": 3,
       "route-monitoring": {
+        "peer-type": "loc-rib-instance-peer",
         "peer-address": "0.0.0.0",
         "peer-as": 65001,
         "timestamp": "2026-01-23T10:05:00Z",

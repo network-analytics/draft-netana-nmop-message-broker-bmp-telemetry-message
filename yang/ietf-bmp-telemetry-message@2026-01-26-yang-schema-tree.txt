@@ -6,7 +6,7 @@ module: ietf-bmp-telemetry-message
        +-- (message-type)?
           +--:(route-monitoring)
           |  +-- route-monitoring
-          |     +-- peer-type?            uint8
+          |     +-- peer-type?            peer-type
           |     +-- peer-flags?           uint8
           |     +-- peer-distinguisher?   rt-types:route-distinguisher
           |     +-- peer-address?         inet:ip-address
@@ -507,7 +507,7 @@ module: ietf-bmp-telemetry-message
           |                             +-- reject-reason?            union
           +--:(statistics-report)
           |  +-- statistics-report
-          |     +-- peer-type?            uint8
+          |     +-- peer-type?            peer-type
           |     +-- peer-flags?           uint8
           |     +-- peer-distinguisher?   rt-types:route-distinguisher
           |     +-- peer-address?         inet:ip-address
@@ -517,7 +517,7 @@ module: ietf-bmp-telemetry-message
           |     +-- statistics-data?      uint64
           +--:(peer-down-notification)
           |  +-- peer-down-notification
-          |     +-- peer-type?            uint8
+          |     +-- peer-type?            peer-type
           |     +-- peer-flags?           uint8
           |     +-- peer-distinguisher?   rt-types:route-distinguisher
           |     +-- peer-address?         inet:ip-address
@@ -525,7 +525,7 @@ module: ietf-bmp-telemetry-message
           |     +-- timestamp?            yang:date-and-time
           +--:(peer-up-notification)
           |  +-- peer-up-notification
-          |     +-- peer-type?            uint8
+          |     +-- peer-type?            peer-type
           |     +-- peer-flags?           uint8
           |     +-- peer-distinguisher?   rt-types:route-distinguisher
           |     +-- peer-address?         inet:ip-address
@@ -542,7 +542,7 @@ module: ietf-bmp-telemetry-message
           |     +-- reason?   enumeration
           +--:(route-mirroring-message)
              +-- route-mirroring-message
-                +-- peer-type?            uint8
+                +-- peer-type?            peer-type
                 +-- peer-flags?           uint8
                 +-- peer-distinguisher?   rt-types:route-distinguisher
                 +-- peer-address?         inet:ip-address

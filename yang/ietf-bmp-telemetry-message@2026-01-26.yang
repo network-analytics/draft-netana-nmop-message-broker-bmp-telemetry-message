@@ -79,13 +79,50 @@ module ietf-bmp-telemetry-message {
       "RFC XXXX";
   }
 
+  typedef peer-type {
+    type enumeration {
+      enum global-instance-peer {
+        value 0;
+        description
+          "Global Instance Peer";
+        reference
+          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+      }
+      enum rd-instance-peer {
+        value 1;
+        description
+          "RD Instance Peer";
+        reference
+          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+      }
+      enum local-instance-peer {
+        value 2;
+        description
+          "Local Instance Peer";
+        reference
+          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+      }
+      enum loc-rib-instance-peer {
+        value 3;
+        description
+          "Loc-RIB Instance Peer";
+        reference
+          "RFC 9069: Support for Local RIB in the BGP Monitoring Protocol (BMP)";
+      }
+    }
+    description
+      "BMP Peer Type.";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+  }
+
   grouping per-peer {
     description
       "BMP per-peer header.";
     reference
       "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
     leaf peer-type {
-      type uint8;
+      type peer-type;
       description
         "BMP peer type from per-peer header.";
       reference
