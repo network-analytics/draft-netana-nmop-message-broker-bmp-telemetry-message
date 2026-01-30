@@ -122,22 +122,11 @@ submodule ietf-bmp-bgp-rib-entry {
 
               case loc-rib {
                 container loc-rib {
-                  config false;
                   description
-                    "Container for the IPv4 Unicast BGP Loc-RIB data.";
-                  container route {
-                    description
-                      "A single route entry in the Loc-RIB.";
-                    leaf prefix {
-                      type inet:ipv4-prefix;
-                      mandatory true;
-                    }
-                    uses bgp-loc-rib-common-keys;
-                    uses bgp-common-route-attributes;
-                    uses bgp-common-route-annotations-state;
-                    uses bgp-unknown-attr-top;
-                    uses rib-ext-route-annotations;
-                  }
+                    "Route from the main BGP routing table for the local
+                     routing instance, containing best-path selections
+                     for each prefix.";
+                  uses ipv4-loc-rib-common;
                 }
               }
               case adj-rib-in-pre {
@@ -189,24 +178,11 @@ submodule ietf-bmp-bgp-rib-entry {
 
               case loc-rib {
                 container loc-rib {
-                  config false;
                   description
-                    "Container for the IPv6 BGP Loc-RIB data.";
-                  container route {
-                    description
-                      "A single route entry in the Loc-RIB.";
-                    leaf prefix {
-                      type inet:ipv6-prefix;
-                      mandatory true;
-                      description
-                        "The IPv6 prefix corresponding to the route.";
-                    }
-                    uses bgp-loc-rib-common-keys;
-                    uses bgp-common-route-attributes;
-                    uses bgp-common-route-annotations-state;
-                    uses bgp-unknown-attr-top;
-                    uses rib-ext-route-annotations;
-                  }
+                    "Route from the main BGP routing table for the local
+                     routing instance, containing best-path selections
+                     for each prefix.";
+                  uses ipv6-loc-rib-common;
                 }
               }
 
