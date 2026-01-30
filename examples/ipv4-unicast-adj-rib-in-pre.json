@@ -3,6 +3,7 @@
     "bmp-subscription": {
       "version": 3,
       "route-monitoring": {
+        "peer-type": "global-instance-peer",
         "peer-address": "172.16.0.1",
         "peer-as": 65001,
         "timestamp": "2026-01-22T14:30:00Z",

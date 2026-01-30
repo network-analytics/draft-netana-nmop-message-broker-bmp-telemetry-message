@@ -65,7 +65,7 @@ submodule ietf-bmp-bgp-rib-attributes {
     description
       "Initial version";
     reference
-      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+      "RFC XXXX";
   }
 
   grouping bgp-common-route-attributes {

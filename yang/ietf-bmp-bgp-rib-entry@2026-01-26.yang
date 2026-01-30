@@ -4,18 +4,11 @@ submodule ietf-bmp-bgp-rib-entry {
     prefix bmptm;
   }
 
-  /*
-   * Import and Include
-   */
+  // import some basic types
   import iana-bgp-types {
     prefix bt;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
-  }
-  import ietf-inet-types {
-    prefix inet;
-    reference
-      "RFC 6991: Common YANG Types.";
   }
 
   organization
@@ -85,7 +78,7 @@ submodule ietf-bmp-bgp-rib-entry {
     description
       "Initial Version";
     reference
-      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+      "RFC XXXX";
   }
 
   grouping rib-entry {
