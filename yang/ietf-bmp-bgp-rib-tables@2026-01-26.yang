@@ -150,8 +150,8 @@ submodule ietf-bmp-bgp-rib-tables {
         }
       }
       description
-        "Indicates the origin of the route.  If the route is learned
-         from a neighbor, this value is the neighbor address.  If
+        "Indicates the origin of the route. If the route is learned
+         from a neighbor, this value is the neighbor address. If
          the route was injected or redistributed from another
          protocol, the origin indicates the source protocol for the
          route.";
@@ -161,7 +161,7 @@ submodule ietf-bmp-bgp-rib-tables {
       description
         "If the route is learned from a neighbor, the path-id
          corresponds to the path-id for the route in the
-         corresponding adj-rib-in-post table.  If the route is
+         corresponding adj-rib-in-post table. If the route is
          injected from another protocol, or the neighbor does not
          support BGP add-paths, the path-id should be set
          to zero, also the default value.
@@ -169,6 +169,48 @@ submodule ietf-bmp-bgp-rib-tables {
          However, YANG does not allow default values to be set
          for parameters that form the key, so a default value
          cannot be set here.";
+    }
+  }
+
+  grouping ipv4-loc-rib-common {
+    description
+      "Common structural grouping for the IPv4 Loc-RIB table.";
+    container route {
+      config false;
+      description
+        "A single route entry in the Loc-RIB.";
+      leaf prefix {
+        type inet:ipv4-prefix;
+        mandatory true;
+        description
+          "The IPv4 prefix corresponding to the route.";
+      }
+      uses bgp-loc-rib-common-keys;
+      uses bgp-common-route-attributes;
+      uses bgp-common-route-annotations-state;
+      uses bgp-unknown-attr-top;
+      uses rib-ext-route-annotations;
+    }
+  }
+
+  grouping ipv6-loc-rib-common {
+    description
+      "Common structural grouping for the IPv6 Loc-RIB table.";
+    container route {
+      config false;
+      description
+        "A single route entry in the Loc-RIB.";
+      leaf prefix {
+        type inet:ipv6-prefix;
+        mandatory true;
+        description
+          "The IPv6 prefix corresponding to the route.";
+      }
+      uses bgp-loc-rib-common-keys;
+      uses bgp-common-route-attributes;
+      uses bgp-common-route-annotations-state;
+      uses bgp-unknown-attr-top;
+      uses rib-ext-route-annotations;
     }
   }
 
