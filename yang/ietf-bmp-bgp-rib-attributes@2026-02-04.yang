@@ -61,7 +61,7 @@ submodule ietf-bmp-bgp-rib-attributes {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-01-30 {
+  revision 2026-02-04 {
     description
       "Initial version";
     reference
@@ -424,7 +424,7 @@ submodule ietf-bmp-bgp-rib-attributes {
   grouping bgp-community-attr-state {
     description
       "Common definition of BGP community attributes";
-    leaf-list community {
+    leaf-list communities {
       type union {
         type bct:bgp-well-known-community-type;
         type bct:bgp-std-community-type;
@@ -439,7 +439,7 @@ submodule ietf-bmp-bgp-rib-attributes {
     description
       "A grouping for all extended community parameters.";
 
-    leaf-list ext-community {
+    leaf-list ext-communities {
       type bct:bgp-ext-community-type;
       description
         "List of BGP extended community attributes. The received
@@ -450,7 +450,7 @@ submodule ietf-bmp-bgp-rib-attributes {
         "RFC 4360: BGP Extended Communities Attribute.";
     }
 
-    leaf-list ext-community-raw {
+    leaf-list ext-communities-raw {
       type string {
         // raw with 8 octets
         pattern
@@ -465,7 +465,7 @@ submodule ietf-bmp-bgp-rib-attributes {
     description
       "A grouping for all IPv6 extended community parameters.";
 
-    leaf-list ipv6-ext-community {
+    leaf-list ipv6-ext-communities {
       type bct:bgp-ipv6-ext-community-type;
       description
         "List of BGP IPv6 extended community attributes. The received
@@ -477,7 +477,7 @@ submodule ietf-bmp-bgp-rib-attributes {
          Attribute, Section 3.";
     }
 
-    leaf-list ipv6-ext-community-raw {
+    leaf-list ipv6-ext-communities-raw {
       type string {
         // raw with 20 octets
         pattern
@@ -494,7 +494,7 @@ submodule ietf-bmp-bgp-rib-attributes {
     description
       "A grouping for all large community parameters.";
 
-    leaf-list large-community {
+    leaf-list large-communities {
       type bct:bgp-large-community-type;
       description
         "List of BGP large community attributes.";
