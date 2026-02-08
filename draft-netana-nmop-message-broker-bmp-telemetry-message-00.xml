@@ -61,7 +61,7 @@
       </address>
     </author>
 
-    <date day="04" month="February" year="2026" />
+    <date day="08" month="February" year="2026" />
 
     <area>General</area>
     <workgroup>NMOP</workgroup>
@@ -232,14 +232,77 @@
     </section>
 
     <section>
-      <name>BMP YANG Modules</name>
-
-      <t>This document defines one BMP YANG module <xref
-          target="ietf-bmp-telemetry-message-module" />, and 3 BGP RIB
-        submodules <xref target="ietf-bmp-bgp-sub-modules" /> which is
+      <name>Relationship to other documents</name>
+      <t>text</t>
+			
+      <section>
+        <name>Relationship to
+				draft-ietf-nmop-message-broker-telemetry-message</name>
+  			
+        <t><xref
+				target="I-D.ietf-nmop-message-broker-telemetry-message" /> 
+				defines with 'ietf-telemetry-message' YANG module a base 
+				Network Telemetry Message schema being used between 
+				<xref section="4.6" sectionFormat="of"
+        target="I-D.ietf-nmop-yang-message-broker-integration">
+				Message Broker Producer</xref> and <xref section="4.7"
+				sectionFormat="of"
+        target="I-D.ietf-nmop-yang-message-broker-integration">
+				Message Broker Consumer</xref> and with
+				'ietf-yang-push-telemetry-message' YANG module an extension
+				that supports YANG-Push specific subscription metadata.</t>
+				
+				<t>This document defines one BMP YANG module <xref
+        target="ietf-bmp-telemetry-message-module" />, and 3 BGP RIB
+        submodules <xref target="ietf-bmp-bgp-sub-modules" /> which are
         being used in the anydata "payload" <xref
-          target="I-D.ietf-nmop-message-broker-telemetry-message" />
+				target="I-D.ietf-nmop-message-broker-telemetry-message" />
         defined in 'ietf-telemetry-message' YANG module.</t>
+      </section>
+
+      <section>
+        <name>Relationship to draft-ietf-idr-bgp-model</name>
+  			
+        <t><xref target="I-D.ietf-idr-bgp-model" /> 
+				defines with 'ietf-bgp' a YANG module and with
+				'iana-bgp-community-types', 'iana-bgp-notification',
+				'iana-bgp-rib-types', 'iana-bgp-types', 'ietf-bgp-capabilities',
+				'ietf-bgp-common', 'ietf-bgp-common-multiprotocol',
+				'ietf-bgp-common-structure', 'ietf-bgp-neighbor',
+				'ietf-bgp-policy', 'ietf-bgp-rib', 'ietf-bgp-rib-attributes' and
+				'ietf-bgp-rib-tables' submodules.</t>
+				
+				<t>This document is using the content of the 'rib' grouping
+				defined in 'ietf-bgp-rib' submodule and renames the grouping to
+				'rib-entry' and restructures the data taxonomy to allow a single
+        BGP RIB entry to be serialized in a Telemetry Message on Message
+        Broker in the 'ietf-bmp-bgp-rib-entry' submodule. The
+				'clear-routes' grouping used in the 'rib' grouping has been
+				removed since a Telemetry Message only covers operational
+				metrics.</t>
+				
+				<t>Since 'ietf-bgp-rib' uses groupings from 
+				'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' and both
+        'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables'YANG
+				submodules <xref section="7.2.2" sectionFormat="of"
+				target="RFC7950">belongs to</xref> 'ietf-bgp' main module, the
+				YANG submodules have been renamed to
+				'ietf-bmp-bgp-rib-attributes' and ietf-bmp-bgp-rib-tables'.</t>
+
+				<t>If 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' 
+				would not be 'ietf-bgp' submodules, they could be reused as is
+				with 'ietf-bmp-bgp-rib-entry'. Since this would imply than a
+				normative document dependency a reasonable timeline needs to be
+				coordinated. Once these clarifications have been
+				concluded this section remains. The <xref
+				target="I-D.ietf-idr-bgp-model" /> authors are being honored
+				under <xref target="Contributors" /> for their contribution
+				on the BGP YANG modelling this document depends on.</t>
+      </section>
+    </section>
+
+    <section>
+      <name>BMP YANG Modules</name>
 
       <t>The BMP YANG module for Network Telemetry messages defines the
         BMP subscription metadata and depending on BMP Message type
@@ -253,7 +316,1659 @@
       <figure anchor="ietf-bmp-telemetry-message-tree"
         title="YANG tree diagram for 'ietf-bmp-telemetry-message' module.">
         <sourcecode type="yangtree">
-<xi:include href="yang/ietf-bmp-telemetry-message@2026-02-04-yang-schema-tree-L69.txt" parse="text" />
+<![CDATA[
+module: ietf-bmp-telemetry-message
+
+  structure message:
+    +-- version?          uint8
+    +-- (message-type)?
+       +--:(route-monitoring)
+       |  +-- route-monitoring
+       |     +-- peer-type?            peer-type
+       |     +-- peer-flags?           uint8
+       |     +-- peer-distinguisher?   rt-types:route-distinguisher
+       |     +-- peer-address?         inet:ip-address
+       |     +-- peer-as?              uint32
+       |     +-- timestamp?            yang:date-and-time
+       |     +-- afi-safi-type         identityref
+       |     +-- rib-entry
+       |        +-- (afi-safi)
+       |           +--:(ipv4-unicast)
+       |           |  +-- ipv4-unicast
+       |           |     +-- (rib-type)
+       |           |        +--:(loc-rib)
+       |           |        |  +-- loc-rib
+       |           |        |     +-- route
+       |           |        |        +-- prefix
+       |           |        |        |     inet:ipv4-prefix
+       |           |        |        +-- origin?
+       |           |        |        |     union
+       |           |        |        +-- path-id?
+       |           |        |        |     uint32
+       |           |        |        +-- attributes
+       |           |        |        |  +-- origin?
+       |           |        |        |  |     bt:bgp-origin-attr-type
+       |           |        |        |  +-- as-path
+       |           |        |        |  |  +-- segment*
+       |           |        |        |  |     +-- type?
+       |           |        |        |  |     |     identityref
+       |           |        |        |  |     +-- member*
+       |           |        |        |  |           inet:as-number
+       |           |        |        |  +-- next-hop?
+       |           |        |        |  |     inet:ip-address
+       |           |        |        |  +-- link-local-next-hop?
+       |           |        |        |  |     inet:ipv6-address
+       |           |        |        |  +-- med?
+       |           |        |        |  |     uint32
+       |           |        |        |  +-- local-pref?
+       |           |        |        |  |     uint32
+       |           |        |        |  +-- as4-path
+       |           |        |        |  |  +-- segment*
+       |           |        |        |  |     +-- type?
+       |           |        |        |  |     |     identityref
+       |           |        |        |  |     +-- member*
+       |           |        |        |  |           inet:as-number
+       |           |        |        |  +-- aggregator
+       |           |        |        |  |  +-- as?
+       |           |        |        |  |  |     inet:as-number
+       |           |        |        |  |  +-- identifier?
+       |           |        |        |  |        yang:dotted-quad
+       |           |        |        |  +-- aggregator4
+       |           |        |        |  |  +-- as4?
+       |           |        |        |  |  |     inet:as-number
+       |           |        |        |  |  +-- identifier?
+       |           |        |        |  |        yang:dotted-quad
+       |           |        |        |  +-- atomic-aggregate?
+       |           |        |        |  |     boolean
+       |           |        |        |  +-- originator-id?
+       |           |        |        |  |     yang:dotted-quad
+       |           |        |        |  +-- cluster-list*
+       |           |        |        |  |     yang:dotted-quad
+       |           |        |        |  +-- aigp-metric?
+       |           |        |        |        uint64
+       |           |        |        +-- communities*
+       |           |        |        |     union
+       |           |        |        +-- ext-communities*
+       |           |        |        |     bct:bgp-ext-community-type
+       |           |        |        +-- ext-communities-raw*
+       |           |        |        |     string
+       |           |        |        +-- ipv6-ext-communities*
+       |           |        |        |     bct:bgp-ipv6-ext-community-type
+       |           |        |        +-- ipv6-ext-communities-raw*
+       |           |        |        |     string
+       |           |        |        +-- large-communities*
+       |           |        |        |     bct:bgp-large-community-type
+       |           |        |        +-- last-modified?
+       |           |        |        |     yang:timeticks
+       |           |        |        +-- eligible-route?
+       |           |        |        |     boolean
+       |           |        |        +-- ineligible-reason?
+       |           |        |        |     identityref
+       |           |        |        +-- unknown-attributes
+       |           |        |        |  +-- unknown-attribute*
+       |           |        |        |        [attr-type]
+       |           |        |        |     +-- attr-type     uint8
+       |           |        |        |     +-- optional?     boolean
+       |           |        |        |     +-- transitive?   boolean
+       |           |        |        |     +-- partial?      boolean
+       |           |        |        |     +-- extended?     boolean
+       |           |        |        |     +-- attr-len?     uint16
+       |           |        |        |     +-- attr-value?   binary
+       |           |        |        +-- reject-reason?
+       |           |        |              union
+       |           |        +--:(adj-rib-in-pre)
+       |           |        |  +-- adj-rib-in-pre
+       |           |        |     +-- route
+       |           |        |        +-- prefix?
+       |           |        |        |     inet:ipv4-prefix
+       |           |        |        +-- path-id?
+       |           |        |        |     uint32
+       |           |        |        +-- attributes
+       |           |        |        |  +-- origin?
+       |           |        |        |  |     bt:bgp-origin-attr-type
+       |           |        |        |  +-- as-path
+       |           |        |        |  |  +-- segment*
+       |           |        |        |  |     +-- type?
+       |           |        |        |  |     |     identityref
+       |           |        |        |  |     +-- member*
+       |           |        |        |  |           inet:as-number
+       |           |        |        |  +-- next-hop?
+       |           |        |        |  |     inet:ip-address
+       |           |        |        |  +-- link-local-next-hop?
+       |           |        |        |  |     inet:ipv6-address
+       |           |        |        |  +-- med?
+       |           |        |        |  |     uint32
+       |           |        |        |  +-- local-pref?
+       |           |        |        |  |     uint32
+       |           |        |        |  +-- as4-path
+       |           |        |        |  |  +-- segment*
+       |           |        |        |  |     +-- type?
+       |           |        |        |  |     |     identityref
+       |           |        |        |  |     +-- member*
+       |           |        |        |  |           inet:as-number
+       |           |        |        |  +-- aggregator
+       |           |        |        |  |  +-- as?
+       |           |        |        |  |  |     inet:as-number
+       |           |        |        |  |  +-- identifier?
+       |           |        |        |  |        yang:dotted-quad
+       |           |        |        |  +-- aggregator4
+       |           |        |        |  |  +-- as4?
+       |           |        |        |  |  |     inet:as-number
+       |           |        |        |  |  +-- identifier?
+       |           |        |        |  |        yang:dotted-quad
+       |           |        |        |  +-- atomic-aggregate?
+       |           |        |        |  |     boolean
+       |           |        |        |  +-- originator-id?
+       |           |        |        |  |     yang:dotted-quad
+       |           |        |        |  +-- cluster-list*
+       |           |        |        |  |     yang:dotted-quad
+       |           |        |        |  +-- aigp-metric?
+       |           |        |        |        uint64
+       |           |        |        +-- communities*
+       |           |        |        |     union
+       |           |        |        +-- ext-communities*
+       |           |        |        |     bct:bgp-ext-community-type
+       |           |        |        +-- ext-communities-raw*
+       |           |        |        |     string
+       |           |        |        +-- ipv6-ext-communities*
+       |           |        |        |     bct:bgp-ipv6-ext-community-type
+       |           |        |        +-- ipv6-ext-communities-raw*
+       |           |        |        |     string
+       |           |        |        +-- large-communities*
+       |           |        |        |     bct:bgp-large-community-type
+       |           |        |        +-- last-modified?
+       |           |        |        |     yang:timeticks
+       |           |        |        +-- eligible-route?
+       |           |        |        |     boolean
+       |           |        |        +-- ineligible-reason?
+       |           |        |        |     identityref
+       |           |        |        +-- unknown-attributes
+       |           |        |        |  +-- unknown-attribute*
+       |           |        |        |        [attr-type]
+       |           |        |        |     +-- attr-type     uint8
+       |           |        |        |     +-- optional?     boolean
+       |           |        |        |     +-- transitive?   boolean
+       |           |        |        |     +-- partial?      boolean
+       |           |        |        |     +-- extended?     boolean
+       |           |        |        |     +-- attr-len?     uint16
+       |           |        |        |     +-- attr-value?   binary
+       |           |        |        +-- reject-reason?
+       |           |        |              union
+       |           |        +--:(adj-rib-in-post)
+       |           |        |  +-- adj-rib-in-post
+       |           |        |     +-- route
+       |           |        |        +-- prefix?
+       |           |        |        |     inet:ipv4-prefix
+       |           |        |        +-- path-id?
+       |           |        |        |     uint32
+       |           |        |        +-- attributes
+       |           |        |        |  +-- origin?
+       |           |        |        |  |     bt:bgp-origin-attr-type
+       |           |        |        |  +-- as-path
+       |           |        |        |  |  +-- segment*
+       |           |        |        |  |     +-- type?
+       |           |        |        |  |     |     identityref
+       |           |        |        |  |     +-- member*
+       |           |        |        |  |           inet:as-number
+       |           |        |        |  +-- next-hop?
+       |           |        |        |  |     inet:ip-address
+       |           |        |        |  +-- link-local-next-hop?
+       |           |        |        |  |     inet:ipv6-address
+       |           |        |        |  +-- med?
+       |           |        |        |  |     uint32
+       |           |        |        |  +-- local-pref?
+       |           |        |        |  |     uint32
+       |           |        |        |  +-- as4-path
+       |           |        |        |  |  +-- segment*
+       |           |        |        |  |     +-- type?
+       |           |        |        |  |     |     identityref
+       |           |        |        |  |     +-- member*
+       |           |        |        |  |           inet:as-number
+       |           |        |        |  +-- aggregator
+       |           |        |        |  |  +-- as?
+       |           |        |        |  |  |     inet:as-number
+       |           |        |        |  |  +-- identifier?
+       |           |        |        |  |        yang:dotted-quad
+       |           |        |        |  +-- aggregator4
+       |           |        |        |  |  +-- as4?
+       |           |        |        |  |  |     inet:as-number
+       |           |        |        |  |  +-- identifier?
+       |           |        |        |  |        yang:dotted-quad
+       |           |        |        |  +-- atomic-aggregate?
+       |           |        |        |  |     boolean
+       |           |        |        |  +-- originator-id?
+       |           |        |        |  |     yang:dotted-quad
+       |           |        |        |  +-- cluster-list*
+       |           |        |        |  |     yang:dotted-quad
+       |           |        |        |  +-- aigp-metric?
+       |           |        |        |        uint64
+       |           |        |        +-- communities*
+       |           |        |        |     union
+       |           |        |        +-- ext-communities*
+       |           |        |        |     bct:bgp-ext-community-type
+       |           |        |        +-- ext-communities-raw*
+       |           |        |        |     string
+       |           |        |        +-- ipv6-ext-communities*
+       |           |        |        |     bct:bgp-ipv6-ext-community-type
+       |           |        |        +-- ipv6-ext-communities-raw*
+       |           |        |        |     string
+       |           |        |        +-- large-communities*
+       |           |        |        |     bct:bgp-large-community-type
+       |           |        |        +-- last-modified?
+       |           |        |        |     yang:timeticks
+       |           |        |        +-- eligible-route?
+       |           |        |        |     boolean
+       |           |        |        +-- ineligible-reason?
+       |           |        |        |     identityref
+       |           |        |        +-- best-path?
+       |           |        |        |     boolean
+       |           |        |        +-- unknown-attributes
+       |           |        |        |  +-- unknown-attribute*
+       |           |        |        |        [attr-type]
+       |           |        |        |     +-- attr-type     uint8
+       |           |        |        |     +-- optional?     boolean
+       |           |        |        |     +-- transitive?   boolean
+       |           |        |        |     +-- partial?      boolean
+       |           |        |        |     +-- extended?     boolean
+       |           |        |        |     +-- attr-len?     uint16
+       |           |        |        |     +-- attr-value?   binary
+       |           |        |        +-- reject-reason?
+       |           |        |              union
+       |           |        +--:(adj-rib-out-pre)
+       |           |        |  +-- adj-rib-out-pre
+       |           |        |     +-- route
+       |           |        |        +-- prefix?
+       |           |        |        |     inet:ipv4-prefix
+       |           |        |        +-- path-id?
+       |           |        |        |     uint32
+       |           |        |        +-- attributes
+       |           |        |        |  +-- origin?
+       |           |        |        |  |     bt:bgp-origin-attr-type
+       |           |        |        |  +-- as-path
+       |           |        |        |  |  +-- segment*
+       |           |        |        |  |     +-- type?
+       |           |        |        |  |     |     identityref
+       |           |        |        |  |     +-- member*
+       |           |        |        |  |           inet:as-number
+       |           |        |        |  +-- next-hop?
+       |           |        |        |  |     inet:ip-address
+       |           |        |        |  +-- link-local-next-hop?
+       |           |        |        |  |     inet:ipv6-address
+       |           |        |        |  +-- med?
+       |           |        |        |  |     uint32
+       |           |        |        |  +-- local-pref?
+       |           |        |        |  |     uint32
+       |           |        |        |  +-- as4-path
+       |           |        |        |  |  +-- segment*
+       |           |        |        |  |     +-- type?
+       |           |        |        |  |     |     identityref
+       |           |        |        |  |     +-- member*
+       |           |        |        |  |           inet:as-number
+       |           |        |        |  +-- aggregator
+       |           |        |        |  |  +-- as?
+       |           |        |        |  |  |     inet:as-number
+       |           |        |        |  |  +-- identifier?
+       |           |        |        |  |        yang:dotted-quad
+       |           |        |        |  +-- aggregator4
+       |           |        |        |  |  +-- as4?
+       |           |        |        |  |  |     inet:as-number
+       |           |        |        |  |  +-- identifier?
+       |           |        |        |  |        yang:dotted-quad
+       |           |        |        |  +-- atomic-aggregate?
+       |           |        |        |  |     boolean
+       |           |        |        |  +-- originator-id?
+       |           |        |        |  |     yang:dotted-quad
+       |           |        |        |  +-- cluster-list*
+       |           |        |        |  |     yang:dotted-quad
+       |           |        |        |  +-- aigp-metric?
+       |           |        |        |        uint64
+       |           |        |        +-- communities*
+       |           |        |        |     union
+       |           |        |        +-- ext-communities*
+       |           |        |        |     bct:bgp-ext-community-type
+       |           |        |        +-- ext-communities-raw*
+       |           |        |        |     string
+       |           |        |        +-- ipv6-ext-communities*
+       |           |        |        |     bct:bgp-ipv6-ext-community-type
+       |           |        |        +-- ipv6-ext-communities-raw*
+       |           |        |        |     string
+       |           |        |        +-- large-communities*
+       |           |        |        |     bct:bgp-large-community-type
+       |           |        |        +-- last-modified?
+       |           |        |        |     yang:timeticks
+       |           |        |        +-- eligible-route?
+       |           |        |        |     boolean
+       |           |        |        +-- ineligible-reason?
+       |           |        |        |     identityref
+       |           |        |        +-- unknown-attributes
+       |           |        |        |  +-- unknown-attribute*
+       |           |        |        |        [attr-type]
+       |           |        |        |     +-- attr-type     uint8
+       |           |        |        |     +-- optional?     boolean
+       |           |        |        |     +-- transitive?   boolean
+       |           |        |        |     +-- partial?      boolean
+       |           |        |        |     +-- extended?     boolean
+       |           |        |        |     +-- attr-len?     uint16
+       |           |        |        |     +-- attr-value?   binary
+       |           |        |        +-- reject-reason?
+       |           |        |              union
+       |           |        +--:(adj-rib-out-post)
+       |           |           +-- adj-rib-out-post
+       |           |              +-- route
+       |           |                 +-- prefix?
+       |           |                 |     inet:ipv4-prefix
+       |           |                 +-- path-id?
+       |           |                 |     uint32
+       |           |                 +-- attributes
+       |           |                 |  +-- origin?
+       |           |                 |  |     bt:bgp-origin-attr-type
+       |           |                 |  +-- as-path
+       |           |                 |  |  +-- segment*
+       |           |                 |  |     +-- type?
+       |           |                 |  |     |     identityref
+       |           |                 |  |     +-- member*
+       |           |                 |  |           inet:as-number
+       |           |                 |  +-- next-hop?
+       |           |                 |  |     inet:ip-address
+       |           |                 |  +-- link-local-next-hop?
+       |           |                 |  |     inet:ipv6-address
+       |           |                 |  +-- med?
+       |           |                 |  |     uint32
+       |           |                 |  +-- local-pref?
+       |           |                 |  |     uint32
+       |           |                 |  +-- as4-path
+       |           |                 |  |  +-- segment*
+       |           |                 |  |     +-- type?
+       |           |                 |  |     |     identityref
+       |           |                 |  |     +-- member*
+       |           |                 |  |           inet:as-number
+       |           |                 |  +-- aggregator
+       |           |                 |  |  +-- as?
+       |           |                 |  |  |     inet:as-number
+       |           |                 |  |  +-- identifier?
+       |           |                 |  |        yang:dotted-quad
+       |           |                 |  +-- aggregator4
+       |           |                 |  |  +-- as4?
+       |           |                 |  |  |     inet:as-number
+       |           |                 |  |  +-- identifier?
+       |           |                 |  |        yang:dotted-quad
+       |           |                 |  +-- atomic-aggregate?
+       |           |                 |  |     boolean
+       |           |                 |  +-- originator-id?
+       |           |                 |  |     yang:dotted-quad
+       |           |                 |  +-- cluster-list*
+       |           |                 |  |     yang:dotted-quad
+       |           |                 |  +-- aigp-metric?
+       |           |                 |        uint64
+       |           |                 +-- communities*
+       |           |                 |     union
+       |           |                 +-- ext-communities*
+       |           |                 |     bct:bgp-ext-community-type
+       |           |                 +-- ext-communities-raw*
+       |           |                 |     string
+       |           |                 +-- ipv6-ext-communities*
+       |           |                 |     bct:bgp-ipv6-ext-community-type
+       |           |                 +-- ipv6-ext-communities-raw*
+       |           |                 |     string
+       |           |                 +-- large-communities*
+       |           |                 |     bct:bgp-large-community-type
+       |           |                 +-- last-modified?
+       |           |                 |     yang:timeticks
+       |           |                 +-- eligible-route?
+       |           |                 |     boolean
+       |           |                 +-- ineligible-reason?
+       |           |                 |     identityref
+       |           |                 +-- unknown-attributes
+       |           |                 |  +-- unknown-attribute*
+       |           |                 |        [attr-type]
+       |           |                 |     +-- attr-type     uint8
+       |           |                 |     +-- optional?     boolean
+       |           |                 |     +-- transitive?   boolean
+       |           |                 |     +-- partial?      boolean
+       |           |                 |     +-- extended?     boolean
+       |           |                 |     +-- attr-len?     uint16
+       |           |                 |     +-- attr-value?   binary
+       |           |                 +-- reject-reason?
+       |           |                       union
+       |           +--:(ipv6-unicast)
+       |              +-- ipv6-unicast
+       |                 +-- (rib-type)
+       |                    +--:(loc-rib)
+       |                    |  +-- loc-rib
+       |                    |     +-- route
+       |                    |        +-- prefix
+       |                    |        |     inet:ipv6-prefix
+       |                    |        +-- origin?
+       |                    |        |     union
+       |                    |        +-- path-id?
+       |                    |        |     uint32
+       |                    |        +-- attributes
+       |                    |        |  +-- origin?
+       |                    |        |  |     bt:bgp-origin-attr-type
+       |                    |        |  +-- as-path
+       |                    |        |  |  +-- segment*
+       |                    |        |  |     +-- type?
+       |                    |        |  |     |     identityref
+       |                    |        |  |     +-- member*
+       |                    |        |  |           inet:as-number
+       |                    |        |  +-- next-hop?
+       |                    |        |  |     inet:ip-address
+       |                    |        |  +-- link-local-next-hop?
+       |                    |        |  |     inet:ipv6-address
+       |                    |        |  +-- med?
+       |                    |        |  |     uint32
+       |                    |        |  +-- local-pref?
+       |                    |        |  |     uint32
+       |                    |        |  +-- as4-path
+       |                    |        |  |  +-- segment*
+       |                    |        |  |     +-- type?
+       |                    |        |  |     |     identityref
+       |                    |        |  |     +-- member*
+       |                    |        |  |           inet:as-number
+       |                    |        |  +-- aggregator
+       |                    |        |  |  +-- as?
+       |                    |        |  |  |     inet:as-number
+       |                    |        |  |  +-- identifier?
+       |                    |        |  |        yang:dotted-quad
+       |                    |        |  +-- aggregator4
+       |                    |        |  |  +-- as4?
+       |                    |        |  |  |     inet:as-number
+       |                    |        |  |  +-- identifier?
+       |                    |        |  |        yang:dotted-quad
+       |                    |        |  +-- atomic-aggregate?
+       |                    |        |  |     boolean
+       |                    |        |  +-- originator-id?
+       |                    |        |  |     yang:dotted-quad
+       |                    |        |  +-- cluster-list*
+       |                    |        |  |     yang:dotted-quad
+       |                    |        |  +-- aigp-metric?
+       |                    |        |        uint64
+       |                    |        +-- communities*
+       |                    |        |     union
+       |                    |        +-- ext-communities*
+       |                    |        |     bct:bgp-ext-community-type
+       |                    |        +-- ext-communities-raw*
+       |                    |        |     string
+       |                    |        +-- ipv6-ext-communities*
+       |                    |        |     bct:bgp-ipv6-ext-community-type
+       |                    |        +-- ipv6-ext-communities-raw*
+       |                    |        |     string
+       |                    |        +-- large-communities*
+       |                    |        |     bct:bgp-large-community-type
+       |                    |        +-- last-modified?
+       |                    |        |     yang:timeticks
+       |                    |        +-- eligible-route?
+       |                    |        |     boolean
+       |                    |        +-- ineligible-reason?
+       |                    |        |     identityref
+       |                    |        +-- unknown-attributes
+       |                    |        |  +-- unknown-attribute*
+       |                    |        |        [attr-type]
+       |                    |        |     +-- attr-type     uint8
+       |                    |        |     +-- optional?     boolean
+       |                    |        |     +-- transitive?   boolean
+       |                    |        |     +-- partial?      boolean
+       |                    |        |     +-- extended?     boolean
+       |                    |        |     +-- attr-len?     uint16
+       |                    |        |     +-- attr-value?   binary
+       |                    |        +-- reject-reason?
+       |                    |              union
+       |                    +--:(adj-rib-in-pre)
+       |                    |  +-- adj-rib-in-pre
+       |                    |     +-- route
+       |                    |        +-- prefix?
+       |                    |        |     inet:ipv6-prefix
+       |                    |        +-- path-id?
+       |                    |        |     uint32
+       |                    |        +-- attributes
+       |                    |        |  +-- origin?
+       |                    |        |  |     bt:bgp-origin-attr-type
+       |                    |        |  +-- as-path
+       |                    |        |  |  +-- segment*
+       |                    |        |  |     +-- type?
+       |                    |        |  |     |     identityref
+       |                    |        |  |     +-- member*
+       |                    |        |  |           inet:as-number
+       |                    |        |  +-- next-hop?
+       |                    |        |  |     inet:ip-address
+       |                    |        |  +-- link-local-next-hop?
+       |                    |        |  |     inet:ipv6-address
+       |                    |        |  +-- med?
+       |                    |        |  |     uint32
+       |                    |        |  +-- local-pref?
+       |                    |        |  |     uint32
+       |                    |        |  +-- as4-path
+       |                    |        |  |  +-- segment*
+       |                    |        |  |     +-- type?
+       |                    |        |  |     |     identityref
+       |                    |        |  |     +-- member*
+       |                    |        |  |           inet:as-number
+       |                    |        |  +-- aggregator
+       |                    |        |  |  +-- as?
+       |                    |        |  |  |     inet:as-number
+       |                    |        |  |  +-- identifier?
+       |                    |        |  |        yang:dotted-quad
+       |                    |        |  +-- aggregator4
+       |                    |        |  |  +-- as4?
+       |                    |        |  |  |     inet:as-number
+       |                    |        |  |  +-- identifier?
+       |                    |        |  |        yang:dotted-quad
+       |                    |        |  +-- atomic-aggregate?
+       |                    |        |  |     boolean
+       |                    |        |  +-- originator-id?
+       |                    |        |  |     yang:dotted-quad
+       |                    |        |  +-- cluster-list*
+       |                    |        |  |     yang:dotted-quad
+       |                    |        |  +-- aigp-metric?
+       |                    |        |        uint64
+       |                    |        +-- communities*
+       |                    |        |     union
+       |                    |        +-- ext-communities*
+       |                    |        |     bct:bgp-ext-community-type
+       |                    |        +-- ext-communities-raw*
+       |                    |        |     string
+       |                    |        +-- ipv6-ext-communities*
+       |                    |        |     bct:bgp-ipv6-ext-community-type
+       |                    |        +-- ipv6-ext-communities-raw*
+       |                    |        |     string
+       |                    |        +-- large-communities*
+       |                    |        |     bct:bgp-large-community-type
+       |                    |        +-- last-modified?
+       |                    |        |     yang:timeticks
+       |                    |        +-- eligible-route?
+       |                    |        |     boolean
+       |                    |        +-- ineligible-reason?
+       |                    |        |     identityref
+       |                    |        +-- unknown-attributes
+       |                    |        |  +-- unknown-attribute*
+       |                    |        |        [attr-type]
+       |                    |        |     +-- attr-type     uint8
+       |                    |        |     +-- optional?     boolean
+       |                    |        |     +-- transitive?   boolean
+       |                    |        |     +-- partial?      boolean
+       |                    |        |     +-- extended?     boolean
+       |                    |        |     +-- attr-len?     uint16
+       |                    |        |     +-- attr-value?   binary
+       |                    |        +-- reject-reason?
+       |                    |              union
+       |                    +--:(adj-rib-in-post)
+       |                    |  +-- adj-rib-in-post
+       |                    |     +-- route
+       |                    |        +-- prefix?
+       |                    |        |     inet:ipv6-prefix
+       |                    |        +-- path-id?
+       |                    |        |     uint32
+       |                    |        +-- attributes
+       |                    |        |  +-- origin?
+       |                    |        |  |     bt:bgp-origin-attr-type
+       |                    |        |  +-- as-path
+       |                    |        |  |  +-- segment*
+       |                    |        |  |     +-- type?
+       |                    |        |  |     |     identityref
+       |                    |        |  |     +-- member*
+       |                    |        |  |           inet:as-number
+       |                    |        |  +-- next-hop?
+       |                    |        |  |     inet:ip-address
+       |                    |        |  +-- link-local-next-hop?
+       |                    |        |  |     inet:ipv6-address
+       |                    |        |  +-- med?
+       |                    |        |  |     uint32
+       |                    |        |  +-- local-pref?
+       |                    |        |  |     uint32
+       |                    |        |  +-- as4-path
+       |                    |        |  |  +-- segment*
+       |                    |        |  |     +-- type?
+       |                    |        |  |     |     identityref
+       |                    |        |  |     +-- member*
+       |                    |        |  |           inet:as-number
+       |                    |        |  +-- aggregator
+       |                    |        |  |  +-- as?
+       |                    |        |  |  |     inet:as-number
+       |                    |        |  |  +-- identifier?
+       |                    |        |  |        yang:dotted-quad
+       |                    |        |  +-- aggregator4
+       |                    |        |  |  +-- as4?
+       |                    |        |  |  |     inet:as-number
+       |                    |        |  |  +-- identifier?
+       |                    |        |  |        yang:dotted-quad
+       |                    |        |  +-- atomic-aggregate?
+       |                    |        |  |     boolean
+       |                    |        |  +-- originator-id?
+       |                    |        |  |     yang:dotted-quad
+       |                    |        |  +-- cluster-list*
+       |                    |        |  |     yang:dotted-quad
+       |                    |        |  +-- aigp-metric?
+       |                    |        |        uint64
+       |                    |        +-- communities*
+       |                    |        |     union
+       |                    |        +-- ext-communities*
+       |                    |        |     bct:bgp-ext-community-type
+       |                    |        +-- ext-communities-raw*
+       |                    |        |     string
+       |                    |        +-- ipv6-ext-communities*
+       |                    |        |     bct:bgp-ipv6-ext-community-type
+       |                    |        +-- ipv6-ext-communities-raw*
+       |                    |        |     string
+       |                    |        +-- large-communities*
+       |                    |        |     bct:bgp-large-community-type
+       |                    |        +-- last-modified?
+       |                    |        |     yang:timeticks
+       |                    |        +-- eligible-route?
+       |                    |        |     boolean
+       |                    |        +-- ineligible-reason?
+       |                    |        |     identityref
+       |                    |        +-- best-path?
+       |                    |        |     boolean
+       |                    |        +-- unknown-attributes
+       |                    |        |  +-- unknown-attribute*
+       |                    |        |        [attr-type]
+       |                    |        |     +-- attr-type     uint8
+       |                    |        |     +-- optional?     boolean
+       |                    |        |     +-- transitive?   boolean
+       |                    |        |     +-- partial?      boolean
+       |                    |        |     +-- extended?     boolean
+       |                    |        |     +-- attr-len?     uint16
+       |                    |        |     +-- attr-value?   binary
+       |                    |        +-- reject-reason?
+       |                    |              union
+       |                    +--:(adj-rib-out-pre)
+       |                    |  +-- adj-rib-out-pre
+       |                    |     +-- route
+       |                    |        +-- prefix?
+       |                    |        |     inet:ipv6-prefix
+       |                    |        +-- path-id?
+       |                    |        |     uint32
+       |                    |        +-- attributes
+       |                    |        |  +-- origin?
+       |                    |        |  |     bt:bgp-origin-attr-type
+       |                    |        |  +-- as-path
+       |                    |        |  |  +-- segment*
+       |                    |        |  |     +-- type?
+       |                    |        |  |     |     identityref
+       |                    |        |  |     +-- member*
+       |                    |        |  |           inet:as-number
+       |                    |        |  +-- next-hop?
+       |                    |        |  |     inet:ip-address
+       |                    |        |  +-- link-local-next-hop?
+       |                    |        |  |     inet:ipv6-address
+       |                    |        |  +-- med?
+       |                    |        |  |     uint32
+       |                    |        |  +-- local-pref?
+       |                    |        |  |     uint32
+       |                    |        |  +-- as4-path
+       |                    |        |  |  +-- segment*
+       |                    |        |  |     +-- type?
+       |                    |        |  |     |     identityref
+       |                    |        |  |     +-- member*
+       |                    |        |  |           inet:as-number
+       |                    |        |  +-- aggregator
+       |                    |        |  |  +-- as?
+       |                    |        |  |  |     inet:as-number
+       |                    |        |  |  +-- identifier?
+       |                    |        |  |        yang:dotted-quad
+       |                    |        |  +-- aggregator4
+       |                    |        |  |  +-- as4?
+       |                    |        |  |  |     inet:as-number
+       |                    |        |  |  +-- identifier?
+       |                    |        |  |        yang:dotted-quad
+       |                    |        |  +-- atomic-aggregate?
+       |                    |        |  |     boolean
+       |                    |        |  +-- originator-id?
+       |                    |        |  |     yang:dotted-quad
+       |                    |        |  +-- cluster-list*
+       |                    |        |  |     yang:dotted-quad
+       |                    |        |  +-- aigp-metric?
+       |                    |        |        uint64
+       |                    |        +-- communities*
+       |                    |        |     union
+       |                    |        +-- ext-communities*
+       |                    |        |     bct:bgp-ext-community-type
+       |                    |        +-- ext-communities-raw*
+       |                    |        |     string
+       |                    |        +-- ipv6-ext-communities*
+       |                    |        |     bct:bgp-ipv6-ext-community-type
+       |                    |        +-- ipv6-ext-communities-raw*
+       |                    |        |     string
+       |                    |        +-- large-communities*
+       |                    |        |     bct:bgp-large-community-type
+       |                    |        +-- last-modified?
+       |                    |        |     yang:timeticks
+       |                    |        +-- eligible-route?
+       |                    |        |     boolean
+       |                    |        +-- ineligible-reason?
+       |                    |        |     identityref
+       |                    |        +-- unknown-attributes
+       |                    |        |  +-- unknown-attribute*
+       |                    |        |        [attr-type]
+       |                    |        |     +-- attr-type     uint8
+       |                    |        |     +-- optional?     boolean
+       |                    |        |     +-- transitive?   boolean
+       |                    |        |     +-- partial?      boolean
+       |                    |        |     +-- extended?     boolean
+       |                    |        |     +-- attr-len?     uint16
+       |                    |        |     +-- attr-value?   binary
+       |                    |        +-- reject-reason?
+       |                    |              union
+       |                    +--:(adj-rib-out-post)
+       |                       +-- adj-rib-out-post
+       |                          +-- route
+       |                             +-- prefix?
+       |                             |     inet:ipv6-prefix
+       |                             +-- path-id?
+       |                             |     uint32
+       |                             +-- attributes
+       |                             |  +-- origin?
+       |                             |  |     bt:bgp-origin-attr-type
+       |                             |  +-- as-path
+       |                             |  |  +-- segment*
+       |                             |  |     +-- type?
+       |                             |  |     |     identityref
+       |                             |  |     +-- member*
+       |                             |  |           inet:as-number
+       |                             |  +-- next-hop?
+       |                             |  |     inet:ip-address
+       |                             |  +-- link-local-next-hop?
+       |                             |  |     inet:ipv6-address
+       |                             |  +-- med?
+       |                             |  |     uint32
+       |                             |  +-- local-pref?
+       |                             |  |     uint32
+       |                             |  +-- as4-path
+       |                             |  |  +-- segment*
+       |                             |  |     +-- type?
+       |                             |  |     |     identityref
+       |                             |  |     +-- member*
+       |                             |  |           inet:as-number
+       |                             |  +-- aggregator
+       |                             |  |  +-- as?
+       |                             |  |  |     inet:as-number
+       |                             |  |  +-- identifier?
+       |                             |  |        yang:dotted-quad
+       |                             |  +-- aggregator4
+       |                             |  |  +-- as4?
+       |                             |  |  |     inet:as-number
+       |                             |  |  +-- identifier?
+       |                             |  |        yang:dotted-quad
+       |                             |  +-- atomic-aggregate?
+       |                             |  |     boolean
+       |                             |  +-- originator-id?
+       |                             |  |     yang:dotted-quad
+       |                             |  +-- cluster-list*
+       |                             |  |     yang:dotted-quad
+       |                             |  +-- aigp-metric?
+       |                             |        uint64
+       |                             +-- communities*
+       |                             |     union
+       |                             +-- ext-communities*
+       |                             |     bct:bgp-ext-community-type
+       |                             +-- ext-communities-raw*
+       |                             |     string
+       |                             +-- ipv6-ext-communities*
+       |                             |     bct:bgp-ipv6-ext-community-type
+       |                             +-- ipv6-ext-communities-raw*
+       |                             |     string
+       |                             +-- large-communities*
+       |                             |     bct:bgp-large-community-type
+       |                             +-- last-modified?
+       |                             |     yang:timeticks
+       |                             +-- eligible-route?
+       |                             |     boolean
+       |                             +-- ineligible-reason?
+       |                             |     identityref
+       |                             +-- unknown-attributes
+       |                             |  +-- unknown-attribute*
+       |                             |        [attr-type]
+       |                             |     +-- attr-type     uint8
+       |                             |     +-- optional?     boolean
+       |                             |     +-- transitive?   boolean
+       |                             |     +-- partial?      boolean
+       |                             |     +-- extended?     boolean
+       |                             |     +-- attr-len?     uint16
+       |                             |     +-- attr-value?   binary
+       |                             +-- reject-reason?
+       |                                   union
+       +--:(statistics-report)
+       |  +-- statistics-report
+       |     +-- peer-type?            peer-type
+       |     +-- peer-flags?           uint8
+       |     +-- peer-distinguisher?   rt-types:route-distinguisher
+       |     +-- peer-address?         inet:ip-address
+       |     +-- peer-as?              uint32
+       |     +-- timestamp?            yang:date-and-time
+       |     +-- statistics-type?      string
+       |     +-- statistics-data?      uint64
+       +--:(peer-down-notification)
+       |  +-- peer-down-notification
+       |     +-- peer-type?            peer-type
+       |     +-- peer-flags?           uint8
+       |     +-- peer-distinguisher?   rt-types:route-distinguisher
+       |     +-- peer-address?         inet:ip-address
+       |     +-- peer-as?              uint32
+       |     +-- timestamp?            yang:date-and-time
+       +--:(peer-up-notification)
+       |  +-- peer-up-notification
+       |     +-- peer-type?            peer-type
+       |     +-- peer-flags?           uint8
+       |     +-- peer-distinguisher?   rt-types:route-distinguisher
+       |     +-- peer-address?         inet:ip-address
+       |     +-- peer-as?              uint32
+       |     +-- timestamp?            yang:date-and-time
+       +--:(initiation-message)
+       |  +-- initiation-message
+       |     +-- string?      string
+       |     +-- sys-descr?   string
+       |     +-- sys-name?    string
+       +--:(termination-message)
+       |  +-- termination-message
+       |     +-- string?   string
+       |     +-- reason?   enumeration
+       +--:(route-mirroring-message)
+          +-- route-mirroring-message
+             +-- peer-type?            peer-type
+             +-- peer-flags?           uint8
+             +-- peer-distinguisher?   rt-types:route-distinguisher
+             +-- peer-address?         inet:ip-address
+             +-- peer-as?              uint32
+             +-- timestamp?            yang:date-and-time
+             +-- afi-safi-type         identityref
+             +-- rib-entry
+             |  +-- (afi-safi)
+             |     +--:(ipv4-unicast)
+             |     |  +-- ipv4-unicast
+             |     |     +-- (rib-type)
+             |     |        +--:(loc-rib)
+             |     |        |  +-- loc-rib
+             |     |        |     +-- route
+             |     |        |        +-- prefix
+             |     |        |        |     inet:ipv4-prefix
+             |     |        |        +-- origin?
+             |     |        |        |     union
+             |     |        |        +-- path-id?
+             |     |        |        |     uint32
+             |     |        |        +-- attributes
+             |     |        |        |  +-- origin?
+             |     |        |        |  |     bt:bgp-origin-attr-type
+             |     |        |        |  +-- as-path
+             |     |        |        |  |  +-- segment*
+             |     |        |        |  |     +-- type?
+             |     |        |        |  |     |     identityref
+             |     |        |        |  |     +-- member*
+             |     |        |        |  |           inet:as-number
+             |     |        |        |  +-- next-hop?
+             |     |        |        |  |     inet:ip-address
+             |     |        |        |  +-- link-local-next-hop?
+             |     |        |        |  |     inet:ipv6-address
+             |     |        |        |  +-- med?
+             |     |        |        |  |     uint32
+             |     |        |        |  +-- local-pref?
+             |     |        |        |  |     uint32
+             |     |        |        |  +-- as4-path
+             |     |        |        |  |  +-- segment*
+             |     |        |        |  |     +-- type?
+             |     |        |        |  |     |     identityref
+             |     |        |        |  |     +-- member*
+             |     |        |        |  |           inet:as-number
+             |     |        |        |  +-- aggregator
+             |     |        |        |  |  +-- as?
+             |     |        |        |  |  |     inet:as-number
+             |     |        |        |  |  +-- identifier?
+             |     |        |        |  |        yang:dotted-quad
+             |     |        |        |  +-- aggregator4
+             |     |        |        |  |  +-- as4?
+             |     |        |        |  |  |     inet:as-number
+             |     |        |        |  |  +-- identifier?
+             |     |        |        |  |        yang:dotted-quad
+             |     |        |        |  +-- atomic-aggregate?
+             |     |        |        |  |     boolean
+             |     |        |        |  +-- originator-id?
+             |     |        |        |  |     yang:dotted-quad
+             |     |        |        |  +-- cluster-list*
+             |     |        |        |  |     yang:dotted-quad
+             |     |        |        |  +-- aigp-metric?
+             |     |        |        |        uint64
+             |     |        |        +-- communities*
+             |     |        |        |     union
+             |     |        |        +-- ext-communities*
+             |     |        |        |     bct:bgp-ext-community-type
+             |     |        |        +-- ext-communities-raw*
+             |     |        |        |     string
+             |     |        |        +-- ipv6-ext-communities*
+             |     |        |        |     bct:bgp-ipv6-ext-community-type
+             |     |        |        +-- ipv6-ext-communities-raw*
+             |     |        |        |     string
+             |     |        |        +-- large-communities*
+             |     |        |        |     bct:bgp-large-community-type
+             |     |        |        +-- last-modified?
+             |     |        |        |     yang:timeticks
+             |     |        |        +-- eligible-route?
+             |     |        |        |     boolean
+             |     |        |        +-- ineligible-reason?
+             |     |        |        |     identityref
+             |     |        |        +-- unknown-attributes
+             |     |        |        |  +-- unknown-attribute*
+             |     |        |        |        [attr-type]
+             |     |        |        |     +-- attr-type     uint8
+             |     |        |        |     +-- optional?     boolean
+             |     |        |        |     +-- transitive?   boolean
+             |     |        |        |     +-- partial?      boolean
+             |     |        |        |     +-- extended?     boolean
+             |     |        |        |     +-- attr-len?     uint16
+             |     |        |        |     +-- attr-value?   binary
+             |     |        |        +-- reject-reason?
+             |     |        |              union
+             |     |        +--:(adj-rib-in-pre)
+             |     |        |  +-- adj-rib-in-pre
+             |     |        |     +-- route
+             |     |        |        +-- prefix?
+             |     |        |        |     inet:ipv4-prefix
+             |     |        |        +-- path-id?
+             |     |        |        |     uint32
+             |     |        |        +-- attributes
+             |     |        |        |  +-- origin?
+             |     |        |        |  |     bt:bgp-origin-attr-type
+             |     |        |        |  +-- as-path
+             |     |        |        |  |  +-- segment*
+             |     |        |        |  |     +-- type?
+             |     |        |        |  |     |     identityref
+             |     |        |        |  |     +-- member*
+             |     |        |        |  |           inet:as-number
+             |     |        |        |  +-- next-hop?
+             |     |        |        |  |     inet:ip-address
+             |     |        |        |  +-- link-local-next-hop?
+             |     |        |        |  |     inet:ipv6-address
+             |     |        |        |  +-- med?
+             |     |        |        |  |     uint32
+             |     |        |        |  +-- local-pref?
+             |     |        |        |  |     uint32
+             |     |        |        |  +-- as4-path
+             |     |        |        |  |  +-- segment*
+             |     |        |        |  |     +-- type?
+             |     |        |        |  |     |     identityref
+             |     |        |        |  |     +-- member*
+             |     |        |        |  |           inet:as-number
+             |     |        |        |  +-- aggregator
+             |     |        |        |  |  +-- as?
+             |     |        |        |  |  |     inet:as-number
+             |     |        |        |  |  +-- identifier?
+             |     |        |        |  |        yang:dotted-quad
+             |     |        |        |  +-- aggregator4
+             |     |        |        |  |  +-- as4?
+             |     |        |        |  |  |     inet:as-number
+             |     |        |        |  |  +-- identifier?
+             |     |        |        |  |        yang:dotted-quad
+             |     |        |        |  +-- atomic-aggregate?
+             |     |        |        |  |     boolean
+             |     |        |        |  +-- originator-id?
+             |     |        |        |  |     yang:dotted-quad
+             |     |        |        |  +-- cluster-list*
+             |     |        |        |  |     yang:dotted-quad
+             |     |        |        |  +-- aigp-metric?
+             |     |        |        |        uint64
+             |     |        |        +-- communities*
+             |     |        |        |     union
+             |     |        |        +-- ext-communities*
+             |     |        |        |     bct:bgp-ext-community-type
+             |     |        |        +-- ext-communities-raw*
+             |     |        |        |     string
+             |     |        |        +-- ipv6-ext-communities*
+             |     |        |        |     bct:bgp-ipv6-ext-community-type
+             |     |        |        +-- ipv6-ext-communities-raw*
+             |     |        |        |     string
+             |     |        |        +-- large-communities*
+             |     |        |        |     bct:bgp-large-community-type
+             |     |        |        +-- last-modified?
+             |     |        |        |     yang:timeticks
+             |     |        |        +-- eligible-route?
+             |     |        |        |     boolean
+             |     |        |        +-- ineligible-reason?
+             |     |        |        |     identityref
+             |     |        |        +-- unknown-attributes
+             |     |        |        |  +-- unknown-attribute*
+             |     |        |        |        [attr-type]
+             |     |        |        |     +-- attr-type     uint8
+             |     |        |        |     +-- optional?     boolean
+             |     |        |        |     +-- transitive?   boolean
+             |     |        |        |     +-- partial?      boolean
+             |     |        |        |     +-- extended?     boolean
+             |     |        |        |     +-- attr-len?     uint16
+             |     |        |        |     +-- attr-value?   binary
+             |     |        |        +-- reject-reason?
+             |     |        |              union
+             |     |        +--:(adj-rib-in-post)
+             |     |        |  +-- adj-rib-in-post
+             |     |        |     +-- route
+             |     |        |        +-- prefix?
+             |     |        |        |     inet:ipv4-prefix
+             |     |        |        +-- path-id?
+             |     |        |        |     uint32
+             |     |        |        +-- attributes
+             |     |        |        |  +-- origin?
+             |     |        |        |  |     bt:bgp-origin-attr-type
+             |     |        |        |  +-- as-path
+             |     |        |        |  |  +-- segment*
+             |     |        |        |  |     +-- type?
+             |     |        |        |  |     |     identityref
+             |     |        |        |  |     +-- member*
+             |     |        |        |  |           inet:as-number
+             |     |        |        |  +-- next-hop?
+             |     |        |        |  |     inet:ip-address
+             |     |        |        |  +-- link-local-next-hop?
+             |     |        |        |  |     inet:ipv6-address
+             |     |        |        |  +-- med?
+             |     |        |        |  |     uint32
+             |     |        |        |  +-- local-pref?
+             |     |        |        |  |     uint32
+             |     |        |        |  +-- as4-path
+             |     |        |        |  |  +-- segment*
+             |     |        |        |  |     +-- type?
+             |     |        |        |  |     |     identityref
+             |     |        |        |  |     +-- member*
+             |     |        |        |  |           inet:as-number
+             |     |        |        |  +-- aggregator
+             |     |        |        |  |  +-- as?
+             |     |        |        |  |  |     inet:as-number
+             |     |        |        |  |  +-- identifier?
+             |     |        |        |  |        yang:dotted-quad
+             |     |        |        |  +-- aggregator4
+             |     |        |        |  |  +-- as4?
+             |     |        |        |  |  |     inet:as-number
+             |     |        |        |  |  +-- identifier?
+             |     |        |        |  |        yang:dotted-quad
+             |     |        |        |  +-- atomic-aggregate?
+             |     |        |        |  |     boolean
+             |     |        |        |  +-- originator-id?
+             |     |        |        |  |     yang:dotted-quad
+             |     |        |        |  +-- cluster-list*
+             |     |        |        |  |     yang:dotted-quad
+             |     |        |        |  +-- aigp-metric?
+             |     |        |        |        uint64
+             |     |        |        +-- communities*
+             |     |        |        |     union
+             |     |        |        +-- ext-communities*
+             |     |        |        |     bct:bgp-ext-community-type
+             |     |        |        +-- ext-communities-raw*
+             |     |        |        |     string
+             |     |        |        +-- ipv6-ext-communities*
+             |     |        |        |     bct:bgp-ipv6-ext-community-type
+             |     |        |        +-- ipv6-ext-communities-raw*
+             |     |        |        |     string
+             |     |        |        +-- large-communities*
+             |     |        |        |     bct:bgp-large-community-type
+             |     |        |        +-- last-modified?
+             |     |        |        |     yang:timeticks
+             |     |        |        +-- eligible-route?
+             |     |        |        |     boolean
+             |     |        |        +-- ineligible-reason?
+             |     |        |        |     identityref
+             |     |        |        +-- best-path?
+             |     |        |        |     boolean
+             |     |        |        +-- unknown-attributes
+             |     |        |        |  +-- unknown-attribute*
+             |     |        |        |        [attr-type]
+             |     |        |        |     +-- attr-type     uint8
+             |     |        |        |     +-- optional?     boolean
+             |     |        |        |     +-- transitive?   boolean
+             |     |        |        |     +-- partial?      boolean
+             |     |        |        |     +-- extended?     boolean
+             |     |        |        |     +-- attr-len?     uint16
+             |     |        |        |     +-- attr-value?   binary
+             |     |        |        +-- reject-reason?
+             |     |        |              union
+             |     |        +--:(adj-rib-out-pre)
+             |     |        |  +-- adj-rib-out-pre
+             |     |        |     +-- route
+             |     |        |        +-- prefix?
+             |     |        |        |     inet:ipv4-prefix
+             |     |        |        +-- path-id?
+             |     |        |        |     uint32
+             |     |        |        +-- attributes
+             |     |        |        |  +-- origin?
+             |     |        |        |  |     bt:bgp-origin-attr-type
+             |     |        |        |  +-- as-path
+             |     |        |        |  |  +-- segment*
+             |     |        |        |  |     +-- type?
+             |     |        |        |  |     |     identityref
+             |     |        |        |  |     +-- member*
+             |     |        |        |  |           inet:as-number
+             |     |        |        |  +-- next-hop?
+             |     |        |        |  |     inet:ip-address
+             |     |        |        |  +-- link-local-next-hop?
+             |     |        |        |  |     inet:ipv6-address
+             |     |        |        |  +-- med?
+             |     |        |        |  |     uint32
+             |     |        |        |  +-- local-pref?
+             |     |        |        |  |     uint32
+             |     |        |        |  +-- as4-path
+             |     |        |        |  |  +-- segment*
+             |     |        |        |  |     +-- type?
+             |     |        |        |  |     |     identityref
+             |     |        |        |  |     +-- member*
+             |     |        |        |  |           inet:as-number
+             |     |        |        |  +-- aggregator
+             |     |        |        |  |  +-- as?
+             |     |        |        |  |  |     inet:as-number
+             |     |        |        |  |  +-- identifier?
+             |     |        |        |  |        yang:dotted-quad
+             |     |        |        |  +-- aggregator4
+             |     |        |        |  |  +-- as4?
+             |     |        |        |  |  |     inet:as-number
+             |     |        |        |  |  +-- identifier?
+             |     |        |        |  |        yang:dotted-quad
+             |     |        |        |  +-- atomic-aggregate?
+             |     |        |        |  |     boolean
+             |     |        |        |  +-- originator-id?
+             |     |        |        |  |     yang:dotted-quad
+             |     |        |        |  +-- cluster-list*
+             |     |        |        |  |     yang:dotted-quad
+             |     |        |        |  +-- aigp-metric?
+             |     |        |        |        uint64
+             |     |        |        +-- communities*
+             |     |        |        |     union
+             |     |        |        +-- ext-communities*
+             |     |        |        |     bct:bgp-ext-community-type
+             |     |        |        +-- ext-communities-raw*
+             |     |        |        |     string
+             |     |        |        +-- ipv6-ext-communities*
+             |     |        |        |     bct:bgp-ipv6-ext-community-type
+             |     |        |        +-- ipv6-ext-communities-raw*
+             |     |        |        |     string
+             |     |        |        +-- large-communities*
+             |     |        |        |     bct:bgp-large-community-type
+             |     |        |        +-- last-modified?
+             |     |        |        |     yang:timeticks
+             |     |        |        +-- eligible-route?
+             |     |        |        |     boolean
+             |     |        |        +-- ineligible-reason?
+             |     |        |        |     identityref
+             |     |        |        +-- unknown-attributes
+             |     |        |        |  +-- unknown-attribute*
+             |     |        |        |        [attr-type]
+             |     |        |        |     +-- attr-type     uint8
+             |     |        |        |     +-- optional?     boolean
+             |     |        |        |     +-- transitive?   boolean
+             |     |        |        |     +-- partial?      boolean
+             |     |        |        |     +-- extended?     boolean
+             |     |        |        |     +-- attr-len?     uint16
+             |     |        |        |     +-- attr-value?   binary
+             |     |        |        +-- reject-reason?
+             |     |        |              union
+             |     |        +--:(adj-rib-out-post)
+             |     |           +-- adj-rib-out-post
+             |     |              +-- route
+             |     |                 +-- prefix?
+             |     |                 |     inet:ipv4-prefix
+             |     |                 +-- path-id?
+             |     |                 |     uint32
+             |     |                 +-- attributes
+             |     |                 |  +-- origin?
+             |     |                 |  |     bt:bgp-origin-attr-type
+             |     |                 |  +-- as-path
+             |     |                 |  |  +-- segment*
+             |     |                 |  |     +-- type?
+             |     |                 |  |     |     identityref
+             |     |                 |  |     +-- member*
+             |     |                 |  |           inet:as-number
+             |     |                 |  +-- next-hop?
+             |     |                 |  |     inet:ip-address
+             |     |                 |  +-- link-local-next-hop?
+             |     |                 |  |     inet:ipv6-address
+             |     |                 |  +-- med?
+             |     |                 |  |     uint32
+             |     |                 |  +-- local-pref?
+             |     |                 |  |     uint32
+             |     |                 |  +-- as4-path
+             |     |                 |  |  +-- segment*
+             |     |                 |  |     +-- type?
+             |     |                 |  |     |     identityref
+             |     |                 |  |     +-- member*
+             |     |                 |  |           inet:as-number
+             |     |                 |  +-- aggregator
+             |     |                 |  |  +-- as?
+             |     |                 |  |  |     inet:as-number
+             |     |                 |  |  +-- identifier?
+             |     |                 |  |        yang:dotted-quad
+             |     |                 |  +-- aggregator4
+             |     |                 |  |  +-- as4?
+             |     |                 |  |  |     inet:as-number
+             |     |                 |  |  +-- identifier?
+             |     |                 |  |        yang:dotted-quad
+             |     |                 |  +-- atomic-aggregate?
+             |     |                 |  |     boolean
+             |     |                 |  +-- originator-id?
+             |     |                 |  |     yang:dotted-quad
+             |     |                 |  +-- cluster-list*
+             |     |                 |  |     yang:dotted-quad
+             |     |                 |  +-- aigp-metric?
+             |     |                 |        uint64
+             |     |                 +-- communities*
+             |     |                 |     union
+             |     |                 +-- ext-communities*
+             |     |                 |     bct:bgp-ext-community-type
+             |     |                 +-- ext-communities-raw*
+             |     |                 |     string
+             |     |                 +-- ipv6-ext-communities*
+             |     |                 |     bct:bgp-ipv6-ext-community-type
+             |     |                 +-- ipv6-ext-communities-raw*
+             |     |                 |     string
+             |     |                 +-- large-communities*
+             |     |                 |     bct:bgp-large-community-type
+             |     |                 +-- last-modified?
+             |     |                 |     yang:timeticks
+             |     |                 +-- eligible-route?
+             |     |                 |     boolean
+             |     |                 +-- ineligible-reason?
+             |     |                 |     identityref
+             |     |                 +-- unknown-attributes
+             |     |                 |  +-- unknown-attribute*
+             |     |                 |        [attr-type]
+             |     |                 |     +-- attr-type     uint8
+             |     |                 |     +-- optional?     boolean
+             |     |                 |     +-- transitive?   boolean
+             |     |                 |     +-- partial?      boolean
+             |     |                 |     +-- extended?     boolean
+             |     |                 |     +-- attr-len?     uint16
+             |     |                 |     +-- attr-value?   binary
+             |     |                 +-- reject-reason?
+             |     |                       union
+             |     +--:(ipv6-unicast)
+             |        +-- ipv6-unicast
+             |           +-- (rib-type)
+             |              +--:(loc-rib)
+             |              |  +-- loc-rib
+             |              |     +-- route
+             |              |        +-- prefix
+             |              |        |     inet:ipv6-prefix
+             |              |        +-- origin?
+             |              |        |     union
+             |              |        +-- path-id?
+             |              |        |     uint32
+             |              |        +-- attributes
+             |              |        |  +-- origin?
+             |              |        |  |     bt:bgp-origin-attr-type
+             |              |        |  +-- as-path
+             |              |        |  |  +-- segment*
+             |              |        |  |     +-- type?
+             |              |        |  |     |     identityref
+             |              |        |  |     +-- member*
+             |              |        |  |           inet:as-number
+             |              |        |  +-- next-hop?
+             |              |        |  |     inet:ip-address
+             |              |        |  +-- link-local-next-hop?
+             |              |        |  |     inet:ipv6-address
+             |              |        |  +-- med?
+             |              |        |  |     uint32
+             |              |        |  +-- local-pref?
+             |              |        |  |     uint32
+             |              |        |  +-- as4-path
+             |              |        |  |  +-- segment*
+             |              |        |  |     +-- type?
+             |              |        |  |     |     identityref
+             |              |        |  |     +-- member*
+             |              |        |  |           inet:as-number
+             |              |        |  +-- aggregator
+             |              |        |  |  +-- as?
+             |              |        |  |  |     inet:as-number
+             |              |        |  |  +-- identifier?
+             |              |        |  |        yang:dotted-quad
+             |              |        |  +-- aggregator4
+             |              |        |  |  +-- as4?
+             |              |        |  |  |     inet:as-number
+             |              |        |  |  +-- identifier?
+             |              |        |  |        yang:dotted-quad
+             |              |        |  +-- atomic-aggregate?
+             |              |        |  |     boolean
+             |              |        |  +-- originator-id?
+             |              |        |  |     yang:dotted-quad
+             |              |        |  +-- cluster-list*
+             |              |        |  |     yang:dotted-quad
+             |              |        |  +-- aigp-metric?
+             |              |        |        uint64
+             |              |        +-- communities*
+             |              |        |     union
+             |              |        +-- ext-communities*
+             |              |        |     bct:bgp-ext-community-type
+             |              |        +-- ext-communities-raw*
+             |              |        |     string
+             |              |        +-- ipv6-ext-communities*
+             |              |        |     bct:bgp-ipv6-ext-community-type
+             |              |        +-- ipv6-ext-communities-raw*
+             |              |        |     string
+             |              |        +-- large-communities*
+             |              |        |     bct:bgp-large-community-type
+             |              |        +-- last-modified?
+             |              |        |     yang:timeticks
+             |              |        +-- eligible-route?
+             |              |        |     boolean
+             |              |        +-- ineligible-reason?
+             |              |        |     identityref
+             |              |        +-- unknown-attributes
+             |              |        |  +-- unknown-attribute*
+             |              |        |        [attr-type]
+             |              |        |     +-- attr-type     uint8
+             |              |        |     +-- optional?     boolean
+             |              |        |     +-- transitive?   boolean
+             |              |        |     +-- partial?      boolean
+             |              |        |     +-- extended?     boolean
+             |              |        |     +-- attr-len?     uint16
+             |              |        |     +-- attr-value?   binary
+             |              |        +-- reject-reason?
+             |              |              union
+             |              +--:(adj-rib-in-pre)
+             |              |  +-- adj-rib-in-pre
+             |              |     +-- route
+             |              |        +-- prefix?
+             |              |        |     inet:ipv6-prefix
+             |              |        +-- path-id?
+             |              |        |     uint32
+             |              |        +-- attributes
+             |              |        |  +-- origin?
+             |              |        |  |     bt:bgp-origin-attr-type
+             |              |        |  +-- as-path
+             |              |        |  |  +-- segment*
+             |              |        |  |     +-- type?
+             |              |        |  |     |     identityref
+             |              |        |  |     +-- member*
+             |              |        |  |           inet:as-number
+             |              |        |  +-- next-hop?
+             |              |        |  |     inet:ip-address
+             |              |        |  +-- link-local-next-hop?
+             |              |        |  |     inet:ipv6-address
+             |              |        |  +-- med?
+             |              |        |  |     uint32
+             |              |        |  +-- local-pref?
+             |              |        |  |     uint32
+             |              |        |  +-- as4-path
+             |              |        |  |  +-- segment*
+             |              |        |  |     +-- type?
+             |              |        |  |     |     identityref
+             |              |        |  |     +-- member*
+             |              |        |  |           inet:as-number
+             |              |        |  +-- aggregator
+             |              |        |  |  +-- as?
+             |              |        |  |  |     inet:as-number
+             |              |        |  |  +-- identifier?
+             |              |        |  |        yang:dotted-quad
+             |              |        |  +-- aggregator4
+             |              |        |  |  +-- as4?
+             |              |        |  |  |     inet:as-number
+             |              |        |  |  +-- identifier?
+             |              |        |  |        yang:dotted-quad
+             |              |        |  +-- atomic-aggregate?
+             |              |        |  |     boolean
+             |              |        |  +-- originator-id?
+             |              |        |  |     yang:dotted-quad
+             |              |        |  +-- cluster-list*
+             |              |        |  |     yang:dotted-quad
+             |              |        |  +-- aigp-metric?
+             |              |        |        uint64
+             |              |        +-- communities*
+             |              |        |     union
+             |              |        +-- ext-communities*
+             |              |        |     bct:bgp-ext-community-type
+             |              |        +-- ext-communities-raw*
+             |              |        |     string
+             |              |        +-- ipv6-ext-communities*
+             |              |        |     bct:bgp-ipv6-ext-community-type
+             |              |        +-- ipv6-ext-communities-raw*
+             |              |        |     string
+             |              |        +-- large-communities*
+             |              |        |     bct:bgp-large-community-type
+             |              |        +-- last-modified?
+             |              |        |     yang:timeticks
+             |              |        +-- eligible-route?
+             |              |        |     boolean
+             |              |        +-- ineligible-reason?
+             |              |        |     identityref
+             |              |        +-- unknown-attributes
+             |              |        |  +-- unknown-attribute*
+             |              |        |        [attr-type]
+             |              |        |     +-- attr-type     uint8
+             |              |        |     +-- optional?     boolean
+             |              |        |     +-- transitive?   boolean
+             |              |        |     +-- partial?      boolean
+             |              |        |     +-- extended?     boolean
+             |              |        |     +-- attr-len?     uint16
+             |              |        |     +-- attr-value?   binary
+             |              |        +-- reject-reason?
+             |              |              union
+             |              +--:(adj-rib-in-post)
+             |              |  +-- adj-rib-in-post
+             |              |     +-- route
+             |              |        +-- prefix?
+             |              |        |     inet:ipv6-prefix
+             |              |        +-- path-id?
+             |              |        |     uint32
+             |              |        +-- attributes
+             |              |        |  +-- origin?
+             |              |        |  |     bt:bgp-origin-attr-type
+             |              |        |  +-- as-path
+             |              |        |  |  +-- segment*
+             |              |        |  |     +-- type?
+             |              |        |  |     |     identityref
+             |              |        |  |     +-- member*
+             |              |        |  |           inet:as-number
+             |              |        |  +-- next-hop?
+             |              |        |  |     inet:ip-address
+             |              |        |  +-- link-local-next-hop?
+             |              |        |  |     inet:ipv6-address
+             |              |        |  +-- med?
+             |              |        |  |     uint32
+             |              |        |  +-- local-pref?
+             |              |        |  |     uint32
+             |              |        |  +-- as4-path
+             |              |        |  |  +-- segment*
+             |              |        |  |     +-- type?
+             |              |        |  |     |     identityref
+             |              |        |  |     +-- member*
+             |              |        |  |           inet:as-number
+             |              |        |  +-- aggregator
+             |              |        |  |  +-- as?
+             |              |        |  |  |     inet:as-number
+             |              |        |  |  +-- identifier?
+             |              |        |  |        yang:dotted-quad
+             |              |        |  +-- aggregator4
+             |              |        |  |  +-- as4?
+             |              |        |  |  |     inet:as-number
+             |              |        |  |  +-- identifier?
+             |              |        |  |        yang:dotted-quad
+             |              |        |  +-- atomic-aggregate?
+             |              |        |  |     boolean
+             |              |        |  +-- originator-id?
+             |              |        |  |     yang:dotted-quad
+             |              |        |  +-- cluster-list*
+             |              |        |  |     yang:dotted-quad
+             |              |        |  +-- aigp-metric?
+             |              |        |        uint64
+             |              |        +-- communities*
+             |              |        |     union
+             |              |        +-- ext-communities*
+             |              |        |     bct:bgp-ext-community-type
+             |              |        +-- ext-communities-raw*
+             |              |        |     string
+             |              |        +-- ipv6-ext-communities*
+             |              |        |     bct:bgp-ipv6-ext-community-type
+             |              |        +-- ipv6-ext-communities-raw*
+             |              |        |     string
+             |              |        +-- large-communities*
+             |              |        |     bct:bgp-large-community-type
+             |              |        +-- last-modified?
+             |              |        |     yang:timeticks
+             |              |        +-- eligible-route?
+             |              |        |     boolean
+             |              |        +-- ineligible-reason?
+             |              |        |     identityref
+             |              |        +-- best-path?
+             |              |        |     boolean
+             |              |        +-- unknown-attributes
+             |              |        |  +-- unknown-attribute*
+             |              |        |        [attr-type]
+             |              |        |     +-- attr-type     uint8
+             |              |        |     +-- optional?     boolean
+             |              |        |     +-- transitive?   boolean
+             |              |        |     +-- partial?      boolean
+             |              |        |     +-- extended?     boolean
+             |              |        |     +-- attr-len?     uint16
+             |              |        |     +-- attr-value?   binary
+             |              |        +-- reject-reason?
+             |              |              union
+             |              +--:(adj-rib-out-pre)
+             |              |  +-- adj-rib-out-pre
+             |              |     +-- route
+             |              |        +-- prefix?
+             |              |        |     inet:ipv6-prefix
+             |              |        +-- path-id?
+             |              |        |     uint32
+             |              |        +-- attributes
+             |              |        |  +-- origin?
+             |              |        |  |     bt:bgp-origin-attr-type
+             |              |        |  +-- as-path
+             |              |        |  |  +-- segment*
+             |              |        |  |     +-- type?
+             |              |        |  |     |     identityref
+             |              |        |  |     +-- member*
+             |              |        |  |           inet:as-number
+             |              |        |  +-- next-hop?
+             |              |        |  |     inet:ip-address
+             |              |        |  +-- link-local-next-hop?
+             |              |        |  |     inet:ipv6-address
+             |              |        |  +-- med?
+             |              |        |  |     uint32
+             |              |        |  +-- local-pref?
+             |              |        |  |     uint32
+             |              |        |  +-- as4-path
+             |              |        |  |  +-- segment*
+             |              |        |  |     +-- type?
+             |              |        |  |     |     identityref
+             |              |        |  |     +-- member*
+             |              |        |  |           inet:as-number
+             |              |        |  +-- aggregator
+             |              |        |  |  +-- as?
+             |              |        |  |  |     inet:as-number
+             |              |        |  |  +-- identifier?
+             |              |        |  |        yang:dotted-quad
+             |              |        |  +-- aggregator4
+             |              |        |  |  +-- as4?
+             |              |        |  |  |     inet:as-number
+             |              |        |  |  +-- identifier?
+             |              |        |  |        yang:dotted-quad
+             |              |        |  +-- atomic-aggregate?
+             |              |        |  |     boolean
+             |              |        |  +-- originator-id?
+             |              |        |  |     yang:dotted-quad
+             |              |        |  +-- cluster-list*
+             |              |        |  |     yang:dotted-quad
+             |              |        |  +-- aigp-metric?
+             |              |        |        uint64
+             |              |        +-- communities*
+             |              |        |     union
+             |              |        +-- ext-communities*
+             |              |        |     bct:bgp-ext-community-type
+             |              |        +-- ext-communities-raw*
+             |              |        |     string
+             |              |        +-- ipv6-ext-communities*
+             |              |        |     bct:bgp-ipv6-ext-community-type
+             |              |        +-- ipv6-ext-communities-raw*
+             |              |        |     string
+             |              |        +-- large-communities*
+             |              |        |     bct:bgp-large-community-type
+             |              |        +-- last-modified?
+             |              |        |     yang:timeticks
+             |              |        +-- eligible-route?
+             |              |        |     boolean
+             |              |        +-- ineligible-reason?
+             |              |        |     identityref
+             |              |        +-- unknown-attributes
+             |              |        |  +-- unknown-attribute*
+             |              |        |        [attr-type]
+             |              |        |     +-- attr-type     uint8
+             |              |        |     +-- optional?     boolean
+             |              |        |     +-- transitive?   boolean
+             |              |        |     +-- partial?      boolean
+             |              |        |     +-- extended?     boolean
+             |              |        |     +-- attr-len?     uint16
+             |              |        |     +-- attr-value?   binary
+             |              |        +-- reject-reason?
+             |              |              union
+             |              +--:(adj-rib-out-post)
+             |                 +-- adj-rib-out-post
+             |                    +-- route
+             |                       +-- prefix?
+             |                       |     inet:ipv6-prefix
+             |                       +-- path-id?
+             |                       |     uint32
+             |                       +-- attributes
+             |                       |  +-- origin?
+             |                       |  |     bt:bgp-origin-attr-type
+             |                       |  +-- as-path
+             |                       |  |  +-- segment*
+             |                       |  |     +-- type?
+             |                       |  |     |     identityref
+             |                       |  |     +-- member*
+             |                       |  |           inet:as-number
+             |                       |  +-- next-hop?
+             |                       |  |     inet:ip-address
+             |                       |  +-- link-local-next-hop?
+             |                       |  |     inet:ipv6-address
+             |                       |  +-- med?
+             |                       |  |     uint32
+             |                       |  +-- local-pref?
+             |                       |  |     uint32
+             |                       |  +-- as4-path
+             |                       |  |  +-- segment*
+             |                       |  |     +-- type?
+             |                       |  |     |     identityref
+             |                       |  |     +-- member*
+             |                       |  |           inet:as-number
+             |                       |  +-- aggregator
+             |                       |  |  +-- as?
+             |                       |  |  |     inet:as-number
+             |                       |  |  +-- identifier?
+             |                       |  |        yang:dotted-quad
+             |                       |  +-- aggregator4
+             |                       |  |  +-- as4?
+             |                       |  |  |     inet:as-number
+             |                       |  |  +-- identifier?
+             |                       |  |        yang:dotted-quad
+             |                       |  +-- atomic-aggregate?
+             |                       |  |     boolean
+             |                       |  +-- originator-id?
+             |                       |  |     yang:dotted-quad
+             |                       |  +-- cluster-list*
+             |                       |  |     yang:dotted-quad
+             |                       |  +-- aigp-metric?
+             |                       |        uint64
+             |                       +-- communities*
+             |                       |     union
+             |                       +-- ext-communities*
+             |                       |     bct:bgp-ext-community-type
+             |                       +-- ext-communities-raw*
+             |                       |     string
+             |                       +-- ipv6-ext-communities*
+             |                       |     bct:bgp-ipv6-ext-community-type
+             |                       +-- ipv6-ext-communities-raw*
+             |                       |     string
+             |                       +-- large-communities*
+             |                       |     bct:bgp-large-community-type
+             |                       +-- last-modified?
+             |                       |     yang:timeticks
+             |                       +-- eligible-route?
+             |                       |     boolean
+             |                       +-- ineligible-reason?
+             |                       |     identityref
+             |                       +-- unknown-attributes
+             |                       |  +-- unknown-attribute*
+             |                       |        [attr-type]
+             |                       |     +-- attr-type     uint8
+             |                       |     +-- optional?     boolean
+             |                       |     +-- transitive?   boolean
+             |                       |     +-- partial?      boolean
+             |                       |     +-- extended?     boolean
+             |                       |     +-- attr-len?     uint16
+             |                       |     +-- attr-value?   binary
+             |                       +-- reject-reason?
+             |                             union
+             +-- information?          enumeration
+]]>
 </sourcecode>
       </figure>
 
@@ -262,7 +1977,347 @@
         title="BMP YANG 'ietf-bmp-telemetry-message' module.">
         <sourcecode name="ietf-bmp-telemetry-message@2026-02-04.yang"
           type="yang" markers="true">
-<xi:include href="yang/ietf-bmp-telemetry-message@2026-02-04.yang" parse="text" />
+<![CDATA[
+module ietf-bmp-telemetry-message {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message";
+  prefix bmptm;
+
+  import ietf-telemetry-message {
+    prefix tm;
+    reference
+      "draft-netana-nmop-message-broker-telemetry-message: Extensible
+       YANG Model for Network Telemetry Messages";
+  }
+  import ietf-inet-types {
+    prefix inet;
+    reference
+      "RFC 9911: Common YANG Data Types";
+  }
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 9911: Common YANG Data Types";
+  }
+  import ietf-routing-types {
+    prefix rt-types;
+    reference
+      "RFC 8294: Common YANG Data Types for the Routing Area.";
+  }
+  import ietf-yang-structure-ext {
+    prefix sx;
+    reference
+      "RFC 8791: YANG Data Structure Extensions";
+  }
+  include ietf-bmp-bgp-rib-entry {
+    revision-date 2026-02-04;
+  }
+  include ietf-bmp-bgp-rib-tables {
+    revision-date 2026-02-04;
+  }
+  include ietf-bmp-bgp-rib-attributes {
+    revision-date 2026-02-04;
+  }
+
+  organization
+    "IETF Draft";
+  contact
+    "Author:    Thomas Graf
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>
+                Leonardo Rodoni
+                <mailto:leonardo.rodoni@swisscom.com>";
+
+  description
+    "Adds BMP specific subscription metadata to the data collection
+     protocol provenance of the ietf-telemetry-message envelope.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
+     'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
+     'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
+     are to be interpreted as described in BCP 14 (RFC 2119)
+     (RFC 8174) when, and only when, they appear in all
+     capitals, as shown here.
+
+     Copyright (c) 2026 IETF Trust and the persons identified as
+       authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or without
+     modification, is permitted pursuant to, and subject to the license
+     terms contained in, the Revised BSD License set forth in Section
+     4.c of the IETF Trust's Legal Provisions Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX; see the RFC
+     itself for full legal notices.";
+
+  revision 2026-02-04 {
+    description
+      "Initial revision.";
+    reference
+      "RFC XXXX";
+  }
+
+  typedef peer-type {
+    type enumeration {
+      enum global-instance-peer {
+        value 0;
+        description
+          "Global Instance Peer";
+        reference
+          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+      }
+      enum rd-instance-peer {
+        value 1;
+        description
+          "RD Instance Peer";
+        reference
+          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+      }
+      enum local-instance-peer {
+        value 2;
+        description
+          "Local Instance Peer";
+        reference
+          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+      }
+      enum loc-rib-instance-peer {
+        value 3;
+        description
+          "Loc-RIB Instance Peer";
+        reference
+          "RFC 9069: Support for Local RIB in the BGP Monitoring Protocol (BMP)";
+      }
+    }
+    description
+      "BMP Peer Type.";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+  }
+
+  grouping per-peer {
+    description
+      "BMP per-peer header.";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+    leaf peer-type {
+      type peer-type;
+      description
+        "BMP peer type from per-peer header.";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+    }
+    leaf peer-flags {
+      type uint8;
+      description
+        "BMP peer flags from per-peer header.";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+    }
+    leaf peer-distinguisher {
+      type rt-types:route-distinguisher;
+      description
+        "BMP peer distinguisher from per-peer header.";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.
+         The routing instance on which the encapsulated PDU was
+         received.";
+    }
+    leaf peer-address {
+      type inet:ip-address;
+      description
+        "BMP peer IP address from per-peer header.";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2. The
+         remote IP address associated with the TCP session over which
+         the encapsulated PDU was received.";
+    }
+    leaf peer-as {
+      type uint32;
+      description
+        "BMP peer autonomous system number from per-peer header. The
+         Autonomous System number of the peer from which the
+         encapsulated PDU was received.";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+    }
+    leaf timestamp {
+      type yang:date-and-time;
+      description
+        "BMP timestamp from per-peer header. The time when the
+         encapsulated routes were received (one may also think of this
+         as the time when they were installed in the Adj-RIB-In).";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+    }
+  }
+
+  grouping information {
+    description
+      "BMP Information.";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.4.";
+    leaf string {
+      type string {
+        length "1..65535";
+      }
+      description
+        "BMP string type. The Information field contains a free-form
+         UTF-8 string.";
+    }
+    leaf sys-descr {
+      type string {
+        length "1..65535";
+      }
+      description
+        "BMP sysDescr type. The Information field contains an ASCII
+         string whose value MUST be set to be equal to the value of the
+         sysDescr MIB-II RFC 1213 object.";
+    }
+    leaf sys-name {
+      type string {
+        length "1..65535";
+      }
+      description
+        "BMP sysName type. The Information field contains an ASCII
+         string whose value MUST be set to be equal to the value of the
+         sysName MIB-II RFC 1213 object.";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+    }
+  }
+
+  grouping termination {
+    description
+      "BMP Termination.";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.5.";
+    leaf string {
+      type string {
+        length "1..65535";
+      }
+      description
+        "BMP string type. The Information field contains a free-form
+         UTF-8 string.";
+    }
+    leaf reason {
+      type enumeration {
+        enum administratively-closed {
+          value 0;
+        }
+        enum unspecified {
+          value 1;
+        }
+        enum out-of-resources {
+          value 2;
+        }
+        enum redundant-connection {
+          value 3;
+        }
+        enum permanently-administratively-closed {
+          value 4;
+        }
+      }
+    }
+  }
+
+  grouping mirroring {
+    description
+      "BMP Mirroring.";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.7.";
+    leaf information {
+      type enumeration {
+        enum error-pdu {
+          value 0;
+        }
+        enum message-lost {
+          value 1;
+        }
+      }
+    }
+  }
+
+  grouping statistics {
+    description
+      "BMP Statistics.";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.8.";
+    leaf statistics-type {
+      type string {
+      }
+      description
+        "BMP statistics type. Defines the type of the statistic carried
+         in the Stat Data field.";
+    }
+    leaf statistics-data {
+      type uint64;
+      description
+        "BMP statistics data. Defines the value of the statistic.";
+    }
+  }
+
+  sx:structure message {
+    description
+      "Augments telemetry-message-metadata with BMP specific
+       subscription metadata";
+
+    leaf version {
+      type uint8;
+      description
+        "BMP version from common header.";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.1.";
+    }
+    choice message-type {
+      description
+        "BMP message type from common header.";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.1.";
+      case route-monitoring {
+        container route-monitoring {
+          uses per-peer;
+          uses rib-entry;
+        }
+      }
+      case statistics-report {
+        container statistics-report {
+          uses per-peer;
+          uses statistics;
+        }
+      }
+      case peer-down-notification {
+        container peer-down-notification {
+          uses per-peer;
+        }
+      }
+      case peer-up-notification {
+        container peer-up-notification {
+          uses per-peer;
+        }
+      }
+      case initiation-message {
+        container initiation-message {
+          uses information;
+        }
+      }
+      case termination-message {
+        container termination-message {
+          uses termination;
+        }
+      }
+      case route-mirroring-message {
+        container route-mirroring-message {
+          uses per-peer;
+          uses rib-entry;
+          uses mirroring;
+        }
+      }
+    }
+  }
+}
+]]>
 </sourcecode>
       </figure>
 
@@ -274,7 +2329,9 @@
           title="BMP YANG 'ietf-bmp-bgp-rib-entry' submodule.">
           <sourcecode name="ietf-bmp-bgp-rib-entry@2026-02-04.yang"
             type="yang" markers="true">
-<xi:include href="yang/ietf-bmp-bgp-rib-entry@2026-02-04.yang" parse="text" />
+<![CDATA[
+
+]]>
 </sourcecode>
         </figure>
 
@@ -283,7 +2340,303 @@
           title="BMP YANG 'ietf-bmp-bgp-rib-tables' submodule.">
           <sourcecode name="ietf-bmp-bgp-rib-tables@2026-02-04.yang"
             type="yang" markers="true">
-<xi:include href="yang/ietf-bmp-bgp-rib-tables@2026-02-04.yang" parse="text" />
+<![CDATA[
+submodule ietf-bmp-bgp-rib-tables {
+  yang-version 1.1;
+  belongs-to ietf-bmp-telemetry-message {
+    prefix bmptm;
+  }
+
+  // import some basic types
+  import ietf-inet-types {
+    prefix inet;
+    reference
+      "RFC 6991: Common YANG Data Types.";
+  }
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 6991: Common YANG Data Types.";
+  }
+  import ietf-routing {
+    prefix rt;
+    reference
+      "RFC 8022: A YANG Data Model for Routing Management.";
+  }
+  import iana-bgp-rib-types {
+    prefix brt;
+    reference
+      "RFC XXXX: YANG module for Border Gateway Protocol (BGP-4).";
+  }
+
+  organization
+    "IETF Draft";
+  contact
+    "Author:    Thomas Graf
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>
+                Leonardo Rodoni
+                <mailto:leonardo.rodoni@swisscom.com>";
+
+  description
+    "This submodule contains structural data definitions for
+     BGP routing tables.
+
+     Copyright (c) 2026 IETF Trust and the persons identified as
+     authors of the code. All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
+     for full legal notices.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+
+  revision 2026-02-04 {
+    description
+      "Initial Version";
+    reference
+      "RFC XXXX";
+  }
+
+  grouping bgp-common-route-annotations-state {
+    description
+      "Data definitions for flags and other information attached
+       to routes in both LOC-RIB and Adj-RIB";
+    leaf last-modified {
+      type yang:timeticks;
+      description
+        "Timestamp when this path was last modified.
+
+         The value is the timestamp in seconds relative to
+         the Unix Epoch (Jan 1, 1970 00:00:00 UTC).";
+    }
+    leaf eligible-route {
+      type boolean;
+      description
+        "Indicates that the route is eligible for selection for the
+         best route in the Loc-Rib in BGP's Decision Process.";
+      reference
+        "RFC 4271: A Border Gateway Protocol 4 (BGP-4),
+         Section 9.1.";
+    }
+    leaf ineligible-reason {
+      type identityref {
+        base brt:ineligible-route-reason;
+      }
+      description
+        "If the route is ineligible for selection for the best route
+         in the Loc-Rib in BGP's Decision process, this indicates the
+         reason.";
+      reference
+        "RFC 4271: A Border Gateway Protocol 4 (BGP-4),
+         Section 9.1.";
+    }
+  }
+
+  grouping bgp-adj-rib-in-post-route-annotations-state {
+    description
+      "Data definitions for information attached to routes in the
+       Adj-RIB-In post-policy table";
+    leaf best-path {
+      type boolean;
+      default "false";
+      description
+        "Current path was selected as the best path. Best path
+         should indicate that the route is present in BGP Loc-RIB.";
+    }
+  }
+
+  grouping rib-ext-route-annotations {
+    description
+      "Extended annotations for routes in the routing tables";
+    leaf reject-reason {
+      type union {
+        type identityref {
+          base brt:bgp-not-selected-bestpath;
+        }
+        type identityref {
+          base brt:bgp-not-selected-policy;
+        }
+      }
+      description
+        "Indicates the reason the route is not used, either due to
+         policy filtering or bestpath selection";
+    }
+  }
+
+  grouping bgp-loc-rib-common-keys {
+    description
+      "Common references used in keys for IPv4 and IPv6
+       Loc-RIB entries.";
+    leaf origin {
+      type union {
+        type inet:ip-address;
+        type identityref {
+          base rt:routing-protocol;
+        }
+      }
+      description
+        "Indicates the origin of the route. If the route is learned
+         from a neighbor, this value is the neighbor address. If
+         the route was injected or redistributed from another
+         protocol, the origin indicates the source protocol for the
+         route.";
+    }
+    leaf path-id {
+      type uint32;
+      description
+        "If the route is learned from a neighbor, the path-id
+         corresponds to the path-id for the route in the
+         corresponding adj-rib-in-post table. If the route is
+         injected from another protocol, or the neighbor does not
+         support BGP add-paths, the path-id should be set
+         to zero, also the default value.
+
+         However, YANG does not allow default values to be set
+         for parameters that form the key, so a default value
+         cannot be set here.";
+    }
+  }
+
+  grouping ipv4-loc-rib-common {
+    description
+      "Common structural grouping for the IPv4 Loc-RIB table.";
+    container route {
+      config false;
+      description
+        "A single route entry in the Loc-RIB.";
+      leaf prefix {
+        type inet:ipv4-prefix;
+        mandatory true;
+        description
+          "The IPv4 prefix corresponding to the route.";
+      }
+      uses bgp-loc-rib-common-keys;
+      uses bgp-common-route-attributes;
+      uses bgp-common-route-annotations-state;
+      uses bgp-unknown-attr-top;
+      uses rib-ext-route-annotations;
+    }
+  }
+
+  grouping ipv6-loc-rib-common {
+    description
+      "Common structural grouping for the IPv6 Loc-RIB table.";
+    container route {
+      config false;
+      description
+        "A single route entry in the Loc-RIB.";
+      leaf prefix {
+        type inet:ipv6-prefix;
+        mandatory true;
+        description
+          "The IPv6 prefix corresponding to the route.";
+      }
+      uses bgp-loc-rib-common-keys;
+      uses bgp-common-route-attributes;
+      uses bgp-common-route-annotations-state;
+      uses bgp-unknown-attr-top;
+      uses rib-ext-route-annotations;
+    }
+  }
+
+  grouping ipv4-adj-rib-common {
+    description
+      "Common structural grouping for each IPv4 Adj-RIB table.";
+    container route {
+      config false;
+      description
+        "A single route entry in the IPv4 Adj-RIB table.";
+      leaf prefix {
+        type inet:ipv4-prefix;
+        description
+          "The IPv4 prefix corresponding to the route.";
+      }
+      uses bgp-adj-rib-attr-state;
+      uses bgp-common-route-attributes;
+      uses bgp-common-route-annotations-state;
+      uses bgp-unknown-attr-top;
+      uses rib-ext-route-annotations;
+    }
+  }
+
+  grouping ipv4-adj-rib-in-post {
+    description
+      "Common structural grouping for the IPv4 Adj-RIB-In
+       post-policy table.";
+    container route {
+      config false;
+      description
+        "A single route entry in the IPv4 Adj-RIB-In post-policy table.";
+      leaf prefix {
+        type inet:ipv4-prefix;
+        description
+          "The IPv4 prefix corresponding to the route.";
+      }
+      uses bgp-adj-rib-attr-state;
+      uses bgp-common-route-attributes;
+      uses bgp-common-route-annotations-state;
+      uses bgp-adj-rib-in-post-route-annotations-state;
+      uses bgp-unknown-attr-top;
+      uses rib-ext-route-annotations;
+    }
+  }
+
+  grouping ipv6-adj-rib-common {
+    description
+      "Common structural grouping for each IPv6 Adj-RIB table.";
+    container route {
+      config false;
+      description
+        "A single route entry in the IPv6 Adj-RIB table.";
+      leaf prefix {
+        type inet:ipv6-prefix;
+        description
+          "The IPv6 prefix corresponding to the route.";
+      }
+      uses bgp-adj-rib-attr-state;
+      uses bgp-common-route-attributes;
+      uses bgp-common-route-annotations-state;
+      uses bgp-unknown-attr-top;
+      uses rib-ext-route-annotations;
+    }
+  }
+
+  grouping ipv6-adj-rib-in-post {
+    description
+      "Common structural grouping for the IPv6 Adj-RIB-In
+       post-policy table.";
+    container route {
+      config false;
+      description
+        "A single route entry in the IPv6 Adj-RIB-In post-policy table.";
+      leaf prefix {
+        type inet:ipv6-prefix;
+        description
+          "The IPv6 prefix corresponding to the route.";
+      }
+      uses bgp-adj-rib-attr-state;
+      uses bgp-common-route-attributes;
+      uses bgp-common-route-annotations-state;
+      uses bgp-adj-rib-in-post-route-annotations-state;
+      uses bgp-unknown-attr-top;
+      uses rib-ext-route-annotations;
+    }
+  }
+}
+]]>
 </sourcecode>
         </figure>
 
@@ -292,7 +2645,513 @@
           title="BMP YANG 'ietf-bmp-bgp-rib-attributes' submodule.">
           <sourcecode name="ietf-bmp-bgp-rib-attributes@2026-02-04.yang"
             type="yang" markers="true">
-<xi:include href="yang/ietf-bmp-bgp-rib-attributes@2026-02-04.yang" parse="text" />
+<![CDATA[
+submodule ietf-bmp-bgp-rib-attributes {
+  yang-version 1.1;
+  belongs-to ietf-bmp-telemetry-message {
+    prefix bmptm;
+  }
+
+  // import some basic types
+  import iana-bgp-types {
+    prefix bt;
+    reference
+      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+  }
+  import iana-bgp-community-types {
+    prefix bct;
+    reference
+      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+  }
+  import ietf-inet-types {
+    prefix inet;
+    reference
+      "RFC 6991: Common YANG Data Types.";
+  }
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 6991: Common YANG Types.";
+  }
+
+  // meta
+  organization
+    "IETF Draft";
+  contact
+    "Author:    Thomas Graf
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>
+                Leonardo Rodoni
+                <mailto:leonardo.rodoni@swisscom.com>";
+
+  description
+    "This submodule contains common data definitions for BGP
+     attributes for use in BGP RIB tables.
+
+     Copyright (c) 2026 IETF Trust and the persons identified as
+     authors of the code. All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
+     for full legal notices.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+
+  revision 2026-02-04 {
+    description
+      "Initial version";
+    reference
+      "RFC XXXX";
+  }
+
+  grouping bgp-common-route-attributes {
+    description
+      "BGP path attributes and communities.";
+    uses bgp-path-attributes;
+    uses bgp-community-attr-state;
+    uses ext-community-attributes;
+    uses ipv6-ext-community-attributes;
+    uses large-community-attributes;
+  }
+
+  grouping bgp-path-attributes {
+    description
+      "A grouping for all BGP Path Attribute parameters.";
+
+    container attributes {
+      description
+        "A container for attribute parameters.";
+      leaf origin {
+        type bt:bgp-origin-attr-type;
+        description
+          "BGP attribute defining the origin of the path
+           information.";
+        reference
+          "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+           5.1.1.";
+      }
+      container as-path {
+        description
+          "Enclosing container for the list of AS path segments.
+
+           In the Adj-RIB-In or Adj-RIB-Out, this list should show
+           the received or sent AS_PATH, respectively.  For
+           example, if the local router is not 4-byte capable, this
+           value should consist of 2-octet ASNs or the AS_TRANS
+           (AS 23456) values received or sent in BGP updates.
+
+           In the Loc-RIB, this list should reflect the effective
+           AS path for the route, e.g., a 4-octet value if the
+           local router is 4-octet capable.";
+        reference
+          "RFC 4271: A Border Gateway Protocol 4 (BGP-4),
+           RFC 6793: BGP Support for Four-octet AS Number Space
+           RFC 5065: Autonomous System Confederations for BGP.";
+        list segment {
+          config false;
+          uses bgp-as-path-segment;
+          description
+            "List of AS PATH segments";
+        }
+      }
+      leaf next-hop {
+        type inet:ip-address;
+        description
+          "BGP next hop attribute defining the IP address of the
+           router that should be used as the next hop to the
+           destination.  Used when the BGP routes' nexthop for that
+           AFI/SAFI can be represented as an IPv4/IPv6 address.";
+        reference
+          "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+           5.1.3.";
+      }
+      leaf link-local-next-hop {
+        type inet:ipv6-address;
+        description
+          "When both a global and a link-local next-hop are sent
+           when following RFC 2545 procedures, this leaf contains
+           the link-local next-hop.";
+        reference
+          "RFC 2545: Use of BGP-4 Multiprotocol Extensions for IPv6
+           Inter-Domain Routing.";
+      }
+      leaf med {
+        type uint32;
+        description
+          "BGP multi-exit discriminator attribute used in the BGP
+           route selection process.";
+        reference
+          "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+           5.1.4.";
+      }
+      leaf local-pref {
+        type uint32;
+        description
+          "BGP local preference attribute sent to internal peers to
+           indicate the degree of preference for externally learned
+           routes.  The route with the highest local preference
+           value is preferred.";
+        reference
+          "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+           5.1.5.";
+      }
+      container as4-path {
+        description
+          "This is the path encoded with 4-octet
+           AS numbers in the optional transitive AS4_PATH attribute.
+           This value is populated with the received or sent
+           attribute in Adj-RIB-In or Adj-RIB-Out, respectively.
+           It should not be populated in Loc-RIB since the Loc-RIB
+           is expected to store the effective AS-Path in the
+           as-path leaf regardless of being 4-octet or 2-octet.";
+        reference
+          "RFC 6793: BGP Support for Four-octet AS Number Space";
+        list segment {
+          config false;
+          uses bgp-as-path-segment;
+          description
+            "List of AS PATH segments";
+        }
+      }
+      container aggregator {
+        config false;
+        description
+          "BGP attribute indicating the prefix has been
+           aggregated by the specified AS and router.";
+        reference
+          "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+           5.1.7,
+           RFC 6793: BGP Support for Four-octet AS Number Space.";
+        leaf as {
+          type inet:as-number;
+          description
+            "AS number of the autonomous system that performed the
+             aggregation.";
+          reference
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+             4.3, Path Attributes (g).";
+        }
+        leaf identifier {
+          type yang:dotted-quad;
+          description
+            "BGP Identifier of the router that performed the
+             aggregation.";
+          reference
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+             4.3, Path Attributes (g).";
+        }
+      }
+      container aggregator4 {
+        config false;
+        description
+          "BGP attribute indicating the prefix has been
+           aggregated by the specified AS and router.
+           This value is populated with the received or sent
+           attribute in Adj-RIB-In or Adj-RIB-Out, respectively.
+           It should not be populated in Loc-RIB since the Loc-RIB
+           is expected to store the effective AGGREGATOR in the
+           aggregator/as leaf regardless of being 4-octet or
+           2-octet.";
+        reference
+          "RFC 6793: BGP Support for Four-octet AS Number Space.";
+        leaf as4 {
+          type inet:as-number;
+          description
+            "AS number of the autonomous system that performed the
+             aggregation (4-octet representation).  This value is
+             populated if an upstream router is not 4-octet capable.
+             Its semantics are similar to the AS4_PATH optional
+             transitive attribute";
+          reference
+            "RFC 6793: BGP Support for Four-octet AS Number Space,
+             Section 3,
+             RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+             4.3, Path Attributes (g).";
+        }
+        leaf identifier {
+          type yang:dotted-quad;
+          description
+            "BGP Identifier of the router that performed the
+             aggregation.";
+          reference
+            "RFC 6793: BGP Support for Four-octet AS Number Space,
+             Section 3,
+             RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+             4.3, Path Attributes (g).";
+        }
+      }
+      leaf atomic-aggregate {
+        type boolean;
+        description
+          "BGP attribute indicating that the prefix is an atomic
+           aggregate; i.e., the peer selected is a less specific
+           route without selecting a more specific route that is
+           subsumed by it.";
+        reference
+          "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section
+           5.1.6.";
+      }
+      leaf originator-id {
+        type yang:dotted-quad;
+        description
+          "BGP attribute that provides the id as an IPv4 address
+           of the originator of the announcement.";
+        reference
+          "RFC 4456: BGP Route Reflection: An Alternative to Full
+           Mesh Internal BGP (IBGP).";
+      }
+      leaf-list cluster-list {
+        type yang:dotted-quad;
+        description
+          "Represents the reflection path that the route has
+           passed.";
+        reference
+          "RFC 4456: BGP Route Reflection: An Alternative to Full
+           Mesh Internal BGP (IBGP).";
+      }
+      leaf aigp-metric {
+        type uint64;
+        description
+          "BGP path attribute representing the accumulated IGP
+           metric for the path";
+        reference
+          "RFC 7311: The Accumulated IGP Metric Attribute for BGP.";
+      }
+    }
+  }
+
+  grouping bgp-as-path-segment {
+    description
+      "Data for representing BGP AS-PATH segment";
+
+    leaf type {
+      type identityref {
+        base bt:as-path-segment-type;
+      }
+      description
+        "The type of AS-PATH segment";
+    }
+    leaf-list member {
+      type inet:as-number;
+      description
+        "List of the AS numbers in the AS-PATH segment";
+    }
+  }
+
+  grouping bgp-unknown-attr-top {
+    description
+      "Unknown path attributes that are not expected to be shared
+       across route entries, common to LOC-RIB and Adj-RIB";
+    container unknown-attributes {
+      description
+        "Unknown path attributes that were received in the UPDATE
+         message which contained the prefix.";
+
+      list unknown-attribute {
+        key "attr-type";
+        description
+          "This list contains received attributes that are
+           unrecognized or unsupported by the local router. The list
+           may be empty.";
+
+        leaf optional {
+          type boolean;
+          description
+            "Defines whether the attribute is optional (if
+             set to true) or well-known (if set to false).
+             Set in the high-order bit of the BGP attribute
+             flags octet.";
+          reference
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
+        }
+
+        leaf transitive {
+          type boolean;
+          description
+            "Defines whether an optional attribute is transitive
+             (if set to true) or non-transitive (if set to false).
+             For well-known attributes, the transitive flag must be
+             set to true. Set in the second high-order bit of the BGP
+             attribute flags octet.";
+          reference
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
+        }
+
+        leaf partial {
+          type boolean;
+          description
+            "Defines whether the information contained in the
+             optional transitive attribute is partial (if set to
+             true) or complete (if set to false). For well-known
+             attributes and for optional non-transitive attributes,
+             the partial flag must be set to false. Set in the third
+             high-order bit of the BGP attribute flags octet.";
+          reference
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
+        }
+
+        leaf extended {
+          type boolean;
+          description
+            "Defines whether the attribute length is one octet
+             (if set to false) or two octets (if set to true). Set in
+             the fourth high-order bit of the BGP attribute flags
+             octet.";
+          reference
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
+        }
+
+        leaf attr-type {
+          type uint8;
+          description
+            "1-octet value encoding the attribute type code";
+          reference
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
+        }
+
+        leaf attr-len {
+          type uint16;
+          description
+            "One or two octet attribute length field indicating the
+             length of the attribute data in octets.  If the Extended
+             Length attribute flag is set, the length field is 2
+             octets, otherwise it is 1 octet";
+          reference
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
+        }
+
+        leaf attr-value {
+          type binary {
+            length "0..65535";
+          }
+          description
+            "Raw attribute value, not including the attribute
+             flags, type, or length.  The maximum length
+             of the attribute value data is 2^16-1 per the max value
+             of the attr-len field (2 octets).";
+          reference
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
+        }
+      }
+    }
+  }
+
+  grouping bgp-adj-rib-attr-state {
+    description
+      "Path attributes that are not expected to be shared across
+       route entries, specific to Adj-RIB";
+    leaf path-id {
+      type uint32;
+      description
+        "When the BGP speaker supports advertisement of multiple
+         paths for a prefix, the path identifier is used to
+         uniquely identify a route based on the combination of the
+         prefix and path id.  In the Adj-RIB-In, the path-id value is
+         the value received in the update message.   In the Loc-RIB,
+         if used, it should represent a locally generated path-id
+         value for the corresponding route.  In Adj-RIB-Out, it
+         should be the value sent to a neighbor when add-paths is
+         used, i.e., the capability has been negotiated.";
+      reference
+        "RFC 7911: Advertisement of Multiple Paths in BGP.";
+    }
+  }
+
+  grouping bgp-community-attr-state {
+    description
+      "Common definition of BGP community attributes";
+    leaf-list communities {
+      type union {
+        type bct:bgp-well-known-community-type;
+        type bct:bgp-std-community-type;
+      }
+      description
+        "List of standard or well-known BGP community
+         attributes.";
+    }
+  }
+
+  grouping ext-community-attributes {
+    description
+      "A grouping for all extended community parameters.";
+
+    leaf-list ext-communities {
+      type bct:bgp-ext-community-type;
+      description
+        "List of BGP extended community attributes. The received
+         extended community may be an explicitly modeled
+         type or unknown, represented by an 8-octet value
+         formatted according to RFC 4360.";
+      reference
+        "RFC 4360: BGP Extended Communities Attribute.";
+    }
+
+    leaf-list ext-communities-raw {
+      type string {
+        // raw with 8 octets
+        pattern
+          'raw:([0-9A-F][0-9A-F]:){7}[0-9A-F][0-9A-F]';
+      }
+      description
+        "ext-community type in raw format only.";
+    }
+  }
+
+  grouping ipv6-ext-community-attributes {
+    description
+      "A grouping for all IPv6 extended community parameters.";
+
+    leaf-list ipv6-ext-communities {
+      type bct:bgp-ipv6-ext-community-type;
+      description
+        "List of BGP IPv6 extended community attributes. The received
+         IPv6 extended community may be an explicitly modeled
+         type or unknown, represented by an 20-octet value
+         formatted according to RFC 5701.";
+      reference
+        "RFC 5701: IPv6 Address Specific BGP Extended Community
+         Attribute, Section 3.";
+    }
+
+    leaf-list ipv6-ext-communities-raw {
+      type string {
+        // raw with 20 octets
+        pattern
+          'ipv6-raw:'
+        + '([0-9A-Fa-f][0-9A-Fa-f]:){19}'
+        + '[0-9A-Fa-f][0-9A-Fa-f]';
+      }
+      description
+        "IPv6 ext-community type in raw format only.";
+    }
+  }
+
+  grouping large-community-attributes {
+    description
+      "A grouping for all large community parameters.";
+
+    leaf-list large-communities {
+      type bct:bgp-large-community-type;
+      description
+        "List of BGP large community attributes.";
+      reference
+        "RFC 8092: BGP Large Communities Attribute.";
+    }
+  }
+}
+]]>
 </sourcecode>
         </figure>
 
