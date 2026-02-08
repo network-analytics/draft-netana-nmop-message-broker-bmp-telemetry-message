@@ -255,13 +255,13 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
    structure', 'ietf-bgp-neighbor', 'ietf-bgp-policy', 'ietf-bgp-rib',
    'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' submodules.
 
-   This document is using the content of the 'rib' grouping defined in
-   'ietf-bgp-rib' submodule and renames the grouping to 'rib-entry' and
-   restructures the data taxonomy to allow a single BGP RIB entry to be
-   serialized in a Telemetry Message on Message Broker in the 'ietf-bmp-
-   bgp-rib-entry' submodule.  The 'clear-routes' grouping used in the
-   'rib' grouping has been removed since a Telemetry Message only covers
-   operational metrics.
+   This document is using the content of the 'rib' YANG grouping defined
+   in 'ietf-bgp-rib' submodule and renames the YANG grouping to 'rib-
+   entry' and restructures the data taxonomy to allow a single BGP RIB
+   entry to be serialized in a Telemetry Message on Message Broker in
+   the 'ietf-bmp-bgp-rib-entry' submodule.  The 'clear-routes' YANG
+   grouping used in the 'rib' YANG grouping has been removed since a
+   Telemetry Message only covers operational metrics.
 
    Since 'ietf-bgp-rib' uses groupings from 'ietf-bgp-rib-attributes'
    and 'ietf-bgp-rib-tables' and both 'ietf-bgp-rib-attributes' and
@@ -285,7 +285,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
    clarifications have been concluded this section remains.  The
    [I-D.ietf-idr-bgp-model] authors are being honored under
    Appendix "Contributors" for their contribution on the BGP YANG
-   modelling this document depends on.
+   modelling this document uses.
 
 4.  BMP YANG Modules
 

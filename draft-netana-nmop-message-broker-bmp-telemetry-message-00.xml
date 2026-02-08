@@ -272,14 +272,14 @@
 				'ietf-bgp-policy', 'ietf-bgp-rib', 'ietf-bgp-rib-attributes' and
 				'ietf-bgp-rib-tables' submodules.</t>
 				
-				<t>This document is using the content of the 'rib' grouping
-				defined in 'ietf-bgp-rib' submodule and renames the grouping to
-				'rib-entry' and restructures the data taxonomy to allow a single
-        BGP RIB entry to be serialized in a Telemetry Message on Message
-        Broker in the 'ietf-bmp-bgp-rib-entry' submodule. The
-				'clear-routes' grouping used in the 'rib' grouping has been
-				removed since a Telemetry Message only covers operational
-				metrics.</t>
+				<t>This document is using the content of the 'rib' YANG grouping
+				defined in 'ietf-bgp-rib' submodule and renames the YANG
+				grouping to 'rib-entry' and restructures the data taxonomy to
+				allow a single BGP RIB entry to be serialized in a Telemetry
+				Message on Message Broker in the 'ietf-bmp-bgp-rib-entry'
+				submodule. The 'clear-routes' YANG grouping used in the 'rib'
+				YANG grouping has been removed since a Telemetry Message only
+				covers operational metrics.</t>
 				
 				<t>Since 'ietf-bgp-rib' uses groupings from 
 				'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' and both
@@ -297,7 +297,7 @@
 				concluded this section remains. The <xref
 				target="I-D.ietf-idr-bgp-model" /> authors are being honored
 				under <xref target="Contributors" /> for their contribution
-				on the BGP YANG modelling this document depends on.</t>
+				on the BGP YANG modelling this document uses.</t>
       </section>
     </section>
 
