@@ -37,14 +37,14 @@
                 "next-hop": "2001:db8::fe",
                 "local-pref": 100
               },
-              "communities": [
+              "community": [
                 "65001:10",
                 "65001:20"
               ],
-              "ext-communities": [
+              "ext-community": [
                 "route-target:65001:123"
               ],
-              "large-communities": [
+              "large-community": [
                 "65001:1:1",
                 "65002:2:2"
               ],

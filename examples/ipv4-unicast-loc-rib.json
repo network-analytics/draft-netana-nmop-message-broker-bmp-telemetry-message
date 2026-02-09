@@ -25,11 +25,11 @@
                   "identifier": "192.0.2.1"
                 }
               },
-              "communities": [
+              "community": [
                 "65001:100",
                 "65001:200"
               ],
-              "large-communities": [
+              "large-community": [
                 "65001:1:10"
               ],
               "eligible-route": true
