@@ -4,19 +4,19 @@
     <!-- Main module and submodules for BMP Telemetry Message -->
     <module>
       <name>ietf-bmp-telemetry-message</name>
-      <revision>2026-02-04</revision>
+      <revision>2026-02-09</revision>
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message</namespace>
       <submodule>
         <name>ietf-bmp-bgp-rib-entry</name>
-        <revision>2026-02-04</revision>
+        <revision>2026-02-09</revision>
       </submodule>
       <submodule>
         <name>ietf-bmp-bgp-rib-tables</name>
-        <revision>2026-02-04</revision>
+        <revision>2026-02-09</revision>
       </submodule>
       <submodule>
         <name>ietf-bmp-bgp-rib-attributes</name>
-        <revision>2026-02-04</revision>
+        <revision>2026-02-09</revision>
       </submodule>
     </module>
     <!-- Imports -->

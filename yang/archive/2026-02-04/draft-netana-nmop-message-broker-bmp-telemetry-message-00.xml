@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="std"
+  docName="draft-netana-nmop-message-broker-bmp-telemetry-message-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+
+  <front>
+    <title abbrev="BMP YANG Network Telemetry Message">BMP YANG Model
+      for Network Telemetry Messages</title>
+
+    <seriesInfo name="Internet-Draft"
+      value="draft-netana-nmop-message-broker-bmp-telemetry-message-00" />
+
+    <author fullname="Thomas Graf" initials="TG" surname="Graf">
+
+      <organization>Swisscom</organization>
+      <address>
+        <postal>
+          <street>Binzring 17</street>
+          <city>Zurich</city>
+          <code>8045</code>
+          <country>CH</country>
+        </postal>
+        <email>thomas.graf@swisscom.com</email>
+      </address>
+    </author>
+
+    <author fullname="Paolo Lucente" initials="PL" surname="Lucente">
+
+      <organization>NTT</organization>
+      <address>
+        <postal>
+          <street>Veemweg 23</street>
+          <city>Barneveld</city>
+          <code>3771</code>
+          <country>NL</country>
+        </postal>
+        <email>paolo@ntt.net</email>
+      </address>
+    </author>
+
+    <author fullname="Leonardo Rodoni" initials="LR" surname="Rodoni">
+
+      <organization>Swisscom</organization>
+      <address>
+        <postal>
+          <street>Binzring 17</street>
+          <city>Zurich</city>
+          <code>8045</code>
+          <country>CH</country>
+        </postal>
+        <email>leonardo.rodoni@swisscom.com</email>
+      </address>
+    </author>
+
+    <date day="04" month="February" year="2026" />
+
+    <area>General</area>
+    <workgroup>NMOP</workgroup>
+    <keyword>BMP</keyword>
+    <keyword>BGP</keyword>
+    <keyword>Data Mesh</keyword>
+    <keyword>Network Telemetry</keyword>
+    <keyword>Network Analytics</keyword>
+
+    <abstract>
+      <t>This document defines an BGP Monitoring Protocol (BMP) message
+        schema extension in YANG to be used at data collection to
+        transform Network Telemetry messages into external systems such
+        as Message Brokers.</t>
+    </abstract>
+
+  </front>
+
+  <middle>
+
+    <section anchor="Introduction">
+      <name>Introduction</name>
+
+      <t>Nowadays network operators are using <xref
+          target="RFC7854">BGP Monitoring Protocol (BMP)</xref> to
+        monitor the BGP peerings and RIB's. With <xref
+          target="I-D.ietf-nmop-message-broker-telemetry-message" /> a
+        machine and human readable extensible Network Telemetry message
+        schema in <xref target="RFC7950">YANG</xref> has been defined.</t>
+
+      <t>Network operators organize their data in a <xref
+          target="Deh22">Data Mesh</xref> where a Message Broker such as <xref
+          target="Kaf11">Apache Kafka</xref> or <xref
+          target="Pul16">Apache Pulsar</xref> facilitates the exchange
+        of messages among data processing components.</t>
+
+      <t>With <xref
+          target="I-D.netana-nmop-yang-message-broker-message-key">YANG
+        Message Keys for Message Broker Integration</xref> how
+        Dimensional YANG data can be indexed and addressed in Message
+        Brokers are being described.</t>
+
+      <t>This document describes how <xref
+          target="I-D.ietf-nmop-message-broker-telemetry-message" />
+        defined Network Telemetry message is being extended to support
+        BMP data transformation to YANG at the Network Telemetry data
+        collector and being indexed and addressed in Message Broker
+        based on <xref
+          target="I-D.netana-nmop-yang-message-broker-message-key" />
+        principles at the YANG Message Broker Producer.</t>
+    </section>
+
+    <section anchor="Conventions_and_Definitions">
+      <name>Conventions and Definitions</name>
+
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+        "MAY", and "OPTIONAL" in this document are to be interpreted as
+        described in BCP 14 <xref target="RFC2119" />
+      <xref
+          target="RFC8174" /> when, and only when, they appear in all
+        capitals, as shown here.</t>
+
+      <section anchor="Terminology">
+        <name>Terminology</name>
+
+        <t>The following terms are used as defined in <xref
+            target="I-D.ietf-nmop-terminology" />:</t>
+
+        <ul>
+          <li>Network Telemetry</li>
+
+          <li>Network Analytics</li>
+
+          <li>Value</li>
+
+          <li>State</li>
+
+          <li>Change</li>
+        </ul>
+
+        <t>The following terms are used as defined in <xref
+            target="I-D.ietf-nmop-yang-message-broker-integration" />:</t>
+
+        <ul>
+          <li>Message Broker</li>
+
+          <li>YANG Message Broker Producer</li>
+
+          <li>YANG Message Broker Consumer</li>
+        </ul>
+
+        <t>The following terms are used as defined in <xref
+            target="Kaf11">Apache Kafka</xref> and <xref
+            target="Pul16">Apache Pulsar</xref> Message Broker:</t>
+
+        <ul>
+          <li>Subject: Is used for Messages within a Topic sharing the
+            same schema tree and also to identify a unique schema tree
+            within a schema registry.</li>
+
+          <li>Topic: A communication channel for publishing and
+            subscribing messages with one or more subjects and
+            partitions.</li>
+
+          <li>Topic Compaction: The act of compressing messages in a
+            topic to the latest state. As used with Apache Pulsar.
+            Apache Kafka uses the term Log Compaction with identical
+            meaning. </li>
+
+          <li>Partition: Messages in a topic are spread over hash
+            buckets where a hash bucket refers to a partition being
+            stored on one message broker node. Message ordering is
+            guaranteed within a partition.</li>
+
+          <li>Message: A piece of structured data sent between data
+            processing components to facilitate communication in a
+            distributed system</li>
+
+          <li>Message Key: Metadata associated with a message to
+            facilitate deterministic hash bucketing.</li>
+        </ul>
+
+        <t>The following terms are used as defined in <xref
+            target="RFC7854" />:</t>
+
+        <ul>
+          <li>BMP</li>
+
+          <li>BMP Message</li>
+
+          <li>Adj-RIB-In</li>
+
+          <li>Pre-policy Adj-RIB-In</li>
+
+          <li>Post-Policy Adj-RIB-In</li>
+        </ul>
+
+        <t>The following terms are used as defined in <xref
+            target="RFC8671" />:</t>
+
+        <ul>
+          <li>Adj-RIB-Out</li>
+
+          <li>Pre-policy Adj-RIB-Out</li>
+
+          <li>Post-policy Adj-RIB-Out</li>
+        </ul>
+
+        <t>The following terms are used as defined in <xref
+            target="RFC9069" />:</t>
+
+        <ul>
+          <li>BGP Instance</li>
+
+          <li>Loc-RIB</li>
+        </ul>
+
+        <t>This document defines the following term:</t>
+
+        <ul>
+          <li>BMP Index: A unique identifier created depending on BMP
+            Message Type from multiple BMP and BGP data dimensions. The
+            BMP Index is used to generate the Message Key. See <xref
+              target="BMP_Message_Keys_Indexes_Solution" />.</li>
+        </ul>
+      </section>
+    </section>
+
+    <section>
+      <name>BMP YANG Modules</name>
+
+      <t>This document defines one BMP YANG module <xref
+          target="ietf-bmp-telemetry-message-module" />, and 3 BGP RIB
+        submodules <xref target="ietf-bmp-bgp-sub-modules" /> which is
+        being used in the anydata "payload" <xref
+          target="I-D.ietf-nmop-message-broker-telemetry-message" />
+        defined in 'ietf-telemetry-message' YANG module.</t>
+
+      <t>The BMP YANG module for Network Telemetry messages defines the
+        BMP subscription metadata and depending on BMP Message type
+        different metadata structures.</t>
+
+      <t>Where the 3 BGP RIB YANG submodules extend the BMP YANG module
+        with BGP RIB structures for BMP route-monitoring and
+        route-mirroring Message types.</t>
+
+      <!-- ietf-bmp-telemetry-message YANG Tree -->
+      <figure anchor="ietf-bmp-telemetry-message-tree"
+        title="YANG tree diagram for 'ietf-bmp-telemetry-message' module.">
+        <sourcecode type="yangtree">
+<xi:include href="yang/ietf-bmp-telemetry-message@2026-02-04-yang-schema-tree-L69.txt" parse="text" />
+</sourcecode>
+      </figure>
+
+      <!-- ietf-bmp-telemetry-message YANG Module -->
+      <figure anchor="ietf-bmp-telemetry-message-module"
+        title="BMP YANG 'ietf-bmp-telemetry-message' module.">
+        <sourcecode name="ietf-bmp-telemetry-message@2026-02-04.yang"
+          type="yang" markers="true">
+<xi:include href="yang/ietf-bmp-telemetry-message@2026-02-04.yang" parse="text" />
+</sourcecode>
+      </figure>
+
+      <section anchor="ietf-bmp-bgp-sub-modules">
+        <name>BMP BGP RIB YANG Submodules</name>
+
+        <!-- ietf-bmp-bgp-rib-entry YANG Submodule -->
+        <figure anchor="ietf-bmp-bgp-rib-entry-submodule"
+          title="BMP YANG 'ietf-bmp-bgp-rib-entry' submodule.">
+          <sourcecode name="ietf-bmp-bgp-rib-entry@2026-02-04.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bmp-bgp-rib-entry@2026-02-04.yang" parse="text" />
+</sourcecode>
+        </figure>
+
+        <!-- ietf-bmp-bgp-rib-tables YANG Submodule -->
+        <figure anchor="ietf-bmp-bgp-rib-tables-submodule"
+          title="BMP YANG 'ietf-bmp-bgp-rib-tables' submodule.">
+          <sourcecode name="ietf-bmp-bgp-rib-tables@2026-02-04.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bmp-bgp-rib-tables@2026-02-04.yang" parse="text" />
+</sourcecode>
+        </figure>
+
+        <!-- ietf-bmp-bgp-rib-attributes YANG Submodule -->
+        <figure anchor="ietf-bmp-bgp-rib-attributes-submodule"
+          title="BMP YANG 'ietf-bmp-bgp-rib-attributes' submodule.">
+          <sourcecode name="ietf-bmp-bgp-rib-attributes@2026-02-04.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bmp-bgp-rib-attributes@2026-02-04.yang" parse="text" />
+</sourcecode>
+        </figure>
+
+      </section>
+    </section>
+
+    <section anchor="YANG_Message_Broker_BMP_Topic_Naming_Indexing">
+      <name>YANG Message Broker BMP Indexing and Topic Naming</name>
+
+      <t>To identify which network node produced which BMP data into
+        which Message Broker Topic, Partition and Subject, <xref
+          target="BMP_Message_Keys_Indexes_Solution">BMP Message Keys
+        and Indexes</xref> are being introduced. These keys enable a
+        deterministic distribution of BMP messages accross Topics and
+        Partitions enabling applications to consume only the needed data
+        from specific topics and partitions.</t>
+
+      <t>In order to facilitate Message Broker Topic Compaction, a <xref
+          target="YANG_Message_Broker_BMP_Topic-Naming_Solution"> BMP
+        subscription type based topic naming scheme</xref> is defined.
+        This segregates statistical (Value), State and State change BMP
+        metrics and facilitates a BMP Message Broker Consumer to use the
+        Topic wild card consumption method to select based on BMP
+        subscription type.</t>
+
+      <section anchor="BMP_Message_Keys_Indexes_Solution">
+        <name>BMP Message Keys and Indexes</name>
+
+        <t>A Message Broker uses a Message Key to index the Message and
+          a value to carry the Message content. If no Message Key is
+          defined then the Messages are distributed in a round robin
+          fashion across partitions. If a Message Key is defined, then
+          the value of the Message Key is being used as input for the
+          Message Broker Producer hash function to distribute across
+          Partitions. Therefore, Message Keys facilitate Message
+          deterministic distribution.</t>
+
+        <t>The Message Key not only used for Message indexing at the
+          Message Producer but also at the Message Broker for topic
+          compaction.</t>
+
+        <t>For BMP, the network node hostname, what BMP Message Type the
+          data reprents and apart from the initiation-message and
+          termination-message the BMP index is used to generate the
+          Message Key. The BMP index is calculated depending on BMP
+          Message Type as following:</t>
+
+        <ul>
+          <li>peer-up-notification: "peer-distinguisher" and
+            "peer-address".</li>
+
+          <li>peer-down-notification: "peer-distinguisher" and
+            "peer-address".</li>
+
+          <li>statistics: "peer-distinguisher" and "peer-address".</li>
+
+          <li>route-monitoring: "peer-distinguisher", "peer-address"
+            afi-safi name, address family, name of the BGP RIB, "prefix"
+            "origin" "path-id" route attributes and the index of the
+            used attr-set.</li>
+
+          <li>route-mirroring: "peer-distinguisher", "peer-address"
+            afi-safi name, address family, name of the BGP RIB, "prefix"
+            "origin" "path-id" route attributes, index of the used
+            attr-set and information enumeration.</li>
+        </ul>
+      </section>
+
+      <section anchor="YANG_Message_Broker_BMP_Topic-Naming_Solution">
+        <name>Message Broker BMP Topic Naming</name>
+
+        <t>BMP data can be subscribed for BMP session and BGP peering
+          session state-changes, BGP peering statistics or BGP RIB
+          states. as defined in <xref section="3.1" sectionFormat="of"
+            target="RFC7854" />.</t>
+
+        <t>Message Brokers topics are addressed with a unique name.
+          Usually topics are named hierarchically similar to the DNS
+          namespace where "." deliminates hierarchies.</t>
+
+        <t>This document defines "statistics", "states" and
+          "state-changes" in the topic name as the first part to denote
+          the types of data. Followed by "bmp" to denote BMP data.
+          Followed by the BGP RIB type and the BMP message type name.</t>
+
+        <t>For example, if BMP route-monitoring is being subscribed to
+          BGP Local-RIB, the Message Broker topic name would be as
+          following. In the example the project name and environment
+          (prod, dev, test etc.) is prefixed.</t>
+
+        <figure anchor="bmp-topic-name-example"
+          title="BMP BGP Local-RIB route-monitoring Topic Name Example">
+          <sourcecode type="text"><![CDATA[
+project.environment.state.bmp.local-rib.route-monitoring
+]]></sourcecode>
+        </figure>
+
+        <section
+          anchor="YANG_Message_Broker_Producer_BMP_Topic_Solution">
+          <name>YANG Message Broker Producer</name>
+
+          <t>For the Message Broker topic creation, the "message-type"
+            contained data in "bmp-subscription" from
+            "ietf-bmp-telemetry-message", YANG module defined in <xref
+              target="ietf-bmp-telemetry-message-module" />,
+            notifications MUST be used to derive wherever subscribed BMP
+            data is "statistics" "states" or "state-changes".</t>
+        </section>
+
+        <section
+          anchor="YANG_Message_Broker_Consumer_BMP_Topic_Solution">
+          <name>YANG Message Broker Consumer</name>
+
+          <t>The consumer has the ability to consume with a wildcard
+            denoted with "*" in the topic name to consume from more than
+            one topic.</t>
+
+          <t>For example, if BMP states should be consumed and indexed
+            in Time Series database or stream processor than below Topic
+            Name could be used, and the BMP data could be ingested into
+            tables according to topic names and indexed per Message Key.
+            If Topic Compaction is enabled, only current state is
+            consumed.</t>
+
+          <figure anchor="bmp-topic-wildcard-name-example"
+            title="BMP Wildcard Topic Name Example">
+            <sourcecode type="text"><![CDATA[
+project.environment.states.bmp.*
+]]></sourcecode>
+          </figure>
+
+        </section>
+      </section>
+    </section>
+
+    <section>
+      <name>IANA Considerations</name>
+      <t>This document registers the following two namespace URIs in the <xref
+          target="RFC3688">IETF XML Registry</xref>:</t>
+
+      <ul>
+        <li>URI: urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message</li>
+        <li>Registrant Contact: The IESG.</li>
+        <li>XML: N/A; the requested URI is an XML namespace.</li>
+      </ul>
+
+      <ul>
+        <li>URI: urn:ietf:params:xml:ns:yang:ietf-bmp-bgp-rib-entry</li>
+        <li>Registrant Contact: The IESG.</li>
+        <li>XML: N/A; the requested URI is an XML namespace.</li>
+      </ul>
+
+      <ul>
+        <li>URI: urn:ietf:params:xml:ns:yang:ietf-bmp-bgp-rib-tables</li>
+        <li>Registrant Contact: The IESG.</li>
+        <li>XML: N/A; the requested URI is an XML namespace.</li>
+      </ul>
+
+      <ul>
+        <li>URI: urn:ietf:params:xml:ns:yang:ietf-bmp-bgp-rib-attributes</li>
+        <li>Registrant Contact: The IESG.</li>
+        <li>XML: N/A; the requested URI is an XML namespace.</li>
+      </ul>
+
+      <t>This document registers the following two YANG modules in the <xref
+          target="RFC3688">YANG Module Names registry</xref>:</t>
+
+      <ul>
+        <li>Name: ietf-bmp-telemetry-message</li>
+        <li>Namespace:
+          urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message</li>
+        <li>Prefix: bmptm</li>
+        <li>Reference: RFC XXXX</li>
+      </ul>
+
+      <t />
+
+      <ul>
+        <li>Name: ietf-bmp-bgp-rib-entry</li>
+        <li>Namespace:
+          urn:ietf:params:xml:ns:yang:ietf-bmp-bgp-rib-entry</li>
+        <li>Prefix: bmptm</li>
+        <li>Reference: RFC XXXX</li>
+      </ul>
+
+      <ul>
+        <li>Name: ietf-bmp-bgp-rib-tables</li>
+        <li>Namespace:
+          urn:ietf:params:xml:ns:yang:ietf-bmp-bgp-rib-tables</li>
+        <li>Prefix: bmptm</li>
+        <li>Reference: RFC XXXX</li>
+      </ul>
+
+      <ul>
+        <li>Name: ietf-bmp-bgp-rib-attributes</li>
+        <li>Namespace:
+          urn:ietf:params:xml:ns:yang:ietf-bmp-bgp-rib-attributes</li>
+        <li>Prefix: bmptm</li>
+        <li>Reference: RFC XXXX</li>
+      </ul>
+
+    </section>
+
+    <section>
+      <name>Security Considerations</name>
+      <t>This section is modeled after the template described in <xref
+          section="3.7" sectionFormat="of"
+          target="I-D.ietf-netmod-rfc8407bis" />.</t>
+
+      <t>The "ietf-bmp-telemetry-message" YANG module and
+        "ietf-bmp-bgp-rib-entry", "ietf-bmp-bgp-rib-tables" and
+        "ietf-bmp-bgp-rib-attributes" YANG submodules defines one
+        combined data model that are designed to be accessed via
+        YANG-based management protocols, such as NETCONF <xref
+          target="RFC6141" /> and RESTCONF <xref target="RFC8040" />.
+        These protocols have to use a secure transport layer (e.g., SSH <xref
+          target="RFC4252" />, TLS <xref target="RFC8446" />, and QUIC <xref
+          target="RFC9000" />) and have to use mutual authentication.</t>
+
+      <t>The Network Configuration Access Control Model (NACM) <xref
+          target="RFC8341" /> provides the means to restrict access for
+        particular NETCONF or RESTCONF users to a preconfigured subset
+        of all available NETCONF or RESTCONF protocol operations and
+        content. </t>
+
+      <t>There are a number of data nodes defined in this YANG module
+        that are writable/creatable/deletable (i.e., "config true",
+        which is the default). All writable data nodes are likely to be
+        reasonably sensitive or vulnerable in some network environments.
+        Write operations (e.g., edit-config) and delete operations to
+        these data nodes without proper protection or authentication can
+        have a negative effect on network operations. The following
+        subtrees and data nodes have particular
+        sensitivities/vulnerabilities:</t>
+
+      <t>"There are no particularly sensitive writable data nodes."</t>
+
+      <t>Some of the readable data nodes in this YANG module may be
+        considered sensitive or vulnerable in some network environments.
+        It is thus important to control read access (e.g., via get,
+        get-config, or notification) to these data nodes. Specifically,
+        the following subtrees and data nodes have particular
+        sensitivities/ vulnerabilities:</t>
+
+      <t>"There are no particularly sensitive readable data nodes."</t>
+    </section>
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3688.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4252.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6141.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7854.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8671.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9069.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-nmop-terminology.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-nmop-yang-message-broker-integration.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-nmop-message-broker-telemetry-message.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.netana-nmop-yang-message-broker-message-key.xml" />
+      </references>
+
+      <references>
+        <name>Informative References</name>
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-idr-bgp-model.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-netmod-rfc8407bis.xml" />
+
+        <reference anchor="Deh22"
+          target="https://www.oreilly.com/library/view/data-mesh/9781492092384/">
+          <front>
+            <title>Data Mesh</title>
+
+            <author fullname="Zhamak Dehghani" initials="Z."
+              surname="Dehghani" />
+
+            <date month="March" year="2022" />
+          </front>
+
+          <seriesInfo name="ISBN" value="9781492092391" />
+
+          <refcontent>O'Reilly Media</refcontent>
+        </reference>
+
+        <reference anchor="Kaf11" target="https://kafka.apache.org/">
+          <front>
+            <title>Apache Kafka</title>
+
+            <author fullname="Neha Narkhede" initials="N."
+              surname="Narkhede" />
+
+            <date month="January" year="2011" />
+          </front>
+
+          <refcontent>Apache Software Foundation</refcontent>
+        </reference>
+
+        <reference anchor="Pul16" target="https://pulsar.apache.org/">
+          <front>
+            <title>Apache Pulsar</title>
+
+            <author fullname="Sijie Guo" initials="S." surname="Guo" />
+
+            <author fullname="Matteo  Merli" initials="M."
+              surname="Merli" />
+
+            <date month="January" year="2016" />
+          </front>
+
+          <refcontent>Apache Software Foundation</refcontent>
+        </reference>
+      </references>
+    </references>
+
+    <section anchor="Acknowledgements" numbered="false">
+      <name>Acknowledgements</name>
+      <t>Thanks to xxx for their comments and reviews.</t>
+    </section>
+
+    <section anchor="Contributors" numbered="false">
+      <name>Contributors</name>
+
+      <t>Many thanks goes to the authors of <xref
+          target="I-D.ietf-idr-bgp-model" /> from which the BGP RIB
+        submodules defined in <xref section="7.6" sectionFormat="of"
+          target="I-D.ietf-idr-bgp-model" /> have been obtained and
+        adjusted for BMP integration.</t>
+
+      <author fullname="Mahesh Jethanandani" initials="M."
+        surname="Jethanandani">
+        <organization>Arrcus</organization>
+        <address>
+          <postal>
+            <region>CA</region>
+            <country>USA</country>
+          </postal>
+          <email>mjethanandani@gmail.com</email>
+        </address>
+      </author>
+
+      <author fullname="Keyur Patel" initials="K." surname="Patel">
+        <organization>Arrcus</organization>
+        <address>
+          <postal>
+            <region>CA</region>
+            <country>USA</country>
+          </postal>
+          <email>keyur@arrcus.com</email>
+        </address>
+      </author>
+
+      <author fullname="Susan Hares" initials="S." surname="Hares">
+        <organization>Huawei</organization>
+        <address>
+          <postal>
+            <street>7453 Hickory Hill</street>
+            <city>Saline</city>
+            <region>MI</region>
+            <code>48176</code>
+            <country>USA</country>
+          </postal>
+          <email>shares@ndzh.com</email>
+        </address>
+      </author>
+
+      <author fullname="Jeffrey Haas" initials="J." surname="Haas">
+        <organization>Juniper Networks</organization>
+        <address>
+          <email>jhaas@pfrc.org</email>
+        </address>
+      </author>
+    </section>
+
+  </back>
+</rfc>

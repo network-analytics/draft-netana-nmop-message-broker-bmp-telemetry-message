@@ -28,7 +28,7 @@
                 "next-hop": "172.16.0.2",
                 "local-pref": 100
               },
-              "communities": [
+              "community": [
                 "65001:100",
                 "65001:200"
               ],
