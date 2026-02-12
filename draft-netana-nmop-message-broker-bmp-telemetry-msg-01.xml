@@ -324,6 +324,21 @@
           under <xref target="Contributors" /> for their contribution on
           the BGP YANG modelling this document uses.</t>
       </section>
+
+      <section>
+        <name>Relationship to draft-ietf-grow-bmp-yang</name>
+
+        <t><xref
+            target="I-D.ietf-grow-bmp-yang" />
+          defines with 'ietf-bmp' YANG module the configuration and
+					monitoring of BMP. While there is no direct relationship
+					between this document and its defined YANG modules, it is
+					worth mentioning that the with <xref
+					target="I-D.ietf-grow-bmp-yang" /> subscribed BMP data is
+					being transformed at BMP monitoring stations to Message
+					Brokers as described in this document.</t>
+      </section>
+
     </section>
 
     <section>
@@ -3486,6 +3501,9 @@ project.environment.states.bmp.*
         <name>Informative References</name>
         <xi:include
           href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-idr-bgp-model.xml" />
+
+        <xi:include
+          href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-grow-bmp-yang.xml" />
 
         <xi:include
           href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-netmod-rfc8407bis.xml" />
