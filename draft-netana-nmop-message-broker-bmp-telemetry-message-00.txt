@@ -1,14 +1,14 @@
-﻿
+
 
 
 
 NMOP                                                            TG. Graf
 Internet-Draft                                                  Swisscom
 Intended status: Standards Track                             PL. Lucente
-Expires: 13 August 2026                                              NTT
+Expires: 16 August 2026                                              NTT
                                                               LR. Rodoni
                                                                 Swisscom
-                                                         9 February 2026
+                                                        12 February 2026
 
 
              BMP YANG Model for Network Telemetry Messages
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 August 2026.
+   This Internet-Draft will expire on 16 August 2026.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Graf, et al.             Expires 13 August 2026                 [Page 1]
+Graf, et al.             Expires 16 August 2026                 [Page 1]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Graf, et al.             Expires 13 August 2026                 [Page 2]
+Graf, et al.             Expires 16 August 2026                 [Page 2]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -165,7 +165,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                 [Page 3]
+Graf, et al.             Expires 16 August 2026                 [Page 3]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -221,7 +221,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                 [Page 4]
+Graf, et al.             Expires 16 August 2026                 [Page 4]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -277,7 +277,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                 [Page 5]
+Graf, et al.             Expires 16 August 2026                 [Page 5]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -333,7 +333,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                 [Page 6]
+Graf, et al.             Expires 16 August 2026                 [Page 6]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -389,7 +389,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                 [Page 7]
+Graf, et al.             Expires 16 August 2026                 [Page 7]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -445,7 +445,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                 [Page 8]
+Graf, et al.             Expires 16 August 2026                 [Page 8]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -501,7 +501,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                 [Page 9]
+Graf, et al.             Expires 16 August 2026                 [Page 9]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -557,7 +557,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 10]
+Graf, et al.             Expires 16 August 2026                [Page 10]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -613,7 +613,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 11]
+Graf, et al.             Expires 16 August 2026                [Page 11]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -669,7 +669,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 12]
+Graf, et al.             Expires 16 August 2026                [Page 12]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -725,7 +725,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 13]
+Graf, et al.             Expires 16 August 2026                [Page 13]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -781,7 +781,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 14]
+Graf, et al.             Expires 16 August 2026                [Page 14]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -837,7 +837,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 15]
+Graf, et al.             Expires 16 August 2026                [Page 15]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -893,7 +893,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 16]
+Graf, et al.             Expires 16 August 2026                [Page 16]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -949,7 +949,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 17]
+Graf, et al.             Expires 16 August 2026                [Page 17]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1005,7 +1005,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 18]
+Graf, et al.             Expires 16 August 2026                [Page 18]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1061,7 +1061,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 19]
+Graf, et al.             Expires 16 August 2026                [Page 19]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1117,7 +1117,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 20]
+Graf, et al.             Expires 16 August 2026                [Page 20]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1173,7 +1173,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 21]
+Graf, et al.             Expires 16 August 2026                [Page 21]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1229,7 +1229,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 22]
+Graf, et al.             Expires 16 August 2026                [Page 22]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1285,7 +1285,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 23]
+Graf, et al.             Expires 16 August 2026                [Page 23]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1341,7 +1341,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 24]
+Graf, et al.             Expires 16 August 2026                [Page 24]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1397,7 +1397,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 25]
+Graf, et al.             Expires 16 August 2026                [Page 25]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1453,7 +1453,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 26]
+Graf, et al.             Expires 16 August 2026                [Page 26]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1509,7 +1509,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 27]
+Graf, et al.             Expires 16 August 2026                [Page 27]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1565,7 +1565,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 28]
+Graf, et al.             Expires 16 August 2026                [Page 28]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1621,7 +1621,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 29]
+Graf, et al.             Expires 16 August 2026                [Page 29]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1677,7 +1677,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 30]
+Graf, et al.             Expires 16 August 2026                [Page 30]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1733,7 +1733,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 31]
+Graf, et al.             Expires 16 August 2026                [Page 31]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1789,7 +1789,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 32]
+Graf, et al.             Expires 16 August 2026                [Page 32]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1845,7 +1845,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 33]
+Graf, et al.             Expires 16 August 2026                [Page 33]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1901,7 +1901,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 34]
+Graf, et al.             Expires 16 August 2026                [Page 34]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -1957,7 +1957,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 35]
+Graf, et al.             Expires 16 August 2026                [Page 35]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2013,7 +2013,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 36]
+Graf, et al.             Expires 16 August 2026                [Page 36]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2069,7 +2069,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 37]
+Graf, et al.             Expires 16 August 2026                [Page 37]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2125,7 +2125,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 38]
+Graf, et al.             Expires 16 August 2026                [Page 38]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2181,7 +2181,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 39]
+Graf, et al.             Expires 16 August 2026                [Page 39]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2237,7 +2237,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 40]
+Graf, et al.             Expires 16 August 2026                [Page 40]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2293,7 +2293,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 41]
+Graf, et al.             Expires 16 August 2026                [Page 41]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2349,7 +2349,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 42]
+Graf, et al.             Expires 16 August 2026                [Page 42]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2405,7 +2405,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 43]
+Graf, et al.             Expires 16 August 2026                [Page 43]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2461,7 +2461,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 44]
+Graf, et al.             Expires 16 August 2026                [Page 44]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2517,7 +2517,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 45]
+Graf, et al.             Expires 16 August 2026                [Page 45]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2573,7 +2573,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 46]
+Graf, et al.             Expires 16 August 2026                [Page 46]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2629,7 +2629,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 47]
+Graf, et al.             Expires 16 August 2026                [Page 47]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2685,7 +2685,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 48]
+Graf, et al.             Expires 16 August 2026                [Page 48]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2741,7 +2741,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 49]
+Graf, et al.             Expires 16 August 2026                [Page 49]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2797,7 +2797,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 50]
+Graf, et al.             Expires 16 August 2026                [Page 50]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2853,7 +2853,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 51]
+Graf, et al.             Expires 16 August 2026                [Page 51]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2909,7 +2909,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 52]
+Graf, et al.             Expires 16 August 2026                [Page 52]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -2965,7 +2965,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 53]
+Graf, et al.             Expires 16 August 2026                [Page 53]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3021,7 +3021,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 54]
+Graf, et al.             Expires 16 August 2026                [Page 54]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3077,7 +3077,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 55]
+Graf, et al.             Expires 16 August 2026                [Page 55]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3133,7 +3133,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 56]
+Graf, et al.             Expires 16 August 2026                [Page 56]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3189,7 +3189,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 57]
+Graf, et al.             Expires 16 August 2026                [Page 57]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3245,7 +3245,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 58]
+Graf, et al.             Expires 16 August 2026                [Page 58]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3301,7 +3301,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 59]
+Graf, et al.             Expires 16 August 2026                [Page 59]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3357,7 +3357,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 60]
+Graf, et al.             Expires 16 August 2026                [Page 60]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3413,7 +3413,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 61]
+Graf, et al.             Expires 16 August 2026                [Page 61]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3469,7 +3469,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 62]
+Graf, et al.             Expires 16 August 2026                [Page 62]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3525,7 +3525,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 63]
+Graf, et al.             Expires 16 August 2026                [Page 63]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3581,7 +3581,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 64]
+Graf, et al.             Expires 16 August 2026                [Page 64]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3637,7 +3637,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 65]
+Graf, et al.             Expires 16 August 2026                [Page 65]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3693,7 +3693,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 66]
+Graf, et al.             Expires 16 August 2026                [Page 66]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3749,7 +3749,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 67]
+Graf, et al.             Expires 16 August 2026                [Page 67]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3805,7 +3805,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 68]
+Graf, et al.             Expires 16 August 2026                [Page 68]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3861,7 +3861,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 69]
+Graf, et al.             Expires 16 August 2026                [Page 69]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3917,7 +3917,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 70]
+Graf, et al.             Expires 16 August 2026                [Page 70]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -3973,7 +3973,7 @@ Contributors
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 71]
+Graf, et al.             Expires 16 August 2026                [Page 71]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -4029,7 +4029,7 @@ Authors' Addresses
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 72]
+Graf, et al.             Expires 16 August 2026                [Page 72]
 
 Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
@@ -4085,4 +4085,4 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
 
 
-Graf, et al.             Expires 13 August 2026                [Page 73]
+Graf, et al.             Expires 16 August 2026                [Page 73]
