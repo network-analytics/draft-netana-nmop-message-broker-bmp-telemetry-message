@@ -12,7 +12,7 @@ Expires: 16 August 2026                                              NTT
 
 
              BMP YANG Model for Network Telemetry Messages
-       draft-netana-nmop-message-broker-bmp-telemetry-message-00
+         draft-netana-nmop-message-broker-bmp-telemetry-msg-00
 
 Abstract
 
@@ -2636,7 +2636,7 @@ Internet-Draft     BMP YANG Network Telemetry Message      February 2026
 
    <CODE BEGINS> file "ietf-bmp-bgp-rib-entry@2026-02-09.yang"
    (Artwork only available as YANG: see https://www.ietf.org/archive/id/
-   draft-netana-nmop-message-broker-bmp-telemetry-message-00.html)
+   draft-netana-nmop-message-broker-bmp-telemetry-msg-00.html)
    <CODE ENDS>
 
            Figure 3: BMP YANG 'ietf-bmp-bgp-rib-entry' submodule.
