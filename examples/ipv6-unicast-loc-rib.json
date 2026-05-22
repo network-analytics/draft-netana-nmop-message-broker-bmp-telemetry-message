@@ -19,14 +19,14 @@
                 "as-path": {
                   "segment": [
                     {
-                      "type": "iana-bgp-types:as-sequence",
+                      "type": "as-sequence",
                       "member": [
                         65001,
                         65100
                       ]
                     },
                     {
-                      "type": "iana-bgp-types:as-set",
+                      "type": "as-set",
                       "member": [
                         65200,
                         65210

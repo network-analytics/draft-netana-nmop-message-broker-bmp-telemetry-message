@@ -17,7 +17,7 @@
                 "as-path": {
                   "segment": [
                     {
-                      "type": "iana-bgp-types:as-sequence",
+                      "type": "as-sequence",
                       "member": [
                         65002,
                         65100

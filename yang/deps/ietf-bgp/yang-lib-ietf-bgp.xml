@@ -1,39 +1,6 @@
 <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
-
-  <!-- BMP Telemetry Message module set -->
   <module-set>
-    <name>bmp-tm-module-set</name>
-
-    <!-- BMP Telemetry Message module -->
-    <module>
-      <name>ietf-bmp-telemetry-message</name>
-      <revision>2026-05-19</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message</namespace>
-    </module>
-
-    <!-- BGP RIB Entry module -->
-    <module>
-      <name>ietf-bgp-rib-entry</name>
-      <revision>2026-05-19</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-bgp-rib-entry</namespace>
-    </module>
-
-    <!-- Dependencies -->
-    <module>
-      <name>ietf-yang-types</name>
-      <revision>2025-12-22</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
-    </module>
-    <module>
-      <name>ietf-inet-types</name>
-      <revision>2025-12-22</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
-    </module>
-    <module>
-      <name>ietf-yang-structure-ext</name>
-      <revision>2020-06-17</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-structure-ext</namespace>
-    </module>
+    <name>bgp-module-set</name>
 
     <!-- ietf-bgp with all submodules -->
     <module>
@@ -79,8 +46,6 @@
       <name>iana-bgp-types</name>
       <revision>2026-03-02</revision>
       <namespace>urn:ietf:params:xml:ns:yang:iana-bgp-types</namespace>
-      <feature>add-paths</feature>
-      <feature>graceful-restart</feature>
     </module>
     <module>
       <name>iana-bgp-community-types</name>
@@ -155,14 +120,14 @@
   </module-set>
 
   <schema>
-    <name>bmp-tm-schema</name>
-    <module-set>bmp-tm-module-set</module-set>
+    <name>ietf-bgp</name>
+    <module-set>bgp-module-set</module-set>
   </schema>
   <datastore>
     <name xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">ds:operational</name>
-    <schema>bmp-tm-schema</schema>
+    <schema>ietf-bgp</schema>
   </datastore>
-  <content-id>bmp-tm-20260519</content-id>
+  <content-id>ietf-bgp-20260519</content-id>
 </yang-library>
 <modules-state xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
   <module-set-id>ALL</module-set-id>

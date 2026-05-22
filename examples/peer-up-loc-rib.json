@@ -1,0 +1,99 @@
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "peer-up-notification": {
+      "peer-type": "loc-rib-instance-peer",
+      "peer-flags": 0,
+      "peer-address": "10.215.133.90",
+      "peer-as": 64969,
+      "timestamp": "2026-01-23T10:00:00Z",
+      "local-address": "::",
+      "local-port": 0,
+      "remote-port": 0,
+      "sent-open": {
+        "capabilities": [
+          {
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": {
+              "asn32": {
+                "as": 64969
+              }
+            }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
+          },
+          {
+            "code": 69,
+            "index": 1,
+            "name": "iana-bgp-types:add-paths",
+            "value": {
+              "add-paths": {
+                "afi-safis": [
+                  {
+                    "afi": "ipv4",
+                    "safi": "unicast-safi",
+                    "mode": "receive-send"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "received-open": {
+        "capabilities": [
+          {
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": {
+              "asn32": {
+                "as": 64969
+              }
+            }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
+          },
+          {
+            "code": 69,
+            "index": 1,
+            "name": "iana-bgp-types:add-paths",
+            "value": {
+              "add-paths": {
+                "afi-safis": [
+                  {
+                    "afi": "ipv4",
+                    "safi": "unicast-safi",
+                    "mode": "receive-send"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
