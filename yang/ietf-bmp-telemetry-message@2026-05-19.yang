@@ -24,14 +24,11 @@ module ietf-bmp-telemetry-message {
       "RFC 8294: Common YANG Data Types for the Routing Area.";
   }
 
-  // TODO: in the future import the single modules if they decide to make them properly reusable
-  import ietf-bgp {
-    prefix bgp;
+  import ietf-bgp-open {
+    prefix bgo;
     reference
-      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+      "RFC XXXX: YANG Model for a BGP OPEN Message.";
   }
-
-  // TODO: completare
   import ietf-bgp-rib-entry {
     prefix bre;
     reference
@@ -137,11 +134,11 @@ module ietf-bmp-telemetry-message {
     leaf peer-distinguisher {
       type rt-types:route-distinguisher;
       description
-        "BMP peer distinguisher from per-peer header.";
-      reference
-        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.
+        "BMP peer distinguisher from per-peer header.
          The routing instance on which the encapsulated PDU was
          received.";
+      reference
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
     }
     leaf peer-address {
       type inet:ip-address;
@@ -203,7 +200,7 @@ module ietf-bmp-telemetry-message {
          string whose value MUST be set to be equal to the value of the
          sysName MIB-II RFC 1213 object.";
       reference
-        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.4.";
     }
   }
 
@@ -277,23 +274,6 @@ module ietf-bmp-telemetry-message {
     }
   }
 
-  // TODO: double check with the BMP RFC for these 2 groupings (mostly references and descriptions)
-  grouping bgp-open-capabilities {
-    description
-      "BGP capabilities from a BGP OPEN message.";
-    reference
-      "RFC 5492: Capabilities Advertisement with BGP-4.";
-    list capabilities {
-      key "code index";
-      description
-        "List of BGP capabilities carried in the BGP OPEN message,
-         identified by the Capability Code and an index.";
-      reference
-        "RFC 5492: Capabilities Advertisement with BGP-4, Section 4.";
-      uses bgp:bgp-capabilities-common;
-    }
-  }
-
   grouping peer-up {
     description
       "BMP Peer Up Notification fields.";
@@ -323,21 +303,23 @@ module ietf-bmp-telemetry-message {
       reference
         "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.";
     }
+
+    // TODO: double check with the BMP RFC for these 2 groupings (mostly references and descriptions)
     container sent-open {
       description
-        "Capabilities advertised in the BGP OPEN message sent
-         by the local router to its peer.";
+        "BGP OPEN message sent by the local router to its peer.";
       reference
-        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.";
-      uses bgp-open-capabilities;
+        "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 4.2.
+         RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.";
+      uses bgo:bgp-open;
     }
     container received-open {
       description
-        "Capabilities advertised in the BGP OPEN message
-         received from the peer.";
+        "BGP OPEN message received from the peer.";
       reference
-        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.";
-      uses bgp-open-capabilities;
+        "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 4.2.
+         RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.";
+      uses bgo:bgp-open;
     }
   }
 

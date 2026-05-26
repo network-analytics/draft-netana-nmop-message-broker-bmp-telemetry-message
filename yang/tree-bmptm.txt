@@ -534,6 +534,10 @@ module: ietf-bmp-telemetry-message
        |     +-- local-port?           inet:port-number
        |     +-- remote-port?          inet:port-number
        |     +-- sent-open
+       |     |  +-- version?          uint8
+       |     |  +-- my-as?            uint32
+       |     |  +-- hold-time?        uint16
+       |     |  +-- bgp-identifier?   inet:ipv4-address
        |     |  +-- capabilities* [code index]
        |     |     +-- code     uint8
        |     |     +-- index    uint8
@@ -560,6 +564,10 @@ module: ietf-bmp-telemetry-message
        |     |              +-- safi?   iana-rt-types:bgp-safi
        |     |              +-- mode?   enumeration
        |     +-- received-open
+       |        +-- version?          uint8
+       |        +-- my-as?            uint32
+       |        +-- hold-time?        uint16
+       |        +-- bgp-identifier?   inet:ipv4-address
        |        +-- capabilities* [code index]
        |           +-- code     uint8
        |           +-- index    uint8

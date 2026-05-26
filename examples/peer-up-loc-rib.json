@@ -11,6 +11,10 @@
       "local-port": 0,
       "remote-port": 0,
       "sent-open": {
+        "version": 4,
+        "my-as": 64969,
+        "hold-time": 0,
+        "bgp-identifier": "10.215.133.90",
         "capabilities": [
           {
             "code": 65,
@@ -53,6 +57,10 @@
         ]
       },
       "received-open": {
+        "version": 4,
+        "my-as": 64969,
+        "hold-time": 0,
+        "bgp-identifier": "10.215.133.90",
         "capabilities": [
           {
             "code": 65,

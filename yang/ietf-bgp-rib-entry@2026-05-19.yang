@@ -19,7 +19,8 @@ module ietf-bgp-rib-entry {
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
 
-  // TODO: in the future import the single modules if they decide to make them properly reusable
+  // TODO: in the future import the single capabilities module if at idr they
+  // decide to move from submodules to a modules
   import ietf-bgp {
     prefix bgp;
     reference
@@ -96,9 +97,6 @@ module ietf-bgp-rib-entry {
       "RFC XXXX";
   }
 
-  // TODO:
-  // - let's see whether makes sense to move some groupings to a separate module... (and leave here only the rib-entry grouping)
-  // - should we consider deviating these groupings instead of redefining?
   grouping bgp-common-route-attributes {
     description
       "BGP path attributes and communities.";
@@ -126,8 +124,9 @@ module ietf-bgp-rib-entry {
         description
           "Enclosing container for the list of AS path segments.";
         reference
-          "RFC 4271: A Border Gateway Protocol 4 (BGP-4).
-           RFC 6793: BGP Support for Four-octet AS Number Space.
+          "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 5.1.2.
+           RFC 6793: BGP Support for Four-Octet Autonomous System (AS)
+           Number Space.
            RFC 5065: Autonomous System Confederations for BGP.";
         list segment {
           uses bgp:bgp-as-path-segment;
@@ -187,34 +186,37 @@ module ietf-bgp-rib-entry {
           description
             "AS number of the aggregating router.";
           reference
-            "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 4.3.";
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 5.1.7.";
         }
         leaf identifier {
           type yang:dotted-quad;
           description
             "BGP Identifier of the aggregating router.";
           reference
-            "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 4.3.";
+            "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 5.1.7.";
         }
       }
       container aggregator4 {
         description
           "AS4_AGGREGATOR attribute. Not populated in Loc-RIB.";
         reference
-          "RFC 6793: BGP Support for Four-octet AS Number Space.";
+          "RFC 6793: BGP Support for Four-Octet Autonomous System (AS)
+           Number Space.";
         leaf as4 {
           type inet:as-number;
           description
             "4-octet AS number of the aggregating router.";
           reference
-            "RFC 6793: BGP Support for Four-octet AS Number Space, Section 3.";
+            "RFC 6793: BGP Support for Four-Octet Autonomous System (AS)
+             Number Space, Section 3.";
         }
         leaf identifier {
           type yang:dotted-quad;
           description
             "BGP Identifier of the aggregating router.";
           reference
-            "RFC 6793: BGP Support for Four-octet AS Number Space, Section 3.";
+            "RFC 6793: BGP Support for Four-Octet Autonomous System (AS)
+             Number Space, Section 3.";
         }
       }
       leaf atomic-aggregate {

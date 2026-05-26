@@ -11,6 +11,13 @@
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message</namespace>
     </module>
 
+    <!-- BGP Open module -->
+    <module>
+      <name>ietf-bgp-open</name>
+      <revision>2026-05-19</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-bgp-open</namespace>
+    </module>
+
     <!-- BGP RIB Entry module -->
     <module>
       <name>ietf-bgp-rib-entry</name>
