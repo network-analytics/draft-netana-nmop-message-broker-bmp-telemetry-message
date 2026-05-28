@@ -4,7 +4,11 @@
     "route-monitoring": {
       "peer-type": "loc-rib-instance-peer",
       "peer-address": "0.0.0.0",
+      "peer-flags": {
+        "filtered": true
+      },
       "peer-as": 65001,
+      "peer-bgp-id": "198.51.100.1",
       "timestamp": "2026-01-23T10:05:00Z",
       "afi-safi-type": "iana-bgp-types:ipv4-unicast",
       "rib-entry": {
