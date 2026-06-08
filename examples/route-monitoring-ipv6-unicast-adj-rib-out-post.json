@@ -1,0 +1,67 @@
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "route-monitoring": {
+      "peer-type": "global-instance-peer",
+      "peer-flags": {
+        "ipv6-peer": true,
+        "post-policy": true,
+        "adj-rib-out": true
+      },
+      "peer-address": "2001:db8::1",
+      "peer-as": 65002,
+      "peer-bgp-id": "203.0.113.1",
+      "timestamp": "2026-06-03T09:00:00Z",
+      "afi-safi-type": "iana-bgp-types:ipv6-unicast",
+      "rib-entry": {
+        "ipv6-unicast": {
+          "adj-rib-out-post": {
+            "route": {
+              "prefix": "2001:db8:1::/48",
+              "path-id": 0,
+              "attributes": {
+                "origin": "igp",
+                "as-path": {
+                  "segment": [
+                    {
+                      "type": "as-sequence",
+                      "member": [
+                        65001,
+                        65002,
+                        65100
+                      ]
+                    }
+                  ]
+                },
+                "next-hop": "2001:db8::2",
+                "local-pref": 200,
+                "med": 50
+              },
+              "community": [
+                "65001:100",
+                "65001:200"
+              ],
+              "large-community": [
+                "65001:1:1"
+              ],
+              "eligible-route": true
+            }
+          }
+        }
+      },
+      "path-status": {
+        "best": true,
+        "primary": true,
+        "reason-code": "not-preferred-med"
+      },
+      "vrf-table-name": "global",
+      "sequence-number": "1001",
+      "timestamps": [
+        {
+          "timestamp-type": "adj-rib-out-time",
+          "timestamp": "2026-06-03T09:00:00.000000Z"
+        }
+      ]
+    }
+  }
+}

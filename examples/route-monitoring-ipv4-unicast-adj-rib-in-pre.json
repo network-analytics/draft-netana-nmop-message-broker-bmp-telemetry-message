@@ -5,8 +5,13 @@
       "peer-type": "global-instance-peer",
       "peer-address": "172.16.0.1",
       "peer-as": 65001,
+      "peer-bgp-id": "172.16.0.1",
       "timestamp": "2026-01-22T14:30:00Z",
       "afi-safi-type": "iana-bgp-types:ipv4-unicast",
+      "path-status": {
+        "best": true,
+        "primary": true
+      },
       "rib-entry": {
         "ipv4-unicast": {
           "adj-rib-in-pre": {

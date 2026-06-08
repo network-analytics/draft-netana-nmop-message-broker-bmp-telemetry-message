@@ -1,0 +1,82 @@
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "peer-up-notification": {
+      "peer-type": "global-instance-peer",
+      "peer-address": "203.0.113.45",
+      "peer-as": 65002,
+      "peer-bgp-id": "203.0.113.1",
+      "timestamp": "2026-02-15T14:35:22Z",
+      "local-address": "198.51.100.10",
+      "local-port": 179,
+      "remote-port": 54321,
+      "sent-open": {
+        "version": 4,
+        "my-as": 65001,
+        "hold-time": 180,
+        "bgp-identifier": "198.51.100.1",
+        "capabilities": [
+          {
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": {
+              "asn32": {
+                "as": 65001
+              }
+            }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
+          }
+        ]
+      },
+      "received-open": {
+        "version": 4,
+        "my-as": 65002,
+        "hold-time": 180,
+        "bgp-identifier": "203.0.113.1",
+        "capabilities": [
+          {
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": {
+              "asn32": {
+                "as": 65002
+              }
+            }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
+          }
+        ]
+      },
+      "sequence-number": "42",
+      "timestamps": [
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T14:35:22.125000Z"
+        }
+      ]
+    }
+  }
+}

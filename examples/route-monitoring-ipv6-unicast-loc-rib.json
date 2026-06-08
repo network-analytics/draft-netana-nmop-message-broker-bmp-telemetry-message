@@ -5,6 +5,7 @@
       "peer-type": "loc-rib-instance-peer",
       "peer-address": "0.0.0.0",
       "peer-as": 65001,
+      "peer-bgp-id": "198.51.100.1",
       "timestamp": "2026-01-23T10:00:00Z",
       "afi-safi-type": "iana-bgp-types:ipv6-unicast",
       "rib-entry": {
