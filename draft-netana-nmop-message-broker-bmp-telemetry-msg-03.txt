@@ -293,7 +293,7 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
    'ietf-bgp' submodules, they could be reused as is with 'ietf-bmp-bgp-
    rib-entry'.  Since this would imply than a normative document
    dependency a reasonable timeline needs to be coordinated.  Once these
-   clarifications have been concluded this section remains
+   clarifications have been concluded this section remains.
 
    Remark: The [I-D.ietf-idr-bgp-model] authors agreed to incorporate
    such changes in 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables'

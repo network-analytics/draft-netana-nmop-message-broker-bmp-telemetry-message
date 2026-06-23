@@ -308,7 +308,7 @@
           'ietf-bmp-bgp-rib-entry'. Since this would imply than a
           normative document dependency a reasonable timeline needs to
           be coordinated. Once these clarifications have been concluded
-          this section remains</t>
+          this section remains.</t>
 					
         <t>Remark: The <xref target="I-D.ietf-idr-bgp-model" /> authors
 				  agreed to incorporate such changes in
