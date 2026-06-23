@@ -19,8 +19,8 @@ module ietf-bgp-rib-entry {
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
 
-  // TODO: in the future import the single capabilities module if at idr they
-  // decide to move from submodules to a modules
+  // TODO: in the future import the single capabilities module if at idr
+  // they decide to move from submodules to a modules
   import ietf-bgp {
     prefix bgp;
     reference
@@ -90,7 +90,7 @@ module ietf-bgp-rib-entry {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-05-19 {
+  revision 2026-06-23 {
     description
       "Initial Version";
     reference

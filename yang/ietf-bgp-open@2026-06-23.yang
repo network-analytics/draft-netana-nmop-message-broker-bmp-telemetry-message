@@ -9,8 +9,8 @@ module ietf-bgp-open {
       "RFC 9911: Common YANG Data Types.";
   }
 
-  // TODO: in the future import the single capabilities module if at idr they
-  // decide to move from submodules to a modules
+  // TODO: in the future import the single capabilities module if at idr
+  // they decide to move from submodules to a modules
   import ietf-bgp {
     prefix bgp;
     reference
@@ -60,7 +60,7 @@ module ietf-bgp-open {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2026-05-19 {
+  revision 2026-06-23 {
     description
       "Initial revision.";
     reference

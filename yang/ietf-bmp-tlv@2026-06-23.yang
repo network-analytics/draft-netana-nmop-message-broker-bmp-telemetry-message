@@ -61,7 +61,7 @@ module ietf-bmp-tlv {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-05-19 {
+  revision 2026-06-23 {
     description
       "Initial revision.";
     reference

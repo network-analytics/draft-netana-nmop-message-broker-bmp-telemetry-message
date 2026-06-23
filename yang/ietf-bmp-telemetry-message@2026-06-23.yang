@@ -73,7 +73,7 @@ module ietf-bmp-telemetry-message {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-05-19 {
+  revision 2026-06-23 {
     description
       "Initial revision.";
     reference
@@ -108,7 +108,8 @@ module ietf-bmp-telemetry-message {
         description
           "Loc-RIB Instance Peer";
         reference
-          "RFC 9069: Support for Local RIB in the BGP Monitoring Protocol (BMP)";
+          "RFC 9069: Support for Local RIB in the BGP Monitoring
+           Protocol (BMP)";
       }
     }
     description
@@ -433,7 +434,8 @@ module ietf-bmp-telemetry-message {
           uses peer-up;
           container information {
             presence
-              "Information TLVs are present in this Peer Up notification";
+              "Information TLVs are present in this Peer Up
+               notification";
             description
               "Optional Information TLVs at the end of the Peer Up
                message.  For standard peers only the string type
