@@ -74,7 +74,7 @@
     </author>
 
 
-    <date day="23" month="June" year="2026" />
+    <date day="25" month="June" year="2026" />
 
     <area>General</area>
     <workgroup>NMOP</workgroup>
@@ -4054,101 +4054,390 @@ module ietf-bmp-tlv {
           Partitions. Therefore, Message Keys facilitate Message
           deterministic distribution.</t>
 
-        <t>The Message Key not only used for Message indexing at the
+        <t>Message Keys are not only used for Message indexing at the
           Message Producer but also at the Message Broker for topic
-          compaction.</t>
+          compaction. Since BMP requires Message ordering for a
+					monitored BGP RIB, and Message Brokers ensure Message ordering
+					on partitions, Message Key scheme needs to accomondate that
+					all BMP messages for a particular BGP RIB are hashed to on one
+					partition.</t>
 
-        <t>For BMP, the network node hostname, what BMP Message Type the
-          data reprents and apart from the initiation-message and
-          termination-message the BMP index is used to generate the
-          Message Key. The BMP index is calculated depending on BMP
-          Message Type as following:</t>
+        <t>Similar to <xref section="3.1" sectionFormat="of"
+          target="I-D.netana-nmop-yang-message-broker-message-key" />
+					for YANG-Push telemetry messages, the network node hostname
+					and a set of 'ietf-bmp-telemetry-message' defined YANG nodes
+					of the instance data is used to generate the BMP Message Key.
+					In the following subsection the used YANG nodes are described
+					and exampled for each BMP message.</t>
 
-        <ul>
-          <li>peer-up-notification: "peer-distinguisher" and
-            "peer-address".</li>
+        <section anchor="bmp-initiation">
+          <name>BMP Initiation</name>
+					
+          <ul>
+            <li>initiation-message</li>
+          </ul>
 
-          <li>peer-down-notification: "peer-distinguisher" and
-            "peer-address".</li>
+<figure anchor="message-key-bmp-init-example"
+title="Message Key BMP Initiation Example">
+<sourcecode type="text"><![CDATA[
+Message data (JSON):
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "initiation-message": {
+      "sys-descr": " 25.4.2.02I",
+      "sys-name": "ipf-zbl1327-r-daisy-91"
+    }
+  }
+}
 
-          <li>statistics: "peer-distinguisher" and "peer-address".</li>
+Message Key:
+  router-nyc-01
+	/ietf-bmp-telemetry-message:message=initiation-message
+]]></sourcecode></figure>
+        </section>
+	
+        <section anchor="bmp-peer-up">
+          <name>BMP Peer Up</name>
+					
+          <ul>
+            <li>peer-up-notification</li>
 
-          <li>route-monitoring: "peer-distinguisher", "peer-address"
-            afi-safi name, address family, name of the BGP RIB, "prefix"
-            "origin" "path-id" route attributes and the index of the
-            used attr-set.</li>
+            <li>global-instance-peer</li>
+  
+            <li>peer-address</li>
+  
+            <li>peer-as</li>
+  
+            <li>peer-bgp-id</li>
+          </ul>
 
-          <li>route-mirroring: "peer-distinguisher", "peer-address"
-            afi-safi name, address family, name of the BGP RIB, "prefix"
-            "origin" "path-id" route attributes, index of the used
-            attr-set and information enumeration.</li>
-        </ul>
+<figure anchor="message-key-bmp-peer-up-example"
+title="Message Key BMP Peer Up Example">
+<sourcecode type="text"><![CDATA[
+=============== NOTE: '\' line wrapping per RFC 8792 ================
+Message data (JSON):
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "peer-up-notification": {
+      "peer-type": "global-instance-peer",
+      "peer-address": "203.0.113.45",
+      "peer-as": 65002,
+      "peer-bgp-id": "203.0.113.1",
+      "timestamp": "2026-02-15T14:35:22Z",
+      "local-address": "198.51.100.10",
+      "local-port": 179,
+      "remote-port": 54321,
+      "sent-open": {
+        "version": 4,
+        "my-as": 65001,
+        "hold-time": 180,
+        "bgp-identifier": "198.51.100.1",
+        "capabilities": [
+          {
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": {
+              "asn32": {
+                "as": 65001
+              }
+            }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
+          }
+        ]
+      },
+      "received-open": {
+        "version": 4,
+        "my-as": 65002,
+        "hold-time": 180,
+        "bgp-identifier": "203.0.113.1",
+        "capabilities": [
+          {
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": {
+              "asn32": {
+                "as": 65002
+              }
+            }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
+          }
+        ]
+      },
+      "sequence-number": "42",
+      "timestamps": [
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T14:35:22.125000Z"
+        }
+      ]
+    }
+  }
+}
+
+Message Key:
+  router-nyc-01
+	/ietf-bmp-telemetry-message:message/peer-up-notification[peer-type=\
+	'global-instance-peer'][peer-address='203.0.113.45'][peer-as=\
+	'65002'][peer-bgp-id='203.0.113.1']
+]]></sourcecode></figure>
+        </section>
+
+        <section anchor="bmp-peer-down">
+          <name>BMP Peer Down</name>
+					
+          <ul>
+            <li>peer-down-notification</li>
+
+            <li>global-instance-peer</li>
+  
+            <li>peer-address</li>
+  
+            <li>peer-as</li>
+  
+            <li>peer-bgp-id</li>
+          </ul>
+
+<figure anchor="message-key-bmp-peer-down-example"
+title="Message Key BMP Peer Down Example">
+<sourcecode type="text"><![CDATA[
+=============== NOTE: '\' line wrapping per RFC 8792 ================
+Message data (JSON):
+TBD
+
+Message Key:
+  router-nyc-01
+	/ietf-bmp-telemetry-message:message/peer-down-notification\
+	[peer-type='global-instance-peer'][peer-address='203.0.113.45']\
+	[peer-as='65002'][peer-bgp-id='203.0.113.1']
+]]></sourcecode></figure>
+        </section>
+
+        <section anchor="bmp-stats-reports">
+          <name>BMP Statistic Reports</name>
+					
+          <ul>
+            <li>statistics-report</li>
+
+            <li>global-instance-peer</li>
+  
+            <li>peer-address</li>
+  
+            <li>peer-as</li>
+  
+            <li>peer-bgp-id</li>
+          </ul>
+
+<figure anchor="message-key-bmp-stats-example"
+title="Message Key BMP Statistic Report Example">
+<sourcecode type="text"><![CDATA[
+=============== NOTE: '\' line wrapping per RFC 8792 ================
+Message data (JSON):
+TBD
+
+Message Key:
+  router-nyc-01
+	/ietf-bmp-telemetry-message:message/statistics-report\
+	[peer-type='global-instance-peer'][peer-address='203.0.113.45']\
+	[peer-as='65002'][peer-bgp-id='203.0.113.1']
+]]></sourcecode></figure>
+        </section>
+			
+        <section anchor="bmp-route-monitoring">
+          <name>BMP Route Monitoring</name>
+					
+          <ul>
+            <li>route-monitoring</li>
+						
+            <li>global-instance-peer</li>
+  
+            <li>peer-address</li>
+  
+            <li>peer-as</li>
+  
+            <li>peer-bgp-id</li>
+  
+            <li>prefix</li>
+  
+            <li>path-id</li>
+          </ul>
+				
+<figure anchor="message-key-bmp-route-monitoring-example"
+title="Message Key BMP Route Monitoring Example">
+<sourcecode type="text"><![CDATA[
+=============== NOTE: '\' line wrapping per RFC 8792 ================
+Message data (JSON):
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "route-monitoring": {
+      "peer-type": "global-instance-peer",
+      "peer-address": "203.0.113.45",
+      "peer-as": 65002,
+      "peer-bgp-id": "203.0.113.1",
+      "timestamp": "2026-02-15T14:40:00Z",
+      "afi-safi-type": "iana-bgp-types:ipv4-unicast",
+      "rib-entry": {
+        "ipv4-unicast": {
+          "adj-rib-in-post": {
+            "route": {
+              "prefix": "192.0.2.0/24",
+              "path-id": 0,
+              "attributes": {
+                "origin": "igp",
+                "as-path": {
+                  "segment": [
+                    {
+                      "type": "as-sequence",
+                      "member": [
+                        65002,
+                        65003,
+                        65004
+                      ]
+                    }
+                  ]
+                },
+                "next-hop": "203.0.113.45",
+                "med": 100,
+                "local-pref": 150
+              },
+              "community": [
+                "65001:1000",
+                "65001:2000"
+              ]
+            }
+          }
+        }
+      },
+      "vrf-table-name": "customer-a",
+      "sequence-number": "5432",
+      "path-status": {
+        "invalid": true,
+        "nonselected": true,
+        "reason-code": "invalid-as-loop"
+      },
+      "timestamps": [
+        {
+          "timestamp-type": "trigger-time",
+          "timestamp": "2026-02-15T14:39:58.500000Z"
+        },
+        {
+          "timestamp-type": "adj-rib-in-time",
+          "timestamp": "2026-02-15T14:39:58.750000Z"
+        }
+      ],
+      "extended-flags": {
+        "ipv6-peer": true,
+        "post-policy": true,
+        "adj-rib-out": true
+      }
+    }
+  }
+}
+
+Message Key:
+  router-nyc-01
+	/ietf-bmp-telemetry-message:message/route-monitoring[peer-type=\	'global-instance-peer'][peer-address='203.0.113.45'][peer-as=\
+	'65002'][peer-bgp-id='203.0.113.1']/rib-entry/ipv4-unicast\
+	/adj-rib-in-post/route[prefix='192.0.2.0/24',path-id='0']
+]]></sourcecode></figure>
+        </section>
+				
+        <section anchor="bmp-termination">
+          <name>BMP Termination</name>
+					
+          <ul>
+            <li>termination-message</li>
+          </ul>
+					
+<figure anchor="message-key-bmp-term-example"
+title="Message Key BMP Termination Example">
+<sourcecode type="text"><![CDATA[
+Message data (JSON):
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "termination-message": {
+      "string": [
+        "Scheduled maintenance window"
+      ],
+      "reason": "administratively-closed",
+      "sequence-number": "18567",
+      "timestamps": [
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T15:45:00.500000Z"
+        }
+      ]
+    }
+  }
+}
+
+Message Key:
+  router-nyc-01
+	/ietf-bmp-telemetry-message:message=termination-message
+]]></sourcecode></figure>
+        </section>
       </section>
 
       <section anchor="YANG_Message_Broker_BMP_Topic-Naming_Solution">
         <name>Message Broker BMP Topic Naming</name>
 
-        <t>BMP data can be subscribed for BMP session and BGP peering
-          session state-changes, BGP peering statistics or BGP RIB
-          states. as defined in <xref section="3.1" sectionFormat="of"
-            target="RFC7854" />.</t>
+        <t>There are two Message Broker topics.</t>
 
-        <t>Message Brokers topics are addressed with a unique name.
-          Usually topics are named hierarchically similar to the DNS
-          namespace where "." deliminates hierarchies.</t>
+          <ul>
+            <li>bmp-state-changes-and-statistics: Containing all BMP
+						    messages in real-time</li>
 
-        <t>This document defines "statistics", "states" and
-          "state-changes" in the topic name as the first part to denote
-          the types of data. Followed by "bmp" to denote BMP data.
-          Followed by the BGP RIB type and the BMP message type name.</t>
+            <li>bmp-current-state: Containing all BMP
+						    message types, except statistics, topic compacted.</li>
+          </ul>
+					
+        <t>Optionally, an organization prefix can be prepended with a
+				   "-" separator. A Message Broker Consumer MAY consume either
+					 "bmp-state-changes-and-statistics", "bmp-current-state" or
+					 a subset	 depending on use case.</t> 
 
-        <t>For example, if BMP route-monitoring is being subscribed to
-          BGP Local-RIB, the Message Broker topic name would be as
-          following. In the example the project name and environment
-          (prod, dev, test etc.) is prefixed.</t>
+          <t>If a subset is consumed, the consumer hashes the Message
+					Key, applies modulo with the number of partitions, and
+					determines the partition from which it should consume messages
+					bearing that Message Key.</t>
+
+          <t>To parse the Message Key, the consumer splits the byte
+          string on newline (LF) characters. The first line is the
+          node-name and the second the YANG path.</t>
 
         <figure anchor="bmp-topic-name-example"
-          title="BMP BGP Local-RIB route-monitoring Topic Name Example">
+          title="BMP Topic Name Example">
           <sourcecode type="text"><![CDATA[
-project.environment.state.bmp.local-rib.route-monitoring
+netops-bmp-state-changes-and-statistics
 ]]></sourcecode>
         </figure>
-
-        <section
-          anchor="YANG_Message_Broker_Producer_BMP_Topic_Solution">
-          <name>YANG Message Broker Producer</name>
-
-          <t>For the Message Broker topic creation, the "message-type"
-            contained data in "bmp-subscription" from
-            "ietf-bmp-telemetry-message", YANG module defined in <xref
-              target="ietf-bmp-telemetry-message-module" />,
-            notifications MUST be used to derive wherever subscribed BMP
-            data is "statistics" "states" or "state-changes".</t>
-        </section>
-
-        <section
-          anchor="YANG_Message_Broker_Consumer_BMP_Topic_Solution">
-          <name>YANG Message Broker Consumer</name>
-
-          <t>The consumer has the ability to consume with a wildcard
-            denoted with "*" in the topic name to consume from more than
-            one topic.</t>
-
-          <t>For example, if BMP states should be consumed and indexed
-            in Time Series database or stream processor than below Topic
-            Name could be used, and the BMP data could be ingested into
-            tables according to topic names and indexed per Message Key.
-            If Topic Compaction is enabled, only current state is
-            consumed.</t>
-
-          <figure anchor="bmp-topic-wildcard-name-example"
-            title="BMP Wildcard Topic Name Example">
-            <sourcecode type="text"><![CDATA[
-project.environment.states.bmp.*
-]]></sourcecode>
-          </figure>
-
-        </section>
       </section>
     </section>
 
