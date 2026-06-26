@@ -75,12 +75,12 @@ Table of Contents
    3.  Relationship to other documents . . . . . . . . . . . . . . .   5
      3.1.  Relationship to
            draft-ietf-nmop-message-broker-telemetry-message  . . . .   5
-     3.2.  Relationship to draft-ietf-idr-bgp-model  . . . . . . . .   5
-     3.3.  Relationship to draft-ietf-grow-bmp-yang  . . . . . . . .   6
-   4.  BMP YANG Modules  . . . . . . . . . . . . . . . . . . . . . .   6
-     4.1.  BMP Telemetry Message YANG Module . . . . . . . . . . . .  45
+     3.2.  Relationship to draft-ietf-idr-bgp-model  . . . . . . . .   6
+     3.3.  Relationship to draft-ietf-grow-bmp-yang  . . . . . . . .   7
+   4.  BMP YANG Modules  . . . . . . . . . . . . . . . . . . . . . .   7
+     4.1.  BMP Telemetry Message YANG Module . . . . . . . . . . . .  46
      4.2.  BGP Open Message YANG Module  . . . . . . . . . . . . . .  56
-     4.3.  BGP RIB Entry YANG Module . . . . . . . . . . . . . . . .  58
+     4.3.  BGP RIB Entry YANG Module . . . . . . . . . . . . . . . .  59
      4.4.  BMP TLV YANG Module . . . . . . . . . . . . . . . . . . .  69
    5.  YANG Message Broker BMP Indexing and Topic Naming . . . . . .  83
      5.1.  BMP Message Keys and Indexes  . . . . . . . . . . . . . .  83
@@ -200,12 +200,13 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
    *  Message: A piece of structured data sent between data processing
       components to facilitate communication in a distributed system
 
-   *  Message Key: Metadata associated with a message to facilitate
-      deterministic hash bucketing and indexing.
+   *  Message Key: Message Key: Metadata associated with a message to
+      facilitate deterministic hash bucketing and indexing for
+      instantiated YANG data.
 
    *  Partition Key: Metadata associated with a message to facilitate
-      deterministic hash bucketing.  Also known as ordering key or
-      routing key.
+      deterministic hash bucketing for instantiated YANG data.  Also
+      known as ordering key or routing key.
 
    The following terms are used as defined in [RFC7854]:
 
@@ -217,7 +218,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
    *  Pre-policy Adj-RIB-In
 
-   *  Post-Policy Adj-RIB-In
 
 
 
@@ -225,6 +225,8 @@ Graf, et al.            Expires 28 December 2026                [Page 4]
 
 Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
+
+   *  Post-Policy Adj-RIB-In
 
    The following terms are used as defined in [RFC8671]:
 
@@ -265,14 +267,12 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
    [I-D.ietf-nmop-message-broker-telemetry-message] defined in 'ietf-
    telemetry-message' YANG module.
 
-3.2.  Relationship to draft-ietf-idr-bgp-model
 
-   [I-D.ietf-idr-bgp-model] defines with 'ietf-bgp' a YANG module and
-   with 'iana-bgp-community-types', 'iana-bgp-notification', 'iana-bgp-
-   rib-types', 'iana-bgp-types', 'ietf-bgp-capabilities', 'ietf-bgp-
-   common', 'ietf-bgp-common-multiprotocol', 'ietf-bgp-common-
-   structure', 'ietf-bgp-neighbor', 'ietf-bgp-policy', 'ietf-bgp-rib',
-   'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' submodules.
+
+
+
+
+
 
 
 
@@ -281,6 +281,15 @@ Graf, et al.            Expires 28 December 2026                [Page 5]
 
 Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
+
+3.2.  Relationship to draft-ietf-idr-bgp-model
+
+   [I-D.ietf-idr-bgp-model] defines with 'ietf-bgp' a YANG module and
+   with 'iana-bgp-community-types', 'iana-bgp-notification', 'iana-bgp-
+   rib-types', 'iana-bgp-types', 'ietf-bgp-capabilities', 'ietf-bgp-
+   common', 'ietf-bgp-common-multiprotocol', 'ietf-bgp-common-
+   structure', 'ietf-bgp-neighbor', 'ietf-bgp-policy', 'ietf-bgp-rib',
+   'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' submodules.
 
    This document is using the content of the 'rib' YANG grouping defined
    in 'ietf-bgp-rib' submodule and renames the YANG grouping to 'rib-
@@ -314,6 +323,21 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
    Appendix "Contributors" for their contribution on the BGP YANG
    modelling this document uses.
 
+
+
+
+
+
+
+
+
+
+
+Graf, et al.            Expires 28 December 2026                [Page 6]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
 3.3.  Relationship to draft-ietf-grow-bmp-yang
 
    [I-D.ietf-grow-bmp-yang] defines with 'ietf-bmp' YANG module the
@@ -328,15 +352,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
    The BMP YANG module for Network Telemetry messages defines the BMP
    subscription metadata and depending on BMP Message type different
    metadata structures.
-
-
-
-
-
-Graf, et al.            Expires 28 December 2026                [Page 6]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
 
    'ietf-bgp-rib-entry' extends the BMP YANG module with BGP RIB
    structures for BMP route-monitoring and route-mirroring Message
@@ -371,6 +386,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |  +-- (afi-safi)
           |     |     +--:(ipv4-unicast)
           |     |     |  +-- ipv4-unicast
+
+
+
+Graf, et al.            Expires 28 December 2026                [Page 7]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |     |     +-- (rib-type)
           |     |     |        +--:(loc-rib)
           |     |     |        |  +-- loc-rib
@@ -386,14 +409,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |  |     bt:bgp-origin-attr-type
           |     |     |        |        |  +-- as-path
           |     |     |        |        |  |  +-- segment*
-
-
-
-Graf, et al.            Expires 28 December 2026                [Page 7]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |     |        |        |  |     +-- type?
           |     |     |        |        |  |     |     bt:as-path-segment-type
           |     |     |        |        |  |     +-- member*
@@ -427,6 +442,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |  +-- originator-id?
           |     |     |        |        |  |     yang:dotted-quad
           |     |     |        |        |  +-- cluster-list*
+
+
+
+Graf, et al.            Expires 28 December 2026                [Page 8]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |     |        |        |  |     yang:dotted-quad
           |     |     |        |        |  +-- aigp-metric?
           |     |     |        |        |        uint64
@@ -442,14 +465,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |     string
           |     |     |        |        +-- large-community*
           |     |     |        |        |     bct:bgp-large-community-type
-
-
-
-Graf, et al.            Expires 28 December 2026                [Page 8]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |     |        |        +-- last-modified?
           |     |     |        |        |     yang:timeticks
           |     |     |        |        +-- eligible-route?
@@ -483,6 +498,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |  |     +-- type?
           |     |     |        |        |  |     |     bt:as-path-segment-type
           |     |     |        |        |  |     +-- member*
+
+
+
+Graf, et al.            Expires 28 December 2026                [Page 9]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |     |        |        |  |           inet:as-number
           |     |     |        |        |  +-- next-hop?
           |     |     |        |        |  |     inet:ip-address
@@ -498,14 +521,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |  |     |     bt:as-path-segment-type
           |     |     |        |        |  |     +-- member*
           |     |     |        |        |  |           inet:as-number
-
-
-
-Graf, et al.            Expires 28 December 2026                [Page 9]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |     |        |        |  +-- aggregator
           |     |     |        |        |  |  +-- as?
           |     |     |        |        |  |  |     inet:as-number
@@ -539,6 +554,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        +-- last-modified?
           |     |     |        |        |     yang:timeticks
           |     |     |        |        +-- eligible-route?
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 10]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |     |        |        |     boolean
           |     |     |        |        +-- ineligible-reason?
           |     |     |        |        |     identityref
@@ -554,14 +577,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |     +-- attr-value?   binary
           |     |     |        |        +-- reject-reason?
           |     |     |        |              union
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 10]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |     |        +--:(adj-rib-in-post)
           |     |     |        |  +-- adj-rib-in-post
           |     |     |        |     +-- route
@@ -595,6 +610,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |  +-- aggregator
           |     |     |        |        |  |  +-- as?
           |     |     |        |        |  |  |     inet:as-number
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 11]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |     |        |        |  |  +-- identifier?
           |     |     |        |        |  |        yang:dotted-quad
           |     |     |        |        |  +-- aggregator4
@@ -610,14 +633,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |  |     yang:dotted-quad
           |     |     |        |        |  +-- aigp-metric?
           |     |     |        |        |        uint64
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 11]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |     |        |        +-- community*
           |     |     |        |        |     union
           |     |     |        |        +-- ext-community*
@@ -651,6 +666,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        +-- reject-reason?
           |     |     |        |              union
           |     |     |        +--:(adj-rib-out-pre)
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 12]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |     |        |  +-- adj-rib-out-pre
           |     |     |        |     +-- route
           |     |     |        |        +-- prefix?
@@ -666,14 +689,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |  |     |     bt:as-path-segment-type
           |     |     |        |        |  |     +-- member*
           |     |     |        |        |  |           inet:as-number
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 12]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |     |        |        |  +-- next-hop?
           |     |     |        |        |  |     inet:ip-address
           |     |     |        |        |  +-- link-local-next-hop?
@@ -707,6 +722,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |  +-- aigp-metric?
           |     |     |        |        |        uint64
           |     |     |        |        +-- community*
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 13]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |     |        |        |     union
           |     |     |        |        +-- ext-community*
           |     |     |        |        |     bct:bgp-ext-community-type
@@ -722,14 +745,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |        |        |     yang:timeticks
           |     |     |        |        +-- eligible-route?
           |     |     |        |        |     boolean
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 13]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |     |        |        +-- ineligible-reason?
           |     |     |        |        |     identityref
           |     |     |        |        +-- unknown-attributes
@@ -763,6 +778,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |                 |  +-- next-hop?
           |     |     |                 |  |     inet:ip-address
           |     |     |                 |  +-- link-local-next-hop?
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 14]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |     |                 |  |     inet:ipv6-address
           |     |     |                 |  +-- med?
           |     |     |                 |  |     uint32
@@ -778,14 +801,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |                 |  |  +-- as?
           |     |     |                 |  |  |     inet:as-number
           |     |     |                 |  |  +-- identifier?
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 14]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |     |                 |  |        yang:dotted-quad
           |     |     |                 |  +-- aggregator4
           |     |     |                 |  |  +-- as4?
@@ -819,6 +834,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |     |                 +-- ineligible-reason?
           |     |     |                 |     identityref
           |     |     |                 +-- unknown-attributes
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 15]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |     |                 |  +-- unknown-attribute*
           |     |     |                 |        [attr-type]
           |     |     |                 |     +-- attr-type     uint8
@@ -834,14 +857,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |        +-- ipv6-unicast
           |     |           +-- (rib-type)
           |     |              +--:(loc-rib)
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 15]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |              |  +-- loc-rib
           |     |              |     +-- route
           |     |              |        +-- prefix
@@ -875,6 +890,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        |  |           inet:as-number
           |     |              |        |  +-- aggregator
           |     |              |        |  |  +-- as?
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 16]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |              |        |  |  |     inet:as-number
           |     |              |        |  |  +-- identifier?
           |     |              |        |  |        yang:dotted-quad
@@ -890,14 +913,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        |  +-- cluster-list*
           |     |              |        |  |     yang:dotted-quad
           |     |              |        |  +-- aigp-metric?
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 16]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |              |        |        uint64
           |     |              |        +-- community*
           |     |              |        |     union
@@ -931,6 +946,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |              union
           |     |              +--:(adj-rib-in-pre)
           |     |              |  +-- adj-rib-in-pre
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 17]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |              |     +-- route
           |     |              |        +-- prefix?
           |     |              |        |     inet:ipv6-prefix
@@ -946,14 +969,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        |  |     +-- member*
           |     |              |        |  |           inet:as-number
           |     |              |        |  +-- next-hop?
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 17]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |              |        |  |     inet:ip-address
           |     |              |        |  +-- link-local-next-hop?
           |     |              |        |  |     inet:ipv6-address
@@ -987,6 +1002,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        |        uint64
           |     |              |        +-- community*
           |     |              |        |     union
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 18]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |              |        +-- ext-community*
           |     |              |        |     bct:bgp-ext-community-type
           |     |              |        +-- ext-community-raw*
@@ -1002,14 +1025,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        +-- eligible-route?
           |     |              |        |     boolean
           |     |              |        +-- ineligible-reason?
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 18]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |              |        |     identityref
           |     |              |        +-- unknown-attributes
           |     |              |        |  +-- unknown-attribute*
@@ -1043,6 +1058,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        |  |     inet:ip-address
           |     |              |        |  +-- link-local-next-hop?
           |     |              |        |  |     inet:ipv6-address
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 19]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |              |        |  +-- med?
           |     |              |        |  |     uint32
           |     |              |        |  +-- local-pref?
@@ -1058,14 +1081,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        |  |  |     inet:as-number
           |     |              |        |  |  +-- identifier?
           |     |              |        |  |        yang:dotted-quad
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 19]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |              |        |  +-- aggregator4
           |     |              |        |  |  +-- as4?
           |     |              |        |  |  |     inet:as-number
@@ -1099,6 +1114,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        |     identityref
           |     |              |        +-- best-path?
           |     |              |        |     boolean
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 20]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |              |        +-- unknown-attributes
           |     |              |        |  +-- unknown-attribute*
           |     |              |        |        [attr-type]
@@ -1114,14 +1137,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              +--:(adj-rib-out-pre)
           |     |              |  +-- adj-rib-out-pre
           |     |              |     +-- route
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 20]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |              |        +-- prefix?
           |     |              |        |     inet:ipv6-prefix
           |     |              |        +-- path-id?
@@ -1155,6 +1170,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        |  |  +-- identifier?
           |     |              |        |  |        yang:dotted-quad
           |     |              |        |  +-- aggregator4
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 21]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |              |        |  |  +-- as4?
           |     |              |        |  |  |     inet:as-number
           |     |              |        |  |  +-- identifier?
@@ -1170,14 +1193,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              |        +-- community*
           |     |              |        |     union
           |     |              |        +-- ext-community*
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 21]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |              |        |     bct:bgp-ext-community-type
           |     |              |        +-- ext-community-raw*
           |     |              |        |     string
@@ -1211,6 +1226,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |                       +-- prefix?
           |     |                       |     inet:ipv6-prefix
           |     |                       +-- path-id?
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 22]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |                       |     uint32
           |     |                       +-- attributes
           |     |                       |  +-- origin?
@@ -1226,14 +1249,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |                       |  +-- link-local-next-hop?
           |     |                       |  |     inet:ipv6-address
           |     |                       |  +-- med?
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 22]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |                       |  |     uint32
           |     |                       |  +-- local-pref?
           |     |                       |  |     uint32
@@ -1267,6 +1282,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |                       |     bct:bgp-ext-community-type
           |     |                       +-- ext-community-raw*
           |     |                       |     string
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 23]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |                       +-- ipv6-ext-community*
           |     |                       |     bct:bgp-ipv6-ext-community-type
           |     |                       +-- ipv6-ext-community-raw*
@@ -1282,14 +1305,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |                       +-- unknown-attributes
           |     |                       |  +-- unknown-attribute*
           |     |                       |        [attr-type]
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 23]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |                       |     +-- attr-type     uint8
           |     |                       |     +-- optional?     boolean
           |     |                       |     +-- transitive?   boolean
@@ -1323,6 +1338,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |        +-- ipv6-peer?        boolean
           |        +-- post-policy?      boolean
           |        +-- legacy-as-path?   boolean
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 24]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |        +-- adj-rib-out?      boolean
           |        +-- filtered?         boolean
           +--:(statistics-report)
@@ -1338,14 +1361,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     +-- peer-address?         inet:ip-address
           |     +-- peer-as?              uint32
           |     +-- peer-bgp-id?          inet:ipv4-address
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 24]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     +-- timestamp?            yang:date-and-time
           |     +-- statistics-type?      string
           |     +-- statistics-data?      uint64
@@ -1379,6 +1394,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     +-- sequence-number?      uint64
           |     +-- timestamps* [timestamp-type]
           |     |  +-- timestamp-type    timestamp-type
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 25]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |  +-- timestamp         yang:date-and-time
           |     +-- extended-flags!
           |        +-- ipv6-peer?        boolean
@@ -1394,14 +1417,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |  +-- post-policy?      boolean
           |     |  +-- legacy-as-path?   boolean
           |     |  +-- adj-rib-out?      boolean
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 25]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |  +-- filtered?         boolean
           |     +-- peer-distinguisher?   rt-types:route-distinguisher
           |     +-- peer-address?         inet:ip-address
@@ -1435,6 +1450,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |        |     +-- afi?
           |     |        |     |     iana-rt-types:address-family
           |     |        |     +-- safi?
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 26]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |        |     |     iana-rt-types:bgp-safi
           |     |        |     +-- afi-safi-flags?
           |     |        |     |     bt:graceful-restart-flags-for-afi
@@ -1450,14 +1473,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |  +-- version?          uint8
           |     |  +-- my-as?            uint32
           |     |  +-- hold-time?        uint16
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 26]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     |  +-- bgp-identifier?   inet:ipv4-address
           |     |  +-- capabilities* [code index]
           |     |     +-- code     uint8
@@ -1491,6 +1506,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |     |              +-- mode?   enumeration
           |     +-- information!
           |     |  +-- string*           string
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 27]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
           |     |  +-- sys-descr?        string
           |     |  +-- sys-name?         string
           |     |  +-- vrf-table-name?   string
@@ -1506,14 +1529,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
           |        +-- filtered?         boolean
           +--:(initiation-message)
           |  +-- initiation-message
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 27]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
           |     +-- string*            string
           |     +-- sys-descr?         string
           |     +-- sys-name?          string
@@ -1547,6 +1562,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 +-- peer-type?            peer-type
                 +-- peer-flags
                 |  +-- ipv6-peer?        boolean
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 28]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |  +-- post-policy?      boolean
                 |  +-- legacy-as-path?   boolean
                 |  +-- adj-rib-out?      boolean
@@ -1562,14 +1585,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     +--:(ipv4-unicast)
                 |     |  +-- ipv4-unicast
                 |     |     +-- (rib-type)
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 28]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |     |        +--:(loc-rib)
                 |     |        |  +-- loc-rib
                 |     |        |     +-- route
@@ -1603,6 +1618,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        |  |     +-- member*
                 |     |        |        |  |           inet:as-number
                 |     |        |        |  +-- aggregator
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 29]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |     |        |        |  |  +-- as?
                 |     |        |        |  |  |     inet:as-number
                 |     |        |        |  |  +-- identifier?
@@ -1618,14 +1641,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        |  |     yang:dotted-quad
                 |     |        |        |  +-- cluster-list*
                 |     |        |        |  |     yang:dotted-quad
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 29]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |     |        |        |  +-- aigp-metric?
                 |     |        |        |        uint64
                 |     |        |        +-- community*
@@ -1659,6 +1674,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        +-- reject-reason?
                 |     |        |              union
                 |     |        +--:(adj-rib-in-pre)
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 30]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |     |        |  +-- adj-rib-in-pre
                 |     |        |     +-- route
                 |     |        |        +-- prefix?
@@ -1674,14 +1697,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        |  |     |     bt:as-path-segment-type
                 |     |        |        |  |     +-- member*
                 |     |        |        |  |           inet:as-number
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 30]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |     |        |        |  +-- next-hop?
                 |     |        |        |  |     inet:ip-address
                 |     |        |        |  +-- link-local-next-hop?
@@ -1715,6 +1730,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        |  +-- aigp-metric?
                 |     |        |        |        uint64
                 |     |        |        +-- community*
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 31]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |     |        |        |     union
                 |     |        |        +-- ext-community*
                 |     |        |        |     bct:bgp-ext-community-type
@@ -1730,14 +1753,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        |     yang:timeticks
                 |     |        |        +-- eligible-route?
                 |     |        |        |     boolean
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 31]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |     |        |        +-- ineligible-reason?
                 |     |        |        |     identityref
                 |     |        |        +-- unknown-attributes
@@ -1771,6 +1786,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        |  +-- next-hop?
                 |     |        |        |  |     inet:ip-address
                 |     |        |        |  +-- link-local-next-hop?
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 32]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |     |        |        |  |     inet:ipv6-address
                 |     |        |        |  +-- med?
                 |     |        |        |  |     uint32
@@ -1786,14 +1809,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        |  |  +-- as?
                 |     |        |        |  |  |     inet:as-number
                 |     |        |        |  |  +-- identifier?
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 32]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |     |        |        |  |        yang:dotted-quad
                 |     |        |        |  +-- aggregator4
                 |     |        |        |  |  +-- as4?
@@ -1827,6 +1842,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        +-- ineligible-reason?
                 |     |        |        |     identityref
                 |     |        |        +-- best-path?
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 33]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |     |        |        |     boolean
                 |     |        |        +-- unknown-attributes
                 |     |        |        |  +-- unknown-attribute*
@@ -1842,14 +1865,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |              union
                 |     |        +--:(adj-rib-out-pre)
                 |     |        |  +-- adj-rib-out-pre
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 33]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |     |        |     +-- route
                 |     |        |        +-- prefix?
                 |     |        |        |     inet:ipv4-prefix
@@ -1883,6 +1898,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        |  |  |     inet:as-number
                 |     |        |        |  |  +-- identifier?
                 |     |        |        |  |        yang:dotted-quad
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 34]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |     |        |        |  +-- aggregator4
                 |     |        |        |  |  +-- as4?
                 |     |        |        |  |  |     inet:as-number
@@ -1898,14 +1921,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |        |        |        uint64
                 |     |        |        +-- community*
                 |     |        |        |     union
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 34]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |     |        |        +-- ext-community*
                 |     |        |        |     bct:bgp-ext-community-type
                 |     |        |        +-- ext-community-raw*
@@ -1939,6 +1954,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |              +-- route
                 |     |                 +-- prefix?
                 |     |                 |     inet:ipv4-prefix
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 35]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |     |                 +-- path-id?
                 |     |                 |     uint32
                 |     |                 +-- attributes
@@ -1954,14 +1977,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |                 |  |     inet:ip-address
                 |     |                 |  +-- link-local-next-hop?
                 |     |                 |  |     inet:ipv6-address
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 35]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |     |                 |  +-- med?
                 |     |                 |  |     uint32
                 |     |                 |  +-- local-pref?
@@ -1995,6 +2010,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |                 +-- ext-community*
                 |     |                 |     bct:bgp-ext-community-type
                 |     |                 +-- ext-community-raw*
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 36]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |     |                 |     string
                 |     |                 +-- ipv6-ext-community*
                 |     |                 |     bct:bgp-ipv6-ext-community-type
@@ -2010,14 +2033,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |     |                 |     identityref
                 |     |                 +-- unknown-attributes
                 |     |                 |  +-- unknown-attribute*
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 36]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |     |                 |        [attr-type]
                 |     |                 |     +-- attr-type     uint8
                 |     |                 |     +-- optional?     boolean
@@ -2051,6 +2066,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        |  |           inet:as-number
                 |              |        |  +-- next-hop?
                 |              |        |  |     inet:ip-address
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 37]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |              |        |  +-- link-local-next-hop?
                 |              |        |  |     inet:ipv6-address
                 |              |        |  +-- med?
@@ -2066,14 +2089,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        |  +-- aggregator
                 |              |        |  |  +-- as?
                 |              |        |  |  |     inet:as-number
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 37]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |              |        |  |  +-- identifier?
                 |              |        |  |        yang:dotted-quad
                 |              |        |  +-- aggregator4
@@ -2107,6 +2122,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        |     boolean
                 |              |        +-- ineligible-reason?
                 |              |        |     identityref
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 38]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |              |        +-- unknown-attributes
                 |              |        |  +-- unknown-attribute*
                 |              |        |        [attr-type]
@@ -2122,14 +2145,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              +--:(adj-rib-in-pre)
                 |              |  +-- adj-rib-in-pre
                 |              |     +-- route
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 38]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |              |        +-- prefix?
                 |              |        |     inet:ipv6-prefix
                 |              |        +-- path-id?
@@ -2163,6 +2178,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        |  |  +-- identifier?
                 |              |        |  |        yang:dotted-quad
                 |              |        |  +-- aggregator4
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 39]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |              |        |  |  +-- as4?
                 |              |        |  |  |     inet:as-number
                 |              |        |  |  +-- identifier?
@@ -2178,14 +2201,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        +-- community*
                 |              |        |     union
                 |              |        +-- ext-community*
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 39]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |              |        |     bct:bgp-ext-community-type
                 |              |        +-- ext-community-raw*
                 |              |        |     string
@@ -2219,6 +2234,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        +-- prefix?
                 |              |        |     inet:ipv6-prefix
                 |              |        +-- path-id?
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 40]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |              |        |     uint32
                 |              |        +-- attributes
                 |              |        |  +-- origin?
@@ -2234,14 +2257,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        |  +-- link-local-next-hop?
                 |              |        |  |     inet:ipv6-address
                 |              |        |  +-- med?
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 40]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |              |        |  |     uint32
                 |              |        |  +-- local-pref?
                 |              |        |  |     uint32
@@ -2275,6 +2290,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        |     bct:bgp-ext-community-type
                 |              |        +-- ext-community-raw*
                 |              |        |     string
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 41]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |              |        +-- ipv6-ext-community*
                 |              |        |     bct:bgp-ipv6-ext-community-type
                 |              |        +-- ipv6-ext-community-raw*
@@ -2290,14 +2313,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        +-- best-path?
                 |              |        |     boolean
                 |              |        +-- unknown-attributes
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 41]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |              |        |  +-- unknown-attribute*
                 |              |        |        [attr-type]
                 |              |        |     +-- attr-type     uint8
@@ -2331,6 +2346,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        |  |     inet:ipv6-address
                 |              |        |  +-- med?
                 |              |        |  |     uint32
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 42]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |              |        |  +-- local-pref?
                 |              |        |  |     uint32
                 |              |        |  +-- as4-path
@@ -2346,14 +2369,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        |  |        yang:dotted-quad
                 |              |        |  +-- aggregator4
                 |              |        |  |  +-- as4?
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 42]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |              |        |  |  |     inet:as-number
                 |              |        |  |  +-- identifier?
                 |              |        |  |        yang:dotted-quad
@@ -2387,6 +2402,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |              |        |  +-- unknown-attribute*
                 |              |        |        [attr-type]
                 |              |        |     +-- attr-type     uint8
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 43]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |              |        |     +-- optional?     boolean
                 |              |        |     +-- transitive?   boolean
                 |              |        |     +-- partial?      boolean
@@ -2402,14 +2425,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |                       |     inet:ipv6-prefix
                 |                       +-- path-id?
                 |                       |     uint32
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 43]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |                       +-- attributes
                 |                       |  +-- origin?
                 |                       |  |     bt:bgp-origin-attr-type
@@ -2443,6 +2458,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |                       |  |  |     inet:as-number
                 |                       |  |  +-- identifier?
                 |                       |  |        yang:dotted-quad
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 44]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                 |                       |  +-- atomic-aggregate?
                 |                       |  |     boolean
                 |                       |  +-- originator-id?
@@ -2458,14 +2481,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                 |                       +-- ext-community-raw*
                 |                       |     string
                 |                       +-- ipv6-ext-community*
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 44]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 |                       |     bct:bgp-ipv6-ext-community-type
                 |                       +-- ipv6-ext-community-raw*
                 |                       |     string
@@ -2499,6 +2514,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                    +-- post-policy?      boolean
                    +-- legacy-as-path?   boolean
                    +-- adj-rib-out?      boolean
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 45]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                    +-- filtered?         boolean
 
     Figure 1: YANG tree diagram for 'ietf-bmp-telemetry-message' module.
@@ -2514,14 +2537,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
      import ietf-inet-types {
        prefix inet;
        reference
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 45]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          "RFC 9911: Common YANG Data Types";
      }
      import ietf-yang-types {
@@ -2556,6 +2571,13 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          "RFC XXXX: YANG Model for BMP TLVs.";
      }
 
+
+
+Graf, et al.            Expires 28 December 2026               [Page 46]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
      organization
        "IETF Draft";
      contact
@@ -2569,14 +2591,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
      description
        "Adds BMP specific subscription metadata to the data collection
         protocol provenance of the ietf-telemetry-message envelope.
-
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 46]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
 
         The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
         'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
@@ -2612,6 +2626,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
              "Global Instance Peer";
            reference
              "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 47]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
          }
          enum rd-instance-peer {
            value 1;
@@ -2626,14 +2648,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
              "Local Instance Peer";
            reference
              "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 47]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          }
          enum loc-rib-instance-peer {
            value 3;
@@ -2668,6 +2682,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
              "Present only when the Extended Flags TLV is absent.
               When extended-flags is present it is authoritative
               and peer-flags MUST NOT be emitted.";
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 48]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
          }
          description
            "BMP Per-Peer Header Flags decoded from the Per-Peer Header
@@ -2682,14 +2704,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            "BMP peer distinguisher from per-peer header.
             The routing instance on which the encapsulated PDU was
             received.";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 48]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          reference
            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
        }
@@ -2724,6 +2738,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          description
            "BMP timestamp from the Per-Peer Header (RFC 7854 Section 4.2).
             Represents the time the encapsulated routes were received or
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 49]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
             installed in the Adj-RIB-In.  Absent when the value was zero
             (unavailable) in the wire header.
 
@@ -2738,14 +2760,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.;
             draft-ietf-grow-bmp-tlv: Section 5.6.1.";
        }
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 49]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
      }
 
      typedef peer-down-reason-code {
@@ -2780,6 +2794,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          enum remote-system-closed-no-data {
            value 4;
            description
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 50]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
              "The remote system closed the session without a NOTIFICATION
               message. Includes any unexpected termination of the
               transport session.";
@@ -2794,14 +2816,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            reference
              "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.9.";
          }
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 50]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          enum local-system-closed-tlv-data-follows {
            value 6;
            description
@@ -2836,6 +2850,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            }
            enum message-lost {
              value 1;
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 51]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
              description
                "Messages Lost. One or more messages may have been
                 lost, e.g., due to buffer exhaustion.";
@@ -2850,14 +2872,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
        description
          "BMP Statistics.";
        reference
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 51]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.8.";
        leaf statistics-type {
          type string {
@@ -2892,6 +2906,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            "Local port from the Peer Up Notification. Set to 0
             for Loc-RIB Instance Peers.";
          reference
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 52]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.";
        }
        leaf remote-port {
@@ -2906,14 +2928,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
        container sent-open {
          description
            "BGP OPEN message sent by the local router to its peer.";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 52]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          reference
            "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 4.2.
             RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.";
@@ -2948,6 +2962,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.1.";
          case route-monitoring {
            container route-monitoring {
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 53]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
              description
                "BMP Route Monitoring message.  Used for initial
                 synchronization of Adj-RIBs-In and for ongoing
@@ -2962,14 +2984,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            container statistics-report {
              description
                "BMP Statistics Report message.  Carries one or more
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 53]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                 counters reflecting activity on the monitored router.";
              uses per-peer;
              uses statistics;
@@ -3004,6 +3018,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
              }
              uses btlv:common;
            }
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 54]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
          }
          case peer-up-notification {
            container peer-up-notification {
@@ -3018,14 +3040,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                   notification";
                description
                  "Optional Information TLVs at the end of the Peer Up
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 54]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                   message.  For standard peers only the string type
                   (type 0) is defined; for Loc-RIB Instance Peers the
                   VRF/Table Name TLV (type 3, RFC 9069) MUST be
@@ -3060,6 +3074,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          }
          case route-mirroring-message {
            container route-mirroring-message {
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 55]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
              description
                "BMP Route Mirroring Message.  Used for verbatim
                 duplication of messages as received, e.g., for
@@ -3074,13 +3096,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
      }
    }
    <CODE ENDS>
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 55]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
 
           Figure 2: BMP YANG 'ietf-bmp-telemetry-message' module.
 
@@ -3116,6 +3131,13 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                    Leonardo Rodoni
                    <mailto:leonardo.rodoni@swisscom.com>";
 
+
+
+Graf, et al.            Expires 28 December 2026               [Page 56]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
      description
        "Defines a grouping for representing a BGP OPEN message as
         defined in RFC 4271.  The BGP OPEN message is the first
@@ -3130,14 +3152,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
         telemetry protocols.
 
         Copyright (c) 2026 IETF Trust and the persons identified as
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 56]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
         authors of the code.  All rights reserved.
 
         Redistribution and use in source and binary forms, with or
@@ -3172,6 +3186,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
        leaf version {
          type uint8;
          description
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 57]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
            "BGP protocol version number carried in the OPEN message.
             The current BGP version number is 4.";
          reference
@@ -3186,14 +3208,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
             RFC 6793: BGP Support for Four-Octet Autonomous System (AS)
             Number Space.";
        }
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 57]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
        leaf hold-time {
          type uint16;
          units "seconds";
@@ -3228,6 +3242,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
    }
    <CODE ENDS>
 
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 58]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                  Figure 3: BMP YANG 'ietf-bgp-open' module.
 
 4.3.  BGP RIB Entry YANG Module
@@ -3242,14 +3264,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
        prefix inet;
        reference
          "RFC 9911: Common YANG Data Types.";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 58]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
      }
      import ietf-yang-types {
        prefix yang;
@@ -3285,6 +3299,13 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
         Routing Information Base (RIB). The submodule supports entries
         from 5 logical RIB types per address family:
 
+
+
+Graf, et al.            Expires 28 December 2026               [Page 59]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
         loc-rib: An entry from the main BGP routing table for the local
         routing instance, containing best-path selections for each
         prefix. The key for the loc-rib entry corresponds either to a
@@ -3298,14 +3319,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
         adj-rib-in-post: An entry from the per-neighbor table containing
         the routes received from the neighbor that are eligible for
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 59]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
         best-path selection after local input policy rules have been
         applied. The 'best-path' leaf is attached to the route selected
         by the BGP Decision Process (RFC 4271, Section 9.1). Such
@@ -3341,6 +3354,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
         described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
         they appear in all capitals, as shown here.";
 
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 60]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
      revision 2026-06-23 {
        description
          "Initial Version";
@@ -3354,14 +3375,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
        uses bgp-path-attributes;
        uses bgp:bgp-community-attr-state;
        uses bgp:ext-community-attributes;
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 60]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
        uses bgp:ipv6-ext-community-attributes;
        uses bgp:large-community-attributes;
      }
@@ -3397,6 +3410,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            type inet:ip-address;
            description
              "BGP next hop attribute.";
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 61]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
            reference
              "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 5.1.3.";
          }
@@ -3410,14 +3431,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          }
          leaf med {
            type uint32;
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 61]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
            description
              "BGP multi-exit discriminator attribute.";
            reference
@@ -3453,6 +3466,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
              description
                "AS number of the aggregating router.";
              reference
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 62]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 5.1.7.";
            }
            leaf identifier {
@@ -3466,14 +3487,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          container aggregator4 {
            description
              "AS4_AGGREGATOR attribute. Not populated in Loc-RIB.";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 62]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
            reference
              "RFC 6793: BGP Support for Four-Octet Autonomous System (AS)
               Number Space.";
@@ -3509,6 +3522,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
              "RFC 4456: BGP Route Reflection, Section 8.";
          }
          leaf-list cluster-list {
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 63]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
            type yang:dotted-quad;
            description
              "BGP CLUSTER_LIST attribute for route reflection.";
@@ -3522,14 +3543,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            reference
              "RFC 7311: The Accumulated IGP Metric Attribute for BGP.";
          }
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 63]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
        }
      }
 
@@ -3565,6 +3578,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            description
              "The IPv6 prefix.";
          }
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 64]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
          uses bgp:bgp-loc-rib-common-keys;
          uses bgp-common-route-attributes;
          uses bgp:bgp-common-route-annotations-state;
@@ -3578,14 +3599,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          "IPv4 Adj-RIB route entry (In-Pre, Out-Pre, Out-Post).";
        container route {
          description
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 64]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
            "A single IPv4 Adj-RIB route entry.";
          leaf prefix {
            type inet:ipv4-prefix;
@@ -3621,6 +3634,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
      }
 
      grouping ipv6-adj-rib-common {
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 65]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
        description
          "IPv6 Adj-RIB route entry (In-Pre, Out-Pre, Out-Post).";
        container route {
@@ -3634,14 +3655,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          uses bgp:bgp-adj-rib-attr-state;
          uses bgp-common-route-attributes;
          uses bgp:bgp-common-route-annotations-state;
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 65]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          uses bgp:bgp-unknown-attr-top;
          uses bgp:rib-ext-route-annotations;
        }
@@ -3677,6 +3690,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          }
          mandatory true;
          description
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 66]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
            "AFI,SAFI name.";
        }
 
@@ -3690,14 +3711,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
            case ipv4-unicast {
              when "derived-from-or-self(../afi-safi-type, 'bt:ipv4-unicast')";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 66]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
              container ipv4-unicast {
                description
                  "Routing tables for IPv4 unicast.";
@@ -3733,6 +3746,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                    }
                  }
                  case adj-rib-out-pre {
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 67]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                    container adj-rib-out-pre {
                      description
                        "Route eligible to be sent to the neighbor
@@ -3746,14 +3767,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                        "Route eligible to be sent to the neighbor
                         after output policy rules have been applied.";
                      uses ipv4-adj-rib-common;
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 67]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                    }
                  }
                }
@@ -3789,6 +3802,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                      uses ipv6-adj-rib-common;
                    }
                  }
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 68]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
                  case adj-rib-in-post {
                    container adj-rib-in-post {
                      description
@@ -3802,14 +3823,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                      description
                        "Route eligible to be sent to the neighbor
                         before output policy rules have been applied.";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 68]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
                      uses ipv6-adj-rib-common;
                    }
                  }
@@ -3846,6 +3859,13 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          "RFC 9911: Common YANG Data Types";
      }
 
+
+
+Graf, et al.            Expires 28 December 2026               [Page 69]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
      organization
        "IETF Draft";
      contact
@@ -3858,14 +3878,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
      description
        "Defines TLV groupings for BMP (BGP Monitoring Protocol) messages.
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 69]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
         The groupings in this module correspond to TLV types defined
         across the core BMP specifications and extensions:
 
@@ -3903,6 +3915,13 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
         4.c of the IETF Trust's Legal Provisions Relating to IETF Documents
         (https://trustee.ietf.org/license-info).
 
+
+
+Graf, et al.            Expires 28 December 2026               [Page 70]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
         This version of this YANG module is part of RFC XXXX; see the RFC
         itself for full legal notices.";
 
@@ -3914,14 +3933,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
      }
 
      // ---------------------------------------------------------------
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 70]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
      // Typedefs
      // ---------------------------------------------------------------
      typedef timestamp-type {
@@ -3959,6 +3970,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          }
          enum adj-rib-out-time {
            value 4;
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 71]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
            description
              "Time at which the route was installed in the Adj-RIB-Out,
               as per RFC 8671.";
@@ -3970,14 +3989,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          "BMP Timestamp types for the Timestamp TLV (type 3).  Indicates
           which event the accompanying timestamp value refers to.";
        reference
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 71]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          "draft-ietf-grow-bmp-tlv: Section 5.6.1.";
      }
 
@@ -4015,6 +4026,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          description
            "Path used for traffic forwarding.  A prefix can have more
             than one primary path when multipath is configured.  The
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 72]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
             best path is also a primary path.";
        }
        leaf backup {
@@ -4026,14 +4045,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
             convergence.";
        }
        leaf non-installed {
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 72]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          type boolean;
          default false;
          description
@@ -4071,6 +4082,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          description
            "Path declared stale by the BGP Graceful Restart mechanism
             as described in Section 4.1 of RFC 4724.";
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 73]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
        }
        leaf suppressed {
          type boolean;
@@ -4082,14 +4101,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
      }
 
      typedef path-status-reason-code {
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 73]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
        type enumeration {
          enum invalid-as-loop {
            value 1;
@@ -4127,6 +4138,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
              "Not preferred because of MED as described in
               Section 9.1.2.2 of RFC 4271.";
          }
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 74]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
          enum not-preferred-peer-type {
            value 7;
            description
@@ -4138,14 +4157,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            description
              "Not preferred because of IGP cost as described in
               Section 9.1.2.2 of RFC 4271.";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 74]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          }
          enum not-preferred-router-id {
            value 9;
@@ -4183,6 +4194,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          "Flags from the BMP Per-Peer Header (RFC 7854 Section 4.2).";
        reference
          "RFC 7854: Section 4.2";
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 75]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
        leaf ipv6-peer {
          type boolean;
          default false;
@@ -4194,14 +4213,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
        leaf post-policy {
          type boolean;
          default false;
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 75]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          description
            "L flag: true indicates post-policy Adj-RIB-In;
             false indicates pre-policy Adj-RIB-In.";
@@ -4239,6 +4250,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
      // ---------------------------------------------------------------
      // Cross-cutting TLVs (applicable to all BMP message types)
      // draft-ietf-grow-bmp-tlv Section 5.6
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 76]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
      // ---------------------------------------------------------------
      grouping common {
        description
@@ -4250,14 +4269,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          "draft-ietf-grow-bmp-tlv: Section 5.6.";
        leaf sequence-number {
          type uint64;
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 76]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          description
            "Sequence Number TLV (type 1). Carries the per-BMP-session
             sequence number of this message starting at 0. If the
@@ -4295,6 +4306,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
             Per-Peer Header Flags is set to 1.";
          description
            "Extended Flags TLV (type 2). Carries an extended set of
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 77]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
             per-peer flags, extending the Flags field of the Per-Peer
             Header to a variable-length sequence of bytes. The first
             byte carries the flags defined prior to this document
@@ -4306,14 +4325,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
             Per-Peer Header flags directly.";
          reference
            "draft-ietf-grow-bmp-tlv: Section 5.6.3.";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 77]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          // TODO: discuss this...
          // Extension point for future flag bits (RFC 8791 sx:augment-structure).
          // The augment path starts from the sx:structure root of the module
@@ -4351,6 +4362,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
        reference
          "RFC 7854: Section 4.4;
           RFC 9069: Section 5.2.1.";
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 78]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
        leaf-list string {
          type string {
            length "1..65535";
@@ -4362,14 +4381,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
             when reported.";
          reference
            "RFC 7854: Section 4.4.";
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 78]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
        }
        leaf sys-descr {
          type string {
@@ -4407,6 +4418,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
             notification.";
          reference
            "RFC 9069: Section 5.2.1.";
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 79]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
        }
      }
 
@@ -4418,14 +4437,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
        description
          "BMP Termination Message TLVs.";
        reference
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 79]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          "RFC 7854: Section 4.5.";
        leaf-list string {
          type string {
@@ -4463,6 +4474,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
                "Redundant connection.  The router has determined that
                 this connection is redundant with another one.";
            }
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 80]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
            enum permanently-administratively-closed {
              value 4;
              description
@@ -4474,14 +4493,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
          }
          description
            "Reason TLV (type 1).  Indicates why the session was
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 80]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
             terminated.  Inclusion is REQUIRED.";
          reference
            "RFC 7854: Section 4.5.";
@@ -4519,6 +4530,14 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
      // ---------------------------------------------------------------
      grouping path-status-info {
        description
+
+
+
+Graf, et al.            Expires 28 December 2026               [Page 81]
+
+Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+
+
          "BMP Path Status TLV for Route Monitoring messages.  Conveys
           the status of a BGP path after processing by the BGP decision
           process. Carried as an indexed TLV in Route Monitoring
@@ -4530,14 +4549,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
        uses path-status-flags;
        leaf reason-code {
          type path-status-reason-code;
-
-
-
-Graf, et al.            Expires 28 December 2026               [Page 81]
-
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
-
-
          description
            "Optional reason code indicating why the path has the
             indicated status. Absent when no reason code is carried.";
@@ -4575,17 +4586,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
            "draft-ietf-grow-bmp-tlv: Section 5.2.2.";
        }
      }
-   }
-   <CODE ENDS>
-
-                 Figure 5: BMP YANG 'ietf-bmp-tlv' module.
-
-
-
-
-
-
-
 
 
 
@@ -4593,6 +4593,11 @@ Graf, et al.            Expires 28 December 2026               [Page 82]
 
 Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
+
+   }
+   <CODE ENDS>
+
+                 Figure 5: BMP YANG 'ietf-bmp-tlv' module.
 
 5.  YANG Message Broker BMP Indexing and Topic Naming
 
@@ -4624,11 +4629,6 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 5.1.1.  BMP Initiation
 
    *  initiation-message
-
-
-
-
-
 
 
 

@@ -194,12 +194,13 @@
             processing components to facilitate communication in a
             distributed system</li>
 
-          <li>Message Key: Metadata associated with a message to
-            facilitate deterministic hash bucketing and indexing.</li>
+          <li>Message Key: Message Key: Metadata associated with a
+					  message to facilitate deterministic hash bucketing and
+						indexing for instantiated YANG data.</li>
 
           <li>Partition Key: Metadata associated with a message to
-            facilitate deterministic hash bucketing. Also known as
-						ordering key or routing key.</li>
+            facilitate deterministic hash bucketing for instantiated
+						YANG data. Also known as ordering key or routing key.</li>
         </ul>
 
         <t>The following terms are used as defined in <xref
