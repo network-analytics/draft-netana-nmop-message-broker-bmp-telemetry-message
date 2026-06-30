@@ -53,23 +53,23 @@ module ietf-bmp-telemetry-message {
   description
     "Adds BMP specific subscription metadata to the data collection
      protocol provenance of the ietf-telemetry-message envelope.
-
+     
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
      'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
      are to be interpreted as described in BCP 14 (RFC 2119)
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
-
+     
      Copyright (c) 2026 IETF Trust and the persons identified as
        authors of the code.  All rights reserved.
-
+     
      Redistribution and use in source and binary forms, with or without
      modification, is permitted pursuant to, and subject to the license
      terms contained in, the Revised BSD License set forth in Section
      4.c of the IETF Trust's Legal Provisions Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
-
+     
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
@@ -186,7 +186,8 @@ module ietf-bmp-telemetry-message {
          Represents the time the encapsulated routes were received or
          installed in the Adj-RIB-In.  Absent when the value was zero
          (unavailable) in the wire header.
-
+         
+         // TODO: check with bmp-tlv regarding authoritative timestamp
          The Timestamp TLV (message-timestamp in btlv:common) MAY
          also be present and carries a typed timestamp.  When
          message-timestamp with type 'adj-rib-in-time' is present, it
@@ -290,6 +291,7 @@ module ietf-bmp-telemetry-message {
     }
   }
 
+  // TODO: design better grouping for statistics
   grouping statistics {
     description
       "BMP Statistics.";
@@ -369,6 +371,20 @@ module ietf-bmp-telemetry-message {
       reference
         "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.1.";
     }
+
+    container session-metadata {
+      presence
+        "BMP Initiation message information cached by a collector
+         to enrich this message with router identity context.";
+      description
+        "Optional metadata derived from the BMP Initiation message
+         for this BMP session. A collector MAY populate sys-name,
+         sys-descr or a free-form string leaf-list to make this
+         message self-contained for consumers that did not process
+         or store the Initiation message directly.";
+      uses btlv:information;
+    }
+
     choice message-type {
       description
         "BMP message type from common header.";

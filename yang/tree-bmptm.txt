@@ -1,7 +1,12 @@
 module: ietf-bmp-telemetry-message
 
   structure message:
-    +-- version?          uint8
+    +-- session-metadata!
+    |  +-- string*           string
+    |  +-- sys-descr?        string
+    |  +-- sys-name?         string
+    |  +-- vrf-table-name?   string
+    +-- version?            uint8
     +-- (message-type)?
        +--:(route-monitoring)
        |  +-- route-monitoring

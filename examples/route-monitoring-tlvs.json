@@ -1,6 +1,10 @@
 {
   "ietf-bmp-telemetry-message:message": {
     "version": 3,
+    "session-metadata": {
+      "sys-descr": "25.4.2.02I",
+      "sys-name": "ipf-zbl1327-r-daisy-91"
+    },
     "route-monitoring": {
       "peer-type": "global-instance-peer",
       "peer-address": "203.0.113.45",

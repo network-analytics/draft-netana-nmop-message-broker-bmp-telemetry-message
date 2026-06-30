@@ -448,7 +448,7 @@ module ietf-bmp-tlv {
       }
       ordered-by user;
       description
-        "String TLV (type 0).  Free-form UTF-8 string.  Multiple
+        "String TLV (type 0). Free-form UTF-8 string. Multiple
          instances are permitted; their ordering MUST be preserved
          when reported.";
       reference
