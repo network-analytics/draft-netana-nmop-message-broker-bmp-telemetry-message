@@ -3,6 +3,7 @@
     "version": 3,
     "peer-up-notification": {
       "peer-type": "global-instance-peer",
+      "peer-distinguisher": "0:0:0",
       "peer-address": "203.0.113.45",
       "peer-as": 65002,
       "peer-bgp-id": "203.0.113.1",

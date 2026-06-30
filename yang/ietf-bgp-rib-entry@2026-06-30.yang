@@ -90,7 +90,7 @@ module ietf-bgp-rib-entry {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-23 {
+  revision 2026-06-30 {
     description
       "Initial Version";
     reference
@@ -115,6 +115,7 @@ module ietf-bgp-rib-entry {
         "BGP path attribute parameters.";
       leaf origin {
         type bt:bgp-origin-attr-type;
+        mandatory true;
         description
           "BGP attribute defining the origin of the path information.";
         reference
@@ -298,6 +299,7 @@ module ietf-bgp-rib-entry {
         "A single IPv4 Adj-RIB route entry.";
       leaf prefix {
         type inet:ipv4-prefix;
+        mandatory true;
         description
           "The IPv4 prefix.";
       }
@@ -317,6 +319,7 @@ module ietf-bgp-rib-entry {
         "A single IPv4 Adj-RIB-In post-policy route entry.";
       leaf prefix {
         type inet:ipv4-prefix;
+        mandatory true;
         description
           "The IPv4 prefix.";
       }
@@ -337,6 +340,7 @@ module ietf-bgp-rib-entry {
         "A single IPv6 Adj-RIB route entry.";
       leaf prefix {
         type inet:ipv6-prefix;
+        mandatory true;
         description
           "The IPv6 prefix.";
       }
@@ -356,6 +360,7 @@ module ietf-bgp-rib-entry {
         "A single IPv6 Adj-RIB-In post-policy route entry.";
       leaf prefix {
         type inet:ipv6-prefix;
+        mandatory true;
         description
           "The IPv6 prefix.";
       }

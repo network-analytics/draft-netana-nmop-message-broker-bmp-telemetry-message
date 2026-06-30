@@ -1,0 +1,32 @@
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "session-metadata": {
+      "sys-descr": "25.4.2.02I",
+      "sys-name": "ipf-zbl1327-r-daisy-91"
+    },
+    "peer-down-notification": {
+      "peer-type": "loc-rib-instance-peer",
+      "peer-distinguisher": "0:65001:100",
+      "peer-address": "::",
+      "peer-as": 65001,
+      "peer-bgp-id": "192.0.2.1",
+      "timestamp": "2026-02-15T15:10:00Z",
+      "reason": "local-system-closed-tlv-data-follows",
+      "peer-down": {
+        "vrf-table-name": "customer-a"
+      },
+      "sequence-number": "8901",
+      "timestamps": [
+        {
+          "timestamp-type": "trigger-time",
+          "timestamp": "2026-02-15T15:09:58.200000Z"
+        },
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T15:09:58.450000Z"
+        }
+      ]
+    }
+  }
+}

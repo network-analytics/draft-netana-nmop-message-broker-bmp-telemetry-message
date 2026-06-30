@@ -29,7 +29,7 @@ module ietf-bgp-open {
 
   description
     "Defines a grouping for representing a BGP OPEN message as
-     defined in RFC 4271.  The BGP OPEN message is the first
+     defined in RFC 4271. The BGP OPEN message is the first
      message sent by each side after a TCP connection is
      established and carries session parameters including the
      BGP version, the sender's AS number, the Hold Time, the
@@ -41,7 +41,7 @@ module ietf-bgp-open {
      telemetry protocols.
      
      Copyright (c) 2026 IETF Trust and the persons identified as
-     authors of the code.  All rights reserved.
+     authors of the code. All rights reserved.
      
      Redistribution and use in source and binary forms, with or
      without modification, is permitted pursuant to, and subject
@@ -60,7 +60,7 @@ module ietf-bgp-open {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2026-06-23 {
+  revision 2026-06-30 {
     description
       "Initial revision.";
     reference
@@ -74,6 +74,7 @@ module ietf-bgp-open {
       "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 4.2.";
     leaf version {
       type uint8;
+      mandatory true;
       description
         "BGP protocol version number carried in the OPEN message.
          The current BGP version number is 4.";
@@ -82,6 +83,7 @@ module ietf-bgp-open {
     }
     leaf my-as {
       type uint32;
+      mandatory true;
       description
         "Autonomous System number of the BGP OPEN message sender.";
       reference
@@ -92,6 +94,7 @@ module ietf-bgp-open {
     leaf hold-time {
       type uint16;
       units "seconds";
+      mandatory true;
       description
         "Hold Time proposed by the sender in the BGP OPEN message.
          The Hold Time MUST be either zero or at least three seconds.";
@@ -100,14 +103,15 @@ module ietf-bgp-open {
     }
     leaf bgp-identifier {
       type inet:ipv4-address;
+      mandatory true;
       description
         "BGP Identifier of the sender, set to an IP address assigned
-         to that BGP speaker.  The value is determined upon startup
+         to that BGP speaker. The value is determined upon startup
          and is the same for every local interface and BGP peer.";
       reference
         "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 4.2.";
     }
-    // TODO: check if we can ignore the index ?
+    // TODO: check if we can ignore/need the index?
     list capabilities {
       key "code index";
       description
