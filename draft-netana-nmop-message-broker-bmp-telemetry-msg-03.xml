@@ -253,79 +253,75 @@
       <name>Relationship to other documents</name>
 
       <section>
-        <name>Relationship to
-        draft-ietf-nmop-message-broker-telemetry-message</name>
+        <name>Relationship to draft-ietf-nmop-message-broker-telemetry-message</name>
 
         <t><xref
             target="I-D.ietf-nmop-message-broker-telemetry-message" />
-          defines with 'ietf-telemetry-message' YANG module a base
-          Network Telemetry Message schema being used between <xref
+          defines, using the 'ietf-telemetry-message' YANG module, a
+          base Network Telemetry Message schema used between <xref
             section="4.6" sectionFormat="of"
             target="I-D.ietf-nmop-yang-message-broker-integration">
           Message Broker Producer</xref> and <xref section="4.7"
             sectionFormat="of"
             target="I-D.ietf-nmop-yang-message-broker-integration">
-          Message Broker Consumer</xref> and with
-          'ietf-yang-push-telemetry-message' YANG module an extension
+          Message Broker Consumer</xref>, and using the
+          'ietf-yang-push-telemetry-message' YANG module, an extension
           that supports YANG-Push specific subscription metadata.</t>
 
-        <t>This document defines 2 BMP YANG modules <xref
+        <t>This document defines two BMP YANG modules <xref
             target="ietf-bmp-telemetry-message-module" />, <xref
-            target="ietf-bmp-tlv" /> and 2 BGP YANG modules <xref
+            target="ietf-bmp-tlv-module" /> and two BGP YANG modules <xref
             target="ietf-bgp-rib-entry-module" />, <xref
-            target="ietf-bgp-open" /> which are being used in the
-          anydata "payload" <xref
-            target="I-D.ietf-nmop-message-broker-telemetry-message" />
-          defined in 'ietf-telemetry-message' YANG module.</t>
+            target="ietf-bgp-open-module" /> which populate the anydata
+          "payload" node defined in the 'ietf-telemetry-message' YANG
+          module of <xref
+            target="I-D.ietf-nmop-message-broker-telemetry-message" />.</t>
       </section>
 
       <section>
         <name>Relationship to draft-ietf-idr-bgp-model</name>
 
-        <t><xref target="I-D.ietf-idr-bgp-model" /> defines with
-          'ietf-bgp' a YANG module and with 'iana-bgp-community-types',
-          'iana-bgp-notification', 'iana-bgp-rib-types',
-          'iana-bgp-types', 'ietf-bgp-capabilities', 'ietf-bgp-common',
+        <t><xref target="I-D.ietf-idr-bgp-model" /> defines the
+          'ietf-bgp' YANG module along with the following submodules:
+          'iana-bgp-community-types', 'iana-bgp-notification',
+          'iana-bgp-rib-types', 'iana-bgp-types',
+          'ietf-bgp-capabilities', 'ietf-bgp-common',
           'ietf-bgp-common-multiprotocol', 'ietf-bgp-common-structure',
           'ietf-bgp-neighbor', 'ietf-bgp-policy', 'ietf-bgp-rib',
-          'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables'
-          submodules.</t>
+          'ietf-bgp-rib-attributes', and 'ietf-bgp-rib-tables'.</t>
 
-        <t>This document is using the content of the 'rib' YANG grouping
-          defined in 'ietf-bgp-rib' submodule and renames the YANG
-          grouping to 'rib-entry' and restructures the data taxonomy to
-          allow a single BGP RIB entry to be serialized in a Telemetry
-          Message on Message Broker in the 'ietf-bmp-bgp-rib-entry'
-          submodule. The 'clear-routes' YANG grouping used in the 'rib'
-          YANG grouping has been removed since a Telemetry Message only
-          covers operational metrics.</t>
+        <t>This document defines two new standalone YANG modules,
+          'ietf-bgp-rib-entry' and 'ietf-bgp-open', that import
+          'ietf-bgp'. The 'ietf-bgp-rib-entry' module adapts the
+          groupings exposed by the 'ietf-bgp-rib',
+          'ietf-bgp-rib-attributes', and 'ietf-bgp-rib-tables'
+          submodules and restructures them into a 'rib-entry' grouping
+          that represents a single BGP RIB entry suitable for
+          serialization in a Telemetry Message on a Message Broker. The
+          'clear-routes' YANG grouping has been omitted since a
+          Telemetry Message covers only operational metrics. The
+          'ietf-bgp-open' module exposes BGP OPEN message fields for use
+          in BMP Peer Up notifications.</t>
 
-        <t>Since 'ietf-bgp-rib' uses groupings from
-          'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' and both
-          'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables'YANG
-          submodules <xref section="7.2.2" sectionFormat="of"
-            target="RFC7950">belongs to</xref> 'ietf-bgp' main module,
-          the YANG submodules have been renamed to
-          'ietf-bmp-bgp-rib-attributes' and ietf-bmp-bgp-rib-tables'.</t>
+        <t>Because 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables'
+          are YANG submodules that <xref section="7.2.2"
+            sectionFormat="of" target="RFC7950">belong to</xref> the
+          'ietf-bgp' main module, they cannot be imported independently.
+          This document therefore imports the full 'ietf-bgp' module,
+          which includes BGP configuration and policy content that is
+          not required for telemetry purposes.</t>
 
-        <t>If 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' would
-          not be 'ietf-bgp' submodules, they could be reused as is with
-          'ietf-bmp-bgp-rib-entry'. Since this would imply than a
-          normative document dependency a reasonable timeline needs to
-          be coordinated. Once these clarifications have been concluded
-          this section remains.</t>
-
-        <t>Remark: The <xref target="I-D.ietf-idr-bgp-model" /> authors
-          agreed to incorporate such changes in
-          'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' modules
-          but have not updated but document yet. This document is using
-          'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' modules
-          from their repository. This and the previous two sections is
-          going to be removed once the document is updated. </t>
+        <t>Once 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' are
+          restructured as standalone importable modules, this document
+          could be simplified to import only those specific modules
+          rather than all of 'ietf-bgp'. Such a change requires
+          coordination with the <xref target="I-D.ietf-idr-bgp-model" />
+          authors on an appropriate timeline. This section will be
+          removed if and once those changes are in place.</t>
 
         <t>The <xref target="I-D.ietf-idr-bgp-model" /> authors are
-          being honored under <xref target="Contributors" /> for their
-          contribution on the BGP YANG modelling this document uses.</t>
+          honored under <xref target="Contributors" /> for their
+          contribution to the BGP YANG modelling this document uses.</t>
       </section>
 
       <section>
@@ -346,36 +342,56 @@
     <section>
       <name>BMP YANG Modules</name>
 
-      <t>The BMP YANG module for Network Telemetry messages defines the
-        BMP subscription metadata and depending on BMP Message type
-        different metadata structures.</t>
-
-      <t>'ietf-bgp-rib-entry' extends the BMP YANG module with BGP RIB
-        structures for BMP route-monitoring and route-mirroring Message
-        types.</t>
-
-      <t>'ietf-bgp-open' extends the BMP YANG module with BGP OPEN
-        message structures for BMP peer_up Message type. </t>
-
-      <t>'ietf-bmp-tlv' extends the BMP YANG module with BMP TLV
-        structures.</t>
-
-      <t>The 'ietf-bmp-telemetry-message' module carries an optional <tt>
+      <t>The 'ietf-bmp-telemetry-message' YANG module defines the
+        top-level BMP <tt>message</tt> structure. It carries a mandatory <tt>
+        version</tt> leaf from the BMP Common Header, an optional <tt>
         session-metadata</tt> presence container derived from the BMP
-        Initiation message. A BMP Initiation message is sent once per
-        BMP session when the TCP connection is established and provides
-        router identity information such as sys-name, sys-descr, and
-        optional free-form strings. Because subsequent per-peer messages
-        (Route Monitoring, Statistics Report, Peer Up, Peer Down) carry
-        no equivalent identity information, a Network Telemetry
-        collector acting as a YANG Message Broker Producer SHOULD cache
-        the Initiation message content for each BMP session and populate <tt>
-        session-metadata</tt> in every downstream message it emits. This
-        makes each Message Broker message self-contained for consumers
-        that did not observe or store the Initiation message directly.
-        The <tt>session-metadata</tt> container is absent when the
-        collector has not yet received or cached the Initiation message
-        for that session.</t>
+        Initiation message, and a <tt>message-type</tt> choice covering
+        all seven BMP message types: route-monitoring,
+        statistics-report, peer-down-notification, peer-up-notification,
+        initiation-message, termination-message, and
+        route-mirroring-message.</t>
+
+      <t>The 'ietf-bgp-rib-entry' module provides the <tt>rib-entry</tt>
+        grouping used by route-monitoring and route-mirroring messages.
+        It selects between five RIB table types — loc-rib,
+        adj-rib-in-pre, adj-rib-in-post, adj-rib-out-pre, and
+        adj-rib-out-post — via a nested <tt>rib-type</tt> choice. Each
+        route entry contains the prefix, optional path-id for ADD-PATH,
+        BGP path attributes, and community attributes.</t>
+
+      <t>The 'ietf-bgp-open' module provides the <tt>bgp-open</tt>
+        grouping, which carries the BGP OPEN message fields: protocol
+        version, Autonomous System number, hold time, BGP identifier,
+        and the negotiated capability list. It is used in
+        peer-up-notification for both the sent and received OPEN
+        messages.</t>
+
+      <t>The 'ietf-bmp-tlv' module provides TLV groupings modeling the
+        decoded content of BMP TLV Value fields. The <tt>common</tt>
+        grouping — carrying sequence number, typed timestamps, and
+        extended peer-header flags — is used across all seven BMP
+        message types. Additional groupings are message-type-specific: <tt>
+        information</tt> for initiation and peer-up messages, <tt>
+        termination</tt> for termination messages, <tt>peer-down</tt>
+        for Loc-RIB peer-down with reason code 6, and <tt>
+        route-monitoring</tt> for path status and VRF/Table Name in
+        route-monitoring messages.</t>
+
+      <t>A BMP Initiation message is sent once per BMP session when the
+        TCP connection is established and provides router identity
+        information such as sys-name, sys-descr, and optional free-form
+        strings. Because subsequent per-peer messages (Route Monitoring,
+        Statistics Report, Peer Up, Peer Down) carry no equivalent
+        identity information, a Network Telemetry collector acting as a
+        YANG Message Broker Producer SHOULD cache the Initiation message
+        content for each BMP session and populate <tt>session-metadata</tt>
+        in every downstream message it emits. This makes each Message
+        Broker message self-contained for consumers that did not observe
+        or store the Initiation message directly. The <tt>
+        session-metadata</tt> container is absent when the collector has
+        not yet received or cached the Initiation message for that
+        session.</t>
 
       <!-- ietf-bmp-telemetry-message YANG Tree -->
       <figure anchor="ietf-bmp-telemetry-message-tree"
@@ -2763,7 +2779,7 @@ module ietf-bmp-telemetry-message {
         </figure>
       </section>
 
-      <section anchor="ietf-bgp-open">
+      <section anchor="ietf-bgp-open-module">
         <name>BGP Open Message YANG Module</name>
 
         <!-- ietf-bgp-open YANG Module -->
@@ -3427,7 +3443,7 @@ module ietf-bgp-rib-entry {
         </figure>
       </section>
 
-      <section anchor="ietf-bmp-tlv">
+      <section anchor="ietf-bmp-tlv-module">
         <name>BMP TLV YANG Module</name>
 
         <!-- ietf-bmp-tlv YANG Module -->
