@@ -74,7 +74,7 @@
     </author>
 
 
-    <date day="30" month="June" year="2026" />
+    <date day="02" month="July" year="2026" />
 
     <area>General</area>
     <workgroup>NMOP</workgroup>
@@ -272,7 +272,7 @@
             target="ietf-bmp-telemetry-message-module" />, <xref
             target="ietf-bmp-tlv-module" /> and two BGP YANG modules <xref
             target="ietf-bgp-rib-entry-module" />, <xref
-            target="ietf-bgp-open-module" /> which populate the anydata
+            target="ietf-bgp-open-module" /> which populates the anydata
           "payload" node defined in the 'ietf-telemetry-message' YANG
           module of <xref
             target="I-D.ietf-nmop-message-broker-telemetry-message" />.</t>
@@ -307,17 +307,18 @@
           are YANG submodules that <xref section="7.2.2"
             sectionFormat="of" target="RFC7950">belong to</xref> the
           'ietf-bgp' main module, they cannot be imported independently.
-          This document therefore imports the full 'ietf-bgp' module,
+          This document therefore, imports the full 'ietf-bgp' module,
           which includes BGP configuration and policy content that is
           not required for telemetry purposes.</t>
 
         <t>Once 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' are
           restructured as standalone importable modules, this document
           could be simplified to import only those specific modules
-          rather than all of 'ietf-bgp'. Such a change requires
-          coordination with the <xref target="I-D.ietf-idr-bgp-model" />
-          authors on an appropriate timeline. This section will be
-          removed if and once those changes are in place.</t>
+          rather than the entire 'ietf-bgp' and its submodules. Such a
+					change requires coordination with the <xref
+					target="I-D.ietf-idr-bgp-model" /> authors on an appropriate
+					timeline. This section will be removed if and once those
+					changes are in place.</t>
 
         <t>The <xref target="I-D.ietf-idr-bgp-model" /> authors are
           honored under <xref target="Contributors" /> for their
@@ -4633,10 +4634,13 @@ Headers:
           on newline (LF) characters. The first line is the node-name
           and the second the YANG path.</t>
 
+        <t><xref target="bmp-topic-name-example" /> shows an example where
+				"bmp-state-changes-and-statistics" is being used.</t>
+
         <figure anchor="bmp-topic-name-example"
           title="BMP Topic Name Example">
           <sourcecode type="text"><![CDATA[
-TBD
+netops-bmp-state-changes-and-statistics
 ]]></sourcecode>
         </figure>
       </section>

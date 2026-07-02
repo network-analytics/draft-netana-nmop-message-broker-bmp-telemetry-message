@@ -1,16 +1,16 @@
-﻿
+
 
 
 
 NMOP                                                            TG. Graf
 Internet-Draft                                                  Swisscom
 Intended status: Standards Track                             PL. Lucente
-Expires: 1 January 2027                                              NTT
+Expires: 3 January 2027                                              NTT
                                                               LR. Rodoni
                                                                 Swisscom
                                                               MY. Younsi
                                                                INSA-Lyon
-                                                            30 June 2026
+                                                             2 July 2026
 
 
              BMP YANG Model for Network Telemetry Messages
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 January 2027.
+   This Internet-Draft will expire on 3 January 2027.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Graf, et al.             Expires 1 January 2027                 [Page 1]
+Graf, et al.             Expires 3 January 2027                 [Page 1]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Graf, et al.             Expires 1 January 2027                 [Page 2]
+Graf, et al.             Expires 3 January 2027                 [Page 2]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                 [Page 3]
+Graf, et al.             Expires 3 January 2027                 [Page 3]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    The following terms are used as defined in
@@ -221,9 +221,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                 [Page 4]
+Graf, et al.             Expires 3 January 2027                 [Page 4]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    *  Post-Policy Adj-RIB-In
@@ -262,7 +262,7 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
    YANG-Push specific subscription metadata.
 
    This document defines two BMP YANG modules Section 4.1, Section 4.4
-   and two BGP YANG modules Section 4.3, Section 4.2 which populate the
+   and two BGP YANG modules Section 4.3, Section 4.2 which populates the
    anydata "payload" node defined in the 'ietf-telemetry-message' YANG
    module of [I-D.ietf-nmop-message-broker-telemetry-message].
 
@@ -277,9 +277,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                 [Page 5]
+Graf, et al.             Expires 3 January 2027                 [Page 5]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    This document defines two new standalone YANG modules, 'ietf-bgp-rib-
@@ -296,16 +296,17 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
    Because 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' are YANG
    submodules that Section 7.2.2 of belong to [RFC7950] the 'ietf-bgp'
    main module, they cannot be imported independently.  This document
-   therefore imports the full 'ietf-bgp' module, which includes BGP
+   therefore, imports the full 'ietf-bgp' module, which includes BGP
    configuration and policy content that is not required for telemetry
    purposes.
 
    Once 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' are
    restructured as standalone importable modules, this document could be
-   simplified to import only those specific modules rather than all of
-   'ietf-bgp'.  Such a change requires coordination with the
-   [I-D.ietf-idr-bgp-model] authors on an appropriate timeline.  This
-   section will be removed if and once those changes are in place.
+   simplified to import only those specific modules rather than the
+   entire 'ietf-bgp' and its submodules.  Such a change requires
+   coordination with the [I-D.ietf-idr-bgp-model] authors on an
+   appropriate timeline.  This section will be removed if and once those
+   changes are in place.
 
    The [I-D.ietf-idr-bgp-model] authors are honored under
    Appendix "Contributors" for their contribution to the BGP YANG
@@ -332,10 +333,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-
-Graf, et al.             Expires 1 January 2027                 [Page 6]
+Graf, et al.             Expires 3 January 2027                 [Page 6]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    The 'ietf-bgp-rib-entry' module provides the rib-entry grouping used
@@ -389,9 +389,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                 [Page 7]
+Graf, et al.             Expires 3 January 2027                 [Page 7]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     +-- peer-flags
@@ -445,9 +445,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                 [Page 8]
+Graf, et al.             Expires 3 January 2027                 [Page 8]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |     |        |        |  |           inet:as-number
@@ -501,9 +501,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                 [Page 9]
+Graf, et al.             Expires 3 January 2027                 [Page 9]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |     |        |              union
@@ -557,9 +557,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 10]
+Graf, et al.             Expires 3 January 2027                [Page 10]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |     |        |        |        uint64
@@ -613,9 +613,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 11]
+Graf, et al.             Expires 3 January 2027                [Page 11]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |     |        |        |  |     inet:ip-address
@@ -669,9 +669,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 12]
+Graf, et al.             Expires 3 January 2027                [Page 12]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |     |        |        |     identityref
@@ -725,9 +725,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 13]
+Graf, et al.             Expires 3 January 2027                [Page 13]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |     |        |        |  |  +-- identifier?
@@ -781,9 +781,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 14]
+Graf, et al.             Expires 3 January 2027                [Page 14]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |     |                 +-- prefix
@@ -837,9 +837,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 15]
+Graf, et al.             Expires 3 January 2027                [Page 15]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |     |                 |     bct:bgp-ext-community-type
@@ -893,9 +893,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 16]
+Graf, et al.             Expires 3 January 2027                [Page 16]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |              |        |  +-- next-hop?
@@ -949,9 +949,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 17]
+Graf, et al.             Expires 3 January 2027                [Page 17]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |              |        +-- ineligible-reason?
@@ -1005,9 +1005,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 18]
+Graf, et al.             Expires 3 January 2027                [Page 18]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |              |        |  |        yang:dotted-quad
@@ -1061,9 +1061,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 19]
+Graf, et al.             Expires 3 January 2027                [Page 19]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |              |        |     inet:ipv6-prefix
@@ -1117,9 +1117,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 20]
+Graf, et al.             Expires 3 January 2027                [Page 20]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |              |        +-- ext-community-raw*
@@ -1173,9 +1173,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 21]
+Graf, et al.             Expires 3 January 2027                [Page 21]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |              |        |  +-- med?
@@ -1229,9 +1229,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 22]
+Graf, et al.             Expires 3 January 2027                [Page 22]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |              |        |        [attr-type]
@@ -1285,9 +1285,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 23]
+Graf, et al.             Expires 3 January 2027                [Page 23]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |                       |  |  +-- identifier?
@@ -1341,9 +1341,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 24]
+Graf, et al.             Expires 3 January 2027                [Page 24]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |  +-- add-path?                   boolean
@@ -1397,9 +1397,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 25]
+Graf, et al.             Expires 3 January 2027                [Page 25]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |  +-- ipv6-peer?        boolean
@@ -1453,9 +1453,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 26]
+Graf, et al.             Expires 3 January 2027                [Page 26]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |     +-- name?    identityref
@@ -1509,9 +1509,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 27]
+Graf, et al.             Expires 3 January 2027                [Page 27]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     |        |     +-- afi?
@@ -1565,9 +1565,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 28]
+Graf, et al.             Expires 3 January 2027                [Page 28]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
           |     +-- reason             enumeration
@@ -1621,9 +1621,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 29]
+Graf, et al.             Expires 3 January 2027                [Page 29]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |     |        |        |  |           inet:as-number
@@ -1677,9 +1677,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 30]
+Graf, et al.             Expires 3 January 2027                [Page 30]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |     |        |        |     boolean
@@ -1733,9 +1733,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 31]
+Graf, et al.             Expires 3 January 2027                [Page 31]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |     |        |        |  |  +-- identifier?
@@ -1789,9 +1789,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 32]
+Graf, et al.             Expires 3 January 2027                [Page 32]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |     |        |        +-- prefix
@@ -1845,9 +1845,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 33]
+Graf, et al.             Expires 3 January 2027                [Page 33]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |     |        |        |     bct:bgp-ext-community-type
@@ -1901,9 +1901,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 34]
+Graf, et al.             Expires 3 January 2027                [Page 34]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |     |        |        |  |     inet:ipv6-address
@@ -1957,9 +1957,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 35]
+Graf, et al.             Expires 3 January 2027                [Page 35]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |     |        |        |  +-- unknown-attribute*
@@ -2013,9 +2013,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 36]
+Graf, et al.             Expires 3 January 2027                [Page 36]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |     |                 |  |  |     inet:as-number
@@ -2069,9 +2069,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 37]
+Graf, et al.             Expires 3 January 2027                [Page 37]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |              |        |     inet:ipv6-prefix
@@ -2125,9 +2125,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 38]
+Graf, et al.             Expires 3 January 2027                [Page 38]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |              |        +-- ext-community*
@@ -2181,9 +2181,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 39]
+Graf, et al.             Expires 3 January 2027                [Page 39]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |              |        |  +-- med?
@@ -2237,9 +2237,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 40]
+Graf, et al.             Expires 3 January 2027                [Page 40]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |              |        |        [attr-type]
@@ -2293,9 +2293,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 41]
+Graf, et al.             Expires 3 January 2027                [Page 41]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |              |        |  |  +-- identifier?
@@ -2349,9 +2349,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 42]
+Graf, et al.             Expires 3 January 2027                [Page 42]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |              |        |     uint32
@@ -2405,9 +2405,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 43]
+Graf, et al.             Expires 3 January 2027                [Page 43]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |              |        +-- ipv6-ext-community*
@@ -2461,9 +2461,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 44]
+Graf, et al.             Expires 3 January 2027                [Page 44]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |                       |  +-- as4-path
@@ -2517,9 +2517,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 45]
+Graf, et al.             Expires 3 January 2027                [Page 45]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                 |                       |     +-- partial?      boolean
@@ -2573,9 +2573,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 46]
+Graf, et al.             Expires 3 January 2027                [Page 46]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
      import ietf-bgp-open {
@@ -2629,9 +2629,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 47]
+Graf, et al.             Expires 3 January 2027                [Page 47]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
      revision 2026-06-30 {
@@ -2685,9 +2685,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 48]
+Graf, et al.             Expires 3 January 2027                [Page 48]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
        reference
@@ -2741,9 +2741,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 49]
+Graf, et al.             Expires 3 January 2027                [Page 49]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
            "BMP peer autonomous system number from per-peer header. The
@@ -2797,9 +2797,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 50]
+Graf, et al.             Expires 3 January 2027                [Page 50]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          enum local-system-closed-fsm-event {
@@ -2853,9 +2853,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 51]
+Graf, et al.             Expires 3 January 2027                [Page 51]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          "RFC 7854: Section 4.9; RFC 9069: Section 5.3.";
@@ -2909,9 +2909,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 52]
+Graf, et al.             Expires 3 January 2027                [Page 52]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
        }
@@ -2965,9 +2965,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 53]
+Graf, et al.             Expires 3 January 2027                [Page 53]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
        }
@@ -3021,9 +3021,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 54]
+Graf, et al.             Expires 3 January 2027                [Page 54]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
            container statistics-report {
@@ -3077,9 +3077,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 55]
+Graf, et al.             Expires 3 January 2027                [Page 55]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                  "Information TLVs are present in this Peer Up
@@ -3133,9 +3133,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 56]
+Graf, et al.             Expires 3 January 2027                [Page 56]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
        }
@@ -3189,9 +3189,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 57]
+Graf, et al.             Expires 3 January 2027                [Page 57]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
         OPEN message fields in a standalone reusable grouping,
@@ -3245,9 +3245,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 58]
+Graf, et al.             Expires 3 January 2027                [Page 58]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          description
@@ -3301,9 +3301,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 59]
+Graf, et al.             Expires 3 January 2027                [Page 59]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    <CODE BEGINS> file "ietf-bgp-rib-entry@2026-06-30.yang"
@@ -3357,9 +3357,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 60]
+Graf, et al.             Expires 3 January 2027                [Page 60]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
         route in the adj-rib-in-post table or a route redistributed
@@ -3413,9 +3413,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 61]
+Graf, et al.             Expires 3 January 2027                [Page 61]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
        reference
@@ -3469,9 +3469,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 62]
+Graf, et al.             Expires 3 January 2027                [Page 62]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          }
@@ -3525,9 +3525,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 63]
+Graf, et al.             Expires 3 January 2027                [Page 63]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
            leaf identifier {
@@ -3581,9 +3581,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 64]
+Graf, et al.             Expires 3 January 2027                [Page 64]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
              "BGP CLUSTER_LIST attribute for route reflection.";
@@ -3637,9 +3637,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 65]
+Graf, et al.             Expires 3 January 2027                [Page 65]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          uses bgp:bgp-common-route-annotations-state;
@@ -3693,9 +3693,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 66]
+Graf, et al.             Expires 3 January 2027                [Page 66]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
        description
@@ -3749,9 +3749,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 67]
+Graf, et al.             Expires 3 January 2027                [Page 67]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          mandatory true;
@@ -3805,9 +3805,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 68]
+Graf, et al.             Expires 3 January 2027                [Page 68]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                  }
@@ -3861,9 +3861,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 69]
+Graf, et al.             Expires 3 January 2027                [Page 69]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                    }
@@ -3917,9 +3917,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 70]
+Graf, et al.             Expires 3 January 2027                [Page 70]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
      }
@@ -3973,9 +3973,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 71]
+Graf, et al.             Expires 3 January 2027                [Page 71]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
         4.c of the IETF Trust's Legal Provisions Relating to IETF Documents
@@ -4029,9 +4029,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 72]
+Graf, et al.             Expires 3 January 2027                [Page 72]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          }
@@ -4085,9 +4085,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 73]
+Graf, et al.             Expires 3 January 2027                [Page 73]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          description
@@ -4141,9 +4141,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 74]
+Graf, et al.             Expires 3 January 2027                [Page 74]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          description
@@ -4197,9 +4197,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 75]
+Graf, et al.             Expires 3 January 2027                [Page 75]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
              "Not preferred because of MED as described in
@@ -4253,9 +4253,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 76]
+Graf, et al.             Expires 3 January 2027                [Page 76]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          "Flags from the BMP Per-Peer Header (RFC 7854 Section 4.2).";
@@ -4309,9 +4309,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 77]
+Graf, et al.             Expires 3 January 2027                [Page 77]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
      // ---------------------------------------------------------------
@@ -4365,9 +4365,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 78]
+Graf, et al.             Expires 3 January 2027                [Page 78]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
             Per-Peer Header Flags is set to 1.";
@@ -4421,9 +4421,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 79]
+Graf, et al.             Expires 3 January 2027                [Page 79]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
        reference
@@ -4477,9 +4477,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 80]
+Graf, et al.             Expires 3 January 2027                [Page 80]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
             notification.";
@@ -4533,9 +4533,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 81]
+Graf, et al.             Expires 3 January 2027                [Page 81]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                "Redundant connection. The router has determined that
@@ -4589,9 +4589,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 82]
+Graf, et al.             Expires 3 January 2027                [Page 82]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
      // draft-ietf-grow-bmp-path-marking-tlv
@@ -4645,9 +4645,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 83]
+Graf, et al.             Expires 3 January 2027                [Page 83]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
          reference
@@ -4701,9 +4701,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 84]
+Graf, et al.             Expires 3 January 2027                [Page 84]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    peer-address
@@ -4757,9 +4757,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 85]
+Graf, et al.             Expires 3 January 2027                [Page 85]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    NOTE: The Key is a two-line byte string; the line break between the
@@ -4813,9 +4813,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 86]
+Graf, et al.             Expires 3 January 2027                [Page 86]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                Figure 8: BMP Peer Up Message Key and Headers
@@ -4869,9 +4869,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 87]
+Graf, et al.             Expires 3 January 2027                [Page 87]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                "code": 65,
@@ -4925,9 +4925,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 88]
+Graf, et al.             Expires 3 January 2027                [Page 88]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    NOTE: The Key is a two-line byte string; the line break between the
@@ -4981,9 +4981,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 89]
+Graf, et al.             Expires 3 January 2027                [Page 89]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    {
@@ -5037,9 +5037,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 90]
+Graf, et al.             Expires 3 January 2027                [Page 90]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    NOTE: The Key is a two-line byte string; the line break between the
@@ -5093,9 +5093,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 91]
+Graf, et al.             Expires 3 January 2027                [Page 91]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    NOTE: The Key is a two-line byte string; the line break between the
@@ -5149,9 +5149,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 92]
+Graf, et al.             Expires 3 January 2027                [Page 92]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
                      ]
@@ -5205,9 +5205,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 93]
+Graf, et al.             Expires 3 January 2027                [Page 93]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    NOTE: The Key is a two-line byte string; the line break between the
@@ -5261,9 +5261,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 94]
+Graf, et al.             Expires 3 January 2027                [Page 94]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
 5.3.  Message Broker BMP Topic Naming
@@ -5289,7 +5289,10 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
    newline (LF) characters.  The first line is the node-name and the
    second the YANG path.
 
-   TBD
+   Figure 18 shows an example where "bmp-state-changes-and-statistics"
+   is being used.
+
+   netops-bmp-state-changes-and-statistics
 
                      Figure 18: BMP Topic Name Example
 
@@ -5314,12 +5317,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-
-
-
-Graf, et al.             Expires 1 January 2027                [Page 95]
+Graf, et al.             Expires 3 January 2027                [Page 95]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
 6.2.  Apache Pulsar
@@ -5373,9 +5373,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 96]
+Graf, et al.             Expires 3 January 2027                [Page 96]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    *  Reference: RFC XXXX
@@ -5429,9 +5429,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 97]
+Graf, et al.             Expires 3 January 2027                [Page 97]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    operations (e.g., edit-config) and delete operations to these data
@@ -5485,9 +5485,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 98]
+Graf, et al.             Expires 3 January 2027                [Page 98]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    [RFC8040]  Bierman, A., Bjorklund, M., and K. Watsen, "RESTCONF
@@ -5541,9 +5541,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027                [Page 99]
+Graf, et al.             Expires 3 January 2027                [Page 99]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    [I-D.ietf-nmop-message-broker-telemetry-message]
@@ -5597,9 +5597,9 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027               [Page 100]
+Graf, et al.             Expires 3 January 2027               [Page 100]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    [Pul16]    Guo, S. and M. Merli, "Apache Pulsar", Apache Software
@@ -5653,9 +5653,9 @@ Authors' Addresses
 
 
 
-Graf, et al.             Expires 1 January 2027               [Page 101]
+Graf, et al.             Expires 3 January 2027               [Page 101]
 
-Internet-Draft     BMP YANG Network Telemetry Message          June 2026
+Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 
    Email: thomas.graf@swisscom.com
@@ -5709,4 +5709,4 @@ Internet-Draft     BMP YANG Network Telemetry Message          June 2026
 
 
 
-Graf, et al.             Expires 1 January 2027               [Page 102]
+Graf, et al.             Expires 3 January 2027               [Page 102]
