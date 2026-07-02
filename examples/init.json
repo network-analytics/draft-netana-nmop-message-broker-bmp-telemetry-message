@@ -2,7 +2,7 @@
   "ietf-bmp-telemetry-message:message": {
     "version": 3,
     "initiation-message": {
-      "sys-descr": " 25.4.2.02I",
+      "sys-descr": "25.4.2.02I",
       "sys-name": "ipf-zbl1327-r-daisy-91"
     }
   }

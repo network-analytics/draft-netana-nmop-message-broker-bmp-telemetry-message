@@ -31,7 +31,7 @@ module ietf-bmp-tlv {
        - draft-ietf-grow-bmp-tlv (BMP v4): Cross-cutting TLVs
                                applicable to all message types:
                                Sequence Number (type 1), Extended Flags
-                               (type 2), Timestamp (type 3).  Also
+                               (type 2), Timestamp (type 3). Also
                                Route Monitoring-specific TLVs: Group
                                (4), VRF/Table Name (5), Stateless
                                Parsing (6), BGP Message (7).
@@ -50,7 +50,7 @@ module ietf-bmp-tlv {
      capitals, as shown here.
      
      Copyright (c) 2026 IETF Trust and the persons identified as
-       authors of the code.  All rights reserved.
+       authors of the code. All rights reserved.
      
      Redistribution and use in source and binary forms, with or without
      modification, is permitted pursuant to, and subject to the license
@@ -61,7 +61,7 @@ module ietf-bmp-tlv {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-06-23 {
+  revision 2026-06-30 {
     description
       "Initial revision.";
     reference
@@ -114,7 +114,7 @@ module ietf-bmp-tlv {
       }
     }
     description
-      "BMP Timestamp types for the Timestamp TLV (type 3).  Indicates
+      "BMP Timestamp types for the Timestamp TLV (type 3). Indicates
        which event the accompanying timestamp value refers to.";
     reference
       "draft-ietf-grow-bmp-tlv: Section 5.6.1.";
@@ -144,7 +144,7 @@ module ietf-bmp-tlv {
       type boolean;
       default false;
       description
-        "Route not selected in the BGP decision process.  Backup
+        "Route not selected in the BGP decision process. Backup
          routes are considered nonselected, while best and primary
          routes are not.";
     }
@@ -152,8 +152,8 @@ module ietf-bmp-tlv {
       type boolean;
       default false;
       description
-        "Path used for traffic forwarding.  A prefix can have more
-         than one primary path when multipath is configured.  The
+        "Path used for traffic forwarding. A prefix can have more
+         than one primary path when multipath is configured. The
          best path is also a primary path.";
     }
     leaf backup {
@@ -161,7 +161,7 @@ module ietf-bmp-tlv {
       default false;
       description
         "Path installed in the RIB but not used until some or all
-         primary paths become unreachable.  Used for fast
+         primary paths become unreachable. Used for fast
          convergence.";
     }
     leaf non-installed {
@@ -281,7 +281,7 @@ module ietf-bmp-tlv {
       }
     }
     description
-      "Reason codes for the BMP Path Status TLV.  Indicates the
+      "Reason codes for the BMP Path Status TLV. Indicates the
        reason a path has the indicated path status.";
     reference
       "draft-ietf-grow-bmp-path-marking-tlv: Section 3.2.";
@@ -336,7 +336,7 @@ module ietf-bmp-tlv {
       type boolean;
       default false;
       description
-        "F flag: Loc-RIB is filtered.  Set when a filter is
+        "F flag: Loc-RIB is filtered. Set when a filter is
          applied to Loc-RIB routes sent to the BMP collector.";
       reference
         "RFC 9069: Section 4.2.";
@@ -350,7 +350,7 @@ module ietf-bmp-tlv {
   grouping common {
     description
       "TLVs applicable to all BMP message types as defined in
-       draft-ietf-grow-bmp-tlv Section 5.6.  These TLVs carry
+       draft-ietf-grow-bmp-tlv Section 5.6. These TLVs carry
        per-message metadata and are allocated the same code point
        value in every TLV code point registry.";
     reference
@@ -369,8 +369,8 @@ module ietf-bmp-tlv {
       key "timestamp-type";
       description
         "Timestamp TLV (type 3). Carries a typed timestamp for
-         this BMP message.  Multiple instances MAY be present,
-         one per timestamp type.  A timestamp MUST NOT be included
+         this BMP message. Multiple instances MAY be present,
+         one per timestamp type. A timestamp MUST NOT be included
          if it is not available.";
       reference
         "draft-ietf-grow-bmp-tlv: Section 5.6.1.";
@@ -405,7 +405,7 @@ module ietf-bmp-tlv {
          Per-Peer Header flags directly.";
       reference
         "draft-ietf-grow-bmp-tlv: Section 5.6.3.";
-      // TODO: discuss this...
+      // TODO: discuss extensibility of this extended-flags container...
       // Extension point for future flag bits (RFC 8791 sx:augment-structure).
       // The augment path starts from the sx:structure root of the module
       // that instantiates btlv:common, e.g. for ietf-bmp-telemetry-message:
@@ -448,7 +448,7 @@ module ietf-bmp-tlv {
       }
       ordered-by user;
       description
-        "String TLV (type 0).  Free-form UTF-8 string.  Multiple
+        "String TLV (type 0). Free-form UTF-8 string. Multiple
          instances are permitted; their ordering MUST be preserved
          when reported.";
       reference
@@ -508,7 +508,7 @@ module ietf-bmp-tlv {
       }
       ordered-by user;
       description
-        "String TLV (type 0).  Free-form UTF-8 string.  Inclusion
+        "String TLV (type 0). Free-form UTF-8 string. Inclusion
          is optional. Multiple instances are permitted.";
       reference
         "RFC 7854: Section 4.5.";
@@ -518,7 +518,7 @@ module ietf-bmp-tlv {
         enum administratively-closed {
           value 0;
           description
-            "Session administratively closed.  The session might
+            "Session administratively closed. The session might
              be re-initiated.";
         }
         enum unspecified {
@@ -529,13 +529,13 @@ module ietf-bmp-tlv {
         enum out-of-resources {
           value 2;
           description
-            "Out of resources.  The router has exhausted resources
+            "Out of resources. The router has exhausted resources
              available for the BMP session.";
         }
         enum redundant-connection {
           value 3;
           description
-            "Redundant connection.  The router has determined that
+            "Redundant connection. The router has determined that
              this connection is redundant with another one.";
         }
         enum permanently-administratively-closed {
@@ -547,9 +547,10 @@ module ietf-bmp-tlv {
              attempts reconnection.";
         }
       }
+      mandatory true;
       description
-        "Reason TLV (type 1).  Indicates why the session was
-         terminated.  Inclusion is REQUIRED.";
+        "Reason TLV (type 1). Indicates why the session was
+         terminated. Inclusion is REQUIRED.";
       reference
         "RFC 7854: Section 4.5.";
     }
@@ -561,7 +562,7 @@ module ietf-bmp-tlv {
   // ---------------------------------------------------------------
   grouping peer-down {
     description
-      "BMP Peer Down TLVs.  Present when the Peer Down reason code
+      "BMP Peer Down TLVs. Present when the Peer Down reason code
        is 6 ('local-system-closed-tlv-data-follows'), as defined
        in RFC 9069 for Loc-RIB Instance Peers.";
     reference
@@ -571,7 +572,7 @@ module ietf-bmp-tlv {
         length "1..255";
       }
       description
-        "VRF/Table Name TLV (type 3).  UTF-8 string equal to the
+        "VRF/Table Name TLV (type 3). UTF-8 string equal to the
          VRF or table name. MUST be included if it was present in
          the corresponding Peer Up notification.";
       reference
@@ -586,7 +587,7 @@ module ietf-bmp-tlv {
   // ---------------------------------------------------------------
   grouping path-status-info {
     description
-      "BMP Path Status TLV for Route Monitoring messages.  Conveys
+      "BMP Path Status TLV for Route Monitoring messages. Conveys
        the status of a BGP path after processing by the BGP decision
        process. Carried as an indexed TLV in Route Monitoring
        messages; the index identifies the specific NLRI within the
@@ -605,7 +606,7 @@ module ietf-bmp-tlv {
 
   grouping route-monitoring {
     description
-      "TLVs specific to BMP Route Monitoring messages.  These appear
+      "TLVs specific to BMP Route Monitoring messages. These appear
        in addition to the common metadata that applies to all BMP message
        types.";
     reference
@@ -615,7 +616,7 @@ module ietf-bmp-tlv {
       presence
         "Path Status TLV is present for this route";
       description
-        "Path Status TLV.  Conveys the BGP decision-process status
+        "Path Status TLV. Conveys the BGP decision-process status
          of the route. As a per-NLRI indexed TLV this container
          represents the status applicable to the route entry in
          rib-entry.";

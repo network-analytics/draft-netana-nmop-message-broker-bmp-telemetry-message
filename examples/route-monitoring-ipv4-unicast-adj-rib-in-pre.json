@@ -3,6 +3,7 @@
     "version": 3,
     "route-monitoring": {
       "peer-type": "global-instance-peer",
+      "peer-distinguisher": "0:0:0",
       "peer-address": "172.16.0.1",
       "peer-as": 65001,
       "peer-bgp-id": "172.16.0.1",

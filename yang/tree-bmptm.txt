@@ -1,21 +1,26 @@
 module: ietf-bmp-telemetry-message
 
   structure message:
-    +-- version?          uint8
+    +-- session-metadata!
+    |  +-- string*           string
+    |  +-- sys-descr?        string
+    |  +-- sys-name?         string
+    |  +-- vrf-table-name?   string
+    +-- version             uint8
     +-- (message-type)?
        +--:(route-monitoring)
        |  +-- route-monitoring
-       |     +-- peer-type?            peer-type
+       |     +-- peer-type             peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
        |     |  +-- legacy-as-path?   boolean
        |     |  +-- adj-rib-out?      boolean
        |     |  +-- filtered?         boolean
-       |     +-- peer-distinguisher?   rt-types:route-distinguisher
-       |     +-- peer-address?         inet:ip-address
-       |     +-- peer-as?              uint32
-       |     +-- peer-bgp-id?          inet:ipv4-address
+       |     +-- peer-distinguisher    rt-types:route-distinguisher
+       |     +-- peer-address          inet:ip-address
+       |     +-- peer-as               uint32
+       |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
        |     +-- afi-safi-type         identityref
        |     +-- rib-entry
@@ -30,7 +35,7 @@ module: ietf-bmp-telemetry-message
        |     |     |        |        +-- origin?                   union
        |     |     |        |        +-- path-id?                  uint32
        |     |     |        |        +-- attributes
-       |     |     |        |        |  +-- origin?                bt:bgp-origin-attr-type
+       |     |     |        |        |  +-- origin                 bt:bgp-origin-attr-type
        |     |     |        |        |  +-- as-path
        |     |     |        |        |  |  +-- segment*
        |     |     |        |        |  |     +-- type?     bt:as-path-segment-type
@@ -75,10 +80,10 @@ module: ietf-bmp-telemetry-message
        |     |     |        +--:(adj-rib-in-pre)
        |     |     |        |  +-- adj-rib-in-pre
        |     |     |        |     +-- route
-       |     |     |        |        +-- prefix?                   inet:ipv4-prefix
+       |     |     |        |        +-- prefix                    inet:ipv4-prefix
        |     |     |        |        +-- path-id?                  uint32
        |     |     |        |        +-- attributes
-       |     |     |        |        |  +-- origin?                bt:bgp-origin-attr-type
+       |     |     |        |        |  +-- origin                 bt:bgp-origin-attr-type
        |     |     |        |        |  +-- as-path
        |     |     |        |        |  |  +-- segment*
        |     |     |        |        |  |     +-- type?     bt:as-path-segment-type
@@ -123,10 +128,10 @@ module: ietf-bmp-telemetry-message
        |     |     |        +--:(adj-rib-in-post)
        |     |     |        |  +-- adj-rib-in-post
        |     |     |        |     +-- route
-       |     |     |        |        +-- prefix?                   inet:ipv4-prefix
+       |     |     |        |        +-- prefix                    inet:ipv4-prefix
        |     |     |        |        +-- path-id?                  uint32
        |     |     |        |        +-- attributes
-       |     |     |        |        |  +-- origin?                bt:bgp-origin-attr-type
+       |     |     |        |        |  +-- origin                 bt:bgp-origin-attr-type
        |     |     |        |        |  +-- as-path
        |     |     |        |        |  |  +-- segment*
        |     |     |        |        |  |     +-- type?     bt:as-path-segment-type
@@ -172,10 +177,10 @@ module: ietf-bmp-telemetry-message
        |     |     |        +--:(adj-rib-out-pre)
        |     |     |        |  +-- adj-rib-out-pre
        |     |     |        |     +-- route
-       |     |     |        |        +-- prefix?                   inet:ipv4-prefix
+       |     |     |        |        +-- prefix                    inet:ipv4-prefix
        |     |     |        |        +-- path-id?                  uint32
        |     |     |        |        +-- attributes
-       |     |     |        |        |  +-- origin?                bt:bgp-origin-attr-type
+       |     |     |        |        |  +-- origin                 bt:bgp-origin-attr-type
        |     |     |        |        |  +-- as-path
        |     |     |        |        |  |  +-- segment*
        |     |     |        |        |  |     +-- type?     bt:as-path-segment-type
@@ -220,10 +225,10 @@ module: ietf-bmp-telemetry-message
        |     |     |        +--:(adj-rib-out-post)
        |     |     |           +-- adj-rib-out-post
        |     |     |              +-- route
-       |     |     |                 +-- prefix?                   inet:ipv4-prefix
+       |     |     |                 +-- prefix                    inet:ipv4-prefix
        |     |     |                 +-- path-id?                  uint32
        |     |     |                 +-- attributes
-       |     |     |                 |  +-- origin?                bt:bgp-origin-attr-type
+       |     |     |                 |  +-- origin                 bt:bgp-origin-attr-type
        |     |     |                 |  +-- as-path
        |     |     |                 |  |  +-- segment*
        |     |     |                 |  |     +-- type?     bt:as-path-segment-type
@@ -275,7 +280,7 @@ module: ietf-bmp-telemetry-message
        |     |              |        +-- origin?                   union
        |     |              |        +-- path-id?                  uint32
        |     |              |        +-- attributes
-       |     |              |        |  +-- origin?                bt:bgp-origin-attr-type
+       |     |              |        |  +-- origin                 bt:bgp-origin-attr-type
        |     |              |        |  +-- as-path
        |     |              |        |  |  +-- segment*
        |     |              |        |  |     +-- type?     bt:as-path-segment-type
@@ -320,10 +325,10 @@ module: ietf-bmp-telemetry-message
        |     |              +--:(adj-rib-in-pre)
        |     |              |  +-- adj-rib-in-pre
        |     |              |     +-- route
-       |     |              |        +-- prefix?                   inet:ipv6-prefix
+       |     |              |        +-- prefix                    inet:ipv6-prefix
        |     |              |        +-- path-id?                  uint32
        |     |              |        +-- attributes
-       |     |              |        |  +-- origin?                bt:bgp-origin-attr-type
+       |     |              |        |  +-- origin                 bt:bgp-origin-attr-type
        |     |              |        |  +-- as-path
        |     |              |        |  |  +-- segment*
        |     |              |        |  |     +-- type?     bt:as-path-segment-type
@@ -368,10 +373,10 @@ module: ietf-bmp-telemetry-message
        |     |              +--:(adj-rib-in-post)
        |     |              |  +-- adj-rib-in-post
        |     |              |     +-- route
-       |     |              |        +-- prefix?                   inet:ipv6-prefix
+       |     |              |        +-- prefix                    inet:ipv6-prefix
        |     |              |        +-- path-id?                  uint32
        |     |              |        +-- attributes
-       |     |              |        |  +-- origin?                bt:bgp-origin-attr-type
+       |     |              |        |  +-- origin                 bt:bgp-origin-attr-type
        |     |              |        |  +-- as-path
        |     |              |        |  |  +-- segment*
        |     |              |        |  |     +-- type?     bt:as-path-segment-type
@@ -417,10 +422,10 @@ module: ietf-bmp-telemetry-message
        |     |              +--:(adj-rib-out-pre)
        |     |              |  +-- adj-rib-out-pre
        |     |              |     +-- route
-       |     |              |        +-- prefix?                   inet:ipv6-prefix
+       |     |              |        +-- prefix                    inet:ipv6-prefix
        |     |              |        +-- path-id?                  uint32
        |     |              |        +-- attributes
-       |     |              |        |  +-- origin?                bt:bgp-origin-attr-type
+       |     |              |        |  +-- origin                 bt:bgp-origin-attr-type
        |     |              |        |  +-- as-path
        |     |              |        |  |  +-- segment*
        |     |              |        |  |     +-- type?     bt:as-path-segment-type
@@ -465,10 +470,10 @@ module: ietf-bmp-telemetry-message
        |     |              +--:(adj-rib-out-post)
        |     |                 +-- adj-rib-out-post
        |     |                    +-- route
-       |     |                       +-- prefix?                   inet:ipv6-prefix
+       |     |                       +-- prefix                    inet:ipv6-prefix
        |     |                       +-- path-id?                  uint32
        |     |                       +-- attributes
-       |     |                       |  +-- origin?                bt:bgp-origin-attr-type
+       |     |                       |  +-- origin                 bt:bgp-origin-attr-type
        |     |                       |  +-- as-path
        |     |                       |  |  +-- segment*
        |     |                       |  |     +-- type?     bt:as-path-segment-type
@@ -537,17 +542,17 @@ module: ietf-bmp-telemetry-message
        |        +-- filtered?         boolean
        +--:(statistics-report)
        |  +-- statistics-report
-       |     +-- peer-type?            peer-type
+       |     +-- peer-type             peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
        |     |  +-- legacy-as-path?   boolean
        |     |  +-- adj-rib-out?      boolean
        |     |  +-- filtered?         boolean
-       |     +-- peer-distinguisher?   rt-types:route-distinguisher
-       |     +-- peer-address?         inet:ip-address
-       |     +-- peer-as?              uint32
-       |     +-- peer-bgp-id?          inet:ipv4-address
+       |     +-- peer-distinguisher    rt-types:route-distinguisher
+       |     +-- peer-address          inet:ip-address
+       |     +-- peer-as               uint32
+       |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
        |     +-- statistics-type?      string
        |     +-- statistics-data?      uint64
@@ -563,19 +568,19 @@ module: ietf-bmp-telemetry-message
        |        +-- filtered?         boolean
        +--:(peer-down-notification)
        |  +-- peer-down-notification
-       |     +-- peer-type?            peer-type
+       |     +-- peer-type             peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
        |     |  +-- legacy-as-path?   boolean
        |     |  +-- adj-rib-out?      boolean
        |     |  +-- filtered?         boolean
-       |     +-- peer-distinguisher?   rt-types:route-distinguisher
-       |     +-- peer-address?         inet:ip-address
-       |     +-- peer-as?              uint32
-       |     +-- peer-bgp-id?          inet:ipv4-address
+       |     +-- peer-distinguisher    rt-types:route-distinguisher
+       |     +-- peer-address          inet:ip-address
+       |     +-- peer-as               uint32
+       |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
-       |     +-- reason?               peer-down-reason-code
+       |     +-- reason                peer-down-reason-code
        |     +-- peer-down
        |     |  +-- vrf-table-name?   string
        |     +-- sequence-number?      uint64
@@ -590,26 +595,26 @@ module: ietf-bmp-telemetry-message
        |        +-- filtered?         boolean
        +--:(peer-up-notification)
        |  +-- peer-up-notification
-       |     +-- peer-type?            peer-type
+       |     +-- peer-type             peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
        |     |  +-- legacy-as-path?   boolean
        |     |  +-- adj-rib-out?      boolean
        |     |  +-- filtered?         boolean
-       |     +-- peer-distinguisher?   rt-types:route-distinguisher
-       |     +-- peer-address?         inet:ip-address
-       |     +-- peer-as?              uint32
-       |     +-- peer-bgp-id?          inet:ipv4-address
+       |     +-- peer-distinguisher    rt-types:route-distinguisher
+       |     +-- peer-address          inet:ip-address
+       |     +-- peer-as               uint32
+       |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
        |     +-- local-address?        inet:ip-address
        |     +-- local-port?           inet:port-number
        |     +-- remote-port?          inet:port-number
        |     +-- sent-open
-       |     |  +-- version?          uint8
-       |     |  +-- my-as?            uint32
-       |     |  +-- hold-time?        uint16
-       |     |  +-- bgp-identifier?   inet:ipv4-address
+       |     |  +-- version           uint8
+       |     |  +-- my-as             uint32
+       |     |  +-- hold-time         uint16
+       |     |  +-- bgp-identifier    inet:ipv4-address
        |     |  +-- capabilities* [code index]
        |     |     +-- code     uint8
        |     |     +-- index    uint8
@@ -636,10 +641,10 @@ module: ietf-bmp-telemetry-message
        |     |              +-- safi?   iana-rt-types:bgp-safi
        |     |              +-- mode?   enumeration
        |     +-- received-open
-       |     |  +-- version?          uint8
-       |     |  +-- my-as?            uint32
-       |     |  +-- hold-time?        uint16
-       |     |  +-- bgp-identifier?   inet:ipv4-address
+       |     |  +-- version           uint8
+       |     |  +-- my-as             uint32
+       |     |  +-- hold-time         uint16
+       |     |  +-- bgp-identifier    inet:ipv4-address
        |     |  +-- capabilities* [code index]
        |     |     +-- code     uint8
        |     |     +-- index    uint8
@@ -699,7 +704,7 @@ module: ietf-bmp-telemetry-message
        +--:(termination-message)
        |  +-- termination-message
        |     +-- string*            string
-       |     +-- reason?            enumeration
+       |     +-- reason             enumeration
        |     +-- sequence-number?   uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type
@@ -712,17 +717,17 @@ module: ietf-bmp-telemetry-message
        |        +-- filtered?         boolean
        +--:(route-mirroring-message)
           +-- route-mirroring-message
-             +-- peer-type?            peer-type
+             +-- peer-type             peer-type
              +-- peer-flags
              |  +-- ipv6-peer?        boolean
              |  +-- post-policy?      boolean
              |  +-- legacy-as-path?   boolean
              |  +-- adj-rib-out?      boolean
              |  +-- filtered?         boolean
-             +-- peer-distinguisher?   rt-types:route-distinguisher
-             +-- peer-address?         inet:ip-address
-             +-- peer-as?              uint32
-             +-- peer-bgp-id?          inet:ipv4-address
+             +-- peer-distinguisher    rt-types:route-distinguisher
+             +-- peer-address          inet:ip-address
+             +-- peer-as               uint32
+             +-- peer-bgp-id           inet:ipv4-address
              +-- timestamp?            yang:date-and-time
              +-- afi-safi-type         identityref
              +-- rib-entry
@@ -737,7 +742,7 @@ module: ietf-bmp-telemetry-message
              |     |        |        +-- origin?                   union
              |     |        |        +-- path-id?                  uint32
              |     |        |        +-- attributes
-             |     |        |        |  +-- origin?                bt:bgp-origin-attr-type
+             |     |        |        |  +-- origin                 bt:bgp-origin-attr-type
              |     |        |        |  +-- as-path
              |     |        |        |  |  +-- segment*
              |     |        |        |  |     +-- type?     bt:as-path-segment-type
@@ -782,10 +787,10 @@ module: ietf-bmp-telemetry-message
              |     |        +--:(adj-rib-in-pre)
              |     |        |  +-- adj-rib-in-pre
              |     |        |     +-- route
-             |     |        |        +-- prefix?                   inet:ipv4-prefix
+             |     |        |        +-- prefix                    inet:ipv4-prefix
              |     |        |        +-- path-id?                  uint32
              |     |        |        +-- attributes
-             |     |        |        |  +-- origin?                bt:bgp-origin-attr-type
+             |     |        |        |  +-- origin                 bt:bgp-origin-attr-type
              |     |        |        |  +-- as-path
              |     |        |        |  |  +-- segment*
              |     |        |        |  |     +-- type?     bt:as-path-segment-type
@@ -830,10 +835,10 @@ module: ietf-bmp-telemetry-message
              |     |        +--:(adj-rib-in-post)
              |     |        |  +-- adj-rib-in-post
              |     |        |     +-- route
-             |     |        |        +-- prefix?                   inet:ipv4-prefix
+             |     |        |        +-- prefix                    inet:ipv4-prefix
              |     |        |        +-- path-id?                  uint32
              |     |        |        +-- attributes
-             |     |        |        |  +-- origin?                bt:bgp-origin-attr-type
+             |     |        |        |  +-- origin                 bt:bgp-origin-attr-type
              |     |        |        |  +-- as-path
              |     |        |        |  |  +-- segment*
              |     |        |        |  |     +-- type?     bt:as-path-segment-type
@@ -879,10 +884,10 @@ module: ietf-bmp-telemetry-message
              |     |        +--:(adj-rib-out-pre)
              |     |        |  +-- adj-rib-out-pre
              |     |        |     +-- route
-             |     |        |        +-- prefix?                   inet:ipv4-prefix
+             |     |        |        +-- prefix                    inet:ipv4-prefix
              |     |        |        +-- path-id?                  uint32
              |     |        |        +-- attributes
-             |     |        |        |  +-- origin?                bt:bgp-origin-attr-type
+             |     |        |        |  +-- origin                 bt:bgp-origin-attr-type
              |     |        |        |  +-- as-path
              |     |        |        |  |  +-- segment*
              |     |        |        |  |     +-- type?     bt:as-path-segment-type
@@ -927,10 +932,10 @@ module: ietf-bmp-telemetry-message
              |     |        +--:(adj-rib-out-post)
              |     |           +-- adj-rib-out-post
              |     |              +-- route
-             |     |                 +-- prefix?                   inet:ipv4-prefix
+             |     |                 +-- prefix                    inet:ipv4-prefix
              |     |                 +-- path-id?                  uint32
              |     |                 +-- attributes
-             |     |                 |  +-- origin?                bt:bgp-origin-attr-type
+             |     |                 |  +-- origin                 bt:bgp-origin-attr-type
              |     |                 |  +-- as-path
              |     |                 |  |  +-- segment*
              |     |                 |  |     +-- type?     bt:as-path-segment-type
@@ -982,7 +987,7 @@ module: ietf-bmp-telemetry-message
              |              |        +-- origin?                   union
              |              |        +-- path-id?                  uint32
              |              |        +-- attributes
-             |              |        |  +-- origin?                bt:bgp-origin-attr-type
+             |              |        |  +-- origin                 bt:bgp-origin-attr-type
              |              |        |  +-- as-path
              |              |        |  |  +-- segment*
              |              |        |  |     +-- type?     bt:as-path-segment-type
@@ -1027,10 +1032,10 @@ module: ietf-bmp-telemetry-message
              |              +--:(adj-rib-in-pre)
              |              |  +-- adj-rib-in-pre
              |              |     +-- route
-             |              |        +-- prefix?                   inet:ipv6-prefix
+             |              |        +-- prefix                    inet:ipv6-prefix
              |              |        +-- path-id?                  uint32
              |              |        +-- attributes
-             |              |        |  +-- origin?                bt:bgp-origin-attr-type
+             |              |        |  +-- origin                 bt:bgp-origin-attr-type
              |              |        |  +-- as-path
              |              |        |  |  +-- segment*
              |              |        |  |     +-- type?     bt:as-path-segment-type
@@ -1075,10 +1080,10 @@ module: ietf-bmp-telemetry-message
              |              +--:(adj-rib-in-post)
              |              |  +-- adj-rib-in-post
              |              |     +-- route
-             |              |        +-- prefix?                   inet:ipv6-prefix
+             |              |        +-- prefix                    inet:ipv6-prefix
              |              |        +-- path-id?                  uint32
              |              |        +-- attributes
-             |              |        |  +-- origin?                bt:bgp-origin-attr-type
+             |              |        |  +-- origin                 bt:bgp-origin-attr-type
              |              |        |  +-- as-path
              |              |        |  |  +-- segment*
              |              |        |  |     +-- type?     bt:as-path-segment-type
@@ -1124,10 +1129,10 @@ module: ietf-bmp-telemetry-message
              |              +--:(adj-rib-out-pre)
              |              |  +-- adj-rib-out-pre
              |              |     +-- route
-             |              |        +-- prefix?                   inet:ipv6-prefix
+             |              |        +-- prefix                    inet:ipv6-prefix
              |              |        +-- path-id?                  uint32
              |              |        +-- attributes
-             |              |        |  +-- origin?                bt:bgp-origin-attr-type
+             |              |        |  +-- origin                 bt:bgp-origin-attr-type
              |              |        |  +-- as-path
              |              |        |  |  +-- segment*
              |              |        |  |     +-- type?     bt:as-path-segment-type
@@ -1172,10 +1177,10 @@ module: ietf-bmp-telemetry-message
              |              +--:(adj-rib-out-post)
              |                 +-- adj-rib-out-post
              |                    +-- route
-             |                       +-- prefix?                   inet:ipv6-prefix
+             |                       +-- prefix                    inet:ipv6-prefix
              |                       +-- path-id?                  uint32
              |                       +-- attributes
-             |                       |  +-- origin?                bt:bgp-origin-attr-type
+             |                       |  +-- origin                 bt:bgp-origin-attr-type
              |                       |  +-- as-path
              |                       |  |  +-- segment*
              |                       |  |     +-- type?     bt:as-path-segment-type

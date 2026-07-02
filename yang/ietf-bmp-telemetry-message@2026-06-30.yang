@@ -53,27 +53,27 @@ module ietf-bmp-telemetry-message {
   description
     "Adds BMP specific subscription metadata to the data collection
      protocol provenance of the ietf-telemetry-message envelope.
-
+     
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
      'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
      are to be interpreted as described in BCP 14 (RFC 2119)
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
-
+     
      Copyright (c) 2026 IETF Trust and the persons identified as
-       authors of the code.  All rights reserved.
-
+       authors of the code. All rights reserved.
+     
      Redistribution and use in source and binary forms, with or without
      modification, is permitted pursuant to, and subject to the license
      terms contained in, the Revised BSD License set forth in Section
      4.c of the IETF Trust's Legal Provisions Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
-
+     
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-06-23 {
+  revision 2026-06-30 {
     description
       "Initial revision.";
     reference
@@ -125,6 +125,7 @@ module ietf-bmp-telemetry-message {
       "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
     leaf peer-type {
       type peer-type;
+      mandatory true;
       description
         "BMP peer type from per-peer header.";
       reference
@@ -146,6 +147,7 @@ module ietf-bmp-telemetry-message {
     }
     leaf peer-distinguisher {
       type rt-types:route-distinguisher;
+      mandatory true;
       description
         "BMP peer distinguisher from per-peer header.
          The routing instance on which the encapsulated PDU was
@@ -155,6 +157,7 @@ module ietf-bmp-telemetry-message {
     }
     leaf peer-address {
       type inet:ip-address;
+      mandatory true;
       description
         "BMP peer IP address from per-peer header.";
       reference
@@ -164,6 +167,7 @@ module ietf-bmp-telemetry-message {
     }
     leaf peer-as {
       type uint32;
+      mandatory true;
       description
         "BMP peer autonomous system number from per-peer header. The
          Autonomous System number of the peer from which the
@@ -173,6 +177,7 @@ module ietf-bmp-telemetry-message {
     }
     leaf peer-bgp-id {
       type inet:ipv4-address;
+      mandatory true;
       description
         "BMP Peer BGP ID from per-peer header. The BGP Identifier of
          the peer from which the encapsulated PDU was received.";
@@ -184,11 +189,12 @@ module ietf-bmp-telemetry-message {
       description
         "BMP timestamp from the Per-Peer Header (RFC 7854 Section 4.2).
          Represents the time the encapsulated routes were received or
-         installed in the Adj-RIB-In.  Absent when the value was zero
+         installed in the Adj-RIB-In. Absent when the value was zero
          (unavailable) in the wire header.
-
+         
+         // TODO: check with bmp-tlv regarding authoritative timestamp
          The Timestamp TLV (message-timestamp in btlv:common) MAY
-         also be present and carries a typed timestamp.  When
+         also be present and carries a typed timestamp. When
          message-timestamp with type 'adj-rib-in-time' is present, it
          is the authoritative value for this same event; the other
          Timestamp TLV types (trigger-time, message-export-time,
@@ -215,7 +221,7 @@ module ietf-bmp-telemetry-message {
         value 2;
         description
           "The local system closed the session. No NOTIFICATION
-           message was sent.  A 2-byte field containing the FSM
+           message was sent. A 2-byte field containing the FSM
            Event code follows the reason code.";
         reference
           "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.9.";
@@ -290,6 +296,7 @@ module ietf-bmp-telemetry-message {
     }
   }
 
+  // TODO: design better grouping for statistics
   grouping statistics {
     description
       "BMP Statistics.";
@@ -364,11 +371,26 @@ module ietf-bmp-telemetry-message {
 
     leaf version {
       type uint8;
+      mandatory true;
       description
         "BMP version from common header.";
       reference
         "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.1.";
     }
+
+    container session-metadata {
+      presence
+        "BMP Initiation message information cached by a collector
+         to enrich this message with router identity context.";
+      description
+        "Optional metadata derived from the BMP Initiation message
+         for this BMP session. A collector MAY populate sys-name,
+         sys-descr or a free-form string leaf-list to make this
+         message self-contained for consumers that did not process
+         or store the Initiation message directly.";
+      uses btlv:information;
+    }
+
     choice message-type {
       description
         "BMP message type from common header.";
@@ -377,7 +399,7 @@ module ietf-bmp-telemetry-message {
       case route-monitoring {
         container route-monitoring {
           description
-            "BMP Route Monitoring message.  Used for initial
+            "BMP Route Monitoring message. Used for initial
              synchronization of Adj-RIBs-In and for ongoing
              incremental route monitoring.";
           uses per-peer;
@@ -389,7 +411,7 @@ module ietf-bmp-telemetry-message {
       case statistics-report {
         container statistics-report {
           description
-            "BMP Statistics Report message.  Carries one or more
+            "BMP Statistics Report message. Carries one or more
              counters reflecting activity on the monitored router.";
           uses per-peer;
           uses statistics;
@@ -399,11 +421,12 @@ module ietf-bmp-telemetry-message {
       case peer-down-notification {
         container peer-down-notification {
           description
-            "BMP Peer Down Notification message.  Indicates that a
+            "BMP Peer Down Notification message. Indicates that a
              peering session was terminated.";
           uses per-peer;
           leaf reason {
             type peer-down-reason-code;
+            mandatory true;
             description
               "Reason why the peering session was closed.";
             reference
@@ -417,7 +440,7 @@ module ietf-bmp-telemetry-message {
                  used (Loc-RIB instance peer session closed).";
             }
             description
-              "Peer Down TLV data following reason code 6.  Contains
+              "Peer Down TLV data following reason code 6. Contains
                the VRF/Table Name TLV if it was present in the
                corresponding Peer Up notification.";
             uses btlv:peer-down;
@@ -428,7 +451,7 @@ module ietf-bmp-telemetry-message {
       case peer-up-notification {
         container peer-up-notification {
           description
-            "BMP Peer Up Notification message.  Indicates that a
+            "BMP Peer Up Notification message. Indicates that a
              peering session has come up.";
           uses per-peer;
           uses peer-up;
@@ -438,7 +461,7 @@ module ietf-bmp-telemetry-message {
                notification";
             description
               "Optional Information TLVs at the end of the Peer Up
-               message.  For standard peers only the string type
+               message. For standard peers only the string type
                (type 0) is defined; for Loc-RIB Instance Peers the
                VRF/Table Name TLV (type 3, RFC 9069) MUST be
                included when a name is configured.";
@@ -453,9 +476,9 @@ module ietf-bmp-telemetry-message {
       case initiation-message {
         container initiation-message {
           description
-            "BMP Initiation Message.  Provides information about the
-             monitored router.  MUST be the first message sent after
-             the TCP session comes up.  The sysDescr and sysName
+            "BMP Initiation Message. Provides information about the
+             monitored router. MUST be the first message sent after
+             the TCP session comes up. The sysDescr and sysName
              TLVs MUST be present.";
           uses btlv:information;
           uses btlv:common;
@@ -464,7 +487,7 @@ module ietf-bmp-telemetry-message {
       case termination-message {
         container termination-message {
           description
-            "BMP Termination Message.  Provides a reason why the
+            "BMP Termination Message. Provides a reason why the
              monitored router is closing the BMP session.";
           uses btlv:termination;
           uses btlv:common;
@@ -473,7 +496,7 @@ module ietf-bmp-telemetry-message {
       case route-mirroring-message {
         container route-mirroring-message {
           description
-            "BMP Route Mirroring Message.  Used for verbatim
+            "BMP Route Mirroring Message. Used for verbatim
              duplication of messages as received, e.g., for
              full-fidelity monitoring or error reporting.";
           uses per-peer;

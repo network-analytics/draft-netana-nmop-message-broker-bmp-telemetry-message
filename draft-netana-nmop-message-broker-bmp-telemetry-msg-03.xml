@@ -63,18 +63,18 @@
 
     <author fullname="Maxence Younsi" initials="MY" surname="Younsi">
 
-    <organization>INSA-Lyon</organization>
+      <organization>INSA-Lyon</organization>
       <address>
         <postal>
           <city>Lyon</city>
           <country>FR</country>
-        </postal>        
+        </postal>
         <email>maxence.younsi@insa-lyon.fr</email>
       </address>
     </author>
 
 
-    <date day="26" month="June" year="2026" />
+    <date day="30" month="June" year="2026" />
 
     <area>General</area>
     <workgroup>NMOP</workgroup>
@@ -195,12 +195,12 @@
             distributed system</li>
 
           <li>Message Key: Message Key: Metadata associated with a
-					  message to facilitate deterministic hash bucketing and
-						indexing for instantiated YANG data.</li>
+            message to facilitate deterministic hash bucketing and
+            indexing for instantiated YANG data.</li>
 
           <li>Partition Key: Metadata associated with a message to
             facilitate deterministic hash bucketing for instantiated
-						YANG data. Also known as ordering key or routing key.</li>
+            YANG data. Also known as ordering key or routing key.</li>
         </ul>
 
         <t>The following terms are used as defined in <xref
@@ -253,94 +253,88 @@
       <name>Relationship to other documents</name>
 
       <section>
-        <name>Relationship to
-        draft-ietf-nmop-message-broker-telemetry-message</name>
+        <name>Relationship to draft-ietf-nmop-message-broker-telemetry-message</name>
 
         <t><xref
             target="I-D.ietf-nmop-message-broker-telemetry-message" />
-          defines with 'ietf-telemetry-message' YANG module a base
-          Network Telemetry Message schema being used between <xref
+          defines, using the 'ietf-telemetry-message' YANG module, a
+          base Network Telemetry Message schema used between <xref
             section="4.6" sectionFormat="of"
             target="I-D.ietf-nmop-yang-message-broker-integration">
           Message Broker Producer</xref> and <xref section="4.7"
             sectionFormat="of"
             target="I-D.ietf-nmop-yang-message-broker-integration">
-          Message Broker Consumer</xref> and with
-          'ietf-yang-push-telemetry-message' YANG module an extension
+          Message Broker Consumer</xref>, and using the
+          'ietf-yang-push-telemetry-message' YANG module, an extension
           that supports YANG-Push specific subscription metadata.</t>
 
-        <t>This document defines 2 BMP YANG modules <xref
+        <t>This document defines two BMP YANG modules <xref
             target="ietf-bmp-telemetry-message-module" />, <xref
-            target="ietf-bmp-tlv" /> and 2 BGP YANG modules <xref
-						target="ietf-bgp-rib-entry-module" />, <xref
-						target="ietf-bgp-open" /> which are being used in the
-						anydata "payload" <xref
-            target="I-D.ietf-nmop-message-broker-telemetry-message" />
-          defined in 'ietf-telemetry-message' YANG module.</t>
+            target="ietf-bmp-tlv-module" /> and two BGP YANG modules <xref
+            target="ietf-bgp-rib-entry-module" />, <xref
+            target="ietf-bgp-open-module" /> which populate the anydata
+          "payload" node defined in the 'ietf-telemetry-message' YANG
+          module of <xref
+            target="I-D.ietf-nmop-message-broker-telemetry-message" />.</t>
       </section>
 
       <section>
         <name>Relationship to draft-ietf-idr-bgp-model</name>
 
-        <t><xref target="I-D.ietf-idr-bgp-model" /> defines with
-          'ietf-bgp' a YANG module and with 'iana-bgp-community-types',
-          'iana-bgp-notification', 'iana-bgp-rib-types',
-          'iana-bgp-types', 'ietf-bgp-capabilities', 'ietf-bgp-common',
+        <t><xref target="I-D.ietf-idr-bgp-model" /> defines the
+          'ietf-bgp' YANG module along with the following submodules:
+          'iana-bgp-community-types', 'iana-bgp-notification',
+          'iana-bgp-rib-types', 'iana-bgp-types',
+          'ietf-bgp-capabilities', 'ietf-bgp-common',
           'ietf-bgp-common-multiprotocol', 'ietf-bgp-common-structure',
           'ietf-bgp-neighbor', 'ietf-bgp-policy', 'ietf-bgp-rib',
-          'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables'
-          submodules.</t>
+          'ietf-bgp-rib-attributes', and 'ietf-bgp-rib-tables'.</t>
 
-        <t>This document is using the content of the 'rib' YANG grouping
-          defined in 'ietf-bgp-rib' submodule and renames the YANG
-          grouping to 'rib-entry' and restructures the data taxonomy to
-          allow a single BGP RIB entry to be serialized in a Telemetry
-          Message on Message Broker in the 'ietf-bmp-bgp-rib-entry'
-          submodule. The 'clear-routes' YANG grouping used in the 'rib'
-          YANG grouping has been removed since a Telemetry Message only
-          covers operational metrics.</t>
+        <t>This document defines two new standalone YANG modules,
+          'ietf-bgp-rib-entry' and 'ietf-bgp-open', that import
+          'ietf-bgp'. The 'ietf-bgp-rib-entry' module adapts the
+          groupings exposed by the 'ietf-bgp-rib',
+          'ietf-bgp-rib-attributes', and 'ietf-bgp-rib-tables'
+          submodules and restructures them into a 'rib-entry' grouping
+          that represents a single BGP RIB entry suitable for
+          serialization in a Telemetry Message on a Message Broker. The
+          'clear-routes' YANG grouping has been omitted since a
+          Telemetry Message covers only operational metrics. The
+          'ietf-bgp-open' module exposes BGP OPEN message fields for use
+          in BMP Peer Up notifications.</t>
 
-        <t>Since 'ietf-bgp-rib' uses groupings from
-          'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' and both
-          'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables'YANG
-          submodules <xref section="7.2.2" sectionFormat="of"
-            target="RFC7950">belongs to</xref> 'ietf-bgp' main module,
-          the YANG submodules have been renamed to
-          'ietf-bmp-bgp-rib-attributes' and ietf-bmp-bgp-rib-tables'.</t>
+        <t>Because 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables'
+          are YANG submodules that <xref section="7.2.2"
+            sectionFormat="of" target="RFC7950">belong to</xref> the
+          'ietf-bgp' main module, they cannot be imported independently.
+          This document therefore imports the full 'ietf-bgp' module,
+          which includes BGP configuration and policy content that is
+          not required for telemetry purposes.</t>
 
-        <t>If 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' would
-          not be 'ietf-bgp' submodules, they could be reused as is with
-          'ietf-bmp-bgp-rib-entry'. Since this would imply than a
-          normative document dependency a reasonable timeline needs to
-          be coordinated. Once these clarifications have been concluded
-          this section remains.</t>
-					
-        <t>Remark: The <xref target="I-D.ietf-idr-bgp-model" /> authors
-				  agreed to incorporate such changes in
-					'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' modules
-					but have not updated but document yet. This document is
-					using 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables'
-					modules from their repository. This and the previous two
-					sections is going to be removed once the document is updated.
-					</t>
-					
+        <t>Once 'ietf-bgp-rib-attributes' and 'ietf-bgp-rib-tables' are
+          restructured as standalone importable modules, this document
+          could be simplified to import only those specific modules
+          rather than all of 'ietf-bgp'. Such a change requires
+          coordination with the <xref target="I-D.ietf-idr-bgp-model" />
+          authors on an appropriate timeline. This section will be
+          removed if and once those changes are in place.</t>
+
         <t>The <xref target="I-D.ietf-idr-bgp-model" /> authors are
-				  being honored under <xref target="Contributors" /> for their
-					contribution on the BGP YANG modelling this document uses.</t>
+          honored under <xref target="Contributors" /> for their
+          contribution to the BGP YANG modelling this document uses.</t>
       </section>
 
       <section>
         <name>Relationship to draft-ietf-grow-bmp-yang</name>
 
         <t><xref
-            target="I-D.ietf-grow-bmp-yang" />
-          defines with 'ietf-bmp' YANG module the configuration and
-					monitoring of BMP. While there is no direct relationship
-					between this document and its defined YANG modules, it is
-					worth mentioning that the with <xref
-					target="I-D.ietf-grow-bmp-yang" /> subscribed BMP data is
-					being transformed at BMP monitoring stations to Message
-					Brokers as described in this document.</t>
+            target="I-D.ietf-grow-bmp-yang" /> defines with 'ietf-bmp'
+          YANG module the configuration and monitoring of BMP. While
+          there is no direct relationship between this document and its
+          defined YANG modules, it is worth mentioning that the with <xref
+            target="I-D.ietf-grow-bmp-yang" /> subscribed BMP data is
+          being transformed at BMP monitoring stations to Message
+          Brokers as described in this document.</t>
       </section>
 
     </section>
@@ -348,20 +342,56 @@
     <section>
       <name>BMP YANG Modules</name>
 
-      <t>The BMP YANG module for Network Telemetry messages defines the
-        BMP subscription metadata and depending on BMP Message type
-        different metadata structures.</t>
+      <t>The 'ietf-bmp-telemetry-message' YANG module defines the
+        top-level BMP <tt>message</tt> structure. It carries a mandatory <tt>
+        version</tt> leaf from the BMP Common Header, an optional <tt>
+        session-metadata</tt> presence container derived from the BMP
+        Initiation message, and a <tt>message-type</tt> choice covering
+        all seven BMP message types: route-monitoring,
+        statistics-report, peer-down-notification, peer-up-notification,
+        initiation-message, termination-message, and
+        route-mirroring-message.</t>
 
-      <t>'ietf-bgp-rib-entry' extends the BMP YANG module
-        with BGP RIB structures for BMP route-monitoring and
-        route-mirroring Message types.</t>
+      <t>The 'ietf-bgp-rib-entry' module provides the <tt>rib-entry</tt>
+        grouping used by route-monitoring and route-mirroring messages.
+        It selects between five RIB table types — loc-rib,
+        adj-rib-in-pre, adj-rib-in-post, adj-rib-out-pre, and
+        adj-rib-out-post — via a nested <tt>rib-type</tt> choice. Each
+        route entry contains the prefix, optional path-id for ADD-PATH,
+        BGP path attributes, and community attributes.</t>
 
-      <t>'ietf-bgp-open' extends the BMP YANG module
-        with BGP OPEN message structures for BMP peer_up Message type.
-				</t>
+      <t>The 'ietf-bgp-open' module provides the <tt>bgp-open</tt>
+        grouping, which carries the BGP OPEN message fields: protocol
+        version, Autonomous System number, hold time, BGP identifier,
+        and the negotiated capability list. It is used in
+        peer-up-notification for both the sent and received OPEN
+        messages.</t>
 
-      <t>'ietf-bmp-tlv' extends the BMP YANG module
-        with BMP TLV structures.</t>
+      <t>The 'ietf-bmp-tlv' module provides TLV groupings modeling the
+        decoded content of BMP TLV Value fields. The <tt>common</tt>
+        grouping — carrying sequence number, typed timestamps, and
+        extended peer-header flags — is used across all seven BMP
+        message types. Additional groupings are message-type-specific: <tt>
+        information</tt> for initiation and peer-up messages, <tt>
+        termination</tt> for termination messages, <tt>peer-down</tt>
+        for Loc-RIB peer-down with reason code 6, and <tt>
+        route-monitoring</tt> for path status and VRF/Table Name in
+        route-monitoring messages.</t>
+
+      <t>A BMP Initiation message is sent once per BMP session when the
+        TCP connection is established and provides router identity
+        information such as sys-name, sys-descr, and optional free-form
+        strings. Because subsequent per-peer messages (Route Monitoring,
+        Statistics Report, Peer Up, Peer Down) carry no equivalent
+        identity information, a Network Telemetry collector acting as a
+        YANG Message Broker Producer SHOULD cache the Initiation message
+        content for each BMP session and populate <tt>session-metadata</tt>
+        in every downstream message it emits. This makes each Message
+        Broker message self-contained for consumers that did not observe
+        or store the Initiation message directly. The <tt>
+        session-metadata</tt> container is absent when the collector has
+        not yet received or cached the Initiation message for that
+        session.</t>
 
       <!-- ietf-bmp-telemetry-message YANG Tree -->
       <figure anchor="ietf-bmp-telemetry-message-tree"
@@ -371,21 +401,26 @@
 module: ietf-bmp-telemetry-message
 
   structure message:
-    +-- version?          uint8
+    +-- session-metadata!
+    |  +-- string*           string
+    |  +-- sys-descr?        string
+    |  +-- sys-name?         string
+    |  +-- vrf-table-name?   string
+    +-- version             uint8
     +-- (message-type)?
        +--:(route-monitoring)
        |  +-- route-monitoring
-       |     +-- peer-type?            peer-type
+       |     +-- peer-type             peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
        |     |  +-- legacy-as-path?   boolean
        |     |  +-- adj-rib-out?      boolean
        |     |  +-- filtered?         boolean
-       |     +-- peer-distinguisher?   rt-types:route-distinguisher
-       |     +-- peer-address?         inet:ip-address
-       |     +-- peer-as?              uint32
-       |     +-- peer-bgp-id?          inet:ipv4-address
+       |     +-- peer-distinguisher    rt-types:route-distinguisher
+       |     +-- peer-address          inet:ip-address
+       |     +-- peer-as               uint32
+       |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
        |     +-- afi-safi-type         identityref
        |     +-- rib-entry
@@ -403,7 +438,7 @@ module: ietf-bmp-telemetry-message
        |     |     |        |        +-- path-id?
        |     |     |        |        |     uint32
        |     |     |        |        +-- attributes
-       |     |     |        |        |  +-- origin?
+       |     |     |        |        |  +-- origin
        |     |     |        |        |  |     bt:bgp-origin-attr-type
        |     |     |        |        |  +-- as-path
        |     |     |        |        |  |  +-- segment*
@@ -476,12 +511,12 @@ module: ietf-bmp-telemetry-message
        |     |     |        +--:(adj-rib-in-pre)
        |     |     |        |  +-- adj-rib-in-pre
        |     |     |        |     +-- route
-       |     |     |        |        +-- prefix?
+       |     |     |        |        +-- prefix
        |     |     |        |        |     inet:ipv4-prefix
        |     |     |        |        +-- path-id?
        |     |     |        |        |     uint32
        |     |     |        |        +-- attributes
-       |     |     |        |        |  +-- origin?
+       |     |     |        |        |  +-- origin
        |     |     |        |        |  |     bt:bgp-origin-attr-type
        |     |     |        |        |  +-- as-path
        |     |     |        |        |  |  +-- segment*
@@ -554,12 +589,12 @@ module: ietf-bmp-telemetry-message
        |     |     |        +--:(adj-rib-in-post)
        |     |     |        |  +-- adj-rib-in-post
        |     |     |        |     +-- route
-       |     |     |        |        +-- prefix?
+       |     |     |        |        +-- prefix
        |     |     |        |        |     inet:ipv4-prefix
        |     |     |        |        +-- path-id?
        |     |     |        |        |     uint32
        |     |     |        |        +-- attributes
-       |     |     |        |        |  +-- origin?
+       |     |     |        |        |  +-- origin
        |     |     |        |        |  |     bt:bgp-origin-attr-type
        |     |     |        |        |  +-- as-path
        |     |     |        |        |  |  +-- segment*
@@ -634,12 +669,12 @@ module: ietf-bmp-telemetry-message
        |     |     |        +--:(adj-rib-out-pre)
        |     |     |        |  +-- adj-rib-out-pre
        |     |     |        |     +-- route
-       |     |     |        |        +-- prefix?
+       |     |     |        |        +-- prefix
        |     |     |        |        |     inet:ipv4-prefix
        |     |     |        |        +-- path-id?
        |     |     |        |        |     uint32
        |     |     |        |        +-- attributes
-       |     |     |        |        |  +-- origin?
+       |     |     |        |        |  +-- origin
        |     |     |        |        |  |     bt:bgp-origin-attr-type
        |     |     |        |        |  +-- as-path
        |     |     |        |        |  |  +-- segment*
@@ -712,12 +747,12 @@ module: ietf-bmp-telemetry-message
        |     |     |        +--:(adj-rib-out-post)
        |     |     |           +-- adj-rib-out-post
        |     |     |              +-- route
-       |     |     |                 +-- prefix?
+       |     |     |                 +-- prefix
        |     |     |                 |     inet:ipv4-prefix
        |     |     |                 +-- path-id?
        |     |     |                 |     uint32
        |     |     |                 +-- attributes
-       |     |     |                 |  +-- origin?
+       |     |     |                 |  +-- origin
        |     |     |                 |  |     bt:bgp-origin-attr-type
        |     |     |                 |  +-- as-path
        |     |     |                 |  |  +-- segment*
@@ -800,7 +835,7 @@ module: ietf-bmp-telemetry-message
        |     |              |        +-- path-id?
        |     |              |        |     uint32
        |     |              |        +-- attributes
-       |     |              |        |  +-- origin?
+       |     |              |        |  +-- origin
        |     |              |        |  |     bt:bgp-origin-attr-type
        |     |              |        |  +-- as-path
        |     |              |        |  |  +-- segment*
@@ -873,12 +908,12 @@ module: ietf-bmp-telemetry-message
        |     |              +--:(adj-rib-in-pre)
        |     |              |  +-- adj-rib-in-pre
        |     |              |     +-- route
-       |     |              |        +-- prefix?
+       |     |              |        +-- prefix
        |     |              |        |     inet:ipv6-prefix
        |     |              |        +-- path-id?
        |     |              |        |     uint32
        |     |              |        +-- attributes
-       |     |              |        |  +-- origin?
+       |     |              |        |  +-- origin
        |     |              |        |  |     bt:bgp-origin-attr-type
        |     |              |        |  +-- as-path
        |     |              |        |  |  +-- segment*
@@ -951,12 +986,12 @@ module: ietf-bmp-telemetry-message
        |     |              +--:(adj-rib-in-post)
        |     |              |  +-- adj-rib-in-post
        |     |              |     +-- route
-       |     |              |        +-- prefix?
+       |     |              |        +-- prefix
        |     |              |        |     inet:ipv6-prefix
        |     |              |        +-- path-id?
        |     |              |        |     uint32
        |     |              |        +-- attributes
-       |     |              |        |  +-- origin?
+       |     |              |        |  +-- origin
        |     |              |        |  |     bt:bgp-origin-attr-type
        |     |              |        |  +-- as-path
        |     |              |        |  |  +-- segment*
@@ -1031,12 +1066,12 @@ module: ietf-bmp-telemetry-message
        |     |              +--:(adj-rib-out-pre)
        |     |              |  +-- adj-rib-out-pre
        |     |              |     +-- route
-       |     |              |        +-- prefix?
+       |     |              |        +-- prefix
        |     |              |        |     inet:ipv6-prefix
        |     |              |        +-- path-id?
        |     |              |        |     uint32
        |     |              |        +-- attributes
-       |     |              |        |  +-- origin?
+       |     |              |        |  +-- origin
        |     |              |        |  |     bt:bgp-origin-attr-type
        |     |              |        |  +-- as-path
        |     |              |        |  |  +-- segment*
@@ -1109,12 +1144,12 @@ module: ietf-bmp-telemetry-message
        |     |              +--:(adj-rib-out-post)
        |     |                 +-- adj-rib-out-post
        |     |                    +-- route
-       |     |                       +-- prefix?
+       |     |                       +-- prefix
        |     |                       |     inet:ipv6-prefix
        |     |                       +-- path-id?
        |     |                       |     uint32
        |     |                       +-- attributes
-       |     |                       |  +-- origin?
+       |     |                       |  +-- origin
        |     |                       |  |     bt:bgp-origin-attr-type
        |     |                       |  +-- as-path
        |     |                       |  |  +-- segment*
@@ -1212,17 +1247,17 @@ module: ietf-bmp-telemetry-message
        |        +-- filtered?         boolean
        +--:(statistics-report)
        |  +-- statistics-report
-       |     +-- peer-type?            peer-type
+       |     +-- peer-type             peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
        |     |  +-- legacy-as-path?   boolean
        |     |  +-- adj-rib-out?      boolean
        |     |  +-- filtered?         boolean
-       |     +-- peer-distinguisher?   rt-types:route-distinguisher
-       |     +-- peer-address?         inet:ip-address
-       |     +-- peer-as?              uint32
-       |     +-- peer-bgp-id?          inet:ipv4-address
+       |     +-- peer-distinguisher    rt-types:route-distinguisher
+       |     +-- peer-address          inet:ip-address
+       |     +-- peer-as               uint32
+       |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
        |     +-- statistics-type?      string
        |     +-- statistics-data?      uint64
@@ -1238,19 +1273,19 @@ module: ietf-bmp-telemetry-message
        |        +-- filtered?         boolean
        +--:(peer-down-notification)
        |  +-- peer-down-notification
-       |     +-- peer-type?            peer-type
+       |     +-- peer-type             peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
        |     |  +-- legacy-as-path?   boolean
        |     |  +-- adj-rib-out?      boolean
        |     |  +-- filtered?         boolean
-       |     +-- peer-distinguisher?   rt-types:route-distinguisher
-       |     +-- peer-address?         inet:ip-address
-       |     +-- peer-as?              uint32
-       |     +-- peer-bgp-id?          inet:ipv4-address
+       |     +-- peer-distinguisher    rt-types:route-distinguisher
+       |     +-- peer-address          inet:ip-address
+       |     +-- peer-as               uint32
+       |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
-       |     +-- reason?               peer-down-reason-code
+       |     +-- reason                peer-down-reason-code
        |     +-- peer-down
        |     |  +-- vrf-table-name?   string
        |     +-- sequence-number?      uint64
@@ -1265,26 +1300,26 @@ module: ietf-bmp-telemetry-message
        |        +-- filtered?         boolean
        +--:(peer-up-notification)
        |  +-- peer-up-notification
-       |     +-- peer-type?            peer-type
+       |     +-- peer-type             peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
        |     |  +-- legacy-as-path?   boolean
        |     |  +-- adj-rib-out?      boolean
        |     |  +-- filtered?         boolean
-       |     +-- peer-distinguisher?   rt-types:route-distinguisher
-       |     +-- peer-address?         inet:ip-address
-       |     +-- peer-as?              uint32
-       |     +-- peer-bgp-id?          inet:ipv4-address
+       |     +-- peer-distinguisher    rt-types:route-distinguisher
+       |     +-- peer-address          inet:ip-address
+       |     +-- peer-as               uint32
+       |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
        |     +-- local-address?        inet:ip-address
        |     +-- local-port?           inet:port-number
        |     +-- remote-port?          inet:port-number
        |     +-- sent-open
-       |     |  +-- version?          uint8
-       |     |  +-- my-as?            uint32
-       |     |  +-- hold-time?        uint16
-       |     |  +-- bgp-identifier?   inet:ipv4-address
+       |     |  +-- version           uint8
+       |     |  +-- my-as             uint32
+       |     |  +-- hold-time         uint16
+       |     |  +-- bgp-identifier    inet:ipv4-address
        |     |  +-- capabilities* [code index]
        |     |     +-- code     uint8
        |     |     +-- index    uint8
@@ -1316,10 +1351,10 @@ module: ietf-bmp-telemetry-message
        |     |              +-- safi?   iana-rt-types:bgp-safi
        |     |              +-- mode?   enumeration
        |     +-- received-open
-       |     |  +-- version?          uint8
-       |     |  +-- my-as?            uint32
-       |     |  +-- hold-time?        uint16
-       |     |  +-- bgp-identifier?   inet:ipv4-address
+       |     |  +-- version           uint8
+       |     |  +-- my-as             uint32
+       |     |  +-- hold-time         uint16
+       |     |  +-- bgp-identifier    inet:ipv4-address
        |     |  +-- capabilities* [code index]
        |     |     +-- code     uint8
        |     |     +-- index    uint8
@@ -1384,7 +1419,7 @@ module: ietf-bmp-telemetry-message
        +--:(termination-message)
        |  +-- termination-message
        |     +-- string*            string
-       |     +-- reason?            enumeration
+       |     +-- reason             enumeration
        |     +-- sequence-number?   uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type
@@ -1397,17 +1432,17 @@ module: ietf-bmp-telemetry-message
        |        +-- filtered?         boolean
        +--:(route-mirroring-message)
           +-- route-mirroring-message
-             +-- peer-type?            peer-type
+             +-- peer-type             peer-type
              +-- peer-flags
              |  +-- ipv6-peer?        boolean
              |  +-- post-policy?      boolean
              |  +-- legacy-as-path?   boolean
              |  +-- adj-rib-out?      boolean
              |  +-- filtered?         boolean
-             +-- peer-distinguisher?   rt-types:route-distinguisher
-             +-- peer-address?         inet:ip-address
-             +-- peer-as?              uint32
-             +-- peer-bgp-id?          inet:ipv4-address
+             +-- peer-distinguisher    rt-types:route-distinguisher
+             +-- peer-address          inet:ip-address
+             +-- peer-as               uint32
+             +-- peer-bgp-id           inet:ipv4-address
              +-- timestamp?            yang:date-and-time
              +-- afi-safi-type         identityref
              +-- rib-entry
@@ -1425,7 +1460,7 @@ module: ietf-bmp-telemetry-message
              |     |        |        +-- path-id?
              |     |        |        |     uint32
              |     |        |        +-- attributes
-             |     |        |        |  +-- origin?
+             |     |        |        |  +-- origin
              |     |        |        |  |     bt:bgp-origin-attr-type
              |     |        |        |  +-- as-path
              |     |        |        |  |  +-- segment*
@@ -1498,12 +1533,12 @@ module: ietf-bmp-telemetry-message
              |     |        +--:(adj-rib-in-pre)
              |     |        |  +-- adj-rib-in-pre
              |     |        |     +-- route
-             |     |        |        +-- prefix?
+             |     |        |        +-- prefix
              |     |        |        |     inet:ipv4-prefix
              |     |        |        +-- path-id?
              |     |        |        |     uint32
              |     |        |        +-- attributes
-             |     |        |        |  +-- origin?
+             |     |        |        |  +-- origin
              |     |        |        |  |     bt:bgp-origin-attr-type
              |     |        |        |  +-- as-path
              |     |        |        |  |  +-- segment*
@@ -1576,12 +1611,12 @@ module: ietf-bmp-telemetry-message
              |     |        +--:(adj-rib-in-post)
              |     |        |  +-- adj-rib-in-post
              |     |        |     +-- route
-             |     |        |        +-- prefix?
+             |     |        |        +-- prefix
              |     |        |        |     inet:ipv4-prefix
              |     |        |        +-- path-id?
              |     |        |        |     uint32
              |     |        |        +-- attributes
-             |     |        |        |  +-- origin?
+             |     |        |        |  +-- origin
              |     |        |        |  |     bt:bgp-origin-attr-type
              |     |        |        |  +-- as-path
              |     |        |        |  |  +-- segment*
@@ -1656,12 +1691,12 @@ module: ietf-bmp-telemetry-message
              |     |        +--:(adj-rib-out-pre)
              |     |        |  +-- adj-rib-out-pre
              |     |        |     +-- route
-             |     |        |        +-- prefix?
+             |     |        |        +-- prefix
              |     |        |        |     inet:ipv4-prefix
              |     |        |        +-- path-id?
              |     |        |        |     uint32
              |     |        |        +-- attributes
-             |     |        |        |  +-- origin?
+             |     |        |        |  +-- origin
              |     |        |        |  |     bt:bgp-origin-attr-type
              |     |        |        |  +-- as-path
              |     |        |        |  |  +-- segment*
@@ -1734,12 +1769,12 @@ module: ietf-bmp-telemetry-message
              |     |        +--:(adj-rib-out-post)
              |     |           +-- adj-rib-out-post
              |     |              +-- route
-             |     |                 +-- prefix?
+             |     |                 +-- prefix
              |     |                 |     inet:ipv4-prefix
              |     |                 +-- path-id?
              |     |                 |     uint32
              |     |                 +-- attributes
-             |     |                 |  +-- origin?
+             |     |                 |  +-- origin
              |     |                 |  |     bt:bgp-origin-attr-type
              |     |                 |  +-- as-path
              |     |                 |  |  +-- segment*
@@ -1822,7 +1857,7 @@ module: ietf-bmp-telemetry-message
              |              |        +-- path-id?
              |              |        |     uint32
              |              |        +-- attributes
-             |              |        |  +-- origin?
+             |              |        |  +-- origin
              |              |        |  |     bt:bgp-origin-attr-type
              |              |        |  +-- as-path
              |              |        |  |  +-- segment*
@@ -1895,12 +1930,12 @@ module: ietf-bmp-telemetry-message
              |              +--:(adj-rib-in-pre)
              |              |  +-- adj-rib-in-pre
              |              |     +-- route
-             |              |        +-- prefix?
+             |              |        +-- prefix
              |              |        |     inet:ipv6-prefix
              |              |        +-- path-id?
              |              |        |     uint32
              |              |        +-- attributes
-             |              |        |  +-- origin?
+             |              |        |  +-- origin
              |              |        |  |     bt:bgp-origin-attr-type
              |              |        |  +-- as-path
              |              |        |  |  +-- segment*
@@ -1973,12 +2008,12 @@ module: ietf-bmp-telemetry-message
              |              +--:(adj-rib-in-post)
              |              |  +-- adj-rib-in-post
              |              |     +-- route
-             |              |        +-- prefix?
+             |              |        +-- prefix
              |              |        |     inet:ipv6-prefix
              |              |        +-- path-id?
              |              |        |     uint32
              |              |        +-- attributes
-             |              |        |  +-- origin?
+             |              |        |  +-- origin
              |              |        |  |     bt:bgp-origin-attr-type
              |              |        |  +-- as-path
              |              |        |  |  +-- segment*
@@ -2053,12 +2088,12 @@ module: ietf-bmp-telemetry-message
              |              +--:(adj-rib-out-pre)
              |              |  +-- adj-rib-out-pre
              |              |     +-- route
-             |              |        +-- prefix?
+             |              |        +-- prefix
              |              |        |     inet:ipv6-prefix
              |              |        +-- path-id?
              |              |        |     uint32
              |              |        +-- attributes
-             |              |        |  +-- origin?
+             |              |        |  +-- origin
              |              |        |  |     bt:bgp-origin-attr-type
              |              |        |  +-- as-path
              |              |        |  |  +-- segment*
@@ -2131,12 +2166,12 @@ module: ietf-bmp-telemetry-message
              |              +--:(adj-rib-out-post)
              |                 +-- adj-rib-out-post
              |                    +-- route
-             |                       +-- prefix?
+             |                       +-- prefix
              |                       |     inet:ipv6-prefix
              |                       +-- path-id?
              |                       |     uint32
              |                       +-- attributes
-             |                       |  +-- origin?
+             |                       |  +-- origin
              |                       |  |     bt:bgp-origin-attr-type
              |                       |  +-- as-path
              |                       |  |  +-- segment*
@@ -2224,10 +2259,10 @@ module: ietf-bmp-telemetry-message
       <section anchor="ietf-bmp-telemetry-message-module">
         <name>BMP Telemetry Message YANG Module</name>
 
-      <!-- ietf-bmp-telemetry-message YANG Module -->
-      <figure title="BMP YANG 'ietf-bmp-telemetry-message' module.">
-        <sourcecode name="ietf-bmp-telemetry-message@2026-06-23.yang"
-          type="yang" markers="true">
+        <!-- ietf-bmp-telemetry-message YANG Module -->
+        <figure title="BMP YANG 'ietf-bmp-telemetry-message' module.">
+          <sourcecode name="ietf-bmp-telemetry-message@2026-06-30.yang"
+            type="yang" markers="true">
 <![CDATA[
 module ietf-bmp-telemetry-message {
   yang-version 1.1;
@@ -2293,7 +2328,7 @@ module ietf-bmp-telemetry-message {
      capitals, as shown here.
 
      Copyright (c) 2026 IETF Trust and the persons identified as
-       authors of the code.  All rights reserved.
+       authors of the code. All rights reserved.
 
      Redistribution and use in source and binary forms, with or without
      modification, is permitted pursuant to, and subject to the license
@@ -2304,7 +2339,7 @@ module ietf-bmp-telemetry-message {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-06-23 {
+  revision 2026-06-30 {
     description
       "Initial revision.";
     reference
@@ -2356,6 +2391,7 @@ module ietf-bmp-telemetry-message {
       "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
     leaf peer-type {
       type peer-type;
+      mandatory true;
       description
         "BMP peer type from per-peer header.";
       reference
@@ -2377,6 +2413,7 @@ module ietf-bmp-telemetry-message {
     }
     leaf peer-distinguisher {
       type rt-types:route-distinguisher;
+      mandatory true;
       description
         "BMP peer distinguisher from per-peer header.
          The routing instance on which the encapsulated PDU was
@@ -2386,6 +2423,7 @@ module ietf-bmp-telemetry-message {
     }
     leaf peer-address {
       type inet:ip-address;
+      mandatory true;
       description
         "BMP peer IP address from per-peer header.";
       reference
@@ -2395,6 +2433,7 @@ module ietf-bmp-telemetry-message {
     }
     leaf peer-as {
       type uint32;
+      mandatory true;
       description
         "BMP peer autonomous system number from per-peer header. The
          Autonomous System number of the peer from which the
@@ -2404,6 +2443,7 @@ module ietf-bmp-telemetry-message {
     }
     leaf peer-bgp-id {
       type inet:ipv4-address;
+      mandatory true;
       description
         "BMP Peer BGP ID from per-peer header. The BGP Identifier of
          the peer from which the encapsulated PDU was received.";
@@ -2415,11 +2455,12 @@ module ietf-bmp-telemetry-message {
       description
         "BMP timestamp from the Per-Peer Header (RFC 7854 Section 4.2).
          Represents the time the encapsulated routes were received or
-         installed in the Adj-RIB-In.  Absent when the value was zero
+         installed in the Adj-RIB-In. Absent when the value was zero
          (unavailable) in the wire header.
 
+         // TODO: check with bmp-tlv regarding authoritative timestamp
          The Timestamp TLV (message-timestamp in btlv:common) MAY
-         also be present and carries a typed timestamp.  When
+         also be present and carries a typed timestamp. When
          message-timestamp with type 'adj-rib-in-time' is present, it
          is the authoritative value for this same event; the other
          Timestamp TLV types (trigger-time, message-export-time,
@@ -2446,7 +2487,7 @@ module ietf-bmp-telemetry-message {
         value 2;
         description
           "The local system closed the session. No NOTIFICATION
-           message was sent.  A 2-byte field containing the FSM
+           message was sent. A 2-byte field containing the FSM
            Event code follows the reason code.";
         reference
           "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.9.";
@@ -2521,6 +2562,7 @@ module ietf-bmp-telemetry-message {
     }
   }
 
+  // TODO: design better grouping for statistics
   grouping statistics {
     description
       "BMP Statistics.";
@@ -2595,11 +2637,26 @@ module ietf-bmp-telemetry-message {
 
     leaf version {
       type uint8;
+      mandatory true;
       description
         "BMP version from common header.";
       reference
         "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.1.";
     }
+
+    container session-metadata {
+      presence
+        "BMP Initiation message information cached by a collector
+         to enrich this message with router identity context.";
+      description
+        "Optional metadata derived from the BMP Initiation message
+         for this BMP session. A collector MAY populate sys-name,
+         sys-descr or a free-form string leaf-list to make this
+         message self-contained for consumers that did not process
+         or store the Initiation message directly.";
+      uses btlv:information;
+    }
+
     choice message-type {
       description
         "BMP message type from common header.";
@@ -2608,7 +2665,7 @@ module ietf-bmp-telemetry-message {
       case route-monitoring {
         container route-monitoring {
           description
-            "BMP Route Monitoring message.  Used for initial
+            "BMP Route Monitoring message. Used for initial
              synchronization of Adj-RIBs-In and for ongoing
              incremental route monitoring.";
           uses per-peer;
@@ -2620,7 +2677,7 @@ module ietf-bmp-telemetry-message {
       case statistics-report {
         container statistics-report {
           description
-            "BMP Statistics Report message.  Carries one or more
+            "BMP Statistics Report message. Carries one or more
              counters reflecting activity on the monitored router.";
           uses per-peer;
           uses statistics;
@@ -2630,11 +2687,12 @@ module ietf-bmp-telemetry-message {
       case peer-down-notification {
         container peer-down-notification {
           description
-            "BMP Peer Down Notification message.  Indicates that a
+            "BMP Peer Down Notification message. Indicates that a
              peering session was terminated.";
           uses per-peer;
           leaf reason {
             type peer-down-reason-code;
+            mandatory true;
             description
               "Reason why the peering session was closed.";
             reference
@@ -2648,7 +2706,7 @@ module ietf-bmp-telemetry-message {
                  used (Loc-RIB instance peer session closed).";
             }
             description
-              "Peer Down TLV data following reason code 6.  Contains
+              "Peer Down TLV data following reason code 6. Contains
                the VRF/Table Name TLV if it was present in the
                corresponding Peer Up notification.";
             uses btlv:peer-down;
@@ -2659,7 +2717,7 @@ module ietf-bmp-telemetry-message {
       case peer-up-notification {
         container peer-up-notification {
           description
-            "BMP Peer Up Notification message.  Indicates that a
+            "BMP Peer Up Notification message. Indicates that a
              peering session has come up.";
           uses per-peer;
           uses peer-up;
@@ -2669,7 +2727,7 @@ module ietf-bmp-telemetry-message {
                notification";
             description
               "Optional Information TLVs at the end of the Peer Up
-               message.  For standard peers only the string type
+               message. For standard peers only the string type
                (type 0) is defined; for Loc-RIB Instance Peers the
                VRF/Table Name TLV (type 3, RFC 9069) MUST be
                included when a name is configured.";
@@ -2684,9 +2742,9 @@ module ietf-bmp-telemetry-message {
       case initiation-message {
         container initiation-message {
           description
-            "BMP Initiation Message.  Provides information about the
-             monitored router.  MUST be the first message sent after
-             the TCP session comes up.  The sysDescr and sysName
+            "BMP Initiation Message. Provides information about the
+             monitored router. MUST be the first message sent after
+             the TCP session comes up. The sysDescr and sysName
              TLVs MUST be present.";
           uses btlv:information;
           uses btlv:common;
@@ -2695,7 +2753,7 @@ module ietf-bmp-telemetry-message {
       case termination-message {
         container termination-message {
           description
-            "BMP Termination Message.  Provides a reason why the
+            "BMP Termination Message. Provides a reason why the
              monitored router is closing the BMP session.";
           uses btlv:termination;
           uses btlv:common;
@@ -2704,7 +2762,7 @@ module ietf-bmp-telemetry-message {
       case route-mirroring-message {
         container route-mirroring-message {
           description
-            "BMP Route Mirroring Message.  Used for verbatim
+            "BMP Route Mirroring Message. Used for verbatim
              duplication of messages as received, e.g., for
              full-fidelity monitoring or error reporting.";
           uses per-peer;
@@ -2718,15 +2776,15 @@ module ietf-bmp-telemetry-message {
 }
 ]]>
 </sourcecode>
-      </figure>
+        </figure>
       </section>
-			
-      <section anchor="ietf-bgp-open">
+
+      <section anchor="ietf-bgp-open-module">
         <name>BGP Open Message YANG Module</name>
 
         <!-- ietf-bgp-open YANG Module -->
         <figure title="BMP YANG 'ietf-bgp-open' module.">
-          <sourcecode name="ietf-bgp-open@2026-06-23.yang"
+          <sourcecode name="ietf-bgp-open@2026-06-30.yang"
             type="yang" markers="true">
 <![CDATA[
 module ietf-bgp-open {
@@ -2760,30 +2818,30 @@ module ietf-bgp-open {
 
   description
     "Defines a grouping for representing a BGP OPEN message as
-     defined in RFC 4271.  The BGP OPEN message is the first
+     defined in RFC 4271. The BGP OPEN message is the first
      message sent by each side after a TCP connection is
      established and carries session parameters including the
      BGP version, the sender's AS number, the Hold Time, the
      BGP Identifier, and the list of optional capabilities.
-     
+
      This module complements the ietf-bgp model by exposing the
      OPEN message fields in a standalone reusable grouping,
      intended for use by BMP and other BGP monitoring or
      telemetry protocols.
-     
+
      Copyright (c) 2026 IETF Trust and the persons identified as
-     authors of the code.  All rights reserved.
-     
+     authors of the code. All rights reserved.
+
      Redistribution and use in source and binary forms, with or
      without modification, is permitted pursuant to, and subject
      to the license terms contained in, the Revised BSD License
      set forth in Section 4.c of the IETF Trust's Legal
      Provisions Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
-     
+
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.
-     
+
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
      'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
@@ -2791,7 +2849,7 @@ module ietf-bgp-open {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2026-06-23 {
+  revision 2026-06-30 {
     description
       "Initial revision.";
     reference
@@ -2805,6 +2863,7 @@ module ietf-bgp-open {
       "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 4.2.";
     leaf version {
       type uint8;
+      mandatory true;
       description
         "BGP protocol version number carried in the OPEN message.
          The current BGP version number is 4.";
@@ -2813,6 +2872,7 @@ module ietf-bgp-open {
     }
     leaf my-as {
       type uint32;
+      mandatory true;
       description
         "Autonomous System number of the BGP OPEN message sender.";
       reference
@@ -2823,6 +2883,7 @@ module ietf-bgp-open {
     leaf hold-time {
       type uint16;
       units "seconds";
+      mandatory true;
       description
         "Hold Time proposed by the sender in the BGP OPEN message.
          The Hold Time MUST be either zero or at least three seconds.";
@@ -2831,14 +2892,15 @@ module ietf-bgp-open {
     }
     leaf bgp-identifier {
       type inet:ipv4-address;
+      mandatory true;
       description
         "BGP Identifier of the sender, set to an IP address assigned
-         to that BGP speaker.  The value is determined upon startup
+         to that BGP speaker. The value is determined upon startup
          and is the same for every local interface and BGP peer.";
       reference
         "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 4.2.";
     }
-    // TODO: check if we can ignore the index ?
+    // TODO: check if we can ignore/need the index?
     list capabilities {
       key "code index";
       description
@@ -2862,7 +2924,7 @@ module ietf-bgp-open {
 
         <!-- ietf-bgp-rib-entry YANG Module -->
         <figure title="BMP YANG 'ietf-bgp-rib-entry' module.">
-          <sourcecode name="ietf-bgp-rib-entry@2026-06-23.yang"
+          <sourcecode name="ietf-bgp-rib-entry@2026-06-30.yang"
             type="yang" markers="true">
 <![CDATA[
 module ietf-bgp-rib-entry {
@@ -2908,18 +2970,18 @@ module ietf-bgp-rib-entry {
     "Defines a module for representing a single entry from a BGP
      Routing Information Base (RIB). The submodule supports entries
      from 5 logical RIB types per address family:
-     
+
      loc-rib: An entry from the main BGP routing table for the local
      routing instance, containing best-path selections for each
      prefix. The key for the loc-rib entry corresponds either to a
      route in the adj-rib-in-post table or a route redistributed
      from another protocol.
-     
+
      adj-rib-in-pre: An entry from the per-neighbor table containing
      the BGP routes received from the neighbor before any local
      input policy rules have been applied. This can be considered
      the 'raw' routes from a given neighbor.
-     
+
      adj-rib-in-post: An entry from the per-neighbor table containing
      the routes received from the neighbor that are eligible for
      best-path selection after local input policy rules have been
@@ -2928,36 +2990,36 @@ module ietf-bgp-rib-entry {
      routes may be present in the loc-rib, described above,
      when local configuration determines that the BGP best-path will
      be used for that destination.
-     
+
      adj-rib-out-pre: An entry from the per-neighbor table containing
      routes eligible for sending (advertising) to the neighbor before
      output policy rules have been applied.
-     
+
      adj-rib-out-post: An entry from the per-neighbor table containing
      routes eligible for sending (advertising) to the neighbor after
      output policy rules have been applied.
-     
+
      Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code. All rights reserved.
-     
+
      Redistribution and use in source and binary forms, with or
      without modification, is permitted pursuant to, and subject to
      the license terms contained in, the Revised BSD License set
      forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
-     
+
      This version of this YANG module is part of RFC XXXX
      (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
      for full legal notices.
-     
+
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
      NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
      'MAY', and 'OPTIONAL' in this document are to be interpreted as
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-23 {
+  revision 2026-06-30 {
     description
       "Initial Version";
     reference
@@ -2982,6 +3044,7 @@ module ietf-bgp-rib-entry {
         "BGP path attribute parameters.";
       leaf origin {
         type bt:bgp-origin-attr-type;
+        mandatory true;
         description
           "BGP attribute defining the origin of the path information.";
         reference
@@ -3165,6 +3228,7 @@ module ietf-bgp-rib-entry {
         "A single IPv4 Adj-RIB route entry.";
       leaf prefix {
         type inet:ipv4-prefix;
+        mandatory true;
         description
           "The IPv4 prefix.";
       }
@@ -3184,6 +3248,7 @@ module ietf-bgp-rib-entry {
         "A single IPv4 Adj-RIB-In post-policy route entry.";
       leaf prefix {
         type inet:ipv4-prefix;
+        mandatory true;
         description
           "The IPv4 prefix.";
       }
@@ -3204,6 +3269,7 @@ module ietf-bgp-rib-entry {
         "A single IPv6 Adj-RIB route entry.";
       leaf prefix {
         type inet:ipv6-prefix;
+        mandatory true;
         description
           "The IPv6 prefix.";
       }
@@ -3223,6 +3289,7 @@ module ietf-bgp-rib-entry {
         "A single IPv6 Adj-RIB-In post-policy route entry.";
       leaf prefix {
         type inet:ipv6-prefix;
+        mandatory true;
         description
           "The IPv6 prefix.";
       }
@@ -3371,18 +3438,17 @@ module ietf-bgp-rib-entry {
       }
     }
   }
-}
 ]]>
 </sourcecode>
         </figure>
       </section>
 
-      <section anchor="ietf-bmp-tlv">
+      <section anchor="ietf-bmp-tlv-module">
         <name>BMP TLV YANG Module</name>
 
         <!-- ietf-bmp-tlv YANG Module -->
         <figure title="BMP YANG 'ietf-bmp-tlv' module.">
-          <sourcecode name="ietf-bmp-tlv@2026-06-23.yang"
+          <sourcecode name="ietf-bmp-tlv@2026-06-30.yang"
             type="yang" markers="true">
 <![CDATA[
 module ietf-bmp-tlv {
@@ -3410,7 +3476,7 @@ module ietf-bmp-tlv {
     "Defines TLV groupings for BMP (BGP Monitoring Protocol) messages.
      The groupings in this module correspond to TLV types defined
      across the core BMP specifications and extensions:
-     
+
        - RFC 7854  (BMP base): Information TLVs, Termination TLVs,
                                Route Mirroring TLVs.
        - RFC 9069  (Loc-RIB):  VRF/Table Name TLV (type 3), Peer Down
@@ -3418,37 +3484,37 @@ module ietf-bmp-tlv {
        - draft-ietf-grow-bmp-tlv (BMP v4): Cross-cutting TLVs
                                applicable to all message types:
                                Sequence Number (type 1), Extended Flags
-                               (type 2), Timestamp (type 3).  Also
+                               (type 2), Timestamp (type 3). Also
                                Route Monitoring-specific TLVs: Group
                                (4), VRF/Table Name (5), Stateless
                                Parsing (6), BGP Message (7).
        - draft-ietf-grow-bmp-path-marking-tlv: Path Status TLV for
                                Route Monitoring messages.
-     
+
      This module models the decoded content of TLVs (i.e., what is
      carried in each TLV's Value field), not the wire-format TLV
      headers.
-     
+
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
      'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
      are to be interpreted as described in BCP 14 (RFC 2119)
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
-     
+
      Copyright (c) 2026 IETF Trust and the persons identified as
-       authors of the code.  All rights reserved.
-     
+       authors of the code. All rights reserved.
+
      Redistribution and use in source and binary forms, with or without
      modification, is permitted pursuant to, and subject to the license
      terms contained in, the Revised BSD License set forth in Section
      4.c of the IETF Trust's Legal Provisions Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
-     
+
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-06-23 {
+  revision 2026-06-30 {
     description
       "Initial revision.";
     reference
@@ -3501,7 +3567,7 @@ module ietf-bmp-tlv {
       }
     }
     description
-      "BMP Timestamp types for the Timestamp TLV (type 3).  Indicates
+      "BMP Timestamp types for the Timestamp TLV (type 3). Indicates
        which event the accompanying timestamp value refers to.";
     reference
       "draft-ietf-grow-bmp-tlv: Section 5.6.1.";
@@ -3531,7 +3597,7 @@ module ietf-bmp-tlv {
       type boolean;
       default false;
       description
-        "Route not selected in the BGP decision process.  Backup
+        "Route not selected in the BGP decision process. Backup
          routes are considered nonselected, while best and primary
          routes are not.";
     }
@@ -3539,8 +3605,8 @@ module ietf-bmp-tlv {
       type boolean;
       default false;
       description
-        "Path used for traffic forwarding.  A prefix can have more
-         than one primary path when multipath is configured.  The
+        "Path used for traffic forwarding. A prefix can have more
+         than one primary path when multipath is configured. The
          best path is also a primary path.";
     }
     leaf backup {
@@ -3548,7 +3614,7 @@ module ietf-bmp-tlv {
       default false;
       description
         "Path installed in the RIB but not used until some or all
-         primary paths become unreachable.  Used for fast
+         primary paths become unreachable. Used for fast
          convergence.";
     }
     leaf non-installed {
@@ -3668,7 +3734,7 @@ module ietf-bmp-tlv {
       }
     }
     description
-      "Reason codes for the BMP Path Status TLV.  Indicates the
+      "Reason codes for the BMP Path Status TLV. Indicates the
        reason a path has the indicated path status.";
     reference
       "draft-ietf-grow-bmp-path-marking-tlv: Section 3.2.";
@@ -3723,7 +3789,7 @@ module ietf-bmp-tlv {
       type boolean;
       default false;
       description
-        "F flag: Loc-RIB is filtered.  Set when a filter is
+        "F flag: Loc-RIB is filtered. Set when a filter is
          applied to Loc-RIB routes sent to the BMP collector.";
       reference
         "RFC 9069: Section 4.2.";
@@ -3737,7 +3803,7 @@ module ietf-bmp-tlv {
   grouping common {
     description
       "TLVs applicable to all BMP message types as defined in
-       draft-ietf-grow-bmp-tlv Section 5.6.  These TLVs carry
+       draft-ietf-grow-bmp-tlv Section 5.6. These TLVs carry
        per-message metadata and are allocated the same code point
        value in every TLV code point registry.";
     reference
@@ -3756,8 +3822,8 @@ module ietf-bmp-tlv {
       key "timestamp-type";
       description
         "Timestamp TLV (type 3). Carries a typed timestamp for
-         this BMP message.  Multiple instances MAY be present,
-         one per timestamp type.  A timestamp MUST NOT be included
+         this BMP message. Multiple instances MAY be present,
+         one per timestamp type. A timestamp MUST NOT be included
          if it is not available.";
       reference
         "draft-ietf-grow-bmp-tlv: Section 5.6.1.";
@@ -3792,7 +3858,7 @@ module ietf-bmp-tlv {
          Per-Peer Header flags directly.";
       reference
         "draft-ietf-grow-bmp-tlv: Section 5.6.3.";
-      // TODO: discuss this...
+      // TODO: discuss extensibility of this extended-flags container...
       // Extension point for future flag bits (RFC 8791 sx:augment-structure).
       // The augment path starts from the sx:structure root of the module
       // that instantiates btlv:common, e.g. for ietf-bmp-telemetry-message:
@@ -3816,11 +3882,11 @@ module ietf-bmp-tlv {
        notifications. RFC 9069 renamed the registry to 'BMP
        Initiation and Peer Up Information TLVs', confirming both
        message types share these TLV type codes.
-       
+
        For Initiation messages, sysDescr (type 1) and sysName
        (type 2) MUST be present; string (type 0) MAY appear multiple
        times; vrf-table-name is not applicable.
-       
+
        For Peer Up notifications, only string (type 0) is defined in
        RFC 7854 (and may be repeated); RFC 9069 adds vrf-table-name
        (type 3) for Loc-RIB Instance Peers. If vrf-table-name is
@@ -3835,7 +3901,7 @@ module ietf-bmp-tlv {
       }
       ordered-by user;
       description
-        "String TLV (type 0).  Free-form UTF-8 string.  Multiple
+        "String TLV (type 0). Free-form UTF-8 string. Multiple
          instances are permitted; their ordering MUST be preserved
          when reported.";
       reference
@@ -3895,7 +3961,7 @@ module ietf-bmp-tlv {
       }
       ordered-by user;
       description
-        "String TLV (type 0).  Free-form UTF-8 string.  Inclusion
+        "String TLV (type 0). Free-form UTF-8 string. Inclusion
          is optional. Multiple instances are permitted.";
       reference
         "RFC 7854: Section 4.5.";
@@ -3905,7 +3971,7 @@ module ietf-bmp-tlv {
         enum administratively-closed {
           value 0;
           description
-            "Session administratively closed.  The session might
+            "Session administratively closed. The session might
              be re-initiated.";
         }
         enum unspecified {
@@ -3916,13 +3982,13 @@ module ietf-bmp-tlv {
         enum out-of-resources {
           value 2;
           description
-            "Out of resources.  The router has exhausted resources
+            "Out of resources. The router has exhausted resources
              available for the BMP session.";
         }
         enum redundant-connection {
           value 3;
           description
-            "Redundant connection.  The router has determined that
+            "Redundant connection. The router has determined that
              this connection is redundant with another one.";
         }
         enum permanently-administratively-closed {
@@ -3934,9 +4000,10 @@ module ietf-bmp-tlv {
              attempts reconnection.";
         }
       }
+      mandatory true;
       description
-        "Reason TLV (type 1).  Indicates why the session was
-         terminated.  Inclusion is REQUIRED.";
+        "Reason TLV (type 1). Indicates why the session was
+         terminated. Inclusion is REQUIRED.";
       reference
         "RFC 7854: Section 4.5.";
     }
@@ -3948,7 +4015,7 @@ module ietf-bmp-tlv {
   // ---------------------------------------------------------------
   grouping peer-down {
     description
-      "BMP Peer Down TLVs.  Present when the Peer Down reason code
+      "BMP Peer Down TLVs. Present when the Peer Down reason code
        is 6 ('local-system-closed-tlv-data-follows'), as defined
        in RFC 9069 for Loc-RIB Instance Peers.";
     reference
@@ -3958,7 +4025,7 @@ module ietf-bmp-tlv {
         length "1..255";
       }
       description
-        "VRF/Table Name TLV (type 3).  UTF-8 string equal to the
+        "VRF/Table Name TLV (type 3). UTF-8 string equal to the
          VRF or table name. MUST be included if it was present in
          the corresponding Peer Up notification.";
       reference
@@ -3973,7 +4040,7 @@ module ietf-bmp-tlv {
   // ---------------------------------------------------------------
   grouping path-status-info {
     description
-      "BMP Path Status TLV for Route Monitoring messages.  Conveys
+      "BMP Path Status TLV for Route Monitoring messages. Conveys
        the status of a BGP path after processing by the BGP decision
        process. Carried as an indexed TLV in Route Monitoring
        messages; the index identifies the specific NLRI within the
@@ -3992,7 +4059,7 @@ module ietf-bmp-tlv {
 
   grouping route-monitoring {
     description
-      "TLVs specific to BMP Route Monitoring messages.  These appear
+      "TLVs specific to BMP Route Monitoring messages. These appear
        in addition to the common metadata that applies to all BMP message
        types.";
     reference
@@ -4002,7 +4069,7 @@ module ietf-bmp-tlv {
       presence
         "Path Status TLV is present for this route";
       description
-        "Path Status TLV.  Conveys the BGP decision-process status
+        "Path Status TLV. Conveys the BGP decision-process status
          of the route. As a per-NLRI indexed TLV this container
          represents the status applicable to the route entry in
          rib-entry.";
@@ -4032,417 +4099,495 @@ module ietf-bmp-tlv {
       <name>YANG Message Broker BMP Indexing and Topic Naming</name>
 
       <t>To identify which network node produced which BMP data into
-        which Message Broker Topic, Partition and Subject, <xref
-          target="BMP_Message_Keys_Indexes_Solution">BMP Message Keys,
-        Partition Keys and Indexes</xref> are being introduced. These
-				keys enable a deterministic distribution of BMP messages accross
-				Topics and Partitions enabling applications to consume only the
-				needed data from specific topics and partitions.</t>
+        which Message Broker Topic, Partition and Subject, BMP Message
+        Keys, Partition Key, and Indexes are being introduced (<xref
+          target="BMP_Message_Keys_Indexes_Solution"></xref>). These
+        keys enable a deterministic distribution of BMP messages across
+        Topics and Partitions enabling applications to consume only the
+        needed data from specific topics and partitions.</t>
 
       <section anchor="BMP_Message_Keys_Indexes_Solution">
         <name>BMP Message Keys and Indexes</name>
 
-        <t>A Message Broker uses a Message Key to index the Message and
-           therefore facilitates Message Topic Compaction. It could be
-					 also used for deterministic distribution among partitions,
-					 however this document discribes in <xref
-           target="BMP_Partitioning_Solution" /> a Partition Key instead.
-					 </t>
+        <t>A Message Broker uses a Message Key for indexing and enabling
+          Topic Compaction. While a Message Key can also drive
+          deterministic partition assignment, this document introduces a
+          dedicated Partition Key for that purpose, as described in <xref
+            target="BMP_Partitioning_Solution" />.</t>
 
         <t>Similar to <xref section="3.1" sectionFormat="of"
-          target="I-D.netana-nmop-yang-message-broker-message-key" />
-					for YANG-Push telemetry messages, the network node hostname
-					and a set of 'ietf-bmp-telemetry-message' defined YANG nodes
-					of the instance data is used to generate the BMP Message Key.
-					In the following subsection the used YANG nodes are described
-					and exampled for each BMP message.</t>
+            target="I-D.netana-nmop-yang-message-broker-message-key" />
+          for YANG-Push telemetry messages, the network node hostname
+          and a set of 'ietf-bmp-telemetry-message' YANG nodes from the
+          instance data are used to construct the BMP Message Key. The
+          following subsections describe and illustrate the YANG nodes
+          used for each BMP message type.</t>
 
-        <t>The examples listed represent the wireformat including the
-				Message Key and the Message Broker headers with the Schema ID,
-				contend type of the Message and the Partition Key.</t>
+        <t>For all BMP message types that carry a BMP Per-Peer Header
+          (Peer Up, Peer Down, Statistics Report, Route Monitoring, and
+          Route Mirroring), the Message Key consists of the node
+          hostname and a YANG instance-identifier path encoding the
+          message-type and the following per-peer header nodes to
+          uniquely identify the BGP peering session:</t>
+
+        <dl newline="true" spacing="normal">
+          <dt>peer-type</dt>
+          <dd>Scopes the session to its routing instance: Global
+            Instance Peer, RD Instance Peer, Local Instance Peer, or
+            Loc-RIB Instance Peer.</dd>
+
+          <dt>peer-distinguisher</dt>
+          <dd>The Route Distinguisher of the routing instance.
+            Zero-filled for Global Instance Peers; non-zero for RD
+            Instance and possibly Loc-RIB Instance Peers to distinguish
+            sessions within the same VRF or routing instance.</dd>
+
+          <dt>peer-address</dt>
+          <dd>The remote IP address associated with the BGP session.</dd>
+
+          <dt>peer-as</dt>
+          <dd>The AS number of the remote BGP speaker.</dd>
+
+          <dt>peer-bgp-id</dt>
+          <dd>The BGP Identifier of the remote BGP speaker.</dd>
+        </dl>
+
+        <t>Route Monitoring and Route Mirroring messages extend the
+          per-peer session key with two additional YANG nodes that
+          identify the individual route within the RIB:</t>
+
+        <dl newline="true" spacing="normal">
+          <dt>prefix</dt>
+          <dd>The IP prefix (IPv4 or IPv6) of the route entry.</dd>
+
+          <dt>path-id</dt>
+          <dd>The BGP ADD-PATH path identifier (RFC 7911). Zero when
+            ADD-PATH is not in use.</dd>
+        </dl>
+
+        <t>Initiation and Termination messages do not carry a Per-Peer
+          Header; their Message Keys consist of only the node hostname
+          and the message-type path. The per-peer session key is
+          consistent across all lifecycle events for the same session
+          (Peer Up, Statistics Report, Route Monitoring, and Peer Down),
+          enabling deterministic topic compaction over the full session
+          lifecycle.</t>
+
+        <t>The Message Key is encoded as a two-line byte string. The
+          first line is the network node hostname; the second line is
+          the YANG instance-identifier path. The separator between them
+          is a single line feed character (LF, U+000A).</t>
+
+        <t>Each example below illustrates the Message Key, the Message
+          Broker headers carrying the Schema ID, content type, and
+          Partition Key, and the corresponding Message Value.</t>
 
         <section anchor="bmp-initiation">
           <name>BMP Initiation</name>
-					
-          <ul>
-            <li>initiation-message</li>
-          </ul>
 
-<figure anchor="message-key-bmp-init-example"
-title="Message Key BMP Initiation Example">
-<sourcecode type="json"><![CDATA[
-=============== NOTE: '\' line wrapping per RFC 8792 ================
-===== NOTE: '|' represents single newline character (LF, U+000A) ====
+          <t>The Message Key consists of only the node hostname and the
+            message-type path, as described above.</t>
+
+          <figure anchor="message-key-bmp-init-example"
+            title="BMP Initiation Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+
+Key:
+  router-nyc-01
+  /ietf-bmp-telemetry-message:message/initiation-message
+
+Headers:
+  schema-id:     1
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-init-example"
+            title="BMP Initiation Message Value">
+            <sourcecode type="json"><![CDATA[
 {
-  "key": "router-nyc-01|/ietf-bmp-telemetry-message:message=\
-	initiation-message",
-  "value": {
-   "ietf-bmp-telemetry-message:message": {
-     "version": 3,
-     "initiation-message": {
-       "sys-descr": " 25.4.2.02I",
-       "sys-name": "ipf-zbl1327-r-daisy-91"
-     }
-   }
-  },
-  "headers": [
-    {
-      "schema-id": 1,
-      "content-type": "application/yang-data+json",
-      "partition-key": "router-nyc-01"
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "initiation-message": {
+      "sys-descr": "25.4.2.02I",
+      "sys-name": "ipf-zbl1327-r-daisy-91"
     }
-  ]
+  }
 }
-]]></sourcecode></figure>
+]]></sourcecode>
+          </figure>
         </section>
-	
+
         <section anchor="bmp-peer-up">
           <name>BMP Peer Up</name>
-					
-          <ul>
-            <li>peer-up-notification</li>
 
-            <li>peer-type</li>
-  
-            <li>peer-address</li>
-  
-            <li>peer-as</li>
-  
-            <li>peer-bgp-id</li>
-          </ul>
+          <t>The Message Key uses the per-peer session key described
+            above.</t>
 
-<figure anchor="message-key-bmp-peer-up-example"
-title="Message Key BMP Peer Up Example">
-<sourcecode type="json"><![CDATA[
-=============== NOTE: '\' line wrapping per RFC 8792 ================
-===== NOTE: '|' represents single newline character (LF, U+000A) ====
+
+          <figure anchor="message-key-bmp-peer-up-example"
+            title="BMP Peer Up Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+      RFC 8792 '\' line folding applies within the YANG path.
+
+Key:
+  router-nyc-01
+  /ietf-bmp-telemetry-message:message/\
+peer-up-notification[peer-type='global-instance-peer']\
+[peer-distinguisher='0:0:0']\
+[peer-address='203.0.113.45']\
+[peer-as='65002']\
+[peer-bgp-id='203.0.113.1']
+
+Headers:
+  schema-id:     2
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-peer-up-example"
+            title="BMP Peer Up Message Value">
+            <sourcecode type="json"><![CDATA[
 {
-  "key": "router-nyc-01|/ietf-bmp-telemetry-message:message/\
-peer-up-notification[peer-type='global-instance-peer'][peer-address=\
-'203.0.113.45'][peer-as='65002'][peer-bgp-id='203.0.113.1']",
-  "value": {
-    "ietf-bmp-telemetry-message:message": {
-      "version": 3,
-      "peer-up-notification": {
-        "peer-type": "global-instance-peer",
-        "peer-address": "203.0.113.45",
-        "peer-as": 65002,
-        "peer-bgp-id": "203.0.113.1",
-        "timestamp": "2026-02-15T14:35:22Z",
-        "local-address": "198.51.100.10",
-        "local-port": 179,
-        "remote-port": 54321,
-        "sent-open": {
-          "version": 4,
-          "my-as": 65001,
-          "hold-time": 180,
-          "bgp-identifier": "198.51.100.1",
-          "capabilities": [
-            {
-              "code": 65,
-              "index": 1,
-              "name": "iana-bgp-types:asn32",
-              "value": {
-                "asn32": {
-                  "as": 65001
-                }
-              }
-            },
-            {
-              "code": 1,
-              "index": 1,
-              "name": "iana-bgp-types:mp-bgp",
-              "value": {
-                "mpbgp": {
-                  "afi": "ipv4",
-                  "safi": "unicast-safi",
-                  "name": "iana-bgp-types:ipv4-unicast"
-                }
-              }
-            }
-          ]
-        },
-        "received-open": {
-          "version": 4,
-          "my-as": 65002,
-          "hold-time": 180,
-          "bgp-identifier": "203.0.113.1",
-          "capabilities": [
-            {
-              "code": 65,
-              "index": 1,
-              "name": "iana-bgp-types:asn32",
-              "value": {
-                "asn32": {
-                  "as": 65002
-                }
-              }
-            },
-            {
-              "code": 1,
-              "index": 1,
-              "name": "iana-bgp-types:mp-bgp",
-              "value": {
-                "mpbgp": {
-                  "afi": "ipv4",
-                  "safi": "unicast-safi",
-                  "name": "iana-bgp-types:ipv4-unicast"
-                }
-              }
-            }
-          ]
-        },
-        "sequence-number": "42",
-        "timestamps": [
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "peer-up-notification": {
+      "peer-type": "global-instance-peer",
+      "peer-distinguisher": "0:0:0",
+      "peer-address": "203.0.113.45",
+      "peer-as": 65002,
+      "peer-bgp-id": "203.0.113.1",
+      "timestamp": "2026-02-15T14:35:22Z",
+      "local-address": "198.51.100.10",
+      "local-port": 179,
+      "remote-port": 54321,
+      "sent-open": {
+        "version": 4,
+        "my-as": 65001,
+        "hold-time": 180,
+        "bgp-identifier": "198.51.100.1",
+        "capabilities": [
           {
-            "timestamp-type": "message-export-time",
-            "timestamp": "2026-02-15T14:35:22.125000Z"
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": { "asn32": { "as": 65001 } }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
           }
         ]
-      }
+      },
+      "received-open": {
+        "version": 4,
+        "my-as": 65002,
+        "hold-time": 180,
+        "bgp-identifier": "203.0.113.1",
+        "capabilities": [
+          {
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": { "asn32": { "as": 65002 } }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
+          }
+        ]
+      },
+      "sequence-number": "42",
+      "timestamps": [
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T14:35:22.125000Z"
+        }
+      ]
     }
-  },
-  "headers": [
-    {
-      "schema-id": 2,
-      "content-type": "application/yang-data+json",
-      "partition-key": "router-nyc-01"
-    }
-  ]
+  }
 }
-]]></sourcecode></figure>
+]]></sourcecode>
+          </figure>
         </section>
 
         <section anchor="bmp-peer-down">
           <name>BMP Peer Down</name>
-					
-          <ul>
-            <li>peer-down-notification</li>
 
-            <li>peer-type</li>
-  
-            <li>peer-address</li>
-  
-            <li>peer-as</li>
-  
-            <li>peer-bgp-id</li>
-          </ul>
+          <t>The Message Key uses the per-peer session key described
+            above.</t>
 
-<figure anchor="message-key-bmp-peer-down-example"
-title="Message Key BMP Peer Down Example">
-<sourcecode type="json"><![CDATA[
-=============== NOTE: '\' line wrapping per RFC 8792 ================
-===== NOTE: '|' represents single newline character (LF, U+000A) ====
+
+          <figure anchor="message-key-bmp-peer-down-example"
+            title="BMP Peer Down Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+      RFC 8792 '\' line folding applies within the YANG path.
+
+Key:
+  router-nyc-01
+  /ietf-bmp-telemetry-message:message/peer-down-notification\
+[peer-type='loc-rib-instance-peer']\
+[peer-distinguisher='0:65001:100']\
+[peer-address='::']\
+[peer-as='65001']\
+[peer-bgp-id='192.0.2.1']
+
+Headers:
+  schema-id:     3
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-peer-down-example"
+            title="BMP Peer Down Message Value">
+            <sourcecode type="text"><![CDATA[
 {
-  "key": "router-nyc-01|/ietf-bmp-telemetry-message:message=\
-	initiation-message",
-  "value": {
-
-TBD
-
-  },
-  "headers": [
-    {
-      "schema-id": 3,
-      "content-type": "application/yang-data+json",
-      "partition-key": "router-nyc-01"
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "session-metadata": {
+      "sys-descr": "25.4.2.02I",
+      "sys-name": "router-nyc-01"
+    },
+    "peer-down-notification": {
+      "peer-type": "loc-rib-instance-peer",
+      "peer-distinguisher": "0:65001:100",
+      "peer-address": "::",
+      "peer-as": 65001,
+      "peer-bgp-id": "192.0.2.1",
+      "timestamp": "2026-02-15T15:10:00Z",
+      "reason": "local-system-closed-tlv-data-follows",
+      "peer-down": {
+        "vrf-table-name": "customer-a"
+      },
+      "sequence-number": "8901",
+      "timestamps": [
+        {
+          "timestamp-type": "trigger-time",
+          "timestamp": "2026-02-15T15:09:58.200000Z"
+        },
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T15:09:58.450000Z"
+        }
+      ]
     }
-  ]
+  }
 }
-]]></sourcecode></figure>
+]]></sourcecode>
+          </figure>
         </section>
 
         <section anchor="bmp-stats-reports">
           <name>BMP Statistic Reports</name>
-					
-          <ul>
-            <li>statistics-report</li>
 
-            <li>peer-type</li>
-  
-            <li>peer-address</li>
-  
-            <li>peer-as</li>
-  
-            <li>peer-bgp-id</li>
-          </ul>
+          <t>The Message Key uses the per-peer session key described
+            above.</t>
 
-<figure anchor="message-key-bmp-stats-example"
-title="Message Key BMP Statistic Report Example">
-<sourcecode type="json"><![CDATA[
-=============== NOTE: '\' line wrapping per RFC 8792 ================
-===== NOTE: '|' represents single newline character (LF, U+000A) ====
-{
-  "key": "router-nyc-01|/ietf-bmp-telemetry-message:message\
-	/statistics-report\[peer-type='global-instance-peer']\
-	[peer-address='203.0.113.45'][peer-as='65002']\
-	[peer-bgp-id='203.0.113.1']",
-  "value": {
 
+          <figure anchor="message-key-bmp-stats-example"
+            title="BMP Statistics Report Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+      RFC 8792 '\' line folding applies within the YANG path.
+
+Key:
+  router-nyc-01
+  /ietf-bmp-telemetry-message:message/statistics-report\
+[peer-type='global-instance-peer']\
+[peer-distinguisher='0:0:0']\
+[peer-address='203.0.113.45']\
+[peer-as='65002']\
+[peer-bgp-id='203.0.113.1']
+
+Headers:
+  schema-id:     4
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-stats-example"
+            title="BMP Statistics Report Message Value">
+            <sourcecode type="text"><![CDATA[
 TBD
-
-  },
-  "headers": [
-    {
-      "schema-id": 4,
-      "content-type": "application/yang-data+json",
-      "partition-key": "router-nyc-01"
-    }
-  ]
-}
-]]></sourcecode></figure>
+]]></sourcecode>
+          </figure>
         </section>
-			
+
         <section anchor="bmp-route-monitoring">
           <name>BMP Route Monitoring</name>
-					
-          <ul>
-            <li>route-monitoring</li>
-						
-            <li>peer-type</li>
-  
-            <li>peer-address</li>
-  
-            <li>peer-as</li>
-  
-            <li>peer-bgp-id</li>
-  
-            <li>prefix</li>
-  
-            <li>path-id</li>
-          </ul>
-				
-<figure anchor="message-key-bmp-route-monitoring-example"
-title="Message Key BMP Route Monitoring Example">
-<sourcecode type="json"><![CDATA[
-=============== NOTE: '\' line wrapping per RFC 8792 ================
-===== NOTE: '|' represents single newline character (LF, U+000A) ====
+
+          <t>The Message Key extends the per-peer session key with the
+            additional <tt>prefix</tt> and <tt>path-id</tt> nodes
+            described above.</t>
+
+
+          <figure anchor="message-key-bmp-route-monitoring-example"
+            title="BMP Route Monitoring Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+      RFC 8792 '\' line folding applies within the YANG path.
+
+Key:
+  router-nyc-01
+  /ietf-bmp-telemetry-message:message/route-monitoring\
+[peer-type='global-instance-peer']\
+[peer-distinguisher='0:0:0']\
+[peer-address='203.0.113.45']\
+[peer-as='65002']\
+[peer-bgp-id='203.0.113.1']\
+/rib-entry/ipv4-unicast/adj-rib-in-post/route\
+[prefix='192.0.2.0/24']\
+[path-id='0']
+
+Headers:
+  schema-id:     5
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-route-monitoring-example"
+            title="BMP Route Monitoring Message Value">
+            <sourcecode type="json"><![CDATA[
 {
-  "key": "router-nyc-01|/ietf-bmp-telemetry-message:message/\
-	route-monitoring[peer-type='global-instance-peer']\
-	[peer-address='203.0.113.45'][peer-as='65002']\
-	[peer-bgp-id='203.0.113.1']/rib-entry/ipv4-unicast/adj-rib-in-post\
-	/route[prefix='192.0.2.0/24',path-id='0']",
-  "value": {
-   "ietf-bmp-telemetry-message:message": {
-     "version": 3,
-     "route-monitoring": {
-       "peer-type": "global-instance-peer",
-       "peer-address": "203.0.113.45",
-       "peer-as": 65002,
-       "peer-bgp-id": "203.0.113.1",
-       "timestamp": "2026-02-15T14:40:00Z",
-       "afi-safi-type": "iana-bgp-types:ipv4-unicast",
-       "rib-entry": {
-         "ipv4-unicast": {
-           "adj-rib-in-post": {
-             "route": {
-               "prefix": "192.0.2.0/24",
-               "path-id": 0,
-               "attributes": {
-                 "origin": "igp",
-                 "as-path": {
-                   "segment": [
-                     {
-                       "type": "as-sequence",
-                       "member": [
-                         65002,
-                         65003,
-                         65004
-                       ]
-                     }
-                   ]
-                 },
-                 "next-hop": "203.0.113.45",
-                 "med": 100,
-                 "local-pref": 150
-               },
-               "community": [
-                 "65001:1000",
-                 "65001:2000"
-               ]
-             }
-           }
-         }
-       },
-       "vrf-table-name": "customer-a",
-       "sequence-number": "5432",
-       "path-status": {
-         "invalid": true,
-         "nonselected": true,
-         "reason-code": "invalid-as-loop"
-       },
-       "timestamps": [
-         {
-           "timestamp-type": "trigger-time",
-           "timestamp": "2026-02-15T14:39:58.500000Z"
-         },
-         {
-           "timestamp-type": "adj-rib-in-time",
-           "timestamp": "2026-02-15T14:39:58.750000Z"
-         }
-       ],
-       "extended-flags": {
-         "ipv6-peer": true,
-         "post-policy": true,
-         "adj-rib-out": true
-       }
-     }
-   }
-  },
-  "headers": [
-    {
-      "schema-id": 5,
-      "content-type": "application/yang-data+json",
-      "partition-key": "router-nyc-01"
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "route-monitoring": {
+      "peer-type": "global-instance-peer",
+      "peer-distinguisher": "0:0:0",
+      "peer-address": "203.0.113.45",
+      "peer-as": 65002,
+      "peer-bgp-id": "203.0.113.1",
+      "timestamp": "2026-02-15T14:40:00Z",
+      "afi-safi-type": "iana-bgp-types:ipv4-unicast",
+      "rib-entry": {
+        "ipv4-unicast": {
+          "adj-rib-in-post": {
+            "route": {
+              "prefix": "192.0.2.0/24",
+              "path-id": 0,
+              "attributes": {
+                "origin": "igp",
+                "as-path": {
+                  "segment": [
+                    {
+                      "type": "as-sequence",
+                      "member": [ 65002, 65003, 65004 ]
+                    }
+                  ]
+                },
+                "next-hop": "203.0.113.45",
+                "med": 100,
+                "local-pref": 150
+              },
+              "community": [ "65001:1000", "65001:2000" ]
+            }
+          }
+        }
+      },
+      "vrf-table-name": "customer-a",
+      "sequence-number": "5432",
+      "path-status": {
+        "invalid": true,
+        "nonselected": true,
+        "reason-code": "invalid-as-loop"
+      },
+      "timestamps": [
+        {
+          "timestamp-type": "trigger-time",
+          "timestamp": "2026-02-15T14:39:58.500000Z"
+        },
+        {
+          "timestamp-type": "adj-rib-in-time",
+          "timestamp": "2026-02-15T14:39:58.750000Z"
+        }
+      ],
+      "extended-flags": {
+        "ipv6-peer": true,
+        "post-policy": true,
+        "adj-rib-out": true
+      }
     }
-  ]
+  }
 }
-]]></sourcecode></figure>
+]]></sourcecode>
+          </figure>
         </section>
-				
+
         <section anchor="bmp-termination">
           <name>BMP Termination</name>
-					
-          <ul>
-            <li>termination-message</li>
-          </ul>
-					
-<figure anchor="message-key-bmp-term-example"
-title="Message Key BMP Termination Example">
-<sourcecode type="json"><![CDATA[
-=============== NOTE: '\' line wrapping per RFC 8792 ================
-===== NOTE: '|' represents single newline character (LF, U+000A) ====
+
+          <t>The Message Key consists of only the node hostname and the
+            message-type path, as described above.</t>
+
+          <figure anchor="message-key-bmp-term-example"
+            title="BMP Termination Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+
+Key:
+  router-nyc-01
+  /ietf-bmp-telemetry-message:message/termination-message
+
+Headers:
+  schema-id:     6
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-term-example"
+            title="BMP Termination Message Value">
+            <sourcecode type="json"><![CDATA[
 {
-  "key": "router-nyc-01|/ietf-bmp-telemetry-message:message=\
-	termination-message",
-  "value": {
-   "ietf-bmp-telemetry-message:message": {
-     "version": 3,
-     "termination-message": {
-       "string": [
-         "Scheduled maintenance window"
-       ],
-       "reason": "administratively-closed",
-       "sequence-number": "18567",
-       "timestamps": [
-         {
-           "timestamp-type": "message-export-time",
-           "timestamp": "2026-02-15T15:45:00.500000Z"
-         }
-       ]
-     }
-   }
-  },
-  "headers": [
-    {
-      "schema-id": 6,
-      "content-type": "application/yang-data+json",
-      "partition-key": "router-nyc-01"
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "termination-message": {
+      "string": [
+        "Scheduled maintenance window"
+      ],
+      "reason": "administratively-closed",
+      "sequence-number": "18567",
+      "timestamps": [
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T15:45:00.500000Z"
+        }
+      ]
     }
-  ]
+  }
 }
-]]></sourcecode></figure>
+]]></sourcecode>
+          </figure>
         </section>
       </section>
 
@@ -4450,49 +4595,48 @@ title="Message Key BMP Termination Example">
         <name>BMP Partition Keys and Routing</name>
 
         <t>Since BMP requires Message ordering for a monitored BGP RIB,
-				  and Message Brokers ensure Message ordering on partitions, a
-					Partition Key and a custom partitioner logic is being
-					introduced so that all BMP messages for a particular
-					BGP RIB are hashed to on one partition. The Partition Key
-					consists of the hostname of the network node.</t>
+          and Message Brokers ensure Message ordering on partitions, a
+          Partition Key and a custom partitioner logic is being
+          introduced so that all BMP messages for a particular BGP RIB
+          are hashed to on one partition. The Partition Key consists of
+          the hostname of the network node.</t>
 
         <t>In the partitioner implementation of the YANG Message Broker
-				  Producer, instead of the Message Key, the Partition Key MUST
-					be used to deterministically hash BMP Messages to partitions.
-					</t>
+          Producer, instead of the Message Key, the Partition Key MUST
+          be used to deterministically hash BMP Messages to partitions. </t>
       </section>
-			
+
       <section anchor="YANG_Message_Broker_BMP_Topic-Naming_Solution">
         <name>Message Broker BMP Topic Naming</name>
 
         <t>There are two Message Broker topics.</t>
 
-          <ul>
-            <li>bmp-state-changes-and-statistics: Containing all BMP
-						    messages in real-time</li>
+        <ul>
+          <li>bmp-state-changes-and-statistics: Containing all BMP
+            messages in real-time</li>
 
-            <li>bmp-current-state: Containing all BMP
-						    message types, except statistics, topic compacted.</li>
-          </ul>
-					
+          <li>bmp-current-state: Containing all BMP message types,
+            except statistics, topic compacted.</li>
+        </ul>
+
         <t>Optionally, an organization prefix can be prepended with a
-				   "-" separator. A Message Broker Consumer MAY consume either
-					 "bmp-state-changes-and-statistics", "bmp-current-state" or
-					 a subset	 depending on use case.</t> 
+          "-" separator. A Message Broker Consumer MAY consume either
+          "bmp-state-changes-and-statistics", "bmp-current-state" or a
+          subset depending on use case.</t>
 
-          <t>If a subset is consumed, the consumer hashes the Message
-					Key, applies modulo with the number of partitions, and
-					determines the partition from which it should consume messages
-					bearing that Message Key.</t>
+        <t>If a subset is consumed, the consumer hashes the Message Key,
+          applies modulo with the number of partitions, and determines
+          the partition from which it should consume messages bearing
+          that Message Key.</t>
 
-          <t>To parse the Message Key, the consumer splits the byte
-          string on newline (LF) characters. The first line is the
-          node-name and the second the YANG path.</t>
+        <t>To parse the Message Key, the consumer splits the byte string
+          on newline (LF) characters. The first line is the node-name
+          and the second the YANG path.</t>
 
         <figure anchor="bmp-topic-name-example"
           title="BMP Topic Name Example">
           <sourcecode type="text"><![CDATA[
-netops-bmp-state-changes-and-statistics
+TBD
 ]]></sourcecode>
         </figure>
       </section>
@@ -4502,32 +4646,32 @@ netops-bmp-state-changes-and-statistics
       <name>Message Broker Implementations</name>
 
       <t>Topic, Partitioning and Message Keys are generic concepts of
-      Message Brokers. There are two known Message Broker
-      implementations supporting all features described in this
-      document.</t>
+        Message Brokers. There are two known Message Broker
+        implementations supporting all features described in this
+        document.</t>
 
       <section anchor="MB_Implementations_Kafka">
         <name>Apache Kafka</name>
 
         <t>Apache Kafka supports Message Keys, Partitioning and Log
-        Compaction. Per default, the partitioner logic uses Message
-				Keyes for deterministic partition Message distribution.</t>
+          Compaction. Per default, the partitioner logic uses Message
+          Keyes for deterministic partition Message distribution.</t>
 
         <t>This document introduces "partioning-key" in the Apache Kafka
-				header to be used by the partitioner instead of the "key"
-				(Message Key) when distributing Messages to the partitions.</t>
+          header to be used by the partitioner instead of the "key"
+          (Message Key) when distributing Messages to the partitions.</t>
       </section>
 
       <section anchor="MB_Implementations_Pulsar">
         <name>Apache Pulsar</name>
 
         <t>Apache Pulsar supports Message Keys, Partitioning and Topic
-        Compaction. Per default, the partitioner logic uses Message
-				Keyes for deterministic partition Message distribution.
-				Optionally, a dedicated ordering key can be used.</t>
+          Compaction. Per default, the partitioner logic uses Message
+          Keyes for deterministic partition Message distribution.
+          Optionally, a dedicated ordering key can be used.</t>
 
-        <t>This document introduces "partioning-key" which is to be
-				used as ordering key.</t>
+        <t>This document introduces "partioning-key" which is to be used
+          as ordering key.</t>
       </section>
     </section>
 
@@ -4575,24 +4719,21 @@ netops-bmp-state-changes-and-statistics
 
       <ul>
         <li>Name: ietf-bgp-rib-entry</li>
-        <li>Namespace:
-          urn:ietf:params:xml:ns:yang:ietf-bgp-rib-entry</li>
+        <li>Namespace: urn:ietf:params:xml:ns:yang:ietf-bgp-rib-entry</li>
         <li>Prefix: bmptm</li>
         <li>Reference: RFC XXXX</li>
       </ul>
 
       <ul>
         <li>Name: ietf-bgp-open</li>
-        <li>Namespace:
-          urn:ietf:params:xml:ns:yang:ietf-bgp-open</li>
+        <li>Namespace: urn:ietf:params:xml:ns:yang:ietf-bgp-open</li>
         <li>Prefix: bmptm</li>
         <li>Reference: RFC XXXX</li>
       </ul>
 
       <ul>
         <li>Name: ietf-bmp-tlv</li>
-        <li>Namespace:
-          urn:ietf:params:xml:ns:yang:ietf-bmp-tlv</li>
+        <li>Namespace: urn:ietf:params:xml:ns:yang:ietf-bmp-tlv</li>
         <li>Prefix: bmptm</li>
         <li>Reference: RFC XXXX</li>
       </ul>
@@ -4606,7 +4747,7 @@ netops-bmp-state-changes-and-statistics
           target="I-D.ietf-netmod-rfc8407bis" />.</t>
 
       <t>The "ietf-bmp-telemetry-message", "ietf-bgp-rib-entry",
-			  "ietf-bgp-open" and "ietf-bmp-tlv" YANG modules defines one
+        "ietf-bgp-open" and "ietf-bmp-tlv" YANG modules defines one
         combined data model that are designed to be accessed via
         YANG-based management protocols, such as NETCONF <xref
           target="RFC6141" /> and RESTCONF <xref target="RFC8040" />.

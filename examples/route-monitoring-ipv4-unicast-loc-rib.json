@@ -3,6 +3,7 @@
     "version": 3,
     "route-monitoring": {
       "peer-type": "loc-rib-instance-peer",
+      "peer-distinguisher": "0:0:0",
       "peer-address": "0.0.0.0",
       "peer-flags": {
         "filtered": true
