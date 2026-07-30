@@ -252,8 +252,6 @@ module: ietf-bmp-telemetry-message
        |     |     |        |        |     boolean
        |     |     |        |        +-- ineligible-reason?
        |     |     |        |        |     identityref
-       |     |     |        |        +-- best-path?
-       |     |     |        |        |     boolean
        |     |     |        |        +-- unknown-attributes
        |     |     |        |        |  +-- unknown-attribute*
        |     |     |        |        |        [attr-type]
@@ -649,8 +647,6 @@ module: ietf-bmp-telemetry-message
        |     |              |        |     boolean
        |     |              |        +-- ineligible-reason?
        |     |              |        |     identityref
-       |     |              |        +-- best-path?
-       |     |              |        |     boolean
        |     |              |        +-- unknown-attributes
        |     |              |        |  +-- unknown-attribute*
        |     |              |        |        [attr-type]
@@ -1274,8 +1270,6 @@ module: ietf-bmp-telemetry-message
              |     |        |        |     boolean
              |     |        |        +-- ineligible-reason?
              |     |        |        |     identityref
-             |     |        |        +-- best-path?
-             |     |        |        |     boolean
              |     |        |        +-- unknown-attributes
              |     |        |        |  +-- unknown-attribute*
              |     |        |        |        [attr-type]
@@ -1671,8 +1665,6 @@ module: ietf-bmp-telemetry-message
              |              |        |     boolean
              |              |        +-- ineligible-reason?
              |              |        |     identityref
-             |              |        +-- best-path?
-             |              |        |     boolean
              |              |        +-- unknown-attributes
              |              |        |  +-- unknown-attribute*
              |              |        |        [attr-type]
