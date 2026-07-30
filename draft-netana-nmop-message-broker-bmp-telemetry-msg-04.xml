@@ -85,12 +85,11 @@
     <keyword>Network Analytics</keyword>
 
     <abstract>
-      <t>This document defines an BGP Monitoring Protocol (BMP) message
-        schema extension in YANG to be used at data collection to
-        transform Network Telemetry messages into external systems such
-        as Message Brokers.</t>
+      <t>This document defines an extensible message schema in YANG to
+			be used at BMP collectors to transform BMP messages into messages
+			which are consumed by external systems such as Message Brokers.
+			</t>
     </abstract>
-
   </front>
 
   <middle>
@@ -111,17 +110,17 @@
           target="Pul16">Apache Pulsar</xref> facilitates the exchange
         of messages among data processing components.</t>
 
-      <t>With <xref
+      <t><xref
           target="I-D.netana-nmop-yang-message-broker-message-key">YANG
-        Message Keys for Message Broker Integration</xref> how
-        Dimensional YANG data can be indexed and addressed in Message
-        Brokers are being described.</t>
+        Message Keys for Message Broker Integration</xref> describes how
+				Dimensional YANG data can be indexed and addressed in Message
+				Brokers.</t>
 
       <t>This document describes how <xref
           target="I-D.ietf-nmop-message-broker-telemetry-message" />
         defined Network Telemetry message is being extended to support
-        BMP data transformation to YANG at the Network Telemetry data
-        collector and being indexed and addressed in Message Broker
+        BMP data transformation to YANG at the BMP Network Telemetry
+				data collector and being indexed and addressed in Message Broker
         based on <xref
           target="I-D.netana-nmop-yang-message-broker-message-key" />
         principles at the YANG Message Broker Producer.</t>
@@ -653,8 +652,6 @@ module: ietf-bmp-telemetry-message
        |     |     |        |        |     boolean
        |     |     |        |        +-- ineligible-reason?
        |     |     |        |        |     identityref
-       |     |     |        |        +-- best-path?
-       |     |     |        |        |     boolean
        |     |     |        |        +-- unknown-attributes
        |     |     |        |        |  +-- unknown-attribute*
        |     |     |        |        |        [attr-type]
@@ -1050,8 +1047,6 @@ module: ietf-bmp-telemetry-message
        |     |              |        |     boolean
        |     |              |        +-- ineligible-reason?
        |     |              |        |     identityref
-       |     |              |        +-- best-path?
-       |     |              |        |     boolean
        |     |              |        +-- unknown-attributes
        |     |              |        |  +-- unknown-attribute*
        |     |              |        |        [attr-type]
@@ -1675,8 +1670,6 @@ module: ietf-bmp-telemetry-message
              |     |        |        |     boolean
              |     |        |        +-- ineligible-reason?
              |     |        |        |     identityref
-             |     |        |        +-- best-path?
-             |     |        |        |     boolean
              |     |        |        +-- unknown-attributes
              |     |        |        |  +-- unknown-attribute*
              |     |        |        |        [attr-type]
@@ -2072,8 +2065,6 @@ module: ietf-bmp-telemetry-message
              |              |        |     boolean
              |              |        +-- ineligible-reason?
              |              |        |     identityref
-             |              |        +-- best-path?
-             |              |        |     boolean
              |              |        +-- unknown-attributes
              |              |        |  +-- unknown-attribute*
              |              |        |        [attr-type]
@@ -2925,7 +2916,7 @@ module ietf-bgp-open {
 
         <!-- ietf-bgp-rib-entry YANG Module -->
         <figure title="BMP YANG 'ietf-bgp-rib-entry' module.">
-          <sourcecode name="ietf-bgp-rib-entry@2026-06-30.yang"
+          <sourcecode name="ietf-bgp-rib-entry@2026-07-30.yang"
             type="yang" markers="true">
 <![CDATA[
 module ietf-bgp-rib-entry {
@@ -3020,7 +3011,7 @@ module ietf-bgp-rib-entry {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-06-30 {
+  revision 2026-07-30 {
     description
       "Initial Version";
     reference
@@ -3256,7 +3247,6 @@ module ietf-bgp-rib-entry {
       uses bgp:bgp-adj-rib-attr-state;
       uses bgp-common-route-attributes;
       uses bgp:bgp-common-route-annotations-state;
-      uses bgp:bgp-adj-rib-in-post-route-annotations-state;
       uses bgp:bgp-unknown-attr-top;
       uses bgp:rib-ext-route-annotations;
     }
@@ -3297,7 +3287,6 @@ module ietf-bgp-rib-entry {
       uses bgp:bgp-adj-rib-attr-state;
       uses bgp-common-route-attributes;
       uses bgp:bgp-common-route-annotations-state;
-      uses bgp:bgp-adj-rib-in-post-route-annotations-state;
       uses bgp:bgp-unknown-attr-top;
       uses bgp:rib-ext-route-annotations;
     }
@@ -4915,7 +4904,7 @@ netops-bmp-state-changes-and-statistics
 
     <section anchor="Acknowledgements" numbered="false">
       <name>Acknowledgements</name>
-      <t>Thanks to xxx for their comments and reviews.</t>
+      <t>Thanks to Reshad Rahman for his comments and review.</t>
     </section>
 
     <section anchor="Contributors" numbered="false">
