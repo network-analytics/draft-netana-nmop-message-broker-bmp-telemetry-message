@@ -4681,7 +4681,7 @@ netops-bmp-state-changes-and-statistics
 
     <section>
       <name>IANA Considerations</name>
-      <t>This document registers the following two namespace URIs in the <xref
+      <t>This document registers the following four namespace URIs in the <xref
           target="RFC3688">IETF XML Registry</xref>:</t>
 
       <dl>
@@ -4716,7 +4716,7 @@ netops-bmp-state-changes-and-statistics
 
       <t/>
 
-      <t>This document registers the following two YANG moddles in the <xref
+      <t>This document registers the following four YANG modules in the <xref
           target="RFC3688">YANG Moddle Names registry</xref>:</t>
 
       <dl>

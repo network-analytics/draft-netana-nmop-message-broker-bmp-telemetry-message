@@ -5334,7 +5334,7 @@ Internet-Draft     BMP YANG Network Telemetry Message          July 2026
 
 7.  IANA Considerations
 
-   This document registers the following two namespace URIs in the IETF
+   This document registers the following four namespace URIs in the IETF
    XML Registry [RFC3688]:
 
    URI:  urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message
@@ -5365,7 +5365,7 @@ Internet-Draft     BMP YANG Network Telemetry Message          July 2026
    XML:  N/A; the requested URI is an XML namespace.
 
 
-   This document registers the following two YANG moddles in the YANG
+   This document registers the following four YANG modules in the YANG
    Moddle Names registry [RFC3688]:
 
    Name:  ietf-bmp-telemetry-message
