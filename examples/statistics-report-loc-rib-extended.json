@@ -1,0 +1,65 @@
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "statistics-report": {
+      "peer-type": "loc-rib-instance-peer",
+      "peer-distinguisher": "0:65001:100",
+      "peer-address": "::",
+      "peer-as": 65001,
+      "peer-bgp-id": "192.0.2.1",
+      "timestamp": "2026-02-15T15:10:00Z",
+      "statistics": [
+        {
+          "type": "iana-bmp-statistics-types:duplicate-withdraws",
+          "counter": 7
+        },
+        {
+          "type": "iana-bmp-statistics-types:updates-subjected-to-treat-as-withdraw",
+          "counter": 3
+        },
+        {
+          "type": "iana-bmp-statistics-types:routes-in-loc-rib",
+          "gauge": "1204551"
+        },
+        {
+          "type": "iana-bmp-statistics-types:routes-in-post-policy-adj-rib-out",
+          "gauge": "88210"
+        },
+        {
+          "type": "iana-bmp-statistics-types:routes-in-per-afi-safi-post-policy-adj-rib-in-accepted",
+          "afi": 2,
+          "safi": 1,
+          "afi-safi-gauge": "560213"
+        },
+        {
+          "type": "iana-bmp-statistics-types:routes-in-per-afi-safi-invalidated-by-rpki",
+          "afi": 1,
+          "safi": 1,
+          "afi-safi-gauge": "12"
+        },
+        {
+          "type": "iana-bmp-statistics-types:routes-marked-stale-by-gr",
+          "afi": 2,
+          "safi": 1,
+          "afi-safi-gauge": "4"
+        },
+        {
+          "type": "iana-bmp-statistics-types:unknown",
+          "raw-type": 24,
+          "raw-data": "AAEBAAAAAAAB4kA="
+        }
+      ],
+      "sequence-number": "9042",
+      "timestamps": [
+        {
+          "timestamp-type": "trigger-time",
+          "timestamp": "2026-02-15T15:09:58.200000Z"
+        },
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T15:09:58.450000Z"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "ietf-bmp-telemetry-message:message": {
+    "version": 3,
+    "statistics-report": {
+      "peer-type": "global-instance-peer",
+      "peer-distinguisher": "0:0:0",
+      "peer-address": "203.0.113.45",
+      "peer-as": 65002,
+      "peer-bgp-id": "203.0.113.1",
+      "timestamp": "2026-02-15T14:40:00Z",
+      "statistics": [
+        {
+          "type": "iana-bmp-statistics-types:prefixes-rejected-by-inbound-policy",
+          "counter": 42
+        },
+        {
+          "type": "iana-bmp-statistics-types:routes-in-loc-rib",
+          "gauge": "913245"
+        },
+        {
+          "type": "iana-bmp-statistics-types:routes-in-per-afi-safi-adj-rib-in",
+          "afi": 1,
+          "safi": 1,
+          "afi-safi-gauge": "482310"
+        }
+      ],
+      "sequence-number": "1024"
+    }
+  }
+}
