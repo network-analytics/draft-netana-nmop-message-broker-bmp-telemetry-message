@@ -1,0 +1,147 @@
+module ietf-bmp-statistics {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-bmp-statistics";
+  prefix bst;
+
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 9911: Common YANG Data Types";
+  }
+  import iana-bmp-statistics-types {
+    prefix bstt;
+    reference
+      "RFC XXXX: IANA BMP Statistics Types.";
+  }
+
+  organization
+    "IETF Draft";
+  contact
+    "Author:    Thomas Graf
+                <mailto:thomas.graf@swisscom.com>
+                Paolo Lucente
+                <mailto:paolo@ntt.net>
+                Leonardo Rodoni
+                <mailto:leonardo.rodoni@swisscom.com>";
+
+  description
+    "Defines the statistics grouping used by the BMP Statistics
+     Report message. Statistics Types are identities defined in
+     the iana-bmp-statistics-types module, mirroring the IANA
+     'BMP Statistics Types' registry.
+     
+     Statistics Types defined by RFC 7854 and RFC 8671 use one of
+     two Stat Data shapes: a 32-bit counter, or a 64-bit gauge
+     (either global or scoped to an AFI/SAFI). RFC 9972 formalizes
+     this same two-shape model (global gauge, or AFI/SAFI-scoped
+     gauge) for all of its new Statistics Types. This module
+     represents the Stat Data shapes as a choice with a case per
+     shape, plus a raw fallback case for Statistics Types without
+     a corresponding derived identity yet.
+     
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
+     'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
+     'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
+     are to be interpreted as described in BCP 14 (RFC 2119)
+     (RFC 8174) when, and only when, they appear in all
+     capitals, as shown here.
+     
+     Copyright (c) 2026 IETF Trust and the persons identified as
+       authors of the code. All rights reserved.
+     
+     Redistribution and use in source and binary forms, with or without
+     modification, is permitted pursuant to, and subject to the license
+     terms contained in, the Revised BSD License set forth in Section
+     4.c of the IETF Trust's Legal Provisions Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+     
+     This version of this YANG module is part of RFC XXXX; see the RFC
+     itself for full legal notices.";
+
+  revision 2026-09-08 {
+    description
+      "Initial revision.";
+    reference
+      "RFC XXXX";
+  }
+
+  grouping statistics {
+    description
+      "BMP Statistics Report. Carries one or more counters.";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.8.
+       RFC 8671: Support for Adj-RIB-Out in the BGP Monitoring
+       Protocol (BMP), Section 6.2.
+       RFC 9972: Advanced BGP Monitoring Protocol (BMP)
+       Statistics Types, Section 3.";
+    list statistics {
+      description
+        "List of BMP statistic entries. Each entry carries one
+         statistics type and its associated data.";
+      leaf type {
+        type identityref {
+          base bstt:bmp-stat-type;
+        }
+        mandatory true;
+        description
+          "BMP statistics type, referencing the IANA registry.";
+      }
+      choice data {
+        mandatory true;
+        description
+          "Shape of the Stat Data field, per RFC 9972
+           Section 3.1.";
+        case counter {
+          leaf counter {
+            type yang:counter32;
+            description
+              "32-bit counter (RFC 7854 Stat Types 0-6,
+               11-13).";
+          }
+        }
+        case gauge {
+          leaf gauge {
+            type yang:gauge64;
+            description
+              "Plain 64-bit gauge (RFC 7854 Stat Types 7-8,
+               RFC 8671 Stat Types 14-15, and most RFC 9972
+               global types).";
+          }
+        }
+        case afi-safi-gauge {
+          leaf afi {
+            type uint16;
+            description
+              "Address Family Identifier.";
+          }
+          leaf safi {
+            type uint8;
+            description
+              "Subsequent Address Family Identifier.";
+          }
+          leaf afi-safi-gauge {
+            type yang:gauge64;
+            description
+              "64-bit gauge scoped to AFI/SAFI (RFC 7854 Stat
+               Types 9-10, RFC 8671 Stat Types 16-17, RFC 9972
+               Section 3.1 Stat Len = 11).";
+          }
+        }
+        case raw {
+          leaf raw-type {
+            type uint16;
+            mandatory true;
+            description
+              "Raw Stat Type value, used together with the
+               unknown identity.";
+          }
+          leaf raw-data {
+            type binary;
+            description
+              "Raw Stat Data, opaque to this module.";
+          }
+        }
+      }
+    }
+  }
+}
