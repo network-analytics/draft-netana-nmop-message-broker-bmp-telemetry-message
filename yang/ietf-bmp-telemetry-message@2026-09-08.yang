@@ -39,6 +39,11 @@ module ietf-bmp-telemetry-message {
     reference
       "RFC XXXX: YANG Model for BMP TLVs.";
   }
+  import ietf-bmp-statistics {
+    prefix bst;
+    reference
+      "RFC XXXX: YANG Model for BMP Statistics.";
+  }
 
   organization
     "IETF Draft";
@@ -73,6 +78,16 @@ module ietf-bmp-telemetry-message {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
+  revision 2026-09-08 {
+    description
+      "Model BMP statistics as a list with an identityref
+       statistics-type and a choice statistics-data, replacing
+       the placeholder statistics grouping. Statistics types and
+       data shapes now live in the new ietf-bmp-statistics
+       module.";
+    reference
+      "RFC XXXX";
+  }
   revision 2026-06-30 {
     description
       "Initial revision.";
@@ -296,26 +311,6 @@ module ietf-bmp-telemetry-message {
     }
   }
 
-  // TODO: design better grouping for statistics
-  grouping statistics {
-    description
-      "BMP Statistics.";
-    reference
-      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.8.";
-    leaf statistics-type {
-      type string {
-      }
-      description
-        "BMP statistics type. Defines the type of the statistic carried
-         in the Stat Data field.";
-    }
-    leaf statistics-data {
-      type uint64;
-      description
-        "BMP statistics data. Defines the value of the statistic.";
-    }
-  }
-
   grouping peer-up {
     description
       "BMP Peer Up Notification fields.";
@@ -414,7 +409,7 @@ module ietf-bmp-telemetry-message {
             "BMP Statistics Report message. Carries one or more
              counters reflecting activity on the monitored router.";
           uses per-peer;
-          uses statistics;
+          uses bst:statistics;
           uses btlv:common;
         }
       }

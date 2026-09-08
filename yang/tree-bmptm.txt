@@ -552,8 +552,20 @@ module: ietf-bmp-telemetry-message
        |     +-- peer-as               uint32
        |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
-       |     +-- statistics-type?      string
-       |     +-- statistics-data?      uint64
+       |     +-- statistics*
+       |     |  +-- type      identityref
+       |     |  +-- (data)
+       |     |     +--:(counter)
+       |     |     |  +-- counter?   yang:counter32
+       |     |     +--:(gauge)
+       |     |     |  +-- gauge?   yang:gauge64
+       |     |     +--:(afi-safi-gauge)
+       |     |     |  +-- afi?              uint16
+       |     |     |  +-- safi?             uint8
+       |     |     |  +-- afi-safi-gauge?   yang:gauge64
+       |     |     +--:(raw)
+       |     |        +-- raw-type    uint16
+       |     |        +-- raw-data?   binary
        |     +-- sequence-number?      uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type

@@ -7,7 +7,7 @@
     <!-- BMP Telemetry Message module -->
     <module>
       <name>ietf-bmp-telemetry-message</name>
-      <revision>2026-06-30</revision>
+      <revision>2026-09-08</revision>
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message</namespace>
     </module>
 
@@ -16,6 +16,20 @@
       <name>ietf-bmp-tlv</name>
       <revision>2026-06-30</revision>
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-tlv</namespace>
+    </module>
+
+    <!-- BMP Statistics module -->
+    <module>
+      <name>ietf-bmp-statistics</name>
+      <revision>2026-09-08</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-statistics</namespace>
+    </module>
+
+    <!-- IANA BMP Statistics Types module -->
+    <module>
+      <name>iana-bmp-statistics-types</name>
+      <revision>2026-09-08</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:iana-bmp-statistics-types</namespace>
     </module>
 
     <!-- BGP Open module -->
