@@ -12,6 +12,12 @@
           "timestamp-type": "message-export-time",
           "timestamp": "2026-02-15T15:45:00.500000Z"
         }
+      ],
+      "unknown-tlvs": [
+        {
+          "type": 5,
+          "value": "AAECAw=="
+        }
       ]
     }
   }
