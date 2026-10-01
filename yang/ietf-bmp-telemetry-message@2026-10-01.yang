@@ -53,7 +53,9 @@ module ietf-bmp-telemetry-message {
                 Paolo Lucente
                 <mailto:paolo@ntt.net>
                 Leonardo Rodoni
-                <mailto:leonardo.rodoni@swisscom.com>";
+                <mailto:leonardo.rodoni@swisscom.com>
+                Maxence Younsi
+                <mailto:maxence.younsi@swisscom.com>";
 
   description
     "Adds BMP specific subscription metadata to the data collection
@@ -78,7 +80,7 @@ module ietf-bmp-telemetry-message {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-09-08 {
+  revision 2026-10-01 {
     description
       "Model BMP statistics as a list with an identityref
        statistics-type and a choice statistics-data, replacing
@@ -92,7 +94,7 @@ module ietf-bmp-telemetry-message {
   }
   revision 2026-06-30 {
     description
-      "Initial revision.";
+      "Initial Version";
     reference
       "RFC XXXX";
   }

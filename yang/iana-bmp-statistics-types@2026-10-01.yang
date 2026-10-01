@@ -11,7 +11,9 @@ module iana-bmp-statistics-types {
                 Paolo Lucente
                 <mailto:paolo@ntt.net>
                 Leonardo Rodoni
-                <mailto:leonardo.rodoni@swisscom.com>";
+                <mailto:leonardo.rodoni@swisscom.com>
+                Maxence Younsi
+                <mailto:maxence.younsi@swisscom.com>";
 
   description
     "Defines identities mirroring the IANA 'BMP Statistics Types'
@@ -38,9 +40,9 @@ module iana-bmp-statistics-types {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-09-08 {
+  revision 2026-10-01 {
     description
-      "Initial revision.";
+      "Initial Version";
     reference
       "RFC XXXX";
   }

@@ -17,7 +17,9 @@ module ietf-bmp-tlv {
                 Paolo Lucente
                 <mailto:paolo@ntt.net>
                 Leonardo Rodoni
-                <mailto:leonardo.rodoni@swisscom.com>";
+                <mailto:leonardo.rodoni@swisscom.com>
+                Maxence Younsi
+                <mailto:maxence.younsi@swisscom.com>";
 
   description
     "Defines TLV groupings for BMP (BGP Monitoring Protocol) messages.
@@ -66,12 +68,9 @@ module ietf-bmp-tlv {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-09-08 {
+  revision 2026-10-01 {
     description
-      "Split the shared Initiation/Peer Up Information TLVs grouping
-       into separate initiation-information and peer-up-information
-       groupings, and added the Admin Label TLV (type 4), per
-       RFC 9736.";
+      "Initial Version";
     reference
       "RFC XXXX";
   }
