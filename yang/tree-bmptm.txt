@@ -9,7 +9,7 @@ module: ietf-bmp-telemetry-message
     +-- (message-type)?
        +--:(route-monitoring)
        |  +-- route-monitoring
-       |     +-- peer-type             peer-type
+       |     +-- peer-type             bph:peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
@@ -542,7 +542,7 @@ module: ietf-bmp-telemetry-message
        |        +-- value    binary
        +--:(statistics-report)
        |  +-- statistics-report
-       |     +-- peer-type             peer-type
+       |     +-- peer-type             bph:peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
@@ -583,7 +583,7 @@ module: ietf-bmp-telemetry-message
        |        +-- value    binary
        +--:(peer-down-notification)
        |  +-- peer-down-notification
-       |     +-- peer-type             peer-type
+       |     +-- peer-type             bph:peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
@@ -613,7 +613,7 @@ module: ietf-bmp-telemetry-message
        |        +-- value    binary
        +--:(peer-up-notification)
        |  +-- peer-up-notification
-       |     +-- peer-type             peer-type
+       |     +-- peer-type             bph:peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
@@ -742,7 +742,7 @@ module: ietf-bmp-telemetry-message
        |        +-- value    binary
        +--:(route-mirroring-message)
           +-- route-mirroring-message
-             +-- peer-type             peer-type
+             +-- peer-type             bph:peer-type
              +-- peer-flags
              |  +-- ipv6-peer?        boolean
              |  +-- post-policy?      boolean

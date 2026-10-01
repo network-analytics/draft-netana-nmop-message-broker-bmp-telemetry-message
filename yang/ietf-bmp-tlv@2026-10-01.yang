@@ -8,6 +8,11 @@ module ietf-bmp-tlv {
     reference
       "RFC 9911: Common YANG Data Types";
   }
+  import ietf-bmp-peer-header {
+    prefix bph;
+    reference
+      "RFC XXXX: YANG Model for the BMP Per-Peer Header.";
+  }
 
   organization
     "IETF Draft";
@@ -57,7 +62,7 @@ module ietf-bmp-tlv {
      capitals, as shown here.
      
      Copyright (c) 2026 IETF Trust and the persons identified as
-       authors of the code. All rights reserved.
+     authors of the code. All rights reserved.
      
      Redistribution and use in source and binary forms, with or without
      modification, is permitted pursuant to, and subject to the license
@@ -294,62 +299,6 @@ module ietf-bmp-tlv {
       "draft-ietf-grow-bmp-path-marking-tlv: Section 3.2.";
   }
 
-  // TODO: move to a separate module?
-  // ---------------------------------------------------------------
-  // Per-Peer Header Flags (shared by per-peer header and
-  // Extended Flags TLV)
-  // RFC 7854 Section 4.2 / draft-ietf-grow-bmp-tlv Section 5.6.3
-  // ---------------------------------------------------------------
-  grouping peer-header-flags {
-    description
-      "Flags from the BMP Per-Peer Header (RFC 7854 Section 4.2).";
-    reference
-      "RFC 7854: Section 4.2";
-    leaf ipv6-peer {
-      type boolean;
-      default false;
-      description
-        "V flag: Peer address is an IPv6 address.";
-      reference
-        "RFC 7854: Section 4.2.";
-    }
-    leaf post-policy {
-      type boolean;
-      default false;
-      description
-        "L flag: true indicates post-policy Adj-RIB-In;
-         false indicates pre-policy Adj-RIB-In.";
-      reference
-        "RFC 7854: Section 4.2.";
-    }
-    leaf legacy-as-path {
-      type boolean;
-      default false;
-      description
-        "A flag: Message is formatted using the legacy 2-byte
-         AS_PATH format.";
-      reference
-        "RFC 7854: Section 4.2.";
-    }
-    leaf adj-rib-out {
-      type boolean;
-      default false;
-      description
-        "O flag: Message reflects Adj-RIB-Out.";
-      reference
-        "RFC 8671: Support for Adj-RIB-Out in BMP, Section 4.";
-    }
-    leaf filtered {
-      type boolean;
-      default false;
-      description
-        "F flag: Loc-RIB is filtered. Set when a filter is
-         applied to Loc-RIB routes sent to the BMP collector.";
-      reference
-        "RFC 9069: Section 4.2.";
-    }
-  }
-
   // ---------------------------------------------------------------
   // Generic/Unknown/Other TLV catch-all
   // ---------------------------------------------------------------
@@ -456,7 +405,7 @@ module ietf-bmp-tlv {
       // leaf <new-flag> { type boolean; default false; ... }
       // }
       //
-      uses peer-header-flags;
+      uses bph:peer-header-flags;
     }
     uses unknown-tlv;
   }

@@ -18,6 +18,13 @@
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-tlv</namespace>
     </module>
 
+    <!-- BMP Per-Peer Header module -->
+    <module>
+      <name>ietf-bmp-peer-header</name>
+      <revision>2026-10-01</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-peer-header</namespace>
+    </module>
+
     <!-- BMP Statistics module -->
     <module>
       <name>ietf-bmp-statistics</name>
