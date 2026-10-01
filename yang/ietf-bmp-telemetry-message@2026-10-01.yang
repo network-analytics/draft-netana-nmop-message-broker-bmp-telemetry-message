@@ -39,6 +39,11 @@ module ietf-bmp-telemetry-message {
     reference
       "RFC XXXX: YANG Model for BMP TLVs.";
   }
+  import ietf-bmp-peer-header {
+    prefix bph;
+    reference
+      "RFC XXXX: YANG Model for the BMP Per-Peer Header.";
+  }
   import ietf-bmp-statistics {
     prefix bst;
     reference
@@ -69,7 +74,7 @@ module ietf-bmp-telemetry-message {
      capitals, as shown here.
      
      Copyright (c) 2026 IETF Trust and the persons identified as
-       authors of the code. All rights reserved.
+     authors of the code. All rights reserved.
      
      Redistribution and use in source and binary forms, with or without
      modification, is permitted pursuant to, and subject to the license
@@ -99,51 +104,13 @@ module ietf-bmp-telemetry-message {
       "RFC XXXX";
   }
 
-  typedef peer-type {
-    type enumeration {
-      enum global-instance-peer {
-        value 0;
-        description
-          "Global Instance Peer";
-        reference
-          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-      }
-      enum rd-instance-peer {
-        value 1;
-        description
-          "RD Instance Peer";
-        reference
-          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-      }
-      enum local-instance-peer {
-        value 2;
-        description
-          "Local Instance Peer";
-        reference
-          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-      }
-      enum loc-rib-instance-peer {
-        value 3;
-        description
-          "Loc-RIB Instance Peer";
-        reference
-          "RFC 9069: Support for Local RIB in the BGP Monitoring
-           Protocol (BMP)";
-      }
-    }
-    description
-      "BMP Peer Type.";
-    reference
-      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-  }
-
   grouping per-peer {
     description
       "BMP per-peer header.";
     reference
       "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
     leaf peer-type {
-      type peer-type;
+      type bph:peer-type;
       mandatory true;
       description
         "BMP peer type from per-peer header.";
@@ -162,7 +129,7 @@ module ietf-bmp-telemetry-message {
          Flags field.";
       reference
         "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-      uses btlv:peer-header-flags;
+      uses bph:peer-header-flags;
     }
     leaf peer-distinguisher {
       type rt-types:route-distinguisher;

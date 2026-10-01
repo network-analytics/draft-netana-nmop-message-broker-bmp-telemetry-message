@@ -49,7 +49,7 @@ module ietf-bmp-statistics {
      capitals, as shown here.
      
      Copyright (c) 2026 IETF Trust and the persons identified as
-       authors of the code. All rights reserved.
+     authors of the code. All rights reserved.
      
      Redistribution and use in source and binary forms, with or without
      modification, is permitted pursuant to, and subject to the license
@@ -69,7 +69,7 @@ module ietf-bmp-statistics {
 
   grouping statistics {
     description
-      "BMP Statistics Report. Carries one or more counters.";
+      "BMP Statistics Report. Carries one or more statistic entries.";
     reference
       "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.8.
        RFC 8671: Support for Adj-RIB-Out in the BGP Monitoring
