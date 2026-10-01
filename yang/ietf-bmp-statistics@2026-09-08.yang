@@ -83,6 +83,14 @@ module ietf-bmp-statistics {
           base bstt:bmp-stat-type;
         }
         mandatory true;
+
+        must 'boolean(../raw-type) = derived-from-or-self(., "bstt:unknown")' {
+          error-message
+            "statistics type 'unknown' must be paired with the "
+          + "'raw' data case, and the 'raw' data case must use "
+          + "statistics type 'unknown'.";
+        }
+
         description
           "BMP statistics type, referencing the IANA registry.";
       }
