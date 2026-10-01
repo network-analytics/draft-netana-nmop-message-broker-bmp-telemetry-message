@@ -44,7 +44,7 @@
           "afi-safi-gauge": "4"
         },
         {
-          "type": "iana-bmp-statistics-types:unknown",
+          "type": "iana-bmp-statistics-types:unknown-stat-type",
           "raw-type": 24,
           "raw-data": "AAEBAAAAAAAB4kA="
         }

@@ -55,16 +55,50 @@ module iana-bmp-statistics-types {
        RFC 8671 Section 6.2; RFC 9972 Section 3.";
   }
 
-  identity unknown {
+  identity counter-stat-type {
+    base bmp-stat-type;
+    description
+      "Marker identity for Stat Types whose Stat Data is a 32-bit
+       counter (Stat Len = 4).";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.8.";
+  }
+
+  identity gauge-stat-type {
+    base bmp-stat-type;
+    description
+      "Marker identity for Stat Types whose Stat Data is a global
+       64-bit gauge (Stat Len = 8).";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.8.
+       RFC 9972: Advanced BGP Monitoring Protocol (BMP)
+       Statistics Types, Section 3.1.";
+  }
+
+  identity afi-safi-gauge-stat-type {
+    base bmp-stat-type;
+    description
+      "Marker identity for Stat Types whose Stat Data is a 64-bit
+       gauge scoped to an AFI/SAFI (2-byte AFI + 1-byte SAFI +
+       64-bit gauge, Stat Len = 11).";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.8.
+       RFC 9972: Advanced BGP Monitoring Protocol (BMP)
+       Statistics Types, Section 3.1.";
+  }
+
+  identity unknown-stat-type {
     base bmp-stat-type;
     description
       "Catch-all identity for a Stat Type without a corresponding
        derived identity yet.";
+    reference
+      "RFC 7854: BGP Monitoring Protocol (BMP), Section 10.4.";
   }
 
   // RFC 7854 Section 4.8: Stat Types 0-13.
   identity prefixes-rejected-by-inbound-policy {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 0: Number of prefixes rejected by inbound
        policy.";
@@ -73,7 +107,7 @@ module iana-bmp-statistics-types {
   }
 
   identity duplicate-prefix-advertisements {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 1: Number of (known) duplicate prefix
        advertisements.";
@@ -82,7 +116,7 @@ module iana-bmp-statistics-types {
   }
 
   identity duplicate-withdraws {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 2: Number of (known) duplicate withdraws.";
     reference
@@ -90,7 +124,7 @@ module iana-bmp-statistics-types {
   }
 
   identity updates-invalidated-due-to-cluster-list-loop {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 3: Number of updates invalidated due to
        CLUSTER_LIST loop.";
@@ -99,7 +133,7 @@ module iana-bmp-statistics-types {
   }
 
   identity updates-invalidated-due-to-as-path-loop {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 4: Number of updates invalidated due to AS_PATH
        loop.";
@@ -108,7 +142,7 @@ module iana-bmp-statistics-types {
   }
 
   identity updates-invalidated-due-to-originator-id {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 5: Number of updates invalidated due to
        ORIGINATOR_ID.";
@@ -117,7 +151,7 @@ module iana-bmp-statistics-types {
   }
 
   identity updates-invalidated-due-to-as-confed-loop {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 6: Number of updates invalidated due to a loop
        found in AS_CONFED_SEQUENCE or AS_CONFED_SET.";
@@ -126,7 +160,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-adj-rib-in {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 7: Number of routes in Adj-RIBs-In.";
     reference
@@ -134,7 +168,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-loc-rib {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 8: Number of routes in Loc-RIB.";
     reference
@@ -142,7 +176,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-adj-rib-in {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 9: Number of routes in per-AFI/SAFI
        Adj-RIB-In.";
@@ -151,7 +185,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-loc-rib {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 10: Number of routes in per-AFI/SAFI Loc-RIB.";
     reference
@@ -159,7 +193,7 @@ module iana-bmp-statistics-types {
   }
 
   identity updates-subjected-to-treat-as-withdraw {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 11: Number of updates subjected to
        treat-as-withdraw.";
@@ -168,7 +202,7 @@ module iana-bmp-statistics-types {
   }
 
   identity prefixes-subjected-to-treat-as-withdraw {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 12: Number of prefixes subjected to
        treat-as-withdraw.";
@@ -177,7 +211,7 @@ module iana-bmp-statistics-types {
   }
 
   identity duplicate-update-messages-received {
-    base bmp-stat-type;
+    base counter-stat-type;
     description
       "Stat Type 13: Number of duplicate update messages
        received.";
@@ -187,7 +221,7 @@ module iana-bmp-statistics-types {
 
   // RFC 8671 Section 6.2: Stat Types 14-17.
   identity routes-in-pre-policy-adj-rib-out {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 14: Number of routes in pre-policy
        Adj-RIB-Out.";
@@ -197,7 +231,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-post-policy-adj-rib-out {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 15: Number of routes in post-policy
        Adj-RIB-Out.";
@@ -207,7 +241,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-pre-policy-adj-rib-out {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 16: Number of routes in per-AFI/SAFI pre-policy
        Adj-RIB-Out.";
@@ -217,7 +251,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-post-policy-adj-rib-out {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 17: Number of routes in per-AFI/SAFI
        post-policy Adj-RIB-Out.";
@@ -230,9 +264,9 @@ module iana-bmp-statistics-types {
   // Stat Types 24-25 (primary/backup route) are intentionally
   // not modeled here: they were only temporarily registered and
   // expiring on 2026-10-18, and were dropped from the final
-  // RFC 9972 text; if needed use unknown statistics-type.
+  // RFC 9972 text; if needed use unknown-stat-type statistics-type.
   identity routes-in-pre-policy-adj-rib-in {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 18: Number of routes currently in the
        pre-policy Adj-RIB-In.";
@@ -242,7 +276,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-pre-policy-adj-rib-in {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 19: Number of routes currently in the
        per-AFI/SAFI pre-policy Adj-RIB-In.";
@@ -252,7 +286,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-post-policy-adj-rib-in {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 20: Number of routes currently in the
        post-policy Adj-RIB-In.";
@@ -262,7 +296,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-post-policy-adj-rib-in {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 21: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In.";
@@ -272,7 +306,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-pre-policy-adj-rib-in-rejected {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 22: Number of routes currently in the
        per-AFI/SAFI pre-policy Adj-RIB-In rejected by an inbound
@@ -283,7 +317,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-post-policy-adj-rib-in-accepted {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 23: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In accepted by an
@@ -294,7 +328,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-suppressed-by-route-damping {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 26: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In or Loc-RIB suppressed
@@ -305,7 +339,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-marked-stale-by-gr {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 27: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In or Loc-RIB marked as
@@ -316,7 +350,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-marked-stale-by-llgr {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 28: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In or Loc-RIB marked as
@@ -327,7 +361,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-left-before-received-route-threshold {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 29: Number of routes currently in the
        post-policy Adj-RIB-In left before exceeding the
@@ -338,7 +372,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-left-before-received-route-threshold {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 30: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In left before exceeding
@@ -349,7 +383,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-left-before-license-route-threshold {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 31: Number of routes currently in the
        post-policy Adj-RIB-In or Loc-RIB left before exceeding a
@@ -360,7 +394,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-left-before-license-route-threshold {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 32: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In or Loc-RIB left
@@ -371,7 +405,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-rejected-due-to-as-path-length {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 33: Number of routes currently in the
        pre-policy Adj-RIB-In rejected due to exceeding the
@@ -382,7 +416,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-rejected-due-to-as-path-length {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 34: Number of routes currently in the
        per-AFI/SAFI pre-policy Adj-RIB-In rejected due to
@@ -394,7 +428,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-invalidated-by-rpki {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 35: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In invalidated after
@@ -408,7 +442,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-validated-by-rpki {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 36: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In validated after
@@ -421,7 +455,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-rpki-not-found {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 37: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-In whose RPKI route
@@ -434,7 +468,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-pre-policy-adj-rib-out-rejected {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 38: Number of routes currently in the
        per-AFI/SAFI pre-policy Adj-RIB-Out rejected by an
@@ -445,7 +479,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-pre-policy-adj-rib-out-filtered-due-to-as-path-length {
-    base bmp-stat-type;
+    base gauge-stat-type;
     description
       "Stat Type 39: Number of routes currently in the
        pre-policy Adj-RIB-Out filtered due to AS_PATH length
@@ -456,7 +490,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-pre-policy-adj-rib-out-filtered-due-to-as-path-length {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 40: Number of routes currently in the
        per-AFI/SAFI pre-policy Adj-RIB-Out filtered due to
@@ -468,7 +502,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-post-policy-adj-rib-out-invalidated-by-rpki {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 41: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-Out invalidated after
@@ -482,7 +516,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-post-policy-adj-rib-out-validated-by-rpki {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 42: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-Out validated after
@@ -495,7 +529,7 @@ module iana-bmp-statistics-types {
   }
 
   identity routes-in-per-afi-safi-post-policy-adj-rib-out-rpki-not-found {
-    base bmp-stat-type;
+    base afi-safi-gauge-stat-type;
     description
       "Stat Type 43: Number of routes currently in the
        per-AFI/SAFI post-policy Adj-RIB-Out whose RPKI route
