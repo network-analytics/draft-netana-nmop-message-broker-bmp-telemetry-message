@@ -84,7 +84,9 @@ module ietf-bmp-telemetry-message {
        statistics-type and a choice statistics-data, replacing
        the placeholder statistics grouping. Statistics types and
        data shapes now live in the new ietf-bmp-statistics
-       module.";
+       module. Use the ietf-bmp-tlv initiation-information and
+       peer-up-information groupings, split per RFC 9736, instead
+       of the removed shared information grouping.";
     reference
       "RFC XXXX";
   }
@@ -383,7 +385,7 @@ module ietf-bmp-telemetry-message {
          sys-descr or a free-form string leaf-list to make this
          message self-contained for consumers that did not process
          or store the Initiation message directly.";
-      uses btlv:information;
+      uses btlv:initiation-information;
     }
 
     choice message-type {
@@ -462,8 +464,9 @@ module ietf-bmp-telemetry-message {
                included when a name is configured.";
             reference
               "RFC 7854: Section 4.10;
-               RFC 9069: Section 5.2.1.";
-            uses btlv:information;
+               RFC 9069: Section 5.2.1;
+               RFC 9736: Section 3.3.";
+            uses btlv:peer-up-information;
           }
           uses btlv:common;
         }
@@ -475,7 +478,7 @@ module ietf-bmp-telemetry-message {
              monitored router. MUST be the first message sent after
              the TCP session comes up. The sysDescr and sysName
              TLVs MUST be present.";
-          uses btlv:information;
+          uses btlv:initiation-information;
           uses btlv:common;
         }
       }

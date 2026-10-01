@@ -24,10 +24,15 @@ module ietf-bmp-tlv {
      The groupings in this module correspond to TLV types defined
      across the core BMP specifications and extensions:
      
-       - RFC 7854  (BMP base): Information TLVs, Termination TLVs,
-                               Route Mirroring TLVs.
+       - RFC 7854  (BMP base): Initiation Information TLVs, Termination
+                               TLVs, Route Mirroring TLVs.
        - RFC 9069  (Loc-RIB):  VRF/Table Name TLV (type 3), Peer Down
                                reason code 6.
+       - RFC 9736  (Peer Up namespace): splits the Peer Up message
+                               TLVs into their own BMP Peer Up Message
+                               TLVs registry, separate from the
+                               Initiation Information TLVs registry;
+                               adds the Admin Label TLV (type 4).
        - draft-ietf-grow-bmp-tlv (BMP v4): Cross-cutting TLVs
                                applicable to all message types:
                                Sequence Number (type 1), Extended Flags
@@ -61,9 +66,12 @@ module ietf-bmp-tlv {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-06-30 {
+  revision 2026-09-08 {
     description
-      "Initial revision.";
+      "Split the shared Initiation/Peer Up Information TLVs grouping
+       into separate initiation-information and peer-up-information
+       groupings, and added the Admin Label TLV (type 4), per
+       RFC 9736.";
     reference
       "RFC XXXX";
   }
@@ -420,28 +428,24 @@ module ietf-bmp-tlv {
   }
 
   // ---------------------------------------------------------------
-  // Initiation and Peer Up Information TLVs
-  // RFC 7854 Section 4.4 + RFC 9069 Section 5.2.1
+  // Initiation Information TLVs
+  // RFC 7854 Section 4.4, as renamed/scoped to the Initiation
+  // message only by RFC 9736 Section 3.1.
   // ---------------------------------------------------------------
-  grouping information {
+  grouping initiation-information {
     description
-      "BMP Information TLVs used in Initiation messages and Peer Up
-       notifications. RFC 9069 renamed the registry to 'BMP
-       Initiation and Peer Up Information TLVs', confirming both
-       message types share these TLV type codes.
+      "BMP Initiation Information TLVs, carried in Initiation
+       messages only. RFC 9736 renamed this registry (formerly
+       shared with the Peer Up notification, per RFC 9069) to 'BMP
+       Initiation Information TLVs' and confined it to the
+       Initiation message; the Peer Up notification now uses the
+       separate peer-up-information grouping.
        
-       For Initiation messages, sysDescr (type 1) and sysName
-       (type 2) MUST be present; string (type 0) MAY appear multiple
-       times; vrf-table-name is not applicable.
-       
-       For Peer Up notifications, only string (type 0) is defined in
-       RFC 7854 (and may be repeated); RFC 9069 adds vrf-table-name
-       (type 3) for Loc-RIB Instance Peers. If vrf-table-name is
-       included in Peer Up it MUST also be included in the
-       corresponding Peer Down notification.";
+       sysDescr (type 1) and sysName (type 2) MUST be present;
+       string (type 0) MAY appear multiple times.";
     reference
       "RFC 7854: Section 4.4;
-       RFC 9069: Section 5.2.1.";
+       RFC 9736: Section 3.1.";
     leaf-list string {
       type string {
         length "1..65535";
@@ -476,6 +480,38 @@ module ietf-bmp-tlv {
       reference
         "RFC 7854: Section 4.4.";
     }
+  }
+
+  // ---------------------------------------------------------------
+  // Peer Up Message TLVs
+  // RFC 9736 Section 3.3 (new registry, split off from the
+  // formerly shared Initiation/Peer Up Information TLVs registry).
+  // ---------------------------------------------------------------
+  grouping peer-up-information {
+    description
+      "BMP Peer Up Information TLVs, carried in Peer Up
+       notifications only. Defined by RFC 9736 in a registry
+       independent of the Initiation Information TLVs registry.
+       Only string (type 0) is defined in RFC 7854; RFC 9069's
+       vrf-table-name (type 3) for Loc-RIB Instance Peers and
+       RFC 9736's admin-label (type 4) were assigned in this new
+       registry.";
+    reference
+      "RFC 7854: Section 4.10;
+       RFC 9069: Section 5.2.1;
+       RFC 9736: Section 3.3.";
+    leaf-list string {
+      type string {
+        length "1..65535";
+      }
+      ordered-by user;
+      description
+        "String TLV (type 0). Free-form UTF-8 string. Multiple
+         instances are permitted; their ordering MUST be preserved
+         when reported.";
+      reference
+        "RFC 7854: Section 4.10.";
+    }
     leaf vrf-table-name {
       type string {
         length "1..255";
@@ -489,7 +525,18 @@ module ietf-bmp-tlv {
          MUST also be included in the corresponding Peer Down
          notification.";
       reference
-        "RFC 9069: Section 5.2.1.";
+        "RFC 9069: Section 5.2.1;
+         RFC 9736: Section 4.";
+    }
+    leaf admin-label {
+      type string {
+        length "1..65535";
+      }
+      description
+        "Admin Label TLV (type 4). Free-form UTF-8 string. The
+         value is administratively assigned.";
+      reference
+        "RFC 9736: Section 3.3.";
     }
   }
 
