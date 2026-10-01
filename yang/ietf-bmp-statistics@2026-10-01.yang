@@ -87,26 +87,26 @@ module ietf-bmp-statistics {
         }
         mandatory true;
 
-        must 'boolean(../counter) = derived-from-or-self(., "bstt:counter-stat-type")' {
+        must 'boolean(../counter) = derived-from-or-self(., "bstt:counter")' {
           error-message
-            "a counter-stat-type statistics type must be paired "
-          + "with the 'counter' data case, and the 'counter' data "
-          + "case must use a counter-stat-type statistics type.";
+            "a counter statistics type must be paired with the "
+          + "'counter' data case, and the 'counter' data case "
+          + "must use a counter statistics type.";
         }
 
-        must 'boolean(../gauge) = derived-from-or-self(., "bstt:gauge-stat-type")' {
+        must 'boolean(../gauge) = derived-from-or-self(., "bstt:gauge")' {
           error-message
-            "a gauge-stat-type statistics type must be paired "
-          + "with the 'gauge' data case, and the 'gauge' data "
-          + "case must use a gauge-stat-type statistics type.";
+            "a gauge statistics type must be paired with the "
+          + "'gauge' data case, and the 'gauge' data case must "
+          + "use a gauge statistics type.";
         }
 
-        must 'boolean(../afi-safi-gauge) = derived-from-or-self(., "bstt:afi-safi-gauge-stat-type")' {
+        must 'boolean(../afi-safi-gauge) = derived-from-or-self(., "bstt:afi-safi-gauge")' {
           error-message
-            "an afi-safi-gauge-stat-type statistics type must be "
-          + "paired with the 'afi-safi-gauge' data case, and the "
+            "an afi-safi-gauge statistics type must be paired "
+          + "with the 'afi-safi-gauge' data case, and the "
           + "'afi-safi-gauge' data case must use an "
-          + "afi-safi-gauge-stat-type statistics type.";
+          + "afi-safi-gauge statistics type.";
         }
 
         must 'boolean(../raw-type) = derived-from-or-self(., "bstt:unknown-stat-type")' {
