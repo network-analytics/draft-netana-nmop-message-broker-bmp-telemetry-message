@@ -858,13 +858,13 @@ module: ietf-bmp-telemetry-message
        |     |  +-- type      identityref
        |     |  +-- (data)
        |     |     +--:(counter)
-       |     |     |  +-- counter?   yang:counter32
+       |     |     |  +-- counter    yang:counter32
        |     |     +--:(gauge)
-       |     |     |  +-- gauge?   yang:gauge64
+       |     |     |  +-- gauge    yang:gauge64
        |     |     +--:(afi-safi-gauge)
-       |     |     |  +-- afi?              uint16
-       |     |     |  +-- safi?             uint8
-       |     |     |  +-- afi-safi-gauge?   yang:gauge64
+       |     |     |  +-- afi               uint16
+       |     |     |  +-- safi              uint8
+       |     |     |  +-- afi-safi-gauge    yang:gauge64
        |     |     +--:(raw)
        |     |        +-- raw-type    uint16
        |     |        +-- raw-data?   binary

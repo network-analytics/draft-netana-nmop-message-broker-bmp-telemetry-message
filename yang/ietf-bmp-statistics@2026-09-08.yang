@@ -75,6 +75,7 @@ module ietf-bmp-statistics {
        RFC 9972: Advanced BGP Monitoring Protocol (BMP)
        Statistics Types, Section 3.";
     list statistics {
+      min-elements 1;
       description
         "List of BMP statistic entries. Each entry carries one
          statistics type and its associated data.";
@@ -102,6 +103,7 @@ module ietf-bmp-statistics {
         case counter {
           leaf counter {
             type yang:counter32;
+            mandatory true;
             description
               "32-bit counter (RFC 7854 Stat Types 0-6,
                11-13).";
@@ -110,6 +112,7 @@ module ietf-bmp-statistics {
         case gauge {
           leaf gauge {
             type yang:gauge64;
+            mandatory true;
             description
               "Plain 64-bit gauge (RFC 7854 Stat Types 7-8,
                RFC 8671 Stat Types 14-15, and most RFC 9972
@@ -119,16 +122,19 @@ module ietf-bmp-statistics {
         case afi-safi-gauge {
           leaf afi {
             type uint16;
+            mandatory true;
             description
               "Address Family Identifier.";
           }
           leaf safi {
             type uint8;
+            mandatory true;
             description
               "Subsequent Address Family Identifier.";
           }
           leaf afi-safi-gauge {
             type yang:gauge64;
+            mandatory true;
             description
               "64-bit gauge scoped to AFI/SAFI (RFC 7854 Stat
                Types 9-10, RFC 8671 Stat Types 16-17, RFC 9972
