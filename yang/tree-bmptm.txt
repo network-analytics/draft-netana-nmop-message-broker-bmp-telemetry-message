@@ -532,11 +532,14 @@ module: ietf-bmp-telemetry-message
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(statistics-report)
        |  +-- statistics-report
        |     +-- peer-type             peer-type
@@ -570,11 +573,14 @@ module: ietf-bmp-telemetry-message
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(peer-down-notification)
        |  +-- peer-down-notification
        |     +-- peer-type             peer-type
@@ -597,11 +603,14 @@ module: ietf-bmp-telemetry-message
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(peer-up-notification)
        |  +-- peer-up-notification
        |     +-- peer-type             peer-type
@@ -688,11 +697,14 @@ module: ietf-bmp-telemetry-message
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(initiation-message)
        |  +-- initiation-message
        |     +-- string*            string
@@ -703,11 +715,14 @@ module: ietf-bmp-telemetry-message
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(termination-message)
        |  +-- termination-message
        |     +-- string*            string
@@ -717,11 +732,14 @@ module: ietf-bmp-telemetry-message
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(route-mirroring-message)
           +-- route-mirroring-message
              +-- peer-type             peer-type
@@ -1233,8 +1251,11 @@ module: ietf-bmp-telemetry-message
              |  +-- timestamp-type    timestamp-type
              |  +-- timestamp         yang:date-and-time
              +-- extended-flags!
-                +-- ipv6-peer?        boolean
-                +-- post-policy?      boolean
-                +-- legacy-as-path?   boolean
-                +-- adj-rib-out?      boolean
-                +-- filtered?         boolean
+             |  +-- ipv6-peer?        boolean
+             |  +-- post-policy?      boolean
+             |  +-- legacy-as-path?   boolean
+             |  +-- adj-rib-out?      boolean
+             |  +-- filtered?         boolean
+             +-- unknown-tlvs*
+                +-- type     uint16
+                +-- value    binary

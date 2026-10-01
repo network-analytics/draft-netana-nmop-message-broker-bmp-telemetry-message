@@ -351,6 +351,40 @@ module ietf-bmp-tlv {
   }
 
   // ---------------------------------------------------------------
+  // Generic/Unknown/Other TLV catch-all
+  // ---------------------------------------------------------------
+  grouping unknown-tlv {
+    description
+      "Generic/Unknown/Other (GUO) TLV entries: TLV types observed
+       in this message's own TLV registry that are not yet modeled
+       by this module (e.g. a newer extension, a private/
+       experimental type, or any type not yet assigned a leaf),
+       carried opaquely so no information is lost when converting
+       BMP wire data to this YANG representation ahead of a
+       module update.";
+    list unknown-tlvs {
+      description
+        "List of unmodeled TLV entries observed in this message.";
+      leaf type {
+        type uint16;
+        mandatory true;
+        description
+          "TLV type code, as defined in this message's own TLV
+           registry.";
+      }
+      leaf value {
+        type binary {
+          length "0..65535";
+        }
+        mandatory true;
+        description
+          "Raw TLV Value field, opaque to this module. May be
+           empty if the TLV Length was 0.";
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------
   // Cross-cutting TLVs (applicable to all BMP message types)
   // draft-ietf-grow-bmp-tlv Section 5.6
   // ---------------------------------------------------------------
@@ -424,6 +458,7 @@ module ietf-bmp-tlv {
       //
       uses peer-header-flags;
     }
+    uses unknown-tlv;
   }
 
   // ---------------------------------------------------------------
