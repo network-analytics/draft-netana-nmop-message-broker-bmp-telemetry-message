@@ -14,7 +14,7 @@
     <!-- BMP TLV module -->
     <module>
       <name>ietf-bmp-tlv</name>
-      <revision>2026-06-30</revision>
+      <revision>2026-09-08</revision>
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-tlv</namespace>
     </module>
 
@@ -42,7 +42,7 @@
     <!-- BGP RIB Entry module -->
     <module>
       <name>ietf-bgp-rib-entry</name>
-      <revision>2026-06-30</revision>
+      <revision>2026-07-30</revision>
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bgp-rib-entry</namespace>
     </module>
 
