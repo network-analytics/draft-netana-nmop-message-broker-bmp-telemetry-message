@@ -2,10 +2,9 @@ module: ietf-bmp-telemetry-message
 
   structure message:
     +-- session-metadata!
-    |  +-- string*           string
-    |  +-- sys-descr?        string
-    |  +-- sys-name?         string
-    |  +-- vrf-table-name?   string
+    |  +-- string*      string
+    |  +-- sys-descr?   string
+    |  +-- sys-name?    string
     +-- version             uint8
     +-- (message-type)?
        +--:(route-monitoring)
@@ -995,9 +994,8 @@ module: ietf-bmp-telemetry-message
        |     |              +-- mode?   enumeration
        |     +-- information!
        |     |  +-- string*           string
-       |     |  +-- sys-descr?        string
-       |     |  +-- sys-name?         string
        |     |  +-- vrf-table-name?   string
+       |     |  +-- admin-label?      string
        |     +-- sequence-number?      uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type
@@ -1013,7 +1011,6 @@ module: ietf-bmp-telemetry-message
        |     +-- string*            string
        |     +-- sys-descr?         string
        |     +-- sys-name?          string
-       |     +-- vrf-table-name?    string
        |     +-- sequence-number?   uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type
