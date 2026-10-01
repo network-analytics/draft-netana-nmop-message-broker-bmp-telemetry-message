@@ -39,6 +39,16 @@ module ietf-bmp-telemetry-message {
     reference
       "RFC XXXX: YANG Model for BMP TLVs.";
   }
+  import ietf-bmp-peer-header {
+    prefix bph;
+    reference
+      "RFC XXXX: YANG Model for the BMP Per-Peer Header.";
+  }
+  import ietf-bmp-statistics {
+    prefix bst;
+    reference
+      "RFC XXXX: YANG Model for BMP Statistics.";
+  }
 
   organization
     "IETF Draft";
@@ -48,7 +58,9 @@ module ietf-bmp-telemetry-message {
                 Paolo Lucente
                 <mailto:paolo@ntt.net>
                 Leonardo Rodoni
-                <mailto:leonardo.rodoni@swisscom.com>";
+                <mailto:leonardo.rodoni@swisscom.com>
+                Maxence Younsi
+                <mailto:maxence.younsi@swisscom.com>";
 
   description
     "Adds BMP specific subscription metadata to the data collection
@@ -62,7 +74,7 @@ module ietf-bmp-telemetry-message {
      capitals, as shown here.
      
      Copyright (c) 2026 IETF Trust and the persons identified as
-       authors of the code. All rights reserved.
+     authors of the code. All rights reserved.
      
      Redistribution and use in source and binary forms, with or without
      modification, is permitted pursuant to, and subject to the license
@@ -73,49 +85,23 @@ module ietf-bmp-telemetry-message {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-06-30 {
+  revision 2026-10-01 {
     description
-      "Initial revision.";
+      "Model BMP statistics as a list with an identityref
+       statistics-type and a choice statistics-data, replacing
+       the placeholder statistics grouping. Statistics types and
+       data shapes now live in the new ietf-bmp-statistics
+       module. Use the ietf-bmp-tlv initiation-information and
+       peer-up-information groupings, split per RFC 9736, instead
+       of the removed shared information grouping.";
     reference
       "RFC XXXX";
   }
-
-  typedef peer-type {
-    type enumeration {
-      enum global-instance-peer {
-        value 0;
-        description
-          "Global Instance Peer";
-        reference
-          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-      }
-      enum rd-instance-peer {
-        value 1;
-        description
-          "RD Instance Peer";
-        reference
-          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-      }
-      enum local-instance-peer {
-        value 2;
-        description
-          "Local Instance Peer";
-        reference
-          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-      }
-      enum loc-rib-instance-peer {
-        value 3;
-        description
-          "Loc-RIB Instance Peer";
-        reference
-          "RFC 9069: Support for Local RIB in the BGP Monitoring
-           Protocol (BMP)";
-      }
-    }
+  revision 2026-06-30 {
     description
-      "BMP Peer Type.";
+      "Initial Version";
     reference
-      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
+      "RFC XXXX";
   }
 
   grouping per-peer {
@@ -124,7 +110,7 @@ module ietf-bmp-telemetry-message {
     reference
       "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
     leaf peer-type {
-      type peer-type;
+      type bph:peer-type;
       mandatory true;
       description
         "BMP peer type from per-peer header.";
@@ -143,7 +129,7 @@ module ietf-bmp-telemetry-message {
          Flags field.";
       reference
         "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.";
-      uses btlv:peer-header-flags;
+      uses bph:peer-header-flags;
     }
     leaf peer-distinguisher {
       type rt-types:route-distinguisher;
@@ -296,26 +282,6 @@ module ietf-bmp-telemetry-message {
     }
   }
 
-  // TODO: design better grouping for statistics
-  grouping statistics {
-    description
-      "BMP Statistics.";
-    reference
-      "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.8.";
-    leaf statistics-type {
-      type string {
-      }
-      description
-        "BMP statistics type. Defines the type of the statistic carried
-         in the Stat Data field.";
-    }
-    leaf statistics-data {
-      type uint64;
-      description
-        "BMP statistics data. Defines the value of the statistic.";
-    }
-  }
-
   grouping peer-up {
     description
       "BMP Peer Up Notification fields.";
@@ -388,7 +354,7 @@ module ietf-bmp-telemetry-message {
          sys-descr or a free-form string leaf-list to make this
          message self-contained for consumers that did not process
          or store the Initiation message directly.";
-      uses btlv:information;
+      uses btlv:initiation-information;
     }
 
     choice message-type {
@@ -414,7 +380,7 @@ module ietf-bmp-telemetry-message {
             "BMP Statistics Report message. Carries one or more
              counters reflecting activity on the monitored router.";
           uses per-peer;
-          uses statistics;
+          uses bst:statistics;
           uses btlv:common;
         }
       }
@@ -467,8 +433,9 @@ module ietf-bmp-telemetry-message {
                included when a name is configured.";
             reference
               "RFC 7854: Section 4.10;
-               RFC 9069: Section 5.2.1.";
-            uses btlv:information;
+               RFC 9069: Section 5.2.1;
+               RFC 9736: Section 3.3.";
+            uses btlv:peer-up-information;
           }
           uses btlv:common;
         }
@@ -480,7 +447,7 @@ module ietf-bmp-telemetry-message {
              monitored router. MUST be the first message sent after
              the TCP session comes up. The sysDescr and sysName
              TLVs MUST be present.";
-          uses btlv:information;
+          uses btlv:initiation-information;
           uses btlv:common;
         }
       }

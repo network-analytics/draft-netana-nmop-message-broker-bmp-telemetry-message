@@ -2,15 +2,14 @@ module: ietf-bmp-telemetry-message
 
   structure message:
     +-- session-metadata!
-    |  +-- string*           string
-    |  +-- sys-descr?        string
-    |  +-- sys-name?         string
-    |  +-- vrf-table-name?   string
+    |  +-- string*      string
+    |  +-- sys-descr?   string
+    |  +-- sys-name?    string
     +-- version             uint8
     +-- (message-type)?
        +--:(route-monitoring)
        |  +-- route-monitoring
-       |     +-- peer-type             peer-type
+       |     +-- peer-type             bph:peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
@@ -533,14 +532,17 @@ module: ietf-bmp-telemetry-message
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(statistics-report)
        |  +-- statistics-report
-       |     +-- peer-type             peer-type
+       |     +-- peer-type             bph:peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
@@ -552,21 +554,36 @@ module: ietf-bmp-telemetry-message
        |     +-- peer-as               uint32
        |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
-       |     +-- statistics-type?      string
-       |     +-- statistics-data?      uint64
+       |     +-- statistics*
+       |     |  +-- type      identityref
+       |     |  +-- (data)
+       |     |     +--:(counter)
+       |     |     |  +-- counter    yang:counter32
+       |     |     +--:(gauge)
+       |     |     |  +-- gauge    yang:gauge64
+       |     |     +--:(afi-safi-gauge)
+       |     |     |  +-- afi               uint16
+       |     |     |  +-- safi              uint8
+       |     |     |  +-- afi-safi-gauge    yang:gauge64
+       |     |     +--:(raw)
+       |     |        +-- raw-type    uint16
+       |     |        +-- raw-data    binary
        |     +-- sequence-number?      uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(peer-down-notification)
        |  +-- peer-down-notification
-       |     +-- peer-type             peer-type
+       |     +-- peer-type             bph:peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
@@ -586,14 +603,17 @@ module: ietf-bmp-telemetry-message
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(peer-up-notification)
        |  +-- peer-up-notification
-       |     +-- peer-type             peer-type
+       |     +-- peer-type             bph:peer-type
        |     +-- peer-flags
        |     |  +-- ipv6-peer?        boolean
        |     |  +-- post-policy?      boolean
@@ -670,35 +690,39 @@ module: ietf-bmp-telemetry-message
        |     |              +-- mode?   enumeration
        |     +-- information!
        |     |  +-- string*           string
-       |     |  +-- sys-descr?        string
-       |     |  +-- sys-name?         string
        |     |  +-- vrf-table-name?   string
+       |     |  +-- admin-label?      string
        |     +-- sequence-number?      uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(initiation-message)
        |  +-- initiation-message
        |     +-- string*            string
        |     +-- sys-descr?         string
        |     +-- sys-name?          string
-       |     +-- vrf-table-name?    string
        |     +-- sequence-number?   uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(termination-message)
        |  +-- termination-message
        |     +-- string*            string
@@ -708,14 +732,17 @@ module: ietf-bmp-telemetry-message
        |     |  +-- timestamp-type    timestamp-type
        |     |  +-- timestamp         yang:date-and-time
        |     +-- extended-flags!
-       |        +-- ipv6-peer?        boolean
-       |        +-- post-policy?      boolean
-       |        +-- legacy-as-path?   boolean
-       |        +-- adj-rib-out?      boolean
-       |        +-- filtered?         boolean
+       |     |  +-- ipv6-peer?        boolean
+       |     |  +-- post-policy?      boolean
+       |     |  +-- legacy-as-path?   boolean
+       |     |  +-- adj-rib-out?      boolean
+       |     |  +-- filtered?         boolean
+       |     +-- unknown-tlvs*
+       |        +-- type     uint16
+       |        +-- value    binary
        +--:(route-mirroring-message)
           +-- route-mirroring-message
-             +-- peer-type             peer-type
+             +-- peer-type             bph:peer-type
              +-- peer-flags
              |  +-- ipv6-peer?        boolean
              |  +-- post-policy?      boolean
@@ -1224,8 +1251,11 @@ module: ietf-bmp-telemetry-message
              |  +-- timestamp-type    timestamp-type
              |  +-- timestamp         yang:date-and-time
              +-- extended-flags!
-                +-- ipv6-peer?        boolean
-                +-- post-policy?      boolean
-                +-- legacy-as-path?   boolean
-                +-- adj-rib-out?      boolean
-                +-- filtered?         boolean
+             |  +-- ipv6-peer?        boolean
+             |  +-- post-policy?      boolean
+             |  +-- legacy-as-path?   boolean
+             |  +-- adj-rib-out?      boolean
+             |  +-- filtered?         boolean
+             +-- unknown-tlvs*
+                +-- type     uint16
+                +-- value    binary
