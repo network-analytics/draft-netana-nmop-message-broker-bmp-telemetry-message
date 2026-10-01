@@ -87,11 +87,33 @@ module ietf-bmp-statistics {
         }
         mandatory true;
 
-        must 'boolean(../raw-type) = derived-from-or-self(., "bstt:unknown")' {
+        must 'boolean(../counter) = derived-from-or-self(., "bstt:counter-stat-type")' {
           error-message
-            "statistics type 'unknown' must be paired with the "
-          + "'raw' data case, and the 'raw' data case must use "
-          + "statistics type 'unknown'.";
+            "a counter-stat-type statistics type must be paired "
+          + "with the 'counter' data case, and the 'counter' data "
+          + "case must use a counter-stat-type statistics type.";
+        }
+
+        must 'boolean(../gauge) = derived-from-or-self(., "bstt:gauge-stat-type")' {
+          error-message
+            "a gauge-stat-type statistics type must be paired "
+          + "with the 'gauge' data case, and the 'gauge' data "
+          + "case must use a gauge-stat-type statistics type.";
+        }
+
+        must 'boolean(../afi-safi-gauge) = derived-from-or-self(., "bstt:afi-safi-gauge-stat-type")' {
+          error-message
+            "an afi-safi-gauge-stat-type statistics type must be "
+          + "paired with the 'afi-safi-gauge' data case, and the "
+          + "'afi-safi-gauge' data case must use an "
+          + "afi-safi-gauge-stat-type statistics type.";
+        }
+
+        must 'boolean(../raw-type) = derived-from-or-self(., "bstt:unknown-stat-type")' {
+          error-message
+            "statistics type 'unknown-stat-type' must be paired "
+          + "with the 'raw' data case, and the 'raw' data case "
+          + "must use statistics type 'unknown-stat-type'.";
         }
 
         description
@@ -149,12 +171,16 @@ module ietf-bmp-statistics {
             mandatory true;
             description
               "Raw Stat Type value, used together with the
-               unknown identity.";
+               unknown-stat-type identity.";
           }
           leaf raw-data {
-            type binary;
+            type binary {
+              length "0..65535";
+            }
+            mandatory true;
             description
-              "Raw Stat Data, opaque to this module.";
+              "Raw Stat Data, opaque to this module. May be empty
+               if the original Stat Len was 0.";
           }
         }
       }

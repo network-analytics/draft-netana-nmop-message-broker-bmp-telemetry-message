@@ -564,7 +564,7 @@ module: ietf-bmp-telemetry-message
        |     |     |  +-- afi-safi-gauge    yang:gauge64
        |     |     +--:(raw)
        |     |        +-- raw-type    uint16
-       |     |        +-- raw-data?   binary
+       |     |        +-- raw-data    binary
        |     +-- sequence-number?      uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type
