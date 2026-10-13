@@ -1,7 +1,7 @@
-module ietf-bmp-telemetry-message {
+module ietf-bmp-message {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message";
-  prefix bmptm;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-bmp-message";
+  prefix bmpm;
 
   import ietf-inet-types {
     prefix inet;
@@ -63,8 +63,10 @@ module ietf-bmp-telemetry-message {
                 <mailto:maxence.younsi@swisscom.com>";
 
   description
-    "Adds BMP specific subscription metadata to the data collection
-     protocol provenance of the ietf-telemetry-message envelope.
+    "Defines the YANG representation of BMP messages as exported by a
+     BMP collector. The data is carried in the payload of the
+     ietf-telemetry-message envelope; BMP session related envelope
+     metadata is defined in the ietf-bmp-telemetry-message module.
      
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
@@ -85,20 +87,12 @@ module ietf-bmp-telemetry-message {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-10-01 {
+  revision 2026-10-13 {
     description
-      "Model BMP statistics as a container with one named data
-       node per Stat Type, replacing the placeholder statistics grouping.
-       The statistics now live in the new ietf-bmp-statistics module.
-       Use the ietf-bmp-tlv initiation-information and peer-up-information
-       groupings, split per RFC 9736, instead of the removed shared
-       information grouping.";
-    reference
-      "RFC XXXX";
-  }
-  revision 2026-06-30 {
-    description
-      "Initial Version";
+      "Initial revision. Contains the BMP message modeling of the
+       former ietf-bmp-telemetry-message module, without the
+       session-metadata container, which moved to the BMP envelope
+       extension in the new ietf-bmp-telemetry-message module.";
     reference
       "RFC XXXX";
   }
@@ -331,8 +325,8 @@ module ietf-bmp-telemetry-message {
 
   sx:structure message {
     description
-      "Augments telemetry-message-metadata with BMP specific
-       subscription metadata";
+      "BMP message as exported by a BMP collector. Carried in the
+       payload of the ietf-telemetry-message envelope.";
 
     leaf version {
       type uint8;
@@ -341,19 +335,6 @@ module ietf-bmp-telemetry-message {
         "BMP version from common header.";
       reference
         "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.1.";
-    }
-
-    container session-metadata {
-      presence
-        "BMP Initiation message information cached by a collector
-         to enrich this message with router identity context.";
-      description
-        "Optional metadata derived from the BMP Initiation message
-         for this BMP session. A collector MAY populate sys-name,
-         sys-descr or a free-form string leaf-list to make this
-         message self-contained for consumers that did not process
-         or store the Initiation message directly.";
-      uses btlv:initiation-information;
     }
 
     choice message-type {

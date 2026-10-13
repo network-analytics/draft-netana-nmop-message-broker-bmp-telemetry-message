@@ -4,11 +4,32 @@
   <module-set>
     <name>bmp-tm-module-set</name>
 
-    <!-- BMP Telemetry Message module -->
+    <!-- BMP message (payload) module -->
+    <module>
+      <name>ietf-bmp-message</name>
+      <revision>2026-10-13</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-message</namespace>
+    </module>
+
+    <!-- BMP Telemetry Message (envelope extension) module -->
     <module>
       <name>ietf-bmp-telemetry-message</name>
-      <revision>2026-10-01</revision>
+      <revision>2026-10-13</revision>
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-telemetry-message</namespace>
+    </module>
+
+    <!-- Telemetry message envelope and its dependency -->
+    <module>
+      <name>ietf-telemetry-message</name>
+      <revision>2026-07-19</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-telemetry-message</namespace>
+      <feature>network-node-manifest</feature>
+      <feature>data-collection-manifest</feature>
+    </module>
+    <module>
+      <name>ietf-platform-manifest</name>
+      <revision>2025-02-21</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-platform-manifest</namespace>
     </module>
 
     <!-- BMP TLV module -->
@@ -190,7 +211,7 @@
     <name xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">ds:operational</name>
     <schema>bmp-tm-schema</schema>
   </datastore>
-  <content-id>bmp-tm-20260519</content-id>
+  <content-id>bmp-tm-20261013</content-id>
 </yang-library>
 <modules-state xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
   <module-set-id>ALL</module-set-id>
