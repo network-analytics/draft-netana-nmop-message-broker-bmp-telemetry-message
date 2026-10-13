@@ -1,0 +1,115 @@
+{
+  "ietf-telemetry-message:message": {
+    "network-node-manifest": {
+      "name": "router-nyc-01",
+      "vendor": "example",
+      "software-version": "25.4.2"
+    },
+    "data-collection-manifest": {
+      "name": "bmp-collector-1",
+      "vendor": "open source",
+      "software-version": "1.0.0"
+    },
+    "telemetry-message-metadata": {
+      "node-export-timestamp": "2026-02-15T14:35:22.125Z",
+      "collection-timestamp": "2026-02-15T14:35:22.300Z",
+      "notification-event": "log",
+      "sequence-number": 1,
+      "session-protocol": "ietf-bmp-telemetry-message:bmp",
+      "export-address": "198.51.100.1",
+      "export-port": 40123,
+      "collection-address": "10.10.10.10",
+      "collection-port": 10100,
+      "ietf-bmp-telemetry-message:bmp-session": {
+        "session-start-time": "2026-02-15T14:30:00Z",
+        "initiation-information": {
+          "sys-descr": "25.4.2.02I",
+          "sys-name": "router-nyc-01"
+        }
+      }
+    },
+    "payload": {
+      "ietf-bmp-message:message": {
+        "version": 3,
+        "peer-up-notification": {
+          "peer-type": "global-instance-peer",
+          "peer-distinguisher": "0:0:0",
+          "peer-address": "203.0.113.45",
+          "peer-as": 65002,
+          "peer-bgp-id": "203.0.113.1",
+          "timestamp": "2026-02-15T14:35:22Z",
+          "local-address": "198.51.100.10",
+          "local-port": 179,
+          "remote-port": 54321,
+          "sent-open": {
+            "version": 4,
+            "my-as": 65001,
+            "hold-time": 180,
+            "bgp-identifier": "198.51.100.1",
+            "capabilities": [
+              {
+                "code": 65,
+                "index": 1,
+                "name": "iana-bgp-types:asn32",
+                "value": {
+                  "asn32": {
+                    "as": 65001
+                  }
+                }
+              },
+              {
+                "code": 1,
+                "index": 1,
+                "name": "iana-bgp-types:mp-bgp",
+                "value": {
+                  "mpbgp": {
+                    "afi": "ipv4",
+                    "safi": "unicast-safi",
+                    "name": "iana-bgp-types:ipv4-unicast"
+                  }
+                }
+              }
+            ]
+          },
+          "received-open": {
+            "version": 4,
+            "my-as": 65002,
+            "hold-time": 180,
+            "bgp-identifier": "203.0.113.1",
+            "capabilities": [
+              {
+                "code": 65,
+                "index": 1,
+                "name": "iana-bgp-types:asn32",
+                "value": {
+                  "asn32": {
+                    "as": 65002
+                  }
+                }
+              },
+              {
+                "code": 1,
+                "index": 1,
+                "name": "iana-bgp-types:mp-bgp",
+                "value": {
+                  "mpbgp": {
+                    "afi": "ipv4",
+                    "safi": "unicast-safi",
+                    "name": "iana-bgp-types:ipv4-unicast"
+                  }
+                }
+              }
+            ]
+          },
+          "sequence-number": "42",
+          "timestamps": [
+            {
+              "timestamp-type": "message-export-time",
+              "timestamp": "2026-02-15T14:35:22.125000Z"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+module: ietf-telemetry-message
+
+  structure message:
+    +-- network-node-manifest {network-node-manifest}?
+    |  +-- name?               string
+    |  +-- vendor?             string
+    |  +-- vendor-pen?         uint32
+    |  +-- software-version?   string
+    |  +-- software-flavor?    string
+    |  +-- os-version?         string
+    |  +-- os-type?            string
+    +-- telemetry-message-metadata
+    |  +-- node-export-timestamp?   yang:date-and-time
+    |  +-- collection-timestamp     yang:date-and-time
+    |  +-- notification-event       telemetry-notification-event-type
+    |  +-- sequence-number?         yang:counter32
+    |  +-- session-protocol         telemetry-session-protocol-type
+    |  +-- export-address           inet:host
+    |  +-- export-port?             inet:port-number
+    |  +-- collection-address?      inet:host
+    |  +-- collection-port?         inet:port-number
+    |  +-- bmptm:bmp-session!
+    |     +-- bmptm:session-start-time        yang:date-and-time
+    |     +-- bmptm:initiation-information!
+    |        +-- bmptm:string*      string
+    |        +-- bmptm:sys-descr?   string
+    |        +-- bmptm:sys-name?    string
+    +-- data-collection-manifest {data-collection-manifest}?
+    |  +-- name?               string
+    |  +-- vendor?             string
+    |  +-- vendor-pen?         uint32
+    |  +-- software-version?   string
+    |  +-- software-flavor?    string
+    |  +-- os-version?         string
+    |  +-- os-type?            string
+    +-- network-operator-metadata
+    |  +-- labels* [name]
+    |     +-- name       string
+    |     +-- (value)
+    |        +--:(number-choice)
+    |        |  +-- (number-choice)?
+    |        |     +--:(number-value)
+    |        |        +-- number-value?   uint64
+    |        +--:(string-choice)
+    |        |  +-- (string-choice)?
+    |        |     +--:(string-value)
+    |        |        +-- string-value?   string
+    |        +--:(anydata-choice)
+    |           +-- (anydata-choice)?
+    |              +--:(anydata-values)
+    |                 +-- anydata-values?   anydata
+    +-- payload?                      anydata
+
+module: ietf-bmp-telemetry-message
+
+  augment-structure /tm:message/tm:telemetry-message-metadata:
+    +-- bmp-session!
+       +-- session-start-time        yang:date-and-time
+       +-- initiation-information!
+          +---u btlv:initiation-information
