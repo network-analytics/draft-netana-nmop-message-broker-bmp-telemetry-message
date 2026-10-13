@@ -87,13 +87,12 @@ module ietf-bmp-telemetry-message {
 
   revision 2026-10-01 {
     description
-      "Model BMP statistics as a list with an identityref
-       statistics-type and a choice statistics-data, replacing
-       the placeholder statistics grouping. Statistics types and
-       data shapes now live in the new ietf-bmp-statistics
-       module. Use the ietf-bmp-tlv initiation-information and
-       peer-up-information groupings, split per RFC 9736, instead
-       of the removed shared information grouping.";
+      "Model BMP statistics as a container with one named data
+       node per Stat Type, replacing the placeholder statistics grouping.
+       The statistics now live in the new ietf-bmp-statistics module.
+       Use the ietf-bmp-tlv initiation-information and peer-up-information
+       groupings, split per RFC 9736, instead of the removed shared
+       information grouping.";
     reference
       "RFC XXXX";
   }
