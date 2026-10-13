@@ -554,20 +554,118 @@ module: ietf-bmp-telemetry-message
        |     +-- peer-as               uint32
        |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
-       |     +-- statistics*
-       |     |  +-- type      identityref
-       |     |  +-- (data)
-       |     |     +--:(counter)
-       |     |     |  +-- counter    yang:counter32
-       |     |     +--:(gauge)
-       |     |     |  +-- gauge    yang:gauge64
-       |     |     +--:(afi-safi-gauge)
-       |     |     |  +-- afi               uint16
-       |     |     |  +-- safi              uint8
-       |     |     |  +-- afi-safi-gauge    yang:gauge64
-       |     |     +--:(raw)
-       |     |        +-- raw-type    uint16
-       |     |        +-- raw-data    binary
+       |     +-- statistics
+       |     |  +-- prefixes-rejected-by-inbound-policy?                               yang:counter32
+       |     |  +-- duplicate-prefix-advertisements?                                   yang:counter32
+       |     |  +-- duplicate-withdraws?                                               yang:counter32
+       |     |  +-- updates-invalidated-due-to-cluster-list-loop?                      yang:counter32
+       |     |  +-- updates-invalidated-due-to-as-path-loop?                           yang:counter32
+       |     |  +-- updates-invalidated-due-to-originator-id?                          yang:counter32
+       |     |  +-- updates-invalidated-due-to-as-confed-loop?                         yang:counter32
+       |     |  +-- routes-in-adj-rib-in?                                              yang:gauge64
+       |     |  +-- routes-in-loc-rib?                                                 yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-adj-rib-in* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-loc-rib* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- updates-subjected-to-treat-as-withdraw?                            yang:counter32
+       |     |  +-- prefixes-subjected-to-treat-as-withdraw?                           yang:counter32
+       |     |  +-- duplicate-update-messages-received?                                yang:counter32
+       |     |  +-- routes-in-pre-policy-adj-rib-out?                                  yang:gauge64
+       |     |  +-- routes-in-post-policy-adj-rib-out?                                 yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-pre-policy-adj-rib-out* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-post-policy-adj-rib-out* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-pre-policy-adj-rib-in?                                   yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-pre-policy-adj-rib-in* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-post-policy-adj-rib-in?                                  yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-post-policy-adj-rib-in* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-pre-policy-adj-rib-in-rejected* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-post-policy-adj-rib-in-accepted* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-suppressed-by-route-damping* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-marked-stale-by-gr* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-marked-stale-by-llgr* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-left-before-received-route-threshold?                       yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-left-before-received-route-threshold* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-left-before-license-route-threshold?                        yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-left-before-license-route-threshold* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-rejected-due-to-as-path-length?                             yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-rejected-due-to-as-path-length* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-invalidated-by-rpki* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-validated-by-rpki* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-rpki-not-found* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-pre-policy-adj-rib-out-rejected* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-pre-policy-adj-rib-out-filtered-due-to-as-path-length?   yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-pre-policy-adj-rib-out-filtered-due-to-as-path-length* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-post-policy-adj-rib-out-invalidated-by-rpki* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-post-policy-adj-rib-out-validated-by-rpki* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- routes-in-per-afi-safi-post-policy-adj-rib-out-rpki-not-found* [afi safi]
+       |     |  |  +-- afi      uint16
+       |     |  |  +-- safi     uint8
+       |     |  |  +-- value    yang:gauge64
+       |     |  +-- unknown* [type]
+       |     |     +-- type    uint16
+       |     |     +-- data    binary
        |     +-- sequence-number?      uint64
        |     +-- timestamps* [timestamp-type]
        |     |  +-- timestamp-type    timestamp-type

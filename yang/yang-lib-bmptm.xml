@@ -32,13 +32,6 @@
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bmp-statistics</namespace>
     </module>
 
-    <!-- IANA BMP Statistics Types module -->
-    <module>
-      <name>iana-bmp-statistics-types</name>
-      <revision>2026-10-01</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:iana-bmp-statistics-types</namespace>
-    </module>
-
     <!-- BGP Open module -->
     <module>
       <name>ietf-bgp-open</name>

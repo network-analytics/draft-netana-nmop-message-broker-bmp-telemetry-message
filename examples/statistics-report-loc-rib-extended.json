@@ -8,47 +8,48 @@
       "peer-as": 65001,
       "peer-bgp-id": "192.0.2.1",
       "timestamp": "2026-02-15T15:10:00Z",
-      "statistics": [
-        {
-          "type": "iana-bmp-statistics-types:duplicate-withdraws",
-          "counter": 7
-        },
-        {
-          "type": "iana-bmp-statistics-types:updates-subjected-to-treat-as-withdraw",
-          "counter": 3
-        },
-        {
-          "type": "iana-bmp-statistics-types:routes-in-loc-rib",
-          "gauge": "1204551"
-        },
-        {
-          "type": "iana-bmp-statistics-types:routes-in-post-policy-adj-rib-out",
-          "gauge": "88210"
-        },
-        {
-          "type": "iana-bmp-statistics-types:routes-in-per-afi-safi-post-policy-adj-rib-in-accepted",
-          "afi": 2,
-          "safi": 1,
-          "afi-safi-gauge": "560213"
-        },
-        {
-          "type": "iana-bmp-statistics-types:routes-in-per-afi-safi-invalidated-by-rpki",
-          "afi": 1,
-          "safi": 1,
-          "afi-safi-gauge": "12"
-        },
-        {
-          "type": "iana-bmp-statistics-types:routes-marked-stale-by-gr",
-          "afi": 2,
-          "safi": 1,
-          "afi-safi-gauge": "4"
-        },
-        {
-          "type": "iana-bmp-statistics-types:unknown-stat-type",
-          "raw-type": 24,
-          "raw-data": "AAEBAAAAAAAB4kA="
-        }
-      ],
+      "statistics": {
+        "duplicate-withdraws": 7,
+        "updates-subjected-to-treat-as-withdraw": 3,
+        "routes-in-loc-rib": "1204551",
+        "routes-in-post-policy-adj-rib-out": "88210",
+        "routes-in-per-afi-safi-post-policy-adj-rib-in-accepted": [
+          {
+            "afi": 2,
+            "safi": 1,
+            "value": "560213"
+          }
+        ],
+        "routes-in-per-afi-safi-invalidated-by-rpki": [
+          {
+            "afi": 1,
+            "safi": 1,
+            "value": "12"
+          },
+          {
+            "afi": 1,
+            "safi": 128,
+            "value": "110"
+          }
+        ],
+        "routes-marked-stale-by-gr": [
+          {
+            "afi": 2,
+            "safi": 1,
+            "value": "4"
+          }
+        ],
+        "unknown": [
+          {
+            "type": 24,
+            "data": "AAEBAAAAAAAB4kA="
+          },
+          {
+            "type": 65531,
+            "data": "AAAAKg=="
+          }
+        ]
+      },
       "sequence-number": "9042",
       "timestamps": [
         {
