@@ -10,6 +10,14 @@
       "vendor": "open source",
       "software-version": "1.0.0"
     },
+    "network-operator-metadata": {
+      "labels": [
+        {
+          "name": "platform-name",
+          "string-value": "core"
+        }
+      ]
+    },
     "telemetry-message-metadata": {
       "node-export-timestamp": "2026-02-15T14:35:22.125Z",
       "collection-timestamp": "2026-02-15T14:35:22.300Z",
