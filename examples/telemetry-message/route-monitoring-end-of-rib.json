@@ -26,9 +26,9 @@
           "sys-descr": "25.4.2.02I",
           "sys-name": "router-nyc-01"
         },
-        "peer-state": {
+        "bgp-session": {
           "peer-up-timestamp": "2026-02-15T14:35:22Z",
-          "sync-state": "end-of-rib"
+          "rib-sync-state": "end-of-rib"
         }
       }
     },

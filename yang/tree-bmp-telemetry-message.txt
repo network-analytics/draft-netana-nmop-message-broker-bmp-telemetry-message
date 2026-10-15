@@ -25,9 +25,9 @@ module: ietf-telemetry-message
     |     |  +-- bmptm:string*      string
     |     |  +-- bmptm:sys-descr?   string
     |     |  +-- bmptm:sys-name?    string
-    |     +-- bmptm:peer-state!
+    |     +-- bmptm:bgp-session!
     |        +-- bmptm:peer-up-timestamp?   yang:date-and-time
-    |        +-- bmptm:sync-state?          enumeration
+    |        +-- bmptm:rib-sync-state?      enumeration
     +-- data-collection-manifest {data-collection-manifest}?
     |  +-- name?               string
     |  +-- vendor?             string
@@ -61,6 +61,6 @@ module: ietf-bmp-telemetry-message
        +-- session-start-timestamp    yang:date-and-time
        +-- initiation-information!
        |  +---u btlv:initiation-information
-       +-- peer-state!
+       +-- bgp-session!
           +-- peer-up-timestamp?   yang:date-and-time
-          +-- sync-state?          enumeration
+          +-- rib-sync-state?      enumeration
