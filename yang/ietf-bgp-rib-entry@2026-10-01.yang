@@ -505,6 +505,17 @@ module ietf-bgp-rib-entry {
             }
           }
         }
+
+        case end-of-rib {
+          container end-of-rib {
+            presence
+              "Indicates an End-of-RIB marker.";
+            description
+              "End-of-RIB marker for the AFI-SAFI given by afi-safi-type;
+               carries no route. The RIB is identified by the flags of
+               the enclosing message (e.g. the Per-Peer Header).";
+          }
+        }
       }
     }
   }
