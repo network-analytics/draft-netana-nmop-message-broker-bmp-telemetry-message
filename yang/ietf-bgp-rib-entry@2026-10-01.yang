@@ -506,6 +506,7 @@ module ietf-bgp-rib-entry {
           }
         }
 
+        // TODO: think more about this marker...
         case end-of-rib {
           container end-of-rib {
             presence

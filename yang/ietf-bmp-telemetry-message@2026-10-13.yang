@@ -128,26 +128,31 @@ module ietf-bmp-telemetry-message {
         uses btlv:initiation-information;
       }
 
-      // TODO: think more about this regarding placement and naming
-      container peer-state {
+      container bgp-session {
         presence
-          "The data collector tracks the state of the BGP peer the
+          "The data collector tracks the monitored BGP session the
            message relates to.";
         description
-          "State of the monitored BGP peer as tracked by the data
-           collector. Absent for messages without a peer (Initiation,
-           Termination).";
+          "Per-message metadata, maintained by the data collector,
+           about the monitored BGP session (between the monitored
+           router and its peer) the message relates to. Unlike the
+           other nodes of bmp-session, the content can differ from
+           message to message. Absent for messages without a peer
+           (Initiation, Termination).";
+        reference
+          "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.";
         leaf peer-up-timestamp {
           type yang:date-and-time;
           description
             "Time at which the monitored router reported the BGP
-             session with the peer as Established, i.e. the time of
-             the Peer Up message that started the current session.";
+             session as Established, i.e. the time of the Peer Up
+             message that started the BGP session. In a Peer Down
+             message, it refers to the BGP session that went down.";
           reference
             "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.
              ietf-bgp: neighbor last-established leaf.";
         }
-        leaf sync-state {
+        leaf rib-sync-state {
           type enumeration {
             enum initial-sync {
               description
@@ -168,10 +173,11 @@ module ietf-bmp-telemetry-message {
             }
           }
           description
-            "Synchronization state of the peer, AFI-SAFI and RIB the
-             message belongs to, as tracked by the data collector.
-             Absent if the collector cannot determine it, e.g. when
-             the router does not send End-of-RIB markers.";
+            "Synchronization state of the RIB (AFI-SAFI and RIB type
+             of this BGP session) the message belongs to, as tracked
+             by the data collector. Present only for Route Monitoring
+             messages. Absent if the collector cannot determine it,
+             e.g. when the router does not send End-of-RIB markers.";
           reference
             "RFC 7854: BGP Monitoring Protocol (BMP), Sections 3.3
              and 5.";

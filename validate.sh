@@ -27,7 +27,8 @@ echo "Payload module:   ${PAYLOAD_MODULE}"
 echo "Extension module: ${EXT_MODULE}"
 echo "Envelope module:  ${ENVELOPE_MODULE}"
 
-YL=(yanglint -e -Y "$YANG_LIB" -p "${YANG_DIR}")
+# -D: don't search the CWD, which would pick up modules from archive/ or _tmp*/.
+YL=(yanglint -D -e -Y "$YANG_LIB" -p "${YANG_DIR}")
 
 # ── Schema trees ─────────────────────────────────────────────────────────────
 echo
