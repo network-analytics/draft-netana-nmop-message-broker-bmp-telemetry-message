@@ -31,6 +31,16 @@
       <revision>2025-02-21</revision>
       <namespace>urn:ietf:params:xml:ns:yang:ietf-platform-manifest</namespace>
     </module>
+    <module>
+      <name>ietf-yang-library</name>
+      <revision>2019-01-04</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-library</namespace>
+    </module>
+    <module>
+      <name>ietf-datastores</name>
+      <revision>2018-02-14</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-datastores</namespace>
+    </module>
 
     <!-- BMP TLV module -->
     <module>
