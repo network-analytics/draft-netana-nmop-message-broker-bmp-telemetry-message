@@ -59,9 +59,9 @@
         }
       ],
       "extended-flags": {
-        "ipv6-peer": true,
+        "ipv6-peer": false,
         "post-policy": true,
-        "adj-rib-out": true
+        "adj-rib-out": false
       }
     }
   }
