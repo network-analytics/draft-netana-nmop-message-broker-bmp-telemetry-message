@@ -1,0 +1,53 @@
+{
+  "ietf-telemetry-message:message": {
+    "network-node-manifest": {
+      "name": "router-nyc-01",
+      "vendor": "example",
+      "software-version": "25.4.2"
+    },
+    "data-collection-manifest": {
+      "name": "bmp-collector-1",
+      "vendor": "open source",
+      "software-version": "1.0.0"
+    },
+    "telemetry-message-metadata": {
+      "node-export-timestamp": "2026-02-15T14:40:05.000Z",
+      "collection-timestamp": "2026-02-15T14:40:05.200Z",
+      "notification-event": "log",
+      "sequence-number": 3,
+      "session-protocol": "ietf-bmp-telemetry-message:bmp",
+      "export-address": "198.51.100.1",
+      "export-port": 40123,
+      "collection-address": "10.10.10.10",
+      "collection-port": 10100,
+      "ietf-bmp-telemetry-message:bmp-session": {
+        "session-start-timestamp": "2026-02-15T14:30:00Z",
+        "initiation-information": {
+          "sys-descr": "25.4.2.02I",
+          "sys-name": "router-nyc-01"
+        },
+        "bgp-session": {
+          "peer-up-timestamp": "2026-02-15T14:35:22Z",
+          "rib-sync-state": "end-of-rib"
+        }
+      }
+    },
+    "payload": {
+      "ietf-bmp-message:message": {
+        "version": 3,
+        "route-monitoring": {
+          "peer-type": "global-instance-peer",
+          "peer-distinguisher": "0:0:0",
+          "peer-address": "203.0.113.45",
+          "peer-as": 65002,
+          "peer-bgp-id": "203.0.113.1",
+          "timestamp": "2026-02-15T14:40:05Z",
+          "afi-safi-type": "iana-bgp-types:ipv4-unicast",
+          "rib-entry": {
+            "end-of-rib": {}
+          }
+        }
+      }
+    }
+  }
+}

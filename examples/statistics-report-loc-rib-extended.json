@@ -1,0 +1,66 @@
+{
+  "ietf-bmp-message:message": {
+    "version": 3,
+    "statistics-report": {
+      "peer-type": "loc-rib-instance-peer",
+      "peer-distinguisher": "0:65001:100",
+      "peer-address": "::",
+      "peer-as": 65001,
+      "peer-bgp-id": "192.0.2.1",
+      "timestamp": "2026-02-15T15:10:00Z",
+      "statistics": {
+        "duplicate-withdraws": 7,
+        "updates-subjected-to-treat-as-withdraw": 3,
+        "routes-in-loc-rib": "1204551",
+        "routes-in-post-policy-adj-rib-out": "88210",
+        "routes-in-per-afi-safi-post-policy-adj-rib-in-accepted": [
+          {
+            "afi": "ipv6",
+            "safi": "unicast-safi",
+            "value": "560213"
+          }
+        ],
+        "routes-in-per-afi-safi-invalidated-by-rpki": [
+          {
+            "afi": "ipv4",
+            "safi": "unicast-safi",
+            "value": "12"
+          },
+          {
+            "afi": "ipv4",
+            "safi": "labeled-vpn-safi",
+            "value": "110"
+          }
+        ],
+        "routes-marked-stale-by-gr": [
+          {
+            "afi": "ipv6",
+            "safi": "unicast-safi",
+            "value": "4"
+          }
+        ],
+        "unknown": [
+          {
+            "type": 24,
+            "data": "AAEBAAAAAAAB4kA="
+          },
+          {
+            "type": 65531,
+            "data": "AAAAKg=="
+          }
+        ]
+      },
+      "sequence-number": "9042",
+      "timestamps": [
+        {
+          "timestamp-type": "trigger-time",
+          "timestamp": "2026-02-15T15:09:58.200000Z"
+        },
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T15:09:58.450000Z"
+        }
+      ]
+    }
+  }
+}

@@ -1,10 +1,6 @@
 {
-  "ietf-bmp-telemetry-message:message": {
+  "ietf-bmp-message:message": {
     "version": 3,
-    "session-metadata": {
-      "sys-descr": "25.4.2.02I",
-      "sys-name": "ipf-zbl1327-r-daisy-91"
-    },
     "route-monitoring": {
       "peer-type": "global-instance-peer",
       "peer-distinguisher": "0:0:0",
@@ -63,9 +59,9 @@
         }
       ],
       "extended-flags": {
-        "ipv6-peer": true,
+        "ipv6-peer": false,
         "post-policy": true,
-        "adj-rib-out": true
+        "adj-rib-out": false
       }
     }
   }

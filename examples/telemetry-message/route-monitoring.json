@@ -1,0 +1,112 @@
+{
+  "ietf-telemetry-message:message": {
+    "network-node-manifest": {
+      "name": "router-nyc-01",
+      "vendor": "example",
+      "software-version": "25.4.2"
+    },
+    "data-collection-manifest": {
+      "name": "bmp-collector-1",
+      "vendor": "open source",
+      "software-version": "1.0.0"
+    },
+    "network-operator-metadata": {
+      "labels": [
+        {
+          "name": "platform-name",
+          "string-value": "core"
+        }
+      ]
+    },
+    "telemetry-message-metadata": {
+      "node-export-timestamp": "2026-02-15T14:39:58.750Z",
+      "collection-timestamp": "2026-02-15T14:39:59.100Z",
+      "notification-event": "log",
+      "sequence-number": 2,
+      "session-protocol": "ietf-bmp-telemetry-message:bmp",
+      "export-address": "198.51.100.1",
+      "export-port": 40123,
+      "collection-address": "10.10.10.10",
+      "collection-port": 10100,
+      "ietf-bmp-telemetry-message:bmp-session": {
+        "session-start-timestamp": "2026-02-15T14:30:00Z",
+        "initiation-information": {
+          "sys-descr": "25.4.2.02I",
+          "sys-name": "router-nyc-01"
+        },
+        "bgp-session": {
+          "peer-up-timestamp": "2026-02-15T14:35:22Z",
+          "rib-sync-state": "initial-sync"
+        }
+      }
+    },
+    "payload": {
+      "ietf-bmp-message:message": {
+        "version": 3,
+        "route-monitoring": {
+          "peer-type": "global-instance-peer",
+          "peer-distinguisher": "0:0:0",
+          "peer-address": "203.0.113.45",
+          "peer-as": 65002,
+          "peer-bgp-id": "203.0.113.1",
+          "timestamp": "2026-02-15T14:40:00Z",
+          "afi-safi-type": "iana-bgp-types:ipv4-unicast",
+          "rib-entry": {
+            "ipv4-unicast": {
+              "adj-rib-in-post": {
+                "route": {
+                  "prefix": "192.0.2.0/24",
+                  "path-id": 0,
+                  "attributes": {
+                    "origin": "igp",
+                    "as-path": {
+                      "segment": [
+                        {
+                          "type": "as-sequence",
+                          "member": [
+                            65002,
+                            65003,
+                            65004
+                          ]
+                        }
+                      ]
+                    },
+                    "next-hop": "203.0.113.45",
+                    "med": 100,
+                    "local-pref": 150
+                  },
+                  "community": [
+                    "65001:1000",
+                    "65001:2000"
+                  ]
+                }
+              }
+            }
+          },
+          "vrf-table-name": "customer-a",
+          "sequence-number": "5432",
+          "path-status": {
+            "invalid": true,
+            "nonselected": true,
+            "reason-code": "invalid-as-loop"
+          },
+          "timestamps": [
+            {
+              "timestamp-type": "trigger-time",
+              "timestamp": "2026-02-15T14:39:58.500000Z"
+            },
+            {
+              "timestamp-type": "adj-rib-in-time",
+              "timestamp": "2026-02-15T14:39:58.750000Z"
+            }
+          ],
+          "extended-flags": {
+            "ipv6-peer": false,
+            "post-policy": true,
+            "adj-rib-out": false
+          }
+        }
+      }
+    }
+  }
+}

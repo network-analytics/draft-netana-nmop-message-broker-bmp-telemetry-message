@@ -1,5 +1,5 @@
 {
-  "ietf-bmp-telemetry-message:message": {
+  "ietf-bmp-message:message": {
     "version": 3,
     "initiation-message": {
       "sys-descr": "25.4.2.02I",

@@ -1,5 +1,5 @@
 {
-  "ietf-bmp-telemetry-message:message": {
+  "ietf-bmp-message:message": {
     "version": 3,
     "peer-up-notification": {
       "peer-type": "global-instance-peer",
