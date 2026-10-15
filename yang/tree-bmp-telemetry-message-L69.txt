@@ -20,11 +20,14 @@ module: ietf-telemetry-message
     |  +-- collection-address?      inet:host
     |  +-- collection-port?         inet:port-number
     |  +-- bmptm:bmp-session!
-    |     +-- bmptm:session-start-time        yang:date-and-time
+    |     +-- bmptm:session-start-timestamp    yang:date-and-time
     |     +-- bmptm:initiation-information!
-    |        +-- bmptm:string*      string
-    |        +-- bmptm:sys-descr?   string
-    |        +-- bmptm:sys-name?    string
+    |     |  +-- bmptm:string*      string
+    |     |  +-- bmptm:sys-descr?   string
+    |     |  +-- bmptm:sys-name?    string
+    |     +-- bmptm:peer-state!
+    |        +-- bmptm:peer-up-timestamp?   yang:date-and-time
+    |        +-- bmptm:sync-state?          enumeration
     +-- data-collection-manifest {data-collection-manifest}?
     |  +-- name?               string
     |  +-- vendor?             string
@@ -55,6 +58,9 @@ module: ietf-bmp-telemetry-message
 
   augment-structure /tm:message/tm:telemetry-message-metadata:
     +-- bmp-session!
-       +-- session-start-time        yang:date-and-time
+       +-- session-start-timestamp    yang:date-and-time
        +-- initiation-information!
-          +---u btlv:initiation-information
+       |  +---u btlv:initiation-information
+       +-- peer-state!
+          +-- peer-up-timestamp?   yang:date-and-time
+          +-- sync-state?          enumeration

@@ -8,6 +8,11 @@ module ietf-bmp-statistics {
     reference
       "RFC 9911: Common YANG Data Types";
   }
+  import iana-routing-types {
+    prefix iana-rt-types;
+    reference
+      "RFC 8294: Common YANG Data Types for the Routing Area";
+  }
 
   organization
     "IETF Draft";
@@ -66,12 +71,12 @@ module ietf-bmp-statistics {
       "RFC 9972: Advanced BGP Monitoring Protocol (BMP)
        Statistics Types, Section 3.1.";
     leaf afi {
-      type uint16;
+      type iana-rt-types:address-family;
       description
         "Address Family Identifier.";
     }
     leaf safi {
-      type uint8;
+      type iana-rt-types:bgp-safi;
       description
         "Subsequent Address Family Identifier.";
     }

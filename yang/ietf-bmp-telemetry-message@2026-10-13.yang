@@ -98,7 +98,7 @@ module ietf-bmp-telemetry-message {
       description
         "BMP session metadata maintained by the data collector for
          the BMP session over which the message was received.";
-      leaf session-start-time {
+      leaf session-start-timestamp {
         type yang:date-and-time;
         mandatory true;
         description
@@ -126,6 +126,56 @@ module ietf-bmp-telemetry-message {
            collector has not yet received or cached the Initiation
            message.";
         uses btlv:initiation-information;
+      }
+
+      // TODO: think more about this regarding placement and naming
+      container peer-state {
+        presence
+          "The data collector tracks the state of the BGP peer the
+           message relates to.";
+        description
+          "State of the monitored BGP peer as tracked by the data
+           collector. Absent for messages without a peer (Initiation,
+           Termination).";
+        leaf peer-up-timestamp {
+          type yang:date-and-time;
+          description
+            "Time at which the monitored router reported the BGP
+             session with the peer as Established, i.e. the time of
+             the Peer Up message that started the current session.";
+          reference
+            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.
+             ietf-bgp: neighbor last-established leaf.";
+        }
+        leaf sync-state {
+          type enumeration {
+            enum initial-sync {
+              description
+                "The message is part of the initial synchronization:
+                 received after Peer Up and before the End-of-RIB
+                 marker of the same peer, AFI-SAFI and RIB.";
+            }
+            enum end-of-rib {
+              description
+                "The message is the End-of-RIB marker that completes
+                 the initial synchronization.";
+            }
+            enum synchronized {
+              description
+                "The message was received after the End-of-RIB
+                 marker, i.e. it is an update of an already
+                 synchronized RIB.";
+            }
+          }
+          description
+            "Synchronization state of the peer, AFI-SAFI and RIB the
+             message belongs to, as tracked by the data collector.
+             Absent if the collector cannot determine it, e.g. when
+             the router does not send End-of-RIB markers.";
+          reference
+            "RFC 7854: BGP Monitoring Protocol (BMP), Sections 3.3
+             and 5.";
+        }
       }
     }
   }

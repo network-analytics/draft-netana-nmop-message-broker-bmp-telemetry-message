@@ -15,27 +15,27 @@
         "routes-in-post-policy-adj-rib-out": "88210",
         "routes-in-per-afi-safi-post-policy-adj-rib-in-accepted": [
           {
-            "afi": 2,
-            "safi": 1,
+            "afi": "ipv6",
+            "safi": "unicast-safi",
             "value": "560213"
           }
         ],
         "routes-in-per-afi-safi-invalidated-by-rpki": [
           {
-            "afi": 1,
-            "safi": 1,
+            "afi": "ipv4",
+            "safi": "unicast-safi",
             "value": "12"
           },
           {
-            "afi": 1,
-            "safi": 128,
+            "afi": "ipv4",
+            "safi": "labeled-vpn-safi",
             "value": "110"
           }
         ],
         "routes-marked-stale-by-gr": [
           {
-            "afi": 2,
-            "safi": 1,
+            "afi": "ipv6",
+            "safi": "unicast-safi",
             "value": "4"
           }
         ],

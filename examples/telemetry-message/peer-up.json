@@ -29,7 +29,7 @@
       "collection-address": "10.10.10.10",
       "collection-port": 10100,
       "ietf-bmp-telemetry-message:bmp-session": {
-        "session-start-time": "2026-02-15T14:30:00Z",
+        "session-start-timestamp": "2026-02-15T14:30:00Z",
         "initiation-information": {
           "sys-descr": "25.4.2.02I",
           "sys-name": "router-nyc-01"

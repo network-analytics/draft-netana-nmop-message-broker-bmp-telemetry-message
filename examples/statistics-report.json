@@ -13,8 +13,8 @@
         "routes-in-loc-rib": "913245",
         "routes-in-per-afi-safi-adj-rib-in": [
           {
-            "afi": 1,
-            "safi": 1,
+            "afi": "ipv4",
+            "safi": "unicast-safi",
             "value": "482310"
           }
         ]
