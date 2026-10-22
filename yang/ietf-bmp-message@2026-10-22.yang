@@ -87,7 +87,7 @@ module ietf-bmp-message {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-10-13 {
+  revision 2026-10-22 {
     description
       "Initial revision. Contains the BMP message modeling of the
        former ietf-bmp-telemetry-message module, without the
