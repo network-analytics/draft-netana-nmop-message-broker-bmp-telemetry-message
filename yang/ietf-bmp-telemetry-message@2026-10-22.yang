@@ -62,7 +62,7 @@ module ietf-bmp-telemetry-message {
      This version of this YANG module is part of RFC XXXX; see the RFC
      itself for full legal notices.";
 
-  revision 2026-10-13 {
+  revision 2026-10-22 {
     description
       "Redefined as the BMP extension of the ietf-telemetry-message
        envelope: adds the bmp session-protocol identity and the
