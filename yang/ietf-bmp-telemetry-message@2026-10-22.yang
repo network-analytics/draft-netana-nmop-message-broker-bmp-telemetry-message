@@ -35,7 +35,7 @@ module ietf-bmp-telemetry-message {
                 Leonardo Rodoni
                 <mailto:leonardo.rodoni@swisscom.com>
                 Maxence Younsi
-                <mailto:maxence.younsi@swisscom.com>";
+                <mailto:maxence.younsi4@swisscom.com>";
 
   description
     "Adds BMP specific session metadata to the data collection

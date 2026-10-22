@@ -24,7 +24,7 @@ module ietf-bmp-statistics {
                 Leonardo Rodoni
                 <mailto:leonardo.rodoni@swisscom.com>
                 Maxence Younsi
-                <mailto:maxence.younsi@swisscom.com>";
+                <mailto:maxence.younsi4@swisscom.com>";
 
   description
     "Defines the statistics grouping used by the BMP Statistics
