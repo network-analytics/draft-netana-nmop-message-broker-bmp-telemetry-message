@@ -60,7 +60,7 @@ module ietf-bmp-message {
                 Leonardo Rodoni
                 <mailto:leonardo.rodoni@swisscom.com>
                 Maxence Younsi
-                <mailto:maxence.younsi@swisscom.com>";
+                <mailto:maxence.younsi4@swisscom.com>";
 
   description
     "Defines the YANG representation of BMP messages as exported by a

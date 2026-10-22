@@ -24,7 +24,7 @@ module ietf-bmp-tlv {
                 Leonardo Rodoni
                 <mailto:leonardo.rodoni@swisscom.com>
                 Maxence Younsi
-                <mailto:maxence.younsi@swisscom.com>";
+                <mailto:maxence.younsi4@swisscom.com>";
 
   description
     "Defines TLV groupings for BMP (BGP Monitoring Protocol) messages.

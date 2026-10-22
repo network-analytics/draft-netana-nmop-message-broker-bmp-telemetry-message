@@ -27,7 +27,7 @@ module ietf-bgp-open {
                 Leonardo Rodoni
                 <mailto:leonardo.rodoni@swisscom.com>
                 Maxence Younsi
-                <mailto:maxence.younsi@swisscom.com>";
+                <mailto:maxence.younsi4@swisscom.com>";
 
   description
     "Defines a grouping for representing a BGP OPEN message as

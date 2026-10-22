@@ -37,7 +37,7 @@ module ietf-bgp-rib-entry {
                 Leonardo Rodoni
                 <mailto:leonardo.rodoni@swisscom.com>
                 Maxence Younsi
-                <mailto:maxence.younsi@swisscom.com>";
+                <mailto:maxence.younsi4@swisscom.com>";
 
   description
     "Defines a module for representing a single entry from a BGP
