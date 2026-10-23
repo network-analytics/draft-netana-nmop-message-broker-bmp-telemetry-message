@@ -11,7 +11,6 @@
       "software-version": "1.0.0"
     },
     "telemetry-message-metadata": {
-      "node-export-timestamp": "2026-02-15T14:40:05.000Z",
       "collection-timestamp": "2026-02-15T14:40:05.200Z",
       "notification-event": "log",
       "sequence-number": 3,

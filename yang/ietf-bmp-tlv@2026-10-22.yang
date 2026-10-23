@@ -42,11 +42,11 @@ module ietf-bmp-tlv {
                                adds the Admin Label TLV (type 4).
        - draft-ietf-grow-bmp-tlv (BMP v4): Cross-cutting TLVs
                                applicable to all message types:
-                               Sequence Number (type 1), Extended Flags
-                               (type 2), Timestamp (type 3). Also
+                               Sequence Number (type 5), Extended Flags
+                               (type 6), Timestamp (type 7). Also
                                Route Monitoring-specific TLVs: Group
-                               (4), VRF/Table Name (5), Stateless
-                               Parsing (6), BGP Message (7).
+                               (1), VRF/Table Name (2), Stateless
+                               Parsing (3), BGP Message (4).
        - draft-ietf-grow-bmp-path-marking-tlv: Path Status TLV for
                                Route Monitoring messages.
      
@@ -86,7 +86,7 @@ module ietf-bmp-tlv {
   typedef timestamp-type {
     type enumeration {
       enum trigger-time {
-        value 0;
+        value 1;
         description
           "Timestamp of the event which triggered BMP to report, e.g.,
            a received message or a BGP/BMP session state transition.";
@@ -94,22 +94,23 @@ module ietf-bmp-tlv {
           "draft-ietf-grow-bmp-tlv: Section 5.6.1.1.1.";
       }
       enum message-export-time {
-        value 1;
+        value 2;
         description
           "Time at which the BMP message was generated for export.";
         reference
           "draft-ietf-grow-bmp-tlv: Section 5.6.1.1.2.";
       }
       enum adj-rib-in-time {
-        value 2;
+        value 3;
         description
           "Time at which the route was installed in the Adj-RIB-In,
-           as per RFC 7854.";
+           as per RFC 7854. Pre-policy or post-policy is given by
+           the L flag of the Per-Peer Header.";
         reference
           "draft-ietf-grow-bmp-tlv: Section 5.6.1.1.3.";
       }
       enum local-rib-time {
-        value 3;
+        value 4;
         description
           "Time at which the route was installed in the Loc-RIB,
            as per RFC 9069.";
@@ -117,19 +118,23 @@ module ietf-bmp-tlv {
           "draft-ietf-grow-bmp-tlv: Section 5.6.1.1.4.";
       }
       enum adj-rib-out-time {
-        value 4;
+        value 5;
         description
           "Time at which the route was installed in the Adj-RIB-Out,
-           as per RFC 8671.";
+           as per RFC 8671. Pre-policy or post-policy is given by
+           the L flag of the Per-Peer Header.";
         reference
           "draft-ietf-grow-bmp-tlv: Section 5.6.1.1.5.";
       }
     }
     description
-      "BMP Timestamp types for the Timestamp TLV (type 3). Indicates
-       which event the accompanying timestamp value refers to.";
+      "BMP Timestamp types for the Timestamp TLV (type 7). Indicates
+       which event the accompanying timestamp value refers to.
+       Values follow the seeding of the 'BMP Timestamp Types'
+       registry requested by draft-ietf-grow-bmp-tlv; value 0 is
+       Reserved.";
     reference
-      "draft-ietf-grow-bmp-tlv: Section 5.6.1.";
+      "draft-ietf-grow-bmp-tlv: Sections 5.6.1 and 10.5.";
   }
 
   grouping path-status-flags {
@@ -348,7 +353,7 @@ module ietf-bmp-tlv {
     leaf sequence-number {
       type uint64;
       description
-        "Sequence Number TLV (type 1). Carries the per-BMP-session
+        "Sequence Number TLV (type 5). Carries the per-BMP-session
          sequence number of this message starting at 0. If the
          sequence number would overflow, the BMP session MUST be
          reset.";
@@ -358,7 +363,7 @@ module ietf-bmp-tlv {
     list timestamps {
       key "timestamp-type";
       description
-        "Timestamp TLV (type 3). Carries a typed timestamp for
+        "Timestamp TLV (type 7). Carries a typed timestamp for
          this BMP message. Multiple instances MAY be present,
          one per timestamp type. A timestamp MUST NOT be included
          if it is not available.";
@@ -379,11 +384,11 @@ module ietf-bmp-tlv {
     }
     container extended-flags {
       presence
-        "Extended Flags TLV (type 2) is present in this message.
+        "Extended Flags TLV (type 6) is present in this message.
          When this container is present, the X Flag in the
          Per-Peer Header Flags is set to 1.";
       description
-        "Extended Flags TLV (type 2). Carries an extended set of
+        "Extended Flags TLV (type 6). Carries an extended set of
          per-peer flags, extending the Flags field of the Per-Peer
          Header to a variable-length sequence of bytes. The first
          byte carries the flags defined prior to this document
@@ -657,7 +662,7 @@ module ietf-bmp-tlv {
         length "1..255";
       }
       description
-        "VRF/Table Name TLV (type 5 in Route Monitoring TLVs).
+        "VRF/Table Name TLV (type 2 in Route Monitoring TLVs).
          UTF-8 string equal to the VRF or table name (i.e., RD
          instance name) being conveyed, consistent with
          RFC 9069 Section 5.2.1.";
