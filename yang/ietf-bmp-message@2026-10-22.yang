@@ -64,9 +64,10 @@ module ietf-bmp-message {
 
   description
     "Defines the YANG representation of BMP messages as exported by a
-     BMP collector. The data is carried in the payload of the
-     ietf-telemetry-message envelope; BMP session related envelope
-     metadata is defined in the ietf-bmp-telemetry-message module.
+     BMP collector. A BMP message can be used on its own or carried
+     in the payload of an ietf-telemetry-message message; BMP session
+     metadata for the latter is defined in the
+     ietf-bmp-telemetry-message module.
      
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
@@ -91,8 +92,8 @@ module ietf-bmp-message {
     description
       "Initial revision. Contains the BMP message modeling of the
        former ietf-bmp-telemetry-message module, without the
-       session-metadata container, which moved to the BMP envelope
-       extension in the new ietf-bmp-telemetry-message module.";
+       session-metadata container, which moved to the
+       ietf-bmp-telemetry-message module.";
     reference
       "RFC XXXX";
   }
@@ -166,21 +167,23 @@ module ietf-bmp-message {
     leaf timestamp {
       type yang:date-and-time;
       description
-        "BMP timestamp from the Per-Peer Header (RFC 7854 Section 4.2).
-         Represents the time the encapsulated routes were received or
-         installed in the Adj-RIB-In. Absent when the value was zero
-         (unavailable) in the wire header.
+        "Timestamp from the Per-Peer Header: the time when the
+         encapsulated routes were received, i.e., installed in the
+         Adj-RIB-In (RFC 7854), or, for a Loc-RIB Instance Peer,
+         installed in the Loc-RIB (RFC 9069). Its meaning for
+         messages without routes (Peer Up, Peer Down, Statistics
+         Report) is not specified and is implementation dependent.
+         It is not the time at which the BMP message was exported.
+         Absent when the value was zero (unavailable) in the wire
+         header.
          
-         // TODO: check with bmp-tlv regarding authoritative timestamp
-         The Timestamp TLV (message-timestamp in btlv:common) MAY
-         also be present and carries a typed timestamp. When
-         message-timestamp with type 'adj-rib-in-time' is present, it
-         is the authoritative value for this same event; the other
-         Timestamp TLV types (trigger-time, message-export-time,
-         local-rib-time, adj-rib-out-time) carry additional timing
-         information with no Per-Peer Header equivalent.";
+         The Timestamp TLVs, in the timestamps list, carry typed
+         timestamps, such as the trigger-time and the
+         message-export-time.";
       reference
-        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.;
+        "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.2.
+         RFC 9069: Support for Local RIB in the BGP Monitoring
+         Protocol (BMP), Section 5.1.
          draft-ietf-grow-bmp-tlv: Section 5.6.1.";
     }
   }
@@ -325,8 +328,8 @@ module ietf-bmp-message {
 
   sx:structure message {
     description
-      "BMP message as exported by a BMP collector. Carried in the
-       payload of the ietf-telemetry-message envelope.";
+      "BMP message as exported by a BMP collector. Used on its own or
+       carried in the payload of an ietf-telemetry-message message.";
 
     leaf version {
       type uint8;

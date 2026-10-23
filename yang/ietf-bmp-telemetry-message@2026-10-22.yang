@@ -39,9 +39,9 @@ module ietf-bmp-telemetry-message {
 
   description
     "Adds BMP specific session metadata to the data collection
-     protocol provenance of the ietf-telemetry-message envelope.
-     The BMP messages themselves are carried in the payload of the
-     envelope and are defined in the ietf-bmp-message module.
+     protocol provenance of an ietf-telemetry-message message.
+     The BMP messages themselves are carried in its payload and
+     are defined in the ietf-bmp-message module.
      
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
@@ -64,8 +64,8 @@ module ietf-bmp-telemetry-message {
 
   revision 2026-10-22 {
     description
-      "Redefined as the BMP extension of the ietf-telemetry-message
-       envelope: adds the bmp session-protocol identity and the
+      "Redefined as the BMP extension of ietf-telemetry-message:
+       adds the bmp session-protocol identity and the
        bmp-session container. The former content of this module
        (the BMP message modeling) moved to the ietf-bmp-message
        module.";
@@ -144,12 +144,20 @@ module ietf-bmp-telemetry-message {
         leaf peer-up-timestamp {
           type yang:date-and-time;
           description
-            "Time at which the monitored router reported the BGP
-             session as Established, i.e. the time of the Peer Up
-             message that started the BGP session. In a Peer Down
-             message, it refers to the BGP session that went down.";
+            "Time of the Peer Up message that started the monitored
+             BGP session, taken from that Peer Up message: the
+             Timestamp TLV of type trigger-time if present; otherwise
+             the Per-Peer Header Timestamp if non-zero; otherwise the
+             time at which the data collector received it. For a Peer
+             Up sent when the BMP session comes up, this can be the
+             time of the BMP session rather than of the BGP session.
+             In a Peer Down message, it refers to the BGP session
+             that went down.";
           reference
-            "RFC 7854: BGP Monitoring Protocol (BMP), Section 4.10.
+            "RFC 7854: BGP Monitoring Protocol (BMP), Sections 4.2
+             and 4.10.
+             draft-ietf-grow-bmp-tlv: BMP TLV Support for BMP Route
+             Monitoring and Peer Down Messages, Timestamp TLV.
              ietf-bgp: neighbor last-established leaf.";
         }
         leaf rib-sync-state {
