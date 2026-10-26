@@ -380,27 +380,15 @@
         byte sequence.</t>
 
       <t>The 'ietf-bmp-statistics' module provides the statistics
-        grouping used by statistics-report messages. It contains a
-        statistics container, which MUST hold at least one child node,
-        with one named data node per Stat Type of the IANA 'BMP
-        Statistics Types' registry (<xref target="RFC7854" />, <xref
-          target="RFC8671" />, and <xref target="RFC9972" />). The YANG
-        type of each node carries the encoding of its Stat Data: 32-bit
-        counters use yang:counter32, 64-bit gauges use yang:gauge64, and
-        per-AFI/SAFI gauges are lists keyed by afi and safi, using the
-        address-family and bgp-safi types of the 'iana-routing-types'
-        module <xref target="RFC8294" />, with a value leaf of type
-        yang:gauge64. A statistic is therefore addressed by its node
-        name, for example routes-in-loc-rib, rather than by a Stat Type
-        value. A catch-all unknown list, keyed by the raw Stat Type and
-        carrying the raw Stat Data as opaque binary, holds a Stat Type
-        that has no corresponding node in the module yet (e.g. a newer
-        IANA registration or a private/experimental value) or whose Stat
-        Data cannot be decoded, so no statistic is dropped when
-        converting BMP wire data ahead of a module update. Because a new
-        Stat Type requires a new named node, and thereby a module
-        revision, the unknown list bridges the gap until that revision
-        is published.</t>
+        grouping used by statistics-report messages. Each Stat Type of
+        the IANA 'BMP Statistics Types' registry (<xref target="RFC7854" />
+        ,<xref target="RFC8671" />, and <xref target="RFC9972" />) is
+        modeled as a named data node, for example routes-in-loc-rib,
+        whose YANG type reflects the encoding of its Stat Data. Because
+        a new Stat Type requires a new node, and thereby a module
+        revision, a catch-all unknown list carries Stat Types that are
+        not yet modeled, or whose Stat Data cannot be decoded, as raw
+        binary, so no statistic has to be dropped.</t>
 
       <t>The 'ietf-bgp-rib-entry' module provides the rib-entry grouping
         used by route-monitoring and route-mirroring messages. It
@@ -419,19 +407,14 @@
         negotiated capability list. It is used in peer-up-notification
         for both the sent and received OPEN messages.</t>
 
-      <t>The 'ietf-bmp-tlv' module provides TLV groupings modeling the
-        decoded content of BMP TLV Value fields. The common grouping —
-        carrying sequence number, typed timestamps, extended peer-header
-        flags, and a Generic/Unknown/Other (GUO) unknown-tlvs catch-all
-        for TLV types not yet modeled by this module — is used across
-        all seven BMP message types. Additional groupings are
-        message-type-specific: initiation-information for initiation
-        messages and peer-up-information for peer-up messages (including
-        the Admin Label TLV added by <xref target="RFC9736" />, which
-        also split these two TLV registries apart), termination for
-        termination messages, peer-down for Loc-RIB peer-down with
-        reason code 6, and route-monitoring for path status and
-        VRF/Table Name in route-monitoring messages.</t>
+      <t>The 'ietf-bmp-tlv' module provides groupings for the decoded
+        content of BMP TLVs. The common grouping (sequence number,
+        timestamps, extended flags, and an unknown-tlvs catch-all for
+        TLV types not yet modeled) is used by all seven BMP message
+        types. The other groupings are each specific to one message
+        type: Initiation, Peer Up (including the Admin Label TLV of <xref
+          target="RFC9736" />), Termination, Peer Down, and Route
+        Monitoring.</t>
 
       <t>The 'ietf-bmp-telemetry-message' YANG module extends
         'ietf-telemetry-message' for BMP. It defines the bmp identity,
