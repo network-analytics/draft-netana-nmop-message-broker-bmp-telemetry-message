@@ -669,7 +669,11 @@
 
           <dt>path-id</dt>
           <dd>The BGP ADD-PATH path identifier (<xref target="RFC7911" />).
-            Zero when ADD-PATH is not in use.</dd>
+            Zero when ADD-PATH is not in use.
+            <cref anchor="TODO-addpath-zero" source="authors">TODO: Consider
+            the zero value for path-id, which is also a valid ADD-PATH
+            path identifier and thus ambiguous with "ADD-PATH not in
+            use".</cref></dd>
         </dl>
 
         <t>Initiation and Termination messages do not carry a Per-Peer
@@ -1455,8 +1459,8 @@ netops-bmp-state-changes-and-statistics
 
       <t>The 'ietf-bgp-rib-entry' module provides the rib-entry grouping
         used by route-monitoring and route-mirroring messages. It
-        selects between five RIB table types — loc-rib, adj-rib-in-pre,
-        adj-rib-in-post, adj-rib-out-pre, and adj-rib-out-post — via a
+        selects between five RIB table types (loc-rib, adj-rib-in-pre,
+        adj-rib-in-post, adj-rib-out-pre, and adj-rib-out-post) via a
         nested rib-type choice. Each route entry contains the prefix,
         optional path-id for ADD-PATH, BGP path attributes, and
         community attributes. Instead of a route, a rib-entry can carry

@@ -699,6 +699,13 @@ Internet-Draft     BMP YANG Network Telemetry Message       October 2026
    path-id
       The BGP ADD-PATH path identifier ([RFC7911]).  Zero when ADD-PATH
       is not in use.
+      // TODO: Consider the zero value for path-id, which is also a
+      valid
+      // ADD-PATH path identifier and thus ambiguous with "ADD-PATH not
+      in
+      // use".
+      //
+      // -- authors
 
    Initiation and Termination messages do not carry a Per-Peer Header;
    their Message Keys consist of only the node hostname and the message-
@@ -715,13 +722,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       October 2026
    identifier path.  The separator between them is a single line feed
    character (LF, U+000A).  The YANG path starts at the 'ietf-bmp-
    message' message node, whether the BMP message is the Message Value
-   itself or is carried in the "payload" of a Network Telemetry Message
-   (Section 4).  The Message Key is therefore the same in both cases.  A
-   path through "payload" is not used, as "payload" is anydata and its
-   content is not part of the 'ietf-telemetry-message' schema.
-
-
-
 
 
 
@@ -729,6 +729,11 @@ Graf, et al.              Expires 26 April 2027                [Page 13]
 
 Internet-Draft     BMP YANG Network Telemetry Message       October 2026
 
+
+   itself or is carried in the "payload" of a Network Telemetry Message
+   (Section 4).  The Message Key is therefore the same in both cases.  A
+   path through "payload" is not used, as "payload" is anydata and its
+   content is not part of the 'ietf-telemetry-message' schema.
 
    Each example below illustrates the Message Key, the Message Broker
    headers carrying the Schema ID, content type, and Partition Key, and
@@ -771,11 +776,6 @@ Internet-Draft     BMP YANG Network Telemetry Message       October 2026
 5.1.2.  BMP Peer Up
 
    The Message Key uses the per-peer session key described above.
-
-
-
-
-
 
 
 
@@ -1572,8 +1572,8 @@ Internet-Draft     BMP YANG Network Telemetry Message       October 2026
 
    The 'ietf-bgp-rib-entry' module provides the rib-entry grouping used
    by route-monitoring and route-mirroring messages.  It selects between
-   five RIB table types — loc-rib, adj-rib-in-pre, adj-rib-in-post, adj-
-   rib-out-pre, and adj-rib-out-post — via a nested rib-type choice.
+   five RIB table types (loc-rib, adj-rib-in-pre, adj-rib-in-post, adj-
+   rib-out-pre, and adj-rib-out-post) via a nested rib-type choice.
    Each route entry contains the prefix, optional path-id for ADD-PATH,
    BGP path attributes, and community attributes.  Instead of a route, a
    rib-entry can carry an end-of-rib marker, which represents the End-
