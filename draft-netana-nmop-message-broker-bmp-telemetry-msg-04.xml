@@ -358,6 +358,1069 @@
 
     </section>
 
+    <section anchor="bmp-in-telemetry-message">
+      <name>Carrying BMP Messages in Network Telemetry Messages</name>
+
+      <t>A BMP message modeled by 'ietf-bmp-message' can be published to
+        the Message Broker on its own, forming the Message Value, or
+        carried in the "payload" of a Network Telemetry Message defined
+        by the 'ietf-telemetry-message' module of <xref
+          target="I-D.ietf-nmop-message-broker-telemetry-message" />,
+        which then forms the Message Value. The Network Telemetry
+        Message adds metadata about the network node, the data
+        collector, and the BMP session, such as the
+        session-start-timestamp and the cached Initiation information,
+        that a BMP message on its own does not carry.</t>
+
+      <t>When a Network Telemetry Message is used, its nodes other than
+        "payload" carry two kinds of metadata:</t>
+
+      <ul>
+        <li>Nodes defined by 'ietf-telemetry-message' for any Network
+          Telemetry protocol. <xref target="bmp-telemetry-message-nodes" />
+          defines how they are populated for BMP.</li>
+
+        <li>BMP specific nodes defined by this document in
+          'ietf-bmp-telemetry-message', described in <xref
+            target="bmp-session-metadata" />.</li>
+      </ul>
+
+      <section anchor="bmp-telemetry-message-nodes">
+        <name>Network Telemetry Message Nodes</name>
+
+        <t>This section describes how each child of the top-level
+          message node of 'ietf-telemetry-message' is populated from the
+          BMP message and the BMP session it was received on.</t>
+
+        <section anchor="bmp-network-node-manifest">
+          <name>network-node-manifest</name>
+
+          <t>The network-node-manifest describes the monitored router. <xref
+              target="bmp-network-node-manifest-table" /> lists the
+            rules for its nodes.</t>
+
+          <table anchor="bmp-network-node-manifest-table">
+            <name>network-node-manifest Nodes for BMP</name>
+            <thead>
+              <tr>
+                <th>Node</th>
+                <th>Value for BMP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>Hostname of the router, the same value as the node
+                  hostname in the Message Key and the Partition Key. If
+                  the collector has no other source for it, the sysName
+                  of the Initiation message SHOULD be used.</td>
+              </tr>
+              <tr>
+                <td>other nodes</td>
+                <td>Optional, from the collector's knowledge of the
+                  router.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section anchor="bmp-data-collection-manifest">
+          <name>data-collection-manifest</name>
+
+          <t>The data-collection-manifest describes the BMP data
+            collector that received the BMP message and produced the
+            Network Telemetry Message, for example its name
+            ("bmp-collector-1"), vendor, and software-version. This
+            allows a consumer to identify the collector that decoded the
+            BMP data, e.g., when several collectors publish to the same
+            topic.</t>
+        </section>
+
+        <section anchor="bmp-network-operator-metadata">
+          <name>network-operator-metadata</name>
+
+          <t>The network-operator-metadata carries optional labels added
+            by the network operator. This document defines no BMP
+            specific labels.</t>
+        </section>
+
+        <section anchor="bmp-telemetry-message-metadata">
+          <name>telemetry-message-metadata</name>
+
+          <t>The telemetry-message-metadata carries the Network
+            Telemetry protocol metadata of the BMP session. <xref
+              target="bmp-telemetry-message-metadata-table" /> lists the
+            rules for its nodes; the bmp-session container added by this
+            document is described in <xref
+              target="bmp-session-metadata" />.</t>
+
+          <table anchor="bmp-telemetry-message-metadata-table">
+            <name>telemetry-message-metadata Nodes for BMP</name>
+            <thead>
+              <tr>
+                <th>Node</th>
+                <th>Value for BMP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>node-export-timestamp</td>
+                <td>The Timestamp TLV of type message-export-time if
+                  present; otherwise absent. The Per-Peer Header
+                  Timestamp is not used, as it is defined as the time at
+                  which the routes were received or installed in the RIB
+                  (<xref target="RFC7854" section="4.2"
+                    sectionFormat="of" />, <xref target="RFC9069"
+                    section="5.1" sectionFormat="of" />), not the time
+                  at which the BMP message was exported.</td>
+              </tr>
+              <tr>
+                <td>collection-timestamp</td>
+                <td>Time at which the collector received the BMP
+                  message.</td>
+              </tr>
+              <tr>
+                <td>notification-event</td>
+                <td>"log" for messages derived from a BMP message
+                  received from the monitored router. "delete" when the
+                  collector removes cached state that the router did not
+                  explicitly withdraw, for example the routes of a peer
+                  after a Peer Down, or all state of the router when the
+                  BMP session ends, with or without a Termination
+                  message. TODO: consider augmenting this to add "dump"?</td>
+              </tr>
+              <tr>
+                <td>sequence-number</td>
+                <td>As defined in 'ietf-telemetry-message': incremented
+                  by the collector for every published message.</td>
+              </tr>
+              <tr>
+                <td>session-protocol</td>
+                <td>The bmp identity defined in
+                  'ietf-bmp-telemetry-message'. It enables the
+                  bmp-session container.</td>
+              </tr>
+              <tr>
+                <td>export-address, export-port</td>
+                <td>IP address and TCP port of the monitored router for
+                  the BMP session. The port usually changes with every
+                  new BMP session and is not used to identify the
+                  router.</td>
+              </tr>
+              <tr>
+                <td>collection-address, collection-port</td>
+                <td>IP address and TCP port of the collector for the BMP
+                  session.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <t>The sequence-number of the Network Telemetry Message lets a
+            consumer detect gaps in the messages published by a
+            collector. To detect loss or reordering within a BMP
+            session, a consumer uses the BMP Sequence Number TLV when
+            the monitored router sends it.</t>
+        </section>
+      </section>
+
+      <section anchor="bmp-session-metadata">
+        <name>BMP Session Metadata</name>
+
+        <t>The 'ietf-bmp-telemetry-message' module augments
+          telemetry-message-metadata with the bmp-session container. It
+          is present only when session-protocol is bmp and carries
+          metadata that is not part of any BMP message: the data
+          collector derives it from the BMP session and from earlier
+          messages of that session. <xref
+            target="bmp-session-metadata-table" /> lists its nodes.</t>
+
+        <table anchor="bmp-session-metadata-table">
+          <name>BMP Session Metadata Nodes</name>
+          <thead>
+            <tr>
+              <th>bmp-session node</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>session-start-timestamp</td>
+              <td>Mandatory. Time at which the data collector
+                established the BMP session with the monitored router.
+                All messages of the same BMP session carry the same
+                value; a new value indicates a new BMP session, for
+                example after a reconnect.</td>
+            </tr>
+            <tr>
+              <td>initiation-information</td>
+              <td>Content of the Initiation message of the BMP session
+                (sysName, sysDescr, and strings), cached by the data
+                collector.</td>
+            </tr>
+            <tr>
+              <td>bgp-session/peer-up-timestamp</td>
+              <td>Time of the Peer Up message that started the monitored
+                BGP session the message relates to, taken from that Peer
+                Up message: the Timestamp TLV of type trigger-time if
+                present; otherwise the Per-Peer Header Timestamp if
+                non-zero; otherwise its collection-timestamp. For a Peer
+                Up sent when the BMP session comes up, this can be the
+                time of the BMP session rather than of the BGP session.
+                Absent for messages without a peer (Initiation,
+                Termination).</td>
+            </tr>
+            <tr>
+              <td>bgp-session/rib-sync-state</td>
+              <td>Route Monitoring messages only. Whether the message is
+                part of the initial synchronization of the RIB
+                (initial-sync), is the End-of-RIB marker that completes
+                it (end-of-rib), or is an update of an already
+                synchronized RIB (synchronized). The RIB is identified
+                by the peer, the AFI/SAFI, and the RIB type of the
+                message. Absent if the collector cannot determine it.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <t>Because <xref target="RFC7854" section="4.6"
+            sectionFormat="of" /> uses Route Monitoring messages both
+          for the initial synchronization and for the ongoing monitoring
+          of the Adj-RIB-In, a consumer can use the
+          session-start-timestamp and the rib-sync-state to interpret a
+          Peer Up and the following Route Monitoring messages as the
+          synchronization of a new session rather than as route changes.
+          The bmp-session nodes are not part of the Message Key.</t>
+
+        <t>A BMP Initiation message is sent once per BMP session, and
+          the following messages carry no router identity information. A
+          data collector that carries BMP messages in Network Telemetry
+          Messages SHOULD therefore cache the Initiation message content
+          for each BMP session and populate initiation-information in
+          every message it emits, so that each message is self-contained
+          for consumers that did not observe or store the Initiation
+          message.</t>
+      </section>
+    </section>
+
+    <section anchor="YANG_Message_Broker_BMP_Topic_Naming_Indexing">
+      <name>YANG Message Broker BMP Indexing and Topic Naming</name>
+
+      <t>To identify which network node produced which BMP data into
+        which Message Broker Topic, Partition and Subject, BMP Message
+        Keys, Partition Key, and Indexes are being introduced (<xref
+          target="BMP_Message_Keys_Indexes_Solution"></xref>). These
+        keys enable a deterministic distribution of BMP messages across
+        Topics and Partitions enabling applications to consume only the
+        needed data from specific topics and partitions.</t>
+
+      <section anchor="BMP_Message_Keys_Indexes_Solution">
+        <name>BMP Message Keys and Indexes</name>
+
+        <t>A Message Broker uses a Message Key for indexing and enabling
+          Topic Compaction. While a Message Key can also drive
+          deterministic partition assignment, this document introduces a
+          dedicated Partition Key for that purpose, as described in <xref
+            target="BMP_Partitioning_Solution" />.</t>
+
+        <t>Similar to <xref section="3.1" sectionFormat="of"
+            target="I-D.ietf-nmop-yang-message-broker-message-key" />
+          for YANG-Push telemetry messages, the network node hostname
+          and a set of 'ietf-bmp-message' YANG nodes from the instance
+          data are used to construct the BMP Message Key. The following
+          subsections describe and illustrate the YANG nodes used for
+          each BMP message type.</t>
+
+        <t>For all BMP message types that carry a BMP Per-Peer Header
+          (Peer Up, Peer Down, Statistics Report, Route Monitoring, and
+          Route Mirroring), the Message Key consists of the node
+          hostname and a YANG instance-identifier path encoding the
+          message-type and the following per-peer header nodes to
+          uniquely identify the BGP peering session:</t>
+
+        <dl newline="true" spacing="normal">
+          <dt>peer-type</dt>
+          <dd>Scopes the session to its routing instance: Global
+            Instance Peer, RD Instance Peer, Local Instance Peer, or
+            Loc-RIB Instance Peer.</dd>
+
+          <dt>peer-distinguisher</dt>
+          <dd>The Route Distinguisher of the routing instance.
+            Zero-filled for Global Instance Peers; non-zero for RD
+            Instance and possibly Loc-RIB Instance Peers to distinguish
+            sessions within the same VRF or routing instance.</dd>
+
+          <dt>peer-address</dt>
+          <dd>The remote IP address associated with the BGP session.</dd>
+
+          <dt>peer-as</dt>
+          <dd>The AS number of the remote BGP speaker.</dd>
+
+          <dt>peer-bgp-id</dt>
+          <dd>The BGP Identifier of the remote BGP speaker.</dd>
+        </dl>
+
+        <t>Route Monitoring and Route Mirroring messages extend the
+          per-peer session key with two additional YANG nodes that
+          identify the individual route within the RIB:</t>
+
+        <dl newline="true" spacing="normal">
+          <dt>prefix</dt>
+          <dd>The IP prefix (IPv4 or IPv6) of the route entry.</dd>
+
+          <dt>path-id</dt>
+          <dd>The BGP ADD-PATH path identifier (<xref target="RFC7911" />).
+            Zero when ADD-PATH is not in use.</dd>
+        </dl>
+
+        <t>Initiation and Termination messages do not carry a Per-Peer
+          Header; their Message Keys consist of only the node hostname
+          and the message-type path. The per-peer session key is
+          consistent across all lifecycle events for the same session
+          (Peer Up, Statistics Report, Route Monitoring, and Peer Down),
+          enabling deterministic topic compaction over the full session
+          lifecycle. The session-start-timestamp of the bmp-session
+          container is not part of the Message Key, so that the key
+          remains the same when a BMP session is re-established.</t>
+
+        <t>The Message Key is encoded as a two-line byte string. The
+          first line is the network node hostname; the second line is
+          the YANG instance-identifier path. The separator between them
+          is a single line feed character (LF, U+000A). The YANG path
+          starts at the 'ietf-bmp-message' message node, whether the BMP
+          message is the Message Value itself or is carried in the
+          "payload" of a Network Telemetry Message (<xref
+            target="bmp-in-telemetry-message" />). The Message Key is
+          therefore the same in both cases. A path through "payload" is
+          not used, as "payload" is anydata and its content is not part
+          of the 'ietf-telemetry-message' schema.</t>
+
+        <t>Each example below illustrates the Message Key, the Message
+          Broker headers carrying the Schema ID, content type, and
+          Partition Key, and the corresponding Message Value. The
+          Message Value examples show BMP messages on their own; <xref
+            target="bmp-telemetry-message-example" /> shows a BMP
+          message carried in a Network Telemetry Message. Message Keys
+          exceeding the line length are folded as described in <xref
+            target="RFC8792" />.</t>
+
+        <section anchor="bmp-initiation">
+          <name>BMP Initiation</name>
+
+          <t>The Message Key consists of only the node hostname and the
+            message-type path, as described above.</t>
+
+          <figure anchor="message-key-bmp-init-example"
+            title="BMP Initiation Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+
+Key:
+  router-nyc-01
+  /ietf-bmp-message:message/initiation-message
+
+Headers:
+  schema-id:     1
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-init-example"
+            title="BMP Initiation Message Value">
+            <sourcecode type="json"><![CDATA[
+{
+  "ietf-bmp-message:message": {
+    "version": 3,
+    "initiation-message": {
+      "sys-descr": "25.4.2.02I",
+      "sys-name": "ipf-zbl1327-r-daisy-91"
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+
+        <section anchor="bmp-peer-up">
+          <name>BMP Peer Up</name>
+
+          <t>The Message Key uses the per-peer session key described
+            above.</t>
+
+
+          <figure anchor="message-key-bmp-peer-up-example"
+            title="BMP Peer Up Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+      RFC 8792 '\' line folding applies within the YANG path.
+
+Key:
+  router-nyc-01
+  /ietf-bmp-message:message/\
+peer-up-notification[peer-type='global-instance-peer']\
+[peer-distinguisher='0:0:0']\
+[peer-address='203.0.113.45']\
+[peer-as='65002']\
+[peer-bgp-id='203.0.113.1']
+
+Headers:
+  schema-id:     2
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-peer-up-example"
+            title="BMP Peer Up Message Value">
+            <sourcecode type="json"><![CDATA[
+{
+  "ietf-bmp-message:message": {
+    "version": 3,
+    "peer-up-notification": {
+      "peer-type": "global-instance-peer",
+      "peer-distinguisher": "0:0:0",
+      "peer-address": "203.0.113.45",
+      "peer-as": 65002,
+      "peer-bgp-id": "203.0.113.1",
+      "timestamp": "2026-02-15T14:35:22Z",
+      "local-address": "198.51.100.10",
+      "local-port": 179,
+      "remote-port": 54321,
+      "sent-open": {
+        "version": 4,
+        "my-as": 65001,
+        "hold-time": 180,
+        "bgp-identifier": "198.51.100.1",
+        "capabilities": [
+          {
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": { "asn32": { "as": 65001 } }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
+          }
+        ]
+      },
+      "received-open": {
+        "version": 4,
+        "my-as": 65002,
+        "hold-time": 180,
+        "bgp-identifier": "203.0.113.1",
+        "capabilities": [
+          {
+            "code": 65,
+            "index": 1,
+            "name": "iana-bgp-types:asn32",
+            "value": { "asn32": { "as": 65002 } }
+          },
+          {
+            "code": 1,
+            "index": 1,
+            "name": "iana-bgp-types:mp-bgp",
+            "value": {
+              "mpbgp": {
+                "afi": "ipv4",
+                "safi": "unicast-safi",
+                "name": "iana-bgp-types:ipv4-unicast"
+              }
+            }
+          }
+        ]
+      },
+      "sequence-number": "42",
+      "timestamps": [
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T14:35:22.125000Z"
+        }
+      ]
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+
+        <section anchor="bmp-peer-down">
+          <name>BMP Peer Down</name>
+
+          <t>The Message Key uses the per-peer session key described
+            above.</t>
+
+
+          <figure anchor="message-key-bmp-peer-down-example"
+            title="BMP Peer Down Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+      RFC 8792 '\' line folding applies within the YANG path.
+
+Key:
+  router-nyc-01
+  /ietf-bmp-message:message/peer-down-notification\
+[peer-type='loc-rib-instance-peer']\
+[peer-distinguisher='0:65001:100']\
+[peer-address='::']\
+[peer-as='65001']\
+[peer-bgp-id='192.0.2.1']
+
+Headers:
+  schema-id:     3
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-peer-down-example"
+            title="BMP Peer Down Message Value">
+            <sourcecode type="json"><![CDATA[
+{
+  "ietf-bmp-message:message": {
+    "version": 3,
+    "peer-down-notification": {
+      "peer-type": "loc-rib-instance-peer",
+      "peer-distinguisher": "0:65001:100",
+      "peer-address": "::",
+      "peer-as": 65001,
+      "peer-bgp-id": "192.0.2.1",
+      "timestamp": "2026-02-15T15:09:58.200000Z",
+      "reason": "local-system-closed-tlv-data-follows",
+      "peer-down": {
+        "vrf-table-name": "customer-a"
+      },
+      "sequence-number": "8901",
+      "timestamps": [
+        {
+          "timestamp-type": "trigger-time",
+          "timestamp": "2026-02-15T15:09:58.200000Z"
+        },
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T15:09:58.450000Z"
+        }
+      ]
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+
+        <section anchor="bmp-stats-reports">
+          <name>BMP Statistic Reports</name>
+
+          <t>The Message Key uses the per-peer session key described
+            above.</t>
+
+
+          <figure anchor="message-key-bmp-stats-example"
+            title="BMP Statistics Report Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+      RFC 8792 '\' line folding applies within the YANG path.
+
+Key:
+  router-nyc-01
+  /ietf-bmp-message:message/statistics-report\
+[peer-type='loc-rib-instance-peer']\
+[peer-distinguisher='0:65001:100']\
+[peer-address='::']\
+[peer-as='65001']\
+[peer-bgp-id='192.0.2.1']
+
+Headers:
+  schema-id:     4
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-stats-example"
+            title="BMP Statistics Report Message Value">
+            <sourcecode type="json"><![CDATA[
+{
+  "ietf-bmp-message:message": {
+    "version": 3,
+    "statistics-report": {
+      "peer-type": "loc-rib-instance-peer",
+      "peer-distinguisher": "0:65001:100",
+      "peer-address": "::",
+      "peer-as": 65001,
+      "peer-bgp-id": "192.0.2.1",
+      "timestamp": "2026-02-15T15:05:00Z",
+      "statistics": {
+        "duplicate-withdraws": 7,
+        "updates-subjected-to-treat-as-withdraw": 3,
+        "routes-in-loc-rib": "1204551",
+        "routes-in-post-policy-adj-rib-out": "88210",
+        "routes-in-per-afi-safi-post-policy-adj-rib-in-accepted": [
+          {
+            "afi": "ipv6",
+            "safi": "unicast-safi",
+            "value": "560213"
+          }
+        ],
+        "routes-in-per-afi-safi-invalidated-by-rpki": [
+          {
+            "afi": "ipv4",
+            "safi": "unicast-safi",
+            "value": "12"
+          },
+          {
+            "afi": "ipv4",
+            "safi": "labeled-vpn-safi",
+            "value": "110"
+          }
+        ],
+        "routes-marked-stale-by-gr": [
+          {
+            "afi": "ipv6",
+            "safi": "unicast-safi",
+            "value": "4"
+          }
+        ],
+        "unknown": [
+          {
+            "type": 24,
+            "data": "AAEBAAAAAAAB4kA="
+          },
+          {
+            "type": 65531,
+            "data": "AAAAKg=="
+          }
+        ]
+      },
+      "sequence-number": "8890",
+      "timestamps": [
+        {
+          "timestamp-type": "trigger-time",
+          "timestamp": "2026-02-15T15:05:00.000000Z"
+        },
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T15:05:00.250000Z"
+        }
+      ]
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+
+        <section anchor="bmp-route-monitoring">
+          <name>BMP Route Monitoring</name>
+
+          <t>The Message Key extends the per-peer session key with the
+            additional prefix and path-id nodes described above.</t>
+
+
+          <figure anchor="message-key-bmp-route-monitoring-example"
+            title="BMP Route Monitoring Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+      RFC 8792 '\' line folding applies within the YANG path.
+
+Key:
+  router-nyc-01
+  /ietf-bmp-message:message/route-monitoring\
+[peer-type='global-instance-peer']\
+[peer-distinguisher='0:0:0']\
+[peer-address='203.0.113.45']\
+[peer-as='65002']\
+[peer-bgp-id='203.0.113.1']\
+/rib-entry/ipv4-unicast/adj-rib-in-post/route\
+[prefix='192.0.2.0/24']\
+[path-id='0']
+
+Headers:
+  schema-id:     5
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-route-monitoring-example"
+            title="BMP Route Monitoring Message Value">
+            <sourcecode type="json"><![CDATA[
+{
+  "ietf-bmp-message:message": {
+    "version": 3,
+    "route-monitoring": {
+      "peer-type": "global-instance-peer",
+      "peer-distinguisher": "0:0:0",
+      "peer-address": "203.0.113.45",
+      "peer-as": 65002,
+      "peer-bgp-id": "203.0.113.1",
+      "timestamp": "2026-02-15T14:39:58.750000Z",
+      "afi-safi-type": "iana-bgp-types:ipv4-unicast",
+      "rib-entry": {
+        "ipv4-unicast": {
+          "adj-rib-in-post": {
+            "route": {
+              "prefix": "192.0.2.0/24",
+              "path-id": 0,
+              "attributes": {
+                "origin": "igp",
+                "as-path": {
+                  "segment": [
+                    {
+                      "type": "as-sequence",
+                      "member": [ 65002, 65003, 65004 ]
+                    }
+                  ]
+                },
+                "next-hop": "203.0.113.45",
+                "med": 100,
+                "local-pref": 150
+              },
+              "community": [ "65001:1000", "65001:2000" ]
+            }
+          }
+        }
+      },
+      "vrf-table-name": "customer-a",
+      "sequence-number": "5432",
+      "path-status": {
+        "invalid": true,
+        "nonselected": true,
+        "reason-code": "invalid-as-loop"
+      },
+      "timestamps": [
+        {
+          "timestamp-type": "trigger-time",
+          "timestamp": "2026-02-15T14:39:58.500000Z"
+        },
+        {
+          "timestamp-type": "adj-rib-in-time",
+          "timestamp": "2026-02-15T14:39:58.750000Z"
+        }
+      ],
+      "extended-flags": {
+        "ipv6-peer": false,
+        "post-policy": true,
+        "adj-rib-out": false
+      }
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+
+        <section anchor="bmp-termination">
+          <name>BMP Termination</name>
+
+          <t>The Message Key consists of only the node hostname and the
+            message-type path, as described above.</t>
+
+          <figure anchor="message-key-bmp-term-example"
+            title="BMP Termination Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+
+Key:
+  router-nyc-01
+  /ietf-bmp-message:message/termination-message
+
+Headers:
+  schema-id:     6
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <figure anchor="message-value-bmp-term-example"
+            title="BMP Termination Message Value">
+            <sourcecode type="json"><![CDATA[
+{
+  "ietf-bmp-message:message": {
+    "version": 3,
+    "termination-message": {
+      "string": [
+        "Scheduled maintenance window"
+      ],
+      "reason": "administratively-closed",
+      "sequence-number": "18567",
+      "timestamps": [
+        {
+          "timestamp-type": "message-export-time",
+          "timestamp": "2026-02-15T15:45:00.500000Z"
+        }
+      ],
+      "unknown-tlvs": [
+        {
+          "type": 5,
+          "value": "AAECAw=="
+        }
+      ]
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+
+        <section anchor="bmp-telemetry-message-example">
+          <name>BMP Route Monitoring in a Network Telemetry Message</name>
+
+          <t>This example carries the Route Monitoring message of <xref
+              target="bmp-route-monitoring" /> in the "payload" of a
+            Network Telemetry Message. The Message Key and the Partition
+            Key are the same as for the BMP message on its own; only the
+            Schema ID differs, as the Message Value follows a different
+            schema.</t>
+
+          <figure anchor="message-key-bmp-telemetry-message-example"
+            title="Network Telemetry Message Key and Headers">
+            <sourcecode type="text"><![CDATA[
+NOTE: The Key is a two-line byte string; the line break between the
+      node hostname and the YANG path is a literal LF (U+000A).
+      RFC 8792 '\' line folding applies within the YANG path.
+
+Key:
+  router-nyc-01
+  /ietf-bmp-message:message/route-monitoring\
+[peer-type='global-instance-peer']\
+[peer-distinguisher='0:0:0']\
+[peer-address='203.0.113.45']\
+[peer-as='65002']\
+[peer-bgp-id='203.0.113.1']\
+/rib-entry/ipv4-unicast/adj-rib-in-post/route\
+[prefix='192.0.2.0/24']\
+[path-id='0']
+
+Headers:
+  schema-id:     7
+  content-type:  application/yang-data+json
+  partition-key: router-nyc-01
+]]></sourcecode>
+          </figure>
+
+          <t><xref target="message-value-bmp-telemetry-message-example" />
+            shows the Message Value: the Network Telemetry Message with
+            the network node and data collection manifests, the Network
+            Telemetry protocol metadata with the bmp session protocol,
+            and the BMP session metadata with the
+            session-start-timestamp, the cached Initiation information,
+            and the BGP session metadata, followed by the BMP message in
+            the "payload".</t>
+
+          <figure anchor="message-value-bmp-telemetry-message-example"
+            title="Network Telemetry Message Value with BMP Route Monitoring">
+            <sourcecode type="json"><![CDATA[
+{
+  "ietf-telemetry-message:message": {
+    "network-node-manifest": {
+      "name": "router-nyc-01",
+      "vendor": "example",
+      "software-version": "25.4.2"
+    },
+    "data-collection-manifest": {
+      "name": "bmp-collector-1",
+      "vendor": "open source",
+      "software-version": "1.0.0"
+    },
+    "network-operator-metadata": {
+      "labels": [
+        {
+          "name": "platform-name",
+          "string-value": "core"
+        }
+      ]
+    },
+    "telemetry-message-metadata": {
+      "collection-timestamp": "2026-02-15T14:40:00.350Z",
+      "notification-event": "log",
+      "sequence-number": 2,
+      "session-protocol": "ietf-bmp-telemetry-message:bmp",
+      "export-address": "198.51.100.1",
+      "export-port": 40123,
+      "collection-address": "10.10.10.10",
+      "collection-port": 10100,
+      "ietf-bmp-telemetry-message:bmp-session": {
+        "session-start-timestamp": "2026-02-15T14:30:00Z",
+        "initiation-information": {
+          "sys-descr": "25.4.2.02I",
+          "sys-name": "router-nyc-01"
+        },
+        "bgp-session": {
+          "peer-up-timestamp": "2026-02-15T14:35:22Z",
+          "rib-sync-state": "initial-sync"
+        }
+      }
+    },
+    "payload": {
+      "ietf-bmp-message:message": {
+        "version": 3,
+        "route-monitoring": {
+          "peer-type": "global-instance-peer",
+          "peer-distinguisher": "0:0:0",
+          "peer-address": "203.0.113.45",
+          "peer-as": 65002,
+          "peer-bgp-id": "203.0.113.1",
+          "timestamp": "2026-02-15T14:39:58.750000Z",
+          "afi-safi-type": "iana-bgp-types:ipv4-unicast",
+          "rib-entry": {
+            "ipv4-unicast": {
+              "adj-rib-in-post": {
+                "route": {
+                  "prefix": "192.0.2.0/24",
+                  "path-id": 0,
+                  "attributes": {
+                    "origin": "igp",
+                    "as-path": {
+                      "segment": [
+                        {
+                          "type": "as-sequence",
+                          "member": [ 65002, 65003, 65004 ]
+                        }
+                      ]
+                    },
+                    "next-hop": "203.0.113.45",
+                    "med": 100,
+                    "local-pref": 150
+                  },
+                  "community": [ "65001:1000", "65001:2000" ]
+                }
+              }
+            }
+          },
+          "vrf-table-name": "customer-a",
+          "sequence-number": "5432",
+          "path-status": {
+            "invalid": true,
+            "nonselected": true,
+            "reason-code": "invalid-as-loop"
+          },
+          "timestamps": [
+            {
+              "timestamp-type": "trigger-time",
+              "timestamp": "2026-02-15T14:39:58.500000Z"
+            },
+            {
+              "timestamp-type": "adj-rib-in-time",
+              "timestamp": "2026-02-15T14:39:58.750000Z"
+            }
+          ],
+          "extended-flags": {
+            "ipv6-peer": false,
+            "post-policy": true,
+            "adj-rib-out": false
+          }
+        }
+      }
+    }
+  }
+}
+]]></sourcecode>
+          </figure>
+        </section>
+      </section>
+
+      <section anchor="BMP_Partitioning_Solution">
+        <name>BMP Partition Keys and Routing</name>
+
+        <t>Since BMP requires Message ordering for a monitored BGP RIB,
+          and Message Brokers ensure Message ordering on partitions, a
+          Partition Key and a custom partitioner logic is being
+          introduced so that all BMP messages for a particular BGP RIB
+          are hashed to on one partition. The Partition Key consists of
+          the hostname of the network node.</t>
+
+        <t>In the partitioner implementation of the YANG Message Broker
+          Producer, instead of the Message Key, the Partition Key MUST
+          be used to deterministically hash BMP Messages to partitions. </t>
+      </section>
+
+      <section anchor="YANG_Message_Broker_BMP_Topic-Naming_Solution">
+        <name>Message Broker BMP Topic Naming</name>
+
+        <t>There are two Message Broker topics.</t>
+
+        <ul>
+          <li>bmp-state-changes-and-statistics: Containing all BMP
+            messages in real-time</li>
+
+          <li>bmp-current-state: Containing all BMP message types,
+            except statistics, topic compacted.</li>
+        </ul>
+
+        <t>Optionally, an organization prefix can be prepended with a
+          "-" separator. A Message Broker Consumer MAY consume either
+          "bmp-state-changes-and-statistics", "bmp-current-state" or a
+          subset depending on use case.</t>
+
+        <t>If a subset is consumed, the consumer hashes the Message Key,
+          applies modulo with the number of partitions, and determines
+          the partition from which it should consume messages bearing
+          that Message Key.</t>
+
+        <t>To parse the Message Key, the consumer splits the byte string
+          on newline (LF) characters. The first line is the node-name
+          and the second the YANG path.</t>
+
+        <t><xref target="bmp-topic-name-example" /> shows an example
+          where "bmp-state-changes-and-statistics" is being used.</t>
+
+        <figure anchor="bmp-topic-name-example"
+          title="BMP Topic Name Example">
+          <sourcecode type="text"><![CDATA[
+netops-bmp-state-changes-and-statistics
+]]></sourcecode>
+        </figure>
+      </section>
+    </section>
+
+    <section anchor="Message_Broker_Implementations">
+      <name>Message Broker Implementations</name>
+
+      <t>Topic, Partitioning and Message Keys are generic concepts of
+        Message Brokers. There are two known Message Broker
+        implementations supporting all features described in this
+        document.</t>
+
+      <section anchor="MB_Implementations_Kafka">
+        <name>Apache Kafka</name>
+
+        <t>Apache Kafka supports Message Keys, Partitioning and Log
+          Compaction. Per default, the partitioner logic uses Message
+          Keys for deterministic partition Message distribution.</t>
+
+        <t>This document introduces "partition-key" in the Apache Kafka
+          header to be used by the partitioner instead of the "key"
+          (Message Key) when distributing Messages to the partitions.</t>
+      </section>
+
+      <section anchor="MB_Implementations_Pulsar">
+        <name>Apache Pulsar</name>
+
+        <t>Apache Pulsar supports Message Keys, Partitioning and Topic
+          Compaction. Per default, the partitioner logic uses Message
+          Keys for deterministic partition Message distribution.
+          Optionally, a dedicated ordering key can be used.</t>
+
+        <t>This document introduces "partition-key" which is to be used
+          as ordering key.</t>
+      </section>
+    </section>
+
     <section anchor="bmp-yang-modules">
       <name>BMP YANG Modules</name>
 
@@ -5306,1069 +6369,6 @@ module ietf-bmp-statistics {
 ]]>
 </sourcecode>
         </figure>
-      </section>
-    </section>
-
-    <section anchor="bmp-in-telemetry-message">
-      <name>Carrying BMP Messages in Network Telemetry Messages</name>
-
-      <t>A BMP message modeled by 'ietf-bmp-message' can be published to
-        the Message Broker on its own, forming the Message Value, or
-        carried in the "payload" of a Network Telemetry Message defined
-        by the 'ietf-telemetry-message' module of <xref
-          target="I-D.ietf-nmop-message-broker-telemetry-message" />,
-        which then forms the Message Value. The Network Telemetry
-        Message adds metadata about the network node, the data
-        collector, and the BMP session, such as the
-        session-start-timestamp and the cached Initiation information,
-        that a BMP message on its own does not carry.</t>
-
-      <t>When a Network Telemetry Message is used, its nodes other than
-        "payload" carry two kinds of metadata:</t>
-
-      <ul>
-        <li>Nodes defined by 'ietf-telemetry-message' for any Network
-          Telemetry protocol. <xref target="bmp-telemetry-message-nodes" />
-          defines how they are populated for BMP.</li>
-
-        <li>BMP specific nodes defined by this document in
-          'ietf-bmp-telemetry-message', described in <xref
-            target="bmp-session-metadata" />.</li>
-      </ul>
-
-      <section anchor="bmp-telemetry-message-nodes">
-        <name>Network Telemetry Message Nodes</name>
-
-        <t>This section describes how each child of the top-level
-          message node of 'ietf-telemetry-message' is populated from the
-          BMP message and the BMP session it was received on.</t>
-
-        <section anchor="bmp-network-node-manifest">
-          <name>network-node-manifest</name>
-
-          <t>The network-node-manifest describes the monitored router. <xref
-              target="bmp-network-node-manifest-table" /> lists the
-            rules for its nodes.</t>
-
-          <table anchor="bmp-network-node-manifest-table">
-            <name>network-node-manifest Nodes for BMP</name>
-            <thead>
-              <tr>
-                <th>Node</th>
-                <th>Value for BMP</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>name</td>
-                <td>Hostname of the router, the same value as the node
-                  hostname in the Message Key and the Partition Key. If
-                  the collector has no other source for it, the sysName
-                  of the Initiation message SHOULD be used.</td>
-              </tr>
-              <tr>
-                <td>other nodes</td>
-                <td>Optional, from the collector's knowledge of the
-                  router.</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section anchor="bmp-data-collection-manifest">
-          <name>data-collection-manifest</name>
-
-          <t>The data-collection-manifest describes the BMP data
-            collector that received the BMP message and produced the
-            Network Telemetry Message, for example its name
-            ("bmp-collector-1"), vendor, and software-version. This
-            allows a consumer to identify the collector that decoded the
-            BMP data, e.g., when several collectors publish to the same
-            topic.</t>
-        </section>
-
-        <section anchor="bmp-network-operator-metadata">
-          <name>network-operator-metadata</name>
-
-          <t>The network-operator-metadata carries optional labels added
-            by the network operator. This document defines no BMP
-            specific labels.</t>
-        </section>
-
-        <section anchor="bmp-telemetry-message-metadata">
-          <name>telemetry-message-metadata</name>
-
-          <t>The telemetry-message-metadata carries the Network
-            Telemetry protocol metadata of the BMP session. <xref
-              target="bmp-telemetry-message-metadata-table" /> lists the
-            rules for its nodes; the bmp-session container added by this
-            document is described in <xref
-              target="bmp-session-metadata" />.</t>
-
-          <table anchor="bmp-telemetry-message-metadata-table">
-            <name>telemetry-message-metadata Nodes for BMP</name>
-            <thead>
-              <tr>
-                <th>Node</th>
-                <th>Value for BMP</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>node-export-timestamp</td>
-                <td>The Timestamp TLV of type message-export-time if
-                  present; otherwise absent. The Per-Peer Header
-                  Timestamp is not used, as it is defined as the time at
-                  which the routes were received or installed in the RIB
-                  (<xref target="RFC7854" section="4.2"
-                    sectionFormat="of" />, <xref target="RFC9069"
-                    section="5.1" sectionFormat="of" />), not the time
-                  at which the BMP message was exported.</td>
-              </tr>
-              <tr>
-                <td>collection-timestamp</td>
-                <td>Time at which the collector received the BMP
-                  message.</td>
-              </tr>
-              <tr>
-                <td>notification-event</td>
-                <td>"log" for messages derived from a BMP message
-                  received from the monitored router. "delete" when the
-                  collector removes cached state that the router did not
-                  explicitly withdraw, for example the routes of a peer
-                  after a Peer Down, or all state of the router when the
-                  BMP session ends, with or without a Termination
-                  message. TODO: consider augmenting this to add "dump"?</td>
-              </tr>
-              <tr>
-                <td>sequence-number</td>
-                <td>As defined in 'ietf-telemetry-message': incremented
-                  by the collector for every published message.</td>
-              </tr>
-              <tr>
-                <td>session-protocol</td>
-                <td>The bmp identity defined in
-                  'ietf-bmp-telemetry-message'. It enables the
-                  bmp-session container.</td>
-              </tr>
-              <tr>
-                <td>export-address, export-port</td>
-                <td>IP address and TCP port of the monitored router for
-                  the BMP session. The port usually changes with every
-                  new BMP session and is not used to identify the
-                  router.</td>
-              </tr>
-              <tr>
-                <td>collection-address, collection-port</td>
-                <td>IP address and TCP port of the collector for the BMP
-                  session.</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <t>The sequence-number of the Network Telemetry Message lets a
-            consumer detect gaps in the messages published by a
-            collector. To detect loss or reordering within a BMP
-            session, a consumer uses the BMP Sequence Number TLV when
-            the monitored router sends it.</t>
-        </section>
-      </section>
-
-      <section anchor="bmp-session-metadata">
-        <name>BMP Session Metadata</name>
-
-        <t>The 'ietf-bmp-telemetry-message' module augments
-          telemetry-message-metadata with the bmp-session container. It
-          is present only when session-protocol is bmp and carries
-          metadata that is not part of any BMP message: the data
-          collector derives it from the BMP session and from earlier
-          messages of that session. <xref
-            target="bmp-session-metadata-table" /> lists its nodes.</t>
-
-        <table anchor="bmp-session-metadata-table">
-          <name>BMP Session Metadata Nodes</name>
-          <thead>
-            <tr>
-              <th>bmp-session node</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>session-start-timestamp</td>
-              <td>Mandatory. Time at which the data collector
-                established the BMP session with the monitored router.
-                All messages of the same BMP session carry the same
-                value; a new value indicates a new BMP session, for
-                example after a reconnect.</td>
-            </tr>
-            <tr>
-              <td>initiation-information</td>
-              <td>Content of the Initiation message of the BMP session
-                (sysName, sysDescr, and strings), cached by the data
-                collector.</td>
-            </tr>
-            <tr>
-              <td>bgp-session/peer-up-timestamp</td>
-              <td>Time of the Peer Up message that started the monitored
-                BGP session the message relates to, taken from that Peer
-                Up message: the Timestamp TLV of type trigger-time if
-                present; otherwise the Per-Peer Header Timestamp if
-                non-zero; otherwise its collection-timestamp. For a Peer
-                Up sent when the BMP session comes up, this can be the
-                time of the BMP session rather than of the BGP session.
-                Absent for messages without a peer (Initiation,
-                Termination).</td>
-            </tr>
-            <tr>
-              <td>bgp-session/rib-sync-state</td>
-              <td>Route Monitoring messages only. Whether the message is
-                part of the initial synchronization of the RIB
-                (initial-sync), is the End-of-RIB marker that completes
-                it (end-of-rib), or is an update of an already
-                synchronized RIB (synchronized). The RIB is identified
-                by the peer, the AFI/SAFI, and the RIB type of the
-                message. Absent if the collector cannot determine it.</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <t>Because <xref target="RFC7854" section="4.6"
-            sectionFormat="of" /> uses Route Monitoring messages both
-          for the initial synchronization and for the ongoing monitoring
-          of the Adj-RIB-In, a consumer can use the
-          session-start-timestamp and the rib-sync-state to interpret a
-          Peer Up and the following Route Monitoring messages as the
-          synchronization of a new session rather than as route changes.
-          The bmp-session nodes are not part of the Message Key.</t>
-
-        <t>A BMP Initiation message is sent once per BMP session, and
-          the following messages carry no router identity information. A
-          data collector that carries BMP messages in Network Telemetry
-          Messages SHOULD therefore cache the Initiation message content
-          for each BMP session and populate initiation-information in
-          every message it emits, so that each message is self-contained
-          for consumers that did not observe or store the Initiation
-          message.</t>
-      </section>
-    </section>
-
-    <section anchor="YANG_Message_Broker_BMP_Topic_Naming_Indexing">
-      <name>YANG Message Broker BMP Indexing and Topic Naming</name>
-
-      <t>To identify which network node produced which BMP data into
-        which Message Broker Topic, Partition and Subject, BMP Message
-        Keys, Partition Key, and Indexes are being introduced (<xref
-          target="BMP_Message_Keys_Indexes_Solution"></xref>). These
-        keys enable a deterministic distribution of BMP messages across
-        Topics and Partitions enabling applications to consume only the
-        needed data from specific topics and partitions.</t>
-
-      <section anchor="BMP_Message_Keys_Indexes_Solution">
-        <name>BMP Message Keys and Indexes</name>
-
-        <t>A Message Broker uses a Message Key for indexing and enabling
-          Topic Compaction. While a Message Key can also drive
-          deterministic partition assignment, this document introduces a
-          dedicated Partition Key for that purpose, as described in <xref
-            target="BMP_Partitioning_Solution" />.</t>
-
-        <t>Similar to <xref section="3.1" sectionFormat="of"
-            target="I-D.ietf-nmop-yang-message-broker-message-key" />
-          for YANG-Push telemetry messages, the network node hostname
-          and a set of 'ietf-bmp-message' YANG nodes from the instance
-          data are used to construct the BMP Message Key. The following
-          subsections describe and illustrate the YANG nodes used for
-          each BMP message type.</t>
-
-        <t>For all BMP message types that carry a BMP Per-Peer Header
-          (Peer Up, Peer Down, Statistics Report, Route Monitoring, and
-          Route Mirroring), the Message Key consists of the node
-          hostname and a YANG instance-identifier path encoding the
-          message-type and the following per-peer header nodes to
-          uniquely identify the BGP peering session:</t>
-
-        <dl newline="true" spacing="normal">
-          <dt>peer-type</dt>
-          <dd>Scopes the session to its routing instance: Global
-            Instance Peer, RD Instance Peer, Local Instance Peer, or
-            Loc-RIB Instance Peer.</dd>
-
-          <dt>peer-distinguisher</dt>
-          <dd>The Route Distinguisher of the routing instance.
-            Zero-filled for Global Instance Peers; non-zero for RD
-            Instance and possibly Loc-RIB Instance Peers to distinguish
-            sessions within the same VRF or routing instance.</dd>
-
-          <dt>peer-address</dt>
-          <dd>The remote IP address associated with the BGP session.</dd>
-
-          <dt>peer-as</dt>
-          <dd>The AS number of the remote BGP speaker.</dd>
-
-          <dt>peer-bgp-id</dt>
-          <dd>The BGP Identifier of the remote BGP speaker.</dd>
-        </dl>
-
-        <t>Route Monitoring and Route Mirroring messages extend the
-          per-peer session key with two additional YANG nodes that
-          identify the individual route within the RIB:</t>
-
-        <dl newline="true" spacing="normal">
-          <dt>prefix</dt>
-          <dd>The IP prefix (IPv4 or IPv6) of the route entry.</dd>
-
-          <dt>path-id</dt>
-          <dd>The BGP ADD-PATH path identifier (<xref target="RFC7911" />).
-            Zero when ADD-PATH is not in use.</dd>
-        </dl>
-
-        <t>Initiation and Termination messages do not carry a Per-Peer
-          Header; their Message Keys consist of only the node hostname
-          and the message-type path. The per-peer session key is
-          consistent across all lifecycle events for the same session
-          (Peer Up, Statistics Report, Route Monitoring, and Peer Down),
-          enabling deterministic topic compaction over the full session
-          lifecycle. The session-start-timestamp of the bmp-session
-          container is not part of the Message Key, so that the key
-          remains the same when a BMP session is re-established.</t>
-
-        <t>The Message Key is encoded as a two-line byte string. The
-          first line is the network node hostname; the second line is
-          the YANG instance-identifier path. The separator between them
-          is a single line feed character (LF, U+000A). The YANG path
-          starts at the 'ietf-bmp-message' message node, whether the BMP
-          message is the Message Value itself or is carried in the
-          "payload" of a Network Telemetry Message (<xref
-            target="bmp-in-telemetry-message" />). The Message Key is
-          therefore the same in both cases. A path through "payload" is
-          not used, as "payload" is anydata and its content is not part
-          of the 'ietf-telemetry-message' schema.</t>
-
-        <t>Each example below illustrates the Message Key, the Message
-          Broker headers carrying the Schema ID, content type, and
-          Partition Key, and the corresponding Message Value. The
-          Message Value examples show BMP messages on their own; <xref
-            target="bmp-telemetry-message-example" /> shows a BMP
-          message carried in a Network Telemetry Message. Message Keys
-          exceeding the line length are folded as described in <xref
-            target="RFC8792" />.</t>
-
-        <section anchor="bmp-initiation">
-          <name>BMP Initiation</name>
-
-          <t>The Message Key consists of only the node hostname and the
-            message-type path, as described above.</t>
-
-          <figure anchor="message-key-bmp-init-example"
-            title="BMP Initiation Message Key and Headers">
-            <sourcecode type="text"><![CDATA[
-NOTE: The Key is a two-line byte string; the line break between the
-      node hostname and the YANG path is a literal LF (U+000A).
-
-Key:
-  router-nyc-01
-  /ietf-bmp-message:message/initiation-message
-
-Headers:
-  schema-id:     1
-  content-type:  application/yang-data+json
-  partition-key: router-nyc-01
-]]></sourcecode>
-          </figure>
-
-          <figure anchor="message-value-bmp-init-example"
-            title="BMP Initiation Message Value">
-            <sourcecode type="json"><![CDATA[
-{
-  "ietf-bmp-message:message": {
-    "version": 3,
-    "initiation-message": {
-      "sys-descr": "25.4.2.02I",
-      "sys-name": "ipf-zbl1327-r-daisy-91"
-    }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-
-        <section anchor="bmp-peer-up">
-          <name>BMP Peer Up</name>
-
-          <t>The Message Key uses the per-peer session key described
-            above.</t>
-
-
-          <figure anchor="message-key-bmp-peer-up-example"
-            title="BMP Peer Up Message Key and Headers">
-            <sourcecode type="text"><![CDATA[
-NOTE: The Key is a two-line byte string; the line break between the
-      node hostname and the YANG path is a literal LF (U+000A).
-      RFC 8792 '\' line folding applies within the YANG path.
-
-Key:
-  router-nyc-01
-  /ietf-bmp-message:message/\
-peer-up-notification[peer-type='global-instance-peer']\
-[peer-distinguisher='0:0:0']\
-[peer-address='203.0.113.45']\
-[peer-as='65002']\
-[peer-bgp-id='203.0.113.1']
-
-Headers:
-  schema-id:     2
-  content-type:  application/yang-data+json
-  partition-key: router-nyc-01
-]]></sourcecode>
-          </figure>
-
-          <figure anchor="message-value-bmp-peer-up-example"
-            title="BMP Peer Up Message Value">
-            <sourcecode type="json"><![CDATA[
-{
-  "ietf-bmp-message:message": {
-    "version": 3,
-    "peer-up-notification": {
-      "peer-type": "global-instance-peer",
-      "peer-distinguisher": "0:0:0",
-      "peer-address": "203.0.113.45",
-      "peer-as": 65002,
-      "peer-bgp-id": "203.0.113.1",
-      "timestamp": "2026-02-15T14:35:22Z",
-      "local-address": "198.51.100.10",
-      "local-port": 179,
-      "remote-port": 54321,
-      "sent-open": {
-        "version": 4,
-        "my-as": 65001,
-        "hold-time": 180,
-        "bgp-identifier": "198.51.100.1",
-        "capabilities": [
-          {
-            "code": 65,
-            "index": 1,
-            "name": "iana-bgp-types:asn32",
-            "value": { "asn32": { "as": 65001 } }
-          },
-          {
-            "code": 1,
-            "index": 1,
-            "name": "iana-bgp-types:mp-bgp",
-            "value": {
-              "mpbgp": {
-                "afi": "ipv4",
-                "safi": "unicast-safi",
-                "name": "iana-bgp-types:ipv4-unicast"
-              }
-            }
-          }
-        ]
-      },
-      "received-open": {
-        "version": 4,
-        "my-as": 65002,
-        "hold-time": 180,
-        "bgp-identifier": "203.0.113.1",
-        "capabilities": [
-          {
-            "code": 65,
-            "index": 1,
-            "name": "iana-bgp-types:asn32",
-            "value": { "asn32": { "as": 65002 } }
-          },
-          {
-            "code": 1,
-            "index": 1,
-            "name": "iana-bgp-types:mp-bgp",
-            "value": {
-              "mpbgp": {
-                "afi": "ipv4",
-                "safi": "unicast-safi",
-                "name": "iana-bgp-types:ipv4-unicast"
-              }
-            }
-          }
-        ]
-      },
-      "sequence-number": "42",
-      "timestamps": [
-        {
-          "timestamp-type": "message-export-time",
-          "timestamp": "2026-02-15T14:35:22.125000Z"
-        }
-      ]
-    }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-
-        <section anchor="bmp-peer-down">
-          <name>BMP Peer Down</name>
-
-          <t>The Message Key uses the per-peer session key described
-            above.</t>
-
-
-          <figure anchor="message-key-bmp-peer-down-example"
-            title="BMP Peer Down Message Key and Headers">
-            <sourcecode type="text"><![CDATA[
-NOTE: The Key is a two-line byte string; the line break between the
-      node hostname and the YANG path is a literal LF (U+000A).
-      RFC 8792 '\' line folding applies within the YANG path.
-
-Key:
-  router-nyc-01
-  /ietf-bmp-message:message/peer-down-notification\
-[peer-type='loc-rib-instance-peer']\
-[peer-distinguisher='0:65001:100']\
-[peer-address='::']\
-[peer-as='65001']\
-[peer-bgp-id='192.0.2.1']
-
-Headers:
-  schema-id:     3
-  content-type:  application/yang-data+json
-  partition-key: router-nyc-01
-]]></sourcecode>
-          </figure>
-
-          <figure anchor="message-value-bmp-peer-down-example"
-            title="BMP Peer Down Message Value">
-            <sourcecode type="json"><![CDATA[
-{
-  "ietf-bmp-message:message": {
-    "version": 3,
-    "peer-down-notification": {
-      "peer-type": "loc-rib-instance-peer",
-      "peer-distinguisher": "0:65001:100",
-      "peer-address": "::",
-      "peer-as": 65001,
-      "peer-bgp-id": "192.0.2.1",
-      "timestamp": "2026-02-15T15:09:58.200000Z",
-      "reason": "local-system-closed-tlv-data-follows",
-      "peer-down": {
-        "vrf-table-name": "customer-a"
-      },
-      "sequence-number": "8901",
-      "timestamps": [
-        {
-          "timestamp-type": "trigger-time",
-          "timestamp": "2026-02-15T15:09:58.200000Z"
-        },
-        {
-          "timestamp-type": "message-export-time",
-          "timestamp": "2026-02-15T15:09:58.450000Z"
-        }
-      ]
-    }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-
-        <section anchor="bmp-stats-reports">
-          <name>BMP Statistic Reports</name>
-
-          <t>The Message Key uses the per-peer session key described
-            above.</t>
-
-
-          <figure anchor="message-key-bmp-stats-example"
-            title="BMP Statistics Report Message Key and Headers">
-            <sourcecode type="text"><![CDATA[
-NOTE: The Key is a two-line byte string; the line break between the
-      node hostname and the YANG path is a literal LF (U+000A).
-      RFC 8792 '\' line folding applies within the YANG path.
-
-Key:
-  router-nyc-01
-  /ietf-bmp-message:message/statistics-report\
-[peer-type='loc-rib-instance-peer']\
-[peer-distinguisher='0:65001:100']\
-[peer-address='::']\
-[peer-as='65001']\
-[peer-bgp-id='192.0.2.1']
-
-Headers:
-  schema-id:     4
-  content-type:  application/yang-data+json
-  partition-key: router-nyc-01
-]]></sourcecode>
-          </figure>
-
-          <figure anchor="message-value-bmp-stats-example"
-            title="BMP Statistics Report Message Value">
-            <sourcecode type="json"><![CDATA[
-{
-  "ietf-bmp-message:message": {
-    "version": 3,
-    "statistics-report": {
-      "peer-type": "loc-rib-instance-peer",
-      "peer-distinguisher": "0:65001:100",
-      "peer-address": "::",
-      "peer-as": 65001,
-      "peer-bgp-id": "192.0.2.1",
-      "timestamp": "2026-02-15T15:05:00Z",
-      "statistics": {
-        "duplicate-withdraws": 7,
-        "updates-subjected-to-treat-as-withdraw": 3,
-        "routes-in-loc-rib": "1204551",
-        "routes-in-post-policy-adj-rib-out": "88210",
-        "routes-in-per-afi-safi-post-policy-adj-rib-in-accepted": [
-          {
-            "afi": "ipv6",
-            "safi": "unicast-safi",
-            "value": "560213"
-          }
-        ],
-        "routes-in-per-afi-safi-invalidated-by-rpki": [
-          {
-            "afi": "ipv4",
-            "safi": "unicast-safi",
-            "value": "12"
-          },
-          {
-            "afi": "ipv4",
-            "safi": "labeled-vpn-safi",
-            "value": "110"
-          }
-        ],
-        "routes-marked-stale-by-gr": [
-          {
-            "afi": "ipv6",
-            "safi": "unicast-safi",
-            "value": "4"
-          }
-        ],
-        "unknown": [
-          {
-            "type": 24,
-            "data": "AAEBAAAAAAAB4kA="
-          },
-          {
-            "type": 65531,
-            "data": "AAAAKg=="
-          }
-        ]
-      },
-      "sequence-number": "8890",
-      "timestamps": [
-        {
-          "timestamp-type": "trigger-time",
-          "timestamp": "2026-02-15T15:05:00.000000Z"
-        },
-        {
-          "timestamp-type": "message-export-time",
-          "timestamp": "2026-02-15T15:05:00.250000Z"
-        }
-      ]
-    }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-
-        <section anchor="bmp-route-monitoring">
-          <name>BMP Route Monitoring</name>
-
-          <t>The Message Key extends the per-peer session key with the
-            additional prefix and path-id nodes described above.</t>
-
-
-          <figure anchor="message-key-bmp-route-monitoring-example"
-            title="BMP Route Monitoring Message Key and Headers">
-            <sourcecode type="text"><![CDATA[
-NOTE: The Key is a two-line byte string; the line break between the
-      node hostname and the YANG path is a literal LF (U+000A).
-      RFC 8792 '\' line folding applies within the YANG path.
-
-Key:
-  router-nyc-01
-  /ietf-bmp-message:message/route-monitoring\
-[peer-type='global-instance-peer']\
-[peer-distinguisher='0:0:0']\
-[peer-address='203.0.113.45']\
-[peer-as='65002']\
-[peer-bgp-id='203.0.113.1']\
-/rib-entry/ipv4-unicast/adj-rib-in-post/route\
-[prefix='192.0.2.0/24']\
-[path-id='0']
-
-Headers:
-  schema-id:     5
-  content-type:  application/yang-data+json
-  partition-key: router-nyc-01
-]]></sourcecode>
-          </figure>
-
-          <figure anchor="message-value-bmp-route-monitoring-example"
-            title="BMP Route Monitoring Message Value">
-            <sourcecode type="json"><![CDATA[
-{
-  "ietf-bmp-message:message": {
-    "version": 3,
-    "route-monitoring": {
-      "peer-type": "global-instance-peer",
-      "peer-distinguisher": "0:0:0",
-      "peer-address": "203.0.113.45",
-      "peer-as": 65002,
-      "peer-bgp-id": "203.0.113.1",
-      "timestamp": "2026-02-15T14:39:58.750000Z",
-      "afi-safi-type": "iana-bgp-types:ipv4-unicast",
-      "rib-entry": {
-        "ipv4-unicast": {
-          "adj-rib-in-post": {
-            "route": {
-              "prefix": "192.0.2.0/24",
-              "path-id": 0,
-              "attributes": {
-                "origin": "igp",
-                "as-path": {
-                  "segment": [
-                    {
-                      "type": "as-sequence",
-                      "member": [ 65002, 65003, 65004 ]
-                    }
-                  ]
-                },
-                "next-hop": "203.0.113.45",
-                "med": 100,
-                "local-pref": 150
-              },
-              "community": [ "65001:1000", "65001:2000" ]
-            }
-          }
-        }
-      },
-      "vrf-table-name": "customer-a",
-      "sequence-number": "5432",
-      "path-status": {
-        "invalid": true,
-        "nonselected": true,
-        "reason-code": "invalid-as-loop"
-      },
-      "timestamps": [
-        {
-          "timestamp-type": "trigger-time",
-          "timestamp": "2026-02-15T14:39:58.500000Z"
-        },
-        {
-          "timestamp-type": "adj-rib-in-time",
-          "timestamp": "2026-02-15T14:39:58.750000Z"
-        }
-      ],
-      "extended-flags": {
-        "ipv6-peer": false,
-        "post-policy": true,
-        "adj-rib-out": false
-      }
-    }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-
-        <section anchor="bmp-termination">
-          <name>BMP Termination</name>
-
-          <t>The Message Key consists of only the node hostname and the
-            message-type path, as described above.</t>
-
-          <figure anchor="message-key-bmp-term-example"
-            title="BMP Termination Message Key and Headers">
-            <sourcecode type="text"><![CDATA[
-NOTE: The Key is a two-line byte string; the line break between the
-      node hostname and the YANG path is a literal LF (U+000A).
-
-Key:
-  router-nyc-01
-  /ietf-bmp-message:message/termination-message
-
-Headers:
-  schema-id:     6
-  content-type:  application/yang-data+json
-  partition-key: router-nyc-01
-]]></sourcecode>
-          </figure>
-
-          <figure anchor="message-value-bmp-term-example"
-            title="BMP Termination Message Value">
-            <sourcecode type="json"><![CDATA[
-{
-  "ietf-bmp-message:message": {
-    "version": 3,
-    "termination-message": {
-      "string": [
-        "Scheduled maintenance window"
-      ],
-      "reason": "administratively-closed",
-      "sequence-number": "18567",
-      "timestamps": [
-        {
-          "timestamp-type": "message-export-time",
-          "timestamp": "2026-02-15T15:45:00.500000Z"
-        }
-      ],
-      "unknown-tlvs": [
-        {
-          "type": 5,
-          "value": "AAECAw=="
-        }
-      ]
-    }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-
-        <section anchor="bmp-telemetry-message-example">
-          <name>BMP Route Monitoring in a Network Telemetry Message</name>
-
-          <t>This example carries the Route Monitoring message of <xref
-              target="bmp-route-monitoring" /> in the "payload" of a
-            Network Telemetry Message. The Message Key and the Partition
-            Key are the same as for the BMP message on its own; only the
-            Schema ID differs, as the Message Value follows a different
-            schema.</t>
-
-          <figure anchor="message-key-bmp-telemetry-message-example"
-            title="Network Telemetry Message Key and Headers">
-            <sourcecode type="text"><![CDATA[
-NOTE: The Key is a two-line byte string; the line break between the
-      node hostname and the YANG path is a literal LF (U+000A).
-      RFC 8792 '\' line folding applies within the YANG path.
-
-Key:
-  router-nyc-01
-  /ietf-bmp-message:message/route-monitoring\
-[peer-type='global-instance-peer']\
-[peer-distinguisher='0:0:0']\
-[peer-address='203.0.113.45']\
-[peer-as='65002']\
-[peer-bgp-id='203.0.113.1']\
-/rib-entry/ipv4-unicast/adj-rib-in-post/route\
-[prefix='192.0.2.0/24']\
-[path-id='0']
-
-Headers:
-  schema-id:     7
-  content-type:  application/yang-data+json
-  partition-key: router-nyc-01
-]]></sourcecode>
-          </figure>
-
-          <t><xref target="message-value-bmp-telemetry-message-example" />
-            shows the Message Value: the Network Telemetry Message with
-            the network node and data collection manifests, the Network
-            Telemetry protocol metadata with the bmp session protocol,
-            and the BMP session metadata with the
-            session-start-timestamp, the cached Initiation information,
-            and the BGP session metadata, followed by the BMP message in
-            the "payload".</t>
-
-          <figure anchor="message-value-bmp-telemetry-message-example"
-            title="Network Telemetry Message Value with BMP Route Monitoring">
-            <sourcecode type="json"><![CDATA[
-{
-  "ietf-telemetry-message:message": {
-    "network-node-manifest": {
-      "name": "router-nyc-01",
-      "vendor": "example",
-      "software-version": "25.4.2"
-    },
-    "data-collection-manifest": {
-      "name": "bmp-collector-1",
-      "vendor": "open source",
-      "software-version": "1.0.0"
-    },
-    "network-operator-metadata": {
-      "labels": [
-        {
-          "name": "platform-name",
-          "string-value": "core"
-        }
-      ]
-    },
-    "telemetry-message-metadata": {
-      "collection-timestamp": "2026-02-15T14:40:00.350Z",
-      "notification-event": "log",
-      "sequence-number": 2,
-      "session-protocol": "ietf-bmp-telemetry-message:bmp",
-      "export-address": "198.51.100.1",
-      "export-port": 40123,
-      "collection-address": "10.10.10.10",
-      "collection-port": 10100,
-      "ietf-bmp-telemetry-message:bmp-session": {
-        "session-start-timestamp": "2026-02-15T14:30:00Z",
-        "initiation-information": {
-          "sys-descr": "25.4.2.02I",
-          "sys-name": "router-nyc-01"
-        },
-        "bgp-session": {
-          "peer-up-timestamp": "2026-02-15T14:35:22Z",
-          "rib-sync-state": "initial-sync"
-        }
-      }
-    },
-    "payload": {
-      "ietf-bmp-message:message": {
-        "version": 3,
-        "route-monitoring": {
-          "peer-type": "global-instance-peer",
-          "peer-distinguisher": "0:0:0",
-          "peer-address": "203.0.113.45",
-          "peer-as": 65002,
-          "peer-bgp-id": "203.0.113.1",
-          "timestamp": "2026-02-15T14:39:58.750000Z",
-          "afi-safi-type": "iana-bgp-types:ipv4-unicast",
-          "rib-entry": {
-            "ipv4-unicast": {
-              "adj-rib-in-post": {
-                "route": {
-                  "prefix": "192.0.2.0/24",
-                  "path-id": 0,
-                  "attributes": {
-                    "origin": "igp",
-                    "as-path": {
-                      "segment": [
-                        {
-                          "type": "as-sequence",
-                          "member": [ 65002, 65003, 65004 ]
-                        }
-                      ]
-                    },
-                    "next-hop": "203.0.113.45",
-                    "med": 100,
-                    "local-pref": 150
-                  },
-                  "community": [ "65001:1000", "65001:2000" ]
-                }
-              }
-            }
-          },
-          "vrf-table-name": "customer-a",
-          "sequence-number": "5432",
-          "path-status": {
-            "invalid": true,
-            "nonselected": true,
-            "reason-code": "invalid-as-loop"
-          },
-          "timestamps": [
-            {
-              "timestamp-type": "trigger-time",
-              "timestamp": "2026-02-15T14:39:58.500000Z"
-            },
-            {
-              "timestamp-type": "adj-rib-in-time",
-              "timestamp": "2026-02-15T14:39:58.750000Z"
-            }
-          ],
-          "extended-flags": {
-            "ipv6-peer": false,
-            "post-policy": true,
-            "adj-rib-out": false
-          }
-        }
-      }
-    }
-  }
-}
-]]></sourcecode>
-          </figure>
-        </section>
-      </section>
-
-      <section anchor="BMP_Partitioning_Solution">
-        <name>BMP Partition Keys and Routing</name>
-
-        <t>Since BMP requires Message ordering for a monitored BGP RIB,
-          and Message Brokers ensure Message ordering on partitions, a
-          Partition Key and a custom partitioner logic is being
-          introduced so that all BMP messages for a particular BGP RIB
-          are hashed to on one partition. The Partition Key consists of
-          the hostname of the network node.</t>
-
-        <t>In the partitioner implementation of the YANG Message Broker
-          Producer, instead of the Message Key, the Partition Key MUST
-          be used to deterministically hash BMP Messages to partitions. </t>
-      </section>
-
-      <section anchor="YANG_Message_Broker_BMP_Topic-Naming_Solution">
-        <name>Message Broker BMP Topic Naming</name>
-
-        <t>There are two Message Broker topics.</t>
-
-        <ul>
-          <li>bmp-state-changes-and-statistics: Containing all BMP
-            messages in real-time</li>
-
-          <li>bmp-current-state: Containing all BMP message types,
-            except statistics, topic compacted.</li>
-        </ul>
-
-        <t>Optionally, an organization prefix can be prepended with a
-          "-" separator. A Message Broker Consumer MAY consume either
-          "bmp-state-changes-and-statistics", "bmp-current-state" or a
-          subset depending on use case.</t>
-
-        <t>If a subset is consumed, the consumer hashes the Message Key,
-          applies modulo with the number of partitions, and determines
-          the partition from which it should consume messages bearing
-          that Message Key.</t>
-
-        <t>To parse the Message Key, the consumer splits the byte string
-          on newline (LF) characters. The first line is the node-name
-          and the second the YANG path.</t>
-
-        <t><xref target="bmp-topic-name-example" /> shows an example
-          where "bmp-state-changes-and-statistics" is being used.</t>
-
-        <figure anchor="bmp-topic-name-example"
-          title="BMP Topic Name Example">
-          <sourcecode type="text"><![CDATA[
-netops-bmp-state-changes-and-statistics
-]]></sourcecode>
-        </figure>
-      </section>
-    </section>
-
-    <section anchor="Message_Broker_Implementations">
-      <name>Message Broker Implementations</name>
-
-      <t>Topic, Partitioning and Message Keys are generic concepts of
-        Message Brokers. There are two known Message Broker
-        implementations supporting all features described in this
-        document.</t>
-
-      <section anchor="MB_Implementations_Kafka">
-        <name>Apache Kafka</name>
-
-        <t>Apache Kafka supports Message Keys, Partitioning and Log
-          Compaction. Per default, the partitioner logic uses Message
-          Keys for deterministic partition Message distribution.</t>
-
-        <t>This document introduces "partition-key" in the Apache Kafka
-          header to be used by the partitioner instead of the "key"
-          (Message Key) when distributing Messages to the partitions.</t>
-      </section>
-
-      <section anchor="MB_Implementations_Pulsar">
-        <name>Apache Pulsar</name>
-
-        <t>Apache Pulsar supports Message Keys, Partitioning and Topic
-          Compaction. Per default, the partitioner logic uses Message
-          Keys for deterministic partition Message distribution.
-          Optionally, a dedicated ordering key can be used.</t>
-
-        <t>This document introduces "partition-key" which is to be used
-          as ordering key.</t>
       </section>
     </section>
 
