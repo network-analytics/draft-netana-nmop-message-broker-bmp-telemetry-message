@@ -8,41 +8,38 @@
       "peer-as": 65001,
       "peer-bgp-id": "172.16.0.1",
       "timestamp": "2026-01-22T14:30:00Z",
-      "afi-safi-type": "iana-bgp-types:ipv4-unicast",
       "path-status": {
         "best": true,
         "primary": true
       },
       "rib-entry": {
-        "ipv4-unicast": {
-          "adj-rib-in-pre": {
-            "route": {
-              "prefix": "198.51.100.0/24",
-              "attributes": {
-                "origin": "igp",
-                "as-path": {
-                  "segment": [
-                    {
-                      "type": "as-sequence",
-                      "member": [
-                        65002,
-                        65100
-                      ]
-                    }
-                  ]
-                },
-                "next-hop": "172.16.0.2",
-                "local-pref": 100
-              },
-              "community": [
-                "65001:100",
-                "65001:200"
-              ],
-              "eligible-route": true,
-              "last-modified": 3600
-            }
-          }
-        }
+        "afi-safi-type": "iana-bgp-types:ipv4-unicast",
+        "rib-type": "adj-rib-in-pre-policy",
+        "nlri": {
+          "ipv4-prefix": "198.51.100.0/24"
+        },
+        "attributes": {
+          "origin": "igp",
+          "as-path": {
+            "segment": [
+              {
+                "type": "as-sequence",
+                "member": [
+                  65002,
+                  65100
+                ]
+              }
+            ]
+          },
+          "next-hop": "172.16.0.2",
+          "local-pref": 100
+        },
+        "community": [
+          "65001:100",
+          "65001:200"
+        ],
+        "eligible-route": true,
+        "last-modified": 3600
       }
     }
   }
