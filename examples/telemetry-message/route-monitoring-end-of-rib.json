@@ -41,8 +41,8 @@
           "peer-as": 65002,
           "peer-bgp-id": "203.0.113.1",
           "timestamp": "2026-02-15T14:40:05Z",
-          "afi-safi-type": "iana-bgp-types:ipv4-unicast",
           "rib-entry": {
+            "afi-safi-type": "iana-bgp-types:ipv4-unicast",
             "end-of-rib": {}
           }
         }

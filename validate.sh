@@ -52,7 +52,9 @@ echo "    ${YANG_DIR}/tree-*bmp-message.txt, ${YANG_DIR}/tree-*bmp-telemetry-mes
 echo
 echo "Validating examples..."
 PASS=0; FAIL=0
-TMP=$(mktemp --suffix=.json)
+TMP_BASE=$(mktemp "${TMPDIR:-/tmp}/bmptm.XXXXXX")
+TMP="${TMP_BASE}.json"
+mv "$TMP_BASE" "$TMP"
 trap 'rm -f "$TMP"' EXIT
 
 for example in "${EXAMPLES_DIR}"/*.json; do
