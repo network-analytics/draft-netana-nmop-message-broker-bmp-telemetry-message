@@ -669,11 +669,7 @@
 
           <dt>path-id</dt>
           <dd>The BGP ADD-PATH path identifier (<xref target="RFC7911" />).
-            Zero when ADD-PATH is not in use.
-            <cref anchor="TODO-addpath-zero" source="authors">TODO: Consider
-            the zero value for path-id, which is also a valid ADD-PATH
-            path identifier and thus ambiguous with "ADD-PATH not in
-            use".</cref></dd>
+            Not included when ADD-PATH is not in use</dd>
         </dl>
 
         <t>Initiation and Termination messages do not carry a Per-Peer
