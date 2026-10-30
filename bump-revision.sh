@@ -3,7 +3,8 @@
 # statement per module): renames yang/<module>@<old>.yang, updates the
 # revision statement, yang/yang-lib-bmptm.xml, the sourcecode name and
 # include path in the latest draft XML and the draft <date>, then runs
-# ./validate.sh and regenerates the draft .txt with xml2rfc.
+# ./validate.sh, refreshes the <!-- src: FILE --> marked CDATA blocks
+# from the YANG/example files and regenerates the draft .txt with xml2rfc.
 #
 # Usage: ./bump-revision.sh [-d YYYY-MM-DD] [module ...]
 #   -d       new revision date (default: today)
@@ -55,8 +56,8 @@ for mod in "${MODULES[@]}"; do
   # <name>mod</name> followed by <revision>old</revision>
   perl -0pi -e "s|(<name>\Q${mod}\E</name>\s*<revision>)\Q${old}\E(</revision>)|\${1}${NEW}\${2}|" "$YANG_LIB"
 
-  # sourcecode name="mod@old.yang" and xi:include href="yang/mod@old.yang"
-  sed -i "s#\([\"/]\)${mod}@${old}\.yang\"#\1${mod}@${NEW}.yang\"#g" "$DRAFT_XML"
+  # sourcecode name="mod@old.yang" and <!-- src: yang/mod@old.yang -->
+  sed -i "s#\([\"/]\)${mod}@${old}\.yang\([\" ]\)#\1${mod}@${NEW}.yang\2#g" "$DRAFT_XML"
 
   echo "  ${mod}: ${old} -> ${NEW}"
 done
@@ -68,6 +69,18 @@ perl -pi -e "s|<date day=\"\d+\" month=\"\w+\" year=\"\d{4}\" />|<date day=\"${d
 echo "  draft date: ${day} ${month} ${year}"
 
 ./validate.sh
+
+# Refresh each CDATA block preceded by <!-- src: FILE --> with FILE's content
+perl -0pi -e '
+  sub slurp {
+    open my $f, "<", $_[0] or die "$_[0]: $!\n"; local $/; my $c = <$f>;
+    die "$_[0] contains ]]>\n" if $c =~ /\]\]>/;
+    $c .= "\n" unless $c =~ /\n\z/;
+    $c;
+  }
+  s{(<!-- src: (\S+) -->\s*<sourcecode[^>]*><!\[CDATA\[\n).*?(\]\]></sourcecode>)}{$1 . slurp($2) . $3}gse;
+' "$DRAFT_XML"
+echo "  synced CDATA blocks: $(grep -c '<!-- src: ' "$DRAFT_XML")"
 
 xml2rfc --allow-local-file-access --text "$DRAFT_XML"
 echo "Updated ${YANG_LIB}, ${DRAFT_XML} and ${DRAFT_XML%.xml}.txt"
