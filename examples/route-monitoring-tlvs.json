@@ -11,7 +11,7 @@
       "afi-safi-type": "iana-bgp-afi-safi-types:ipv4-unicast",
       "rib-type": "adj-rib-in-post",
       "rib-entry": {
-        "path-id": 0,
+        "path-id": 2,
         "nlri": {
           "ipv4-unicast": {
             "prefix": "192.0.2.0/24"

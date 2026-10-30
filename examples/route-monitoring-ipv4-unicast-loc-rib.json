@@ -15,7 +15,6 @@
       "rib-type": "loc-rib",
       "rib-entry": {
         "origin": "ietf-routing:static",
-        "path-id": 0,
         "nlri": {
           "ipv4-unicast": {
             "prefix": "198.51.100.0/24"

@@ -331,7 +331,7 @@ module ietf-bgp-rib-entry {
                adj-rib-in RIB types this is the received (Rx)
                path-id, for the adj-rib-out RIB types the sent (Tx)
                path-id. For the loc-rib it is a locally generated
-               value; zero if unused.";
+               value. Absent when ADD-PATH is not in use.";
             reference
               "RFC 7911: Advertisement of Multiple Paths in BGP.";
           }

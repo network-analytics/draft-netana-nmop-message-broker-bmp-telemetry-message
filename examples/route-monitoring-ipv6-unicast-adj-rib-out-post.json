@@ -16,7 +16,7 @@
       "afi-safi-type": "iana-bgp-afi-safi-types:ipv6-unicast",
       "rib-type": "adj-rib-out-post",
       "rib-entry": {
-        "path-id": 0,
+        "path-id": 3,
         "nlri": {
           "ipv6-unicast": {
             "prefix": "2001:db8:1::/48"

@@ -12,7 +12,6 @@
       "rib-type": "loc-rib",
       "rib-entry": {
         "origin": "2001:db8::1",
-        "path-id": 0,
         "nlri": {
           "ipv6-unicast": {
             "prefix": "2001:db8:abcd::/48"

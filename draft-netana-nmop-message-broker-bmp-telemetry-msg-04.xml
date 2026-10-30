@@ -364,184 +364,6 @@
 
     </section>
 
-    <section anchor="bmp-yang-modules">
-      <name>BMP YANG Modules</name>
-
-      <t>The 'ietf-bmp-message' YANG module defines the top-level BMP
-        message structure. It does not depend on
-        'ietf-telemetry-message': a BMP message can be used on its own
-        or carried in the "payload" of a Network Telemetry Message (<xref
-          target="bmp-in-telemetry-message" />). It carries a mandatory
-        version leaf from the BMP Common Header and a message-type
-        choice covering all seven BMP message types: route-monitoring,
-        statistics-report, peer-down-notification, peer-up-notification,
-        initiation-message, termination-message, and
-        route-mirroring-message.</t>
-
-      <t>The 'ietf-bmp-peer-header' module provides the peer-type
-        typedef and the peer-header-flags grouping decoded from the BMP
-        Per-Peer Header. It is imported by both 'ietf-bmp-message', for
-        the per-peer header itself, and 'ietf-bmp-tlv', for the Extended
-        Flags TLV, which extends the same flag bits to a variable-length
-        byte sequence.</t>
-
-      <t>The 'ietf-bmp-statistics' module provides the statistics
-        grouping used by statistics-report messages. Each Stat Type of
-        the IANA 'BMP Statistics Types' registry (<xref target="RFC7854" />
-        ,<xref target="RFC8671" />, and <xref target="RFC9972" />) is
-        modeled as a named data node, for example routes-in-loc-rib,
-        whose YANG type reflects the encoding of its Stat Data. Because
-        a new Stat Type requires a new node, and thereby a module
-        revision, a catch-all unknown list carries Stat Types that are
-        not yet modeled, or whose Stat Data cannot be decoded, as raw
-        binary, so no statistic has to be dropped.</t>
-
-      <t>The 'ietf-bgp-rib-entry' module provides the rib-entry grouping
-        used by route-monitoring and route-mirroring messages. The route
-        is represented once, in a flat structure, instead of being
-        duplicated per AFI-SAFI and per RIB type. The 'afi-safi-type'
-        and 'rib-type' leaves are siblings of the rib-entry container,
-        so that consumers can select messages by AFI-SAFI and RIB
-        without parsing the entry. 'rib-type' names the RIB the entry
-        belongs to, using the RIB names of <xref
-          target="I-D.ietf-idr-bgp-model" />: loc-rib, adj-rib-in-pre,
-        adj-rib-in-post, adj-rib-out-pre, or adj-rib-out-post. The
-        optional 'path-id' (the received path-id for Adj-RIB-In, the
-        sent path-id for Adj-RIB-Out) is a field of the rib-entry, as
-        are the BGP path attributes and community attributes. The 'nlri'
-        container carries the NLRI in a container named after the
-        AFI-SAFI identity given by afi-safi-type, for example
-        nlri/ipv4-unicast/prefix; other AFI-SAFIs can be added by
-        augmenting the choice with a container in the same way. Instead
-        of a route, a rib-entry can carry an end-of-rib marker, which
-        represents the End-of-RIB marker (<xref
-          target="RFC4724" section="2" sectionFormat="of" />) for the
-        AFI-SAFI given by afi-safi-type and the RIB given by rib-type.</t>
-
-      <t>The 'ietf-bgp-open' module provides the bgp-open grouping,
-        which carries the BGP OPEN message fields: protocol version,
-        Autonomous System number, hold time, BGP identifier, and the
-        negotiated capability list. It is used in peer-up-notification
-        for both the sent and received OPEN messages.</t>
-
-      <t>The 'ietf-bmp-tlv' module provides groupings for the decoded
-        content of BMP TLVs. The common grouping (sequence number,
-        timestamps, extended flags, and an unknown-tlvs catch-all for
-        TLV types not yet modeled) is used by all seven BMP message
-        types. The other groupings are each specific to one message
-        type: Initiation, Peer Up (including the Admin Label TLV of <xref
-          target="RFC9736" />), Termination, Peer Down, and Route
-        Monitoring.</t>
-
-      <t>The 'ietf-bmp-telemetry-message' YANG module extends
-        'ietf-telemetry-message' for BMP. It defines the bmp identity,
-        derived from session-protocol, and augments
-        telemetry-message-metadata with the bmp-session container, which
-        carries the BMP session metadata maintained by the data
-        collector. Its use is described in <xref
-          target="bmp-session-metadata" />.</t>
-
-      <!-- ietf-bmp-message YANG Tree -->
-      <figure anchor="ietf-bmp-message-tree"
-        title="YANG tree diagram for 'ietf-bmp-message' module.">
-        <sourcecode type="yangtree">
-<xi:include href="yang/tree-bmp-message-L69.txt" parse="text" />
-</sourcecode>
-      </figure>
-
-      <!-- ietf-bmp-telemetry-message YANG Tree -->
-      <figure anchor="ietf-bmp-telemetry-message-tree"
-        title="YANG tree diagram for 'ietf-bmp-telemetry-message' module.">
-        <sourcecode type="yangtree">
-<xi:include href="yang/tree-bmp-telemetry-message-L69.txt" parse="text" />
-</sourcecode>
-      </figure>
-
-      <section anchor="ietf-bmp-message-module">
-        <name>BMP Message YANG Module</name>
-
-        <!-- ietf-bmp-message YANG Module -->
-        <figure title="BMP YANG 'ietf-bmp-message' module.">
-          <sourcecode name="ietf-bmp-message@2026-10-30.yang"
-            type="yang" markers="true">
-<xi:include href="yang/ietf-bmp-message@2026-10-30.yang" parse="text" />
-</sourcecode>
-        </figure>
-      </section>
-
-      <section anchor="ietf-bmp-telemetry-message-module">
-        <name>BMP Telemetry Message YANG Module</name>
-
-        <!-- ietf-bmp-telemetry-message YANG Module -->
-        <figure title="BMP YANG 'ietf-bmp-telemetry-message' module.">
-          <sourcecode name="ietf-bmp-telemetry-message@2026-10-30.yang"
-            type="yang" markers="true">
-<xi:include href="yang/ietf-bmp-telemetry-message@2026-10-30.yang" parse="text" />
-</sourcecode>
-        </figure>
-      </section>
-
-      <section anchor="ietf-bgp-open-module">
-        <name>BGP Open Message YANG Module</name>
-
-        <!-- ietf-bgp-open YANG Module -->
-        <figure title="BMP YANG 'ietf-bgp-open' module.">
-          <sourcecode name="ietf-bgp-open@2026-10-30.yang"
-            type="yang" markers="true">
-<xi:include href="yang/ietf-bgp-open@2026-10-30.yang" parse="text" />
-</sourcecode>
-        </figure>
-      </section>
-
-      <section anchor="ietf-bgp-rib-entry-module">
-        <name>BGP RIB Entry YANG Module</name>
-
-        <!-- ietf-bgp-rib-entry YANG Module -->
-        <figure title="BMP YANG 'ietf-bgp-rib-entry' module.">
-          <sourcecode name="ietf-bgp-rib-entry@2026-10-30.yang"
-            type="yang" markers="true">
-<xi:include href="yang/ietf-bgp-rib-entry@2026-10-30.yang" parse="text" />
-</sourcecode>
-        </figure>
-      </section>
-
-      <section anchor="ietf-bmp-tlv-module">
-        <name>BMP TLV YANG Module</name>
-
-        <!-- ietf-bmp-tlv YANG Module -->
-        <figure title="BMP YANG 'ietf-bmp-tlv' module.">
-          <sourcecode name="ietf-bmp-tlv@2026-10-30.yang"
-            type="yang" markers="true">
-<xi:include href="yang/ietf-bmp-tlv@2026-10-30.yang" parse="text" />
-</sourcecode>
-        </figure>
-      </section>
-
-      <section anchor="ietf-bmp-peer-header-module">
-        <name>BMP Per-Peer Header YANG Module</name>
-
-        <!-- ietf-bmp-peer-header YANG Module -->
-        <figure title="BMP YANG 'ietf-bmp-peer-header' module.">
-          <sourcecode name="ietf-bmp-peer-header@2026-10-30.yang"
-            type="yang" markers="true">
-<xi:include href="yang/ietf-bmp-peer-header@2026-10-30.yang" parse="text" />
-</sourcecode>
-        </figure>
-      </section>
-
-      <section anchor="ietf-bmp-statistics-module">
-        <name>BMP Statistics YANG Module</name>
-
-        <!-- ietf-bmp-statistics YANG Module -->
-        <figure title="BMP YANG 'ietf-bmp-statistics' module.">
-          <sourcecode name="ietf-bmp-statistics@2026-10-30.yang"
-            type="yang" markers="true">
-<xi:include href="yang/ietf-bmp-statistics@2026-10-30.yang" parse="text" />
-</sourcecode>
-        </figure>
-      </section>
-    </section>
-
     <section anchor="bmp-in-telemetry-message">
       <name>Carrying BMP Messages in Network Telemetry Messages</name>
 
@@ -860,7 +682,7 @@
 
           <dt>path-id</dt>
           <dd>The BGP ADD-PATH path identifier (<xref target="RFC7911" />).
-            Zero when ADD-PATH is not in use.</dd>
+            Not included when ADD-PATH is not in use.</dd>
         </dl>
 
         <t>Initiation and Termination messages do not carry a Per-Peer
@@ -1064,7 +886,7 @@ Key:
 [peer-bgp-id='203.0.113.1']\
 [afi-safi-type='iana-bgp-afi-safi-types:ipv4-unicast']\
 [rib-type='adj-rib-in-post']\
-/rib-entry[path-id='0']\
+/rib-entry[path-id='2']\
 /nlri/ipv4-unicast[prefix='192.0.2.0/24']
 
 Headers:
@@ -1140,7 +962,7 @@ Key:
 [peer-bgp-id='203.0.113.1']\
 [afi-safi-type='iana-bgp-afi-safi-types:ipv4-unicast']\
 [rib-type='adj-rib-in-post']\
-/rib-entry[path-id='0']\
+/rib-entry[path-id='2']\
 /nlri/ipv4-unicast[prefix='192.0.2.0/24']
 
 Headers:
@@ -1252,6 +1074,184 @@ netops-bmp-state-changes-and-statistics
 
         <t>This document introduces "partition-key" which is to be used
           as ordering key.</t>
+      </section>
+    </section>
+
+    <section anchor="bmp-yang-modules">
+      <name>BMP YANG Modules</name>
+
+      <t>The 'ietf-bmp-message' YANG module defines the top-level BMP
+        message structure. It does not depend on
+        'ietf-telemetry-message': a BMP message can be used on its own
+        or carried in the "payload" of a Network Telemetry Message (<xref
+          target="bmp-in-telemetry-message" />). It carries a mandatory
+        version leaf from the BMP Common Header and a message-type
+        choice covering all seven BMP message types: route-monitoring,
+        statistics-report, peer-down-notification, peer-up-notification,
+        initiation-message, termination-message, and
+        route-mirroring-message.</t>
+
+      <t>The 'ietf-bmp-peer-header' module provides the peer-type
+        typedef and the peer-header-flags grouping decoded from the BMP
+        Per-Peer Header. It is imported by both 'ietf-bmp-message', for
+        the per-peer header itself, and 'ietf-bmp-tlv', for the Extended
+        Flags TLV, which extends the same flag bits to a variable-length
+        byte sequence.</t>
+
+      <t>The 'ietf-bmp-statistics' module provides the statistics
+        grouping used by statistics-report messages. Each Stat Type of
+        the IANA 'BMP Statistics Types' registry (<xref target="RFC7854" />
+        ,<xref target="RFC8671" />, and <xref target="RFC9972" />) is
+        modeled as a named data node, for example routes-in-loc-rib,
+        whose YANG type reflects the encoding of its Stat Data. Because
+        a new Stat Type requires a new node, and thereby a module
+        revision, a catch-all unknown list carries Stat Types that are
+        not yet modeled, or whose Stat Data cannot be decoded, as raw
+        binary, so no statistic has to be dropped.</t>
+
+      <t>The 'ietf-bgp-rib-entry' module provides the rib-entry grouping
+        used by route-monitoring and route-mirroring messages. The route
+        is represented once, in a flat structure, instead of being
+        duplicated per AFI-SAFI and per RIB type. The 'afi-safi-type'
+        and 'rib-type' leaves are siblings of the rib-entry container,
+        so that consumers can select messages by AFI-SAFI and RIB
+        without parsing the entry. 'rib-type' names the RIB the entry
+        belongs to, using the RIB names of <xref
+          target="I-D.ietf-idr-bgp-model" />: loc-rib, adj-rib-in-pre,
+        adj-rib-in-post, adj-rib-out-pre, or adj-rib-out-post. The
+        optional 'path-id' (the received path-id for Adj-RIB-In, the
+        sent path-id for Adj-RIB-Out) is a field of the rib-entry, as
+        are the BGP path attributes and community attributes. The 'nlri'
+        container carries the NLRI in a container named after the
+        AFI-SAFI identity given by afi-safi-type, for example
+        nlri/ipv4-unicast/prefix; other AFI-SAFIs can be added by
+        augmenting the choice with a container in the same way. Instead
+        of a route, a rib-entry can carry an end-of-rib marker, which
+        represents the End-of-RIB marker (<xref
+          target="RFC4724" section="2" sectionFormat="of" />) for the
+        AFI-SAFI given by afi-safi-type and the RIB given by rib-type.</t>
+
+      <t>The 'ietf-bgp-open' module provides the bgp-open grouping,
+        which carries the BGP OPEN message fields: protocol version,
+        Autonomous System number, hold time, BGP identifier, and the
+        negotiated capability list. It is used in peer-up-notification
+        for both the sent and received OPEN messages.</t>
+
+      <t>The 'ietf-bmp-tlv' module provides groupings for the decoded
+        content of BMP TLVs. The common grouping (sequence number,
+        timestamps, extended flags, and an unknown-tlvs catch-all for
+        TLV types not yet modeled) is used by all seven BMP message
+        types. The other groupings are each specific to one message
+        type: Initiation, Peer Up (including the Admin Label TLV of <xref
+          target="RFC9736" />), Termination, Peer Down, and Route
+        Monitoring.</t>
+
+      <t>The 'ietf-bmp-telemetry-message' YANG module extends
+        'ietf-telemetry-message' for BMP. It defines the bmp identity,
+        derived from session-protocol, and augments
+        telemetry-message-metadata with the bmp-session container, which
+        carries the BMP session metadata maintained by the data
+        collector. Its use is described in <xref
+          target="bmp-session-metadata" />.</t>
+
+      <!-- ietf-bmp-message YANG Tree -->
+      <figure anchor="ietf-bmp-message-tree"
+        title="YANG tree diagram for 'ietf-bmp-message' module.">
+        <sourcecode type="yangtree">
+<xi:include href="yang/tree-bmp-message-L69.txt" parse="text" />
+</sourcecode>
+      </figure>
+
+      <!-- ietf-bmp-telemetry-message YANG Tree -->
+      <figure anchor="ietf-bmp-telemetry-message-tree"
+        title="YANG tree diagram for 'ietf-bmp-telemetry-message' module.">
+        <sourcecode type="yangtree">
+<xi:include href="yang/tree-bmp-telemetry-message-L69.txt" parse="text" />
+</sourcecode>
+      </figure>
+
+      <section anchor="ietf-bmp-message-module">
+        <name>BMP Message YANG Module</name>
+
+        <!-- ietf-bmp-message YANG Module -->
+        <figure title="BMP YANG 'ietf-bmp-message' module.">
+          <sourcecode name="ietf-bmp-message@2026-10-30.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bmp-message@2026-10-30.yang" parse="text" />
+</sourcecode>
+        </figure>
+      </section>
+
+      <section anchor="ietf-bmp-telemetry-message-module">
+        <name>BMP Telemetry Message YANG Module</name>
+
+        <!-- ietf-bmp-telemetry-message YANG Module -->
+        <figure title="BMP YANG 'ietf-bmp-telemetry-message' module.">
+          <sourcecode name="ietf-bmp-telemetry-message@2026-10-30.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bmp-telemetry-message@2026-10-30.yang" parse="text" />
+</sourcecode>
+        </figure>
+      </section>
+
+      <section anchor="ietf-bgp-open-module">
+        <name>BGP Open Message YANG Module</name>
+
+        <!-- ietf-bgp-open YANG Module -->
+        <figure title="BMP YANG 'ietf-bgp-open' module.">
+          <sourcecode name="ietf-bgp-open@2026-10-30.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bgp-open@2026-10-30.yang" parse="text" />
+</sourcecode>
+        </figure>
+      </section>
+
+      <section anchor="ietf-bgp-rib-entry-module">
+        <name>BGP RIB Entry YANG Module</name>
+
+        <!-- ietf-bgp-rib-entry YANG Module -->
+        <figure title="BMP YANG 'ietf-bgp-rib-entry' module.">
+          <sourcecode name="ietf-bgp-rib-entry@2026-10-30.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bgp-rib-entry@2026-10-30.yang" parse="text" />
+</sourcecode>
+        </figure>
+      </section>
+
+      <section anchor="ietf-bmp-tlv-module">
+        <name>BMP TLV YANG Module</name>
+
+        <!-- ietf-bmp-tlv YANG Module -->
+        <figure title="BMP YANG 'ietf-bmp-tlv' module.">
+          <sourcecode name="ietf-bmp-tlv@2026-10-30.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bmp-tlv@2026-10-30.yang" parse="text" />
+</sourcecode>
+        </figure>
+      </section>
+
+      <section anchor="ietf-bmp-peer-header-module">
+        <name>BMP Per-Peer Header YANG Module</name>
+
+        <!-- ietf-bmp-peer-header YANG Module -->
+        <figure title="BMP YANG 'ietf-bmp-peer-header' module.">
+          <sourcecode name="ietf-bmp-peer-header@2026-10-30.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bmp-peer-header@2026-10-30.yang" parse="text" />
+</sourcecode>
+        </figure>
+      </section>
+
+      <section anchor="ietf-bmp-statistics-module">
+        <name>BMP Statistics YANG Module</name>
+
+        <!-- ietf-bmp-statistics YANG Module -->
+        <figure title="BMP YANG 'ietf-bmp-statistics' module.">
+          <sourcecode name="ietf-bmp-statistics@2026-10-30.yang"
+            type="yang" markers="true">
+<xi:include href="yang/ietf-bmp-statistics@2026-10-30.yang" parse="text" />
+</sourcecode>
+        </figure>
       </section>
     </section>
 
