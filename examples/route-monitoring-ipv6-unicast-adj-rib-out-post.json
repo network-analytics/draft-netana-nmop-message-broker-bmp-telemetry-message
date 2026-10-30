@@ -13,12 +13,14 @@
       "peer-as": 65002,
       "peer-bgp-id": "203.0.113.1",
       "timestamp": "2026-06-03T09:00:00Z",
+      "afi-safi-type": "iana-bgp-afi-safi-types:ipv6-unicast",
+      "rib-type": "adj-rib-out-post",
       "rib-entry": {
-        "afi-safi-type": "iana-bgp-types:ipv6-unicast",
-        "rib-type": "adj-rib-out-post-policy",
         "path-id": 0,
         "nlri": {
-          "ipv6-prefix": "2001:db8:1::/48"
+          "ipv6-unicast": {
+            "prefix": "2001:db8:1::/48"
+          }
         },
         "attributes": {
           "origin": "igp",

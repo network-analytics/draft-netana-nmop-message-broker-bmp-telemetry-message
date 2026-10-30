@@ -12,11 +12,13 @@
         "best": true,
         "primary": true
       },
+      "afi-safi-type": "iana-bgp-afi-safi-types:ipv4-unicast",
+      "rib-type": "adj-rib-in-pre",
       "rib-entry": {
-        "afi-safi-type": "iana-bgp-types:ipv4-unicast",
-        "rib-type": "adj-rib-in-pre-policy",
         "nlri": {
-          "ipv4-prefix": "198.51.100.0/24"
+          "ipv4-unicast": {
+            "prefix": "198.51.100.0/24"
+          }
         },
         "attributes": {
           "origin": "igp",

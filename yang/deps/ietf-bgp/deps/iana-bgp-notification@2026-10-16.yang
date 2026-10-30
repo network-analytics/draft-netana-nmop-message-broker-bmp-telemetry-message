@@ -3,6 +3,12 @@ module iana-bgp-notification {
   namespace "urn:ietf:params:xml:ns:yang:iana-bgp-notification";
   prefix bn;
 
+  import ietf-yang-semver {
+    prefix ysv;
+    reference
+      "I-D.ietf-netmod-yang-semver: YANG Semantic Versioning";
+  }
+
   organization
     "IANA";
   contact
@@ -27,7 +33,7 @@ module iana-bgp-notification {
      'BGP Error (Notification) Codes' and 'BGP Error Subcodes'
      registry at IANA.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code. All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -37,9 +43,11 @@ module iana-bgp-notification {
      Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
 
-     This version of this YANG module is part of RFC XXXX
-     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
-     for full legal notices.
+     The initial version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.
+
+     The most recent version of this YANG module is available at
+     <https://www.iana.org/assignments/iana-bgp-notification>.
 
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
      NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
@@ -47,9 +55,10 @@ module iana-bgp-notification {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-02 {
+  revision 2026-10-16 {
     description
       "Initial Version";
+    ysv:version 0.0.9;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -102,7 +111,6 @@ module iana-bgp-notification {
 
        - if the Length field of the message header is less than 19 or
          greater than 4096, or
-
        - if the Length field of an OPEN message is less than the
          minimum length of the OPEN message, or
 
@@ -155,6 +163,7 @@ module iana-bgp-notification {
        (Unspecific) value is used for the Error Subcode field.
 
        The value of the 'Unspecific Error' subcode is 0.
+
        From Section 6.2:
        If one of the Optional Parameters in the OPEN message is
        recognized, but is malformed, then the Error Subcode MUST be
@@ -582,7 +591,6 @@ module iana-bgp-notification {
     reference
       "RFC 4271: A Border Gateway Protocol 4 (BGP-4), Section 6.7.";
   }
-
   identity cease-max-prefixes {
     base cease;
     description
@@ -605,13 +613,13 @@ module iana-bgp-notification {
        If a BGP speaker decides to terminate its peering with a
        neighbor because the number of address prefixes received from
        the neighbor exceeds a locally configured upper bound (as
-       described in [BGP-4]), then the speaker MUST send to the
+       described in [RFC4271]), then the speaker MUST send to the
        neighbor a NOTIFICATION message with the Error Code Cease and
        the Error Subcode 'Maximum Number of Prefixes Reached'.  The
        message MAY optionally include the Address Family information
-       [BGP-MP] and the upper bound in the 'Data' field, as shown in
+       [RFC4760] and the upper bound in the 'Data' field, as shown in
        Figure 1, where the meaning and use of the <AFI, SAFI> tuple
-       is the same as defined in [BGP-MP], Section 7.
+       is the same as defined in [RFC4760], Section 7.
 
        The value of the 'Maximum Number of Prefixes Reached' Error
        subcode is 1.";
@@ -634,6 +642,7 @@ module iana-bgp-notification {
       "RFC 4486: Subcodes for BGP Cease Notification Message, Section
        4.";
   }
+
   identity cease-peer-deconfigured {
     base cease;
     description
@@ -697,7 +706,7 @@ module iana-bgp-notification {
     description
       "If a BGP speaker decides to send a NOTIFICATION message with
        the Error Code Cease as a result of the collision resolution
-       procedure (as described in [BGP-4]), then the subcode SHOULD
+       procedure (as described in [RFC4271]), then the subcode SHOULD
        be set to 'Connection Collision Resolution'.
 
        The value of the 'Connection Collision Resolution' Error
@@ -724,9 +733,9 @@ module iana-bgp-notification {
   identity cease-hard-reset {
     base cease;
     description
-      "[RFC 8538] defines a new subcode for BGP Cease NOTIFICATION
+      "[RFC8538] defines a new subcode for BGP Cease NOTIFICATION
        messages, called the Hard Reset subcode.  The value of this
-       subcode is [9].  In this document, a BGP Cease NOTIFICATION
+       subcode is 9.  In this document, a BGP Cease NOTIFICATION
        message with the Hard Reset subcode is referred to as a 'Hard
        Reset message' or simply as a 'Hard Reset'.
 
@@ -774,7 +783,6 @@ module iana-bgp-notification {
        RFC 7313: Enhanced Route Refresh Capability for BGP-4, Section
        6.";
   }
-
   identity route-refresh-invalid-message-length {
     base route-refresh-message-error;
     description

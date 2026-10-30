@@ -18,8 +18,8 @@ module ietf-bgp {
     reference
       "RFC 9067: A YANG Data Model for Routing Policy.";
   }
-  import iana-bgp-types {
-    prefix bt;
+  import ietf-bgp-types {
+    prefix ibt;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -33,29 +33,34 @@ module ietf-bgp {
     reference
       "RFC 9911: Common YANG Data Types.";
   }
+  import ietf-yang-semver {
+    prefix ysv;
+    reference
+      "I-D.ietf-netmod-yang-semver: YANG Semantic Versioning";
+  }
   include ietf-bgp-capabilities {
-    revision-date 2026-03-02;
+    revision-date 2026-10-16;
   }
   include ietf-bgp-common {
-    revision-date 2026-03-02;
+    revision-date 2026-10-16;
   }
   include ietf-bgp-common-errors {
-    revision-date 2026-03-02;
+    revision-date 2026-10-16;
   }
   include ietf-bgp-common-multiprotocol {
-    revision-date 2026-03-02;
+    revision-date 2026-10-16;
   }
   include ietf-bgp-neighbor {
-    revision-date 2026-03-02;
+    revision-date 2026-10-16;
   }
   include ietf-bgp-rib {
-    revision-date 2026-03-02;
+    revision-date 2026-10-16;
   }
   include ietf-bgp-rib-attributes {
-    revision-date 2026-03-02;
+    revision-date 2026-10-16;
   }
   include ietf-bgp-rib-tables {
-    revision-date 2026-03-02;
+    revision-date 2026-10-16;
   }
 
   organization
@@ -94,7 +99,7 @@ module ietf-bgp {
           +-> [ optional pointer to peer-group ]
           +-> AFI / SAFI [ per-AFI overrides ]
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code. All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -114,9 +119,10 @@ module ietf-bgp {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-02 {
+  revision 2026-10-16 {
     description
       "Initial Version";
+    ysv:version 0.0.9;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -200,7 +206,7 @@ module ietf-bgp {
             "RFC 6286: AS-Wide Unique BGP ID for BGP-4. Section 2.1";
         }
         container distance {
-          if-feature "bt:distance";
+          if-feature "ibt:distance";
           description
             "Administrative distances (or preferences) assigned to
              routes received from different sources (external, and
@@ -250,7 +256,7 @@ module ietf-bgp {
           }
         }
         container graceful-restart {
-          if-feature "bt:graceful-restart";
+          if-feature "ibt:graceful-restart";
           description
             "Parameters relating the graceful restart mechanism for
              BGP.";
@@ -272,7 +278,7 @@ module ietf-bgp {
             uses mp-afi-safi-config;
             uses state;
             container graceful-restart {
-              if-feature "bt:graceful-restart";
+              if-feature "ibt:graceful-restart";
               description
                 "Parameters relating to BGP graceful-restart";
               reference
@@ -291,16 +297,32 @@ module ietf-bgp {
 
       container neighbors {
         description
-          "Configuration for BGP neighbors.";
+          "Configuration and operational state for BGP neighbors.";
 
         list neighbor {
-          key "remote-address";
+          key "neighbor-key";
           description
             "List of BGP neighbors configured on the local system,
-             uniquely identified by remote IPv[46] address.";
+             uniquely identified by a neighbor key that by default
+             corresponds to the remote peer's IP address.";
+
+          leaf neighbor-key {
+            type leafref {
+              path "../remote-address";
+            }
+            description
+              "The key used to identify this BGP neighbor in the
+               list. By default, this references the remote IP
+               address of the peer, decoupling the list key from
+               the peer address leaf so that implementations can
+               more easily augment or deviate the keying strategy
+               without disrupting other parts of the model that
+               depend on remote-address.";
+          }
 
           leaf remote-address {
             type inet:ip-address;
+            mandatory true;
             description
               "The remote IP address of this entry's BGP peer.";
           }
@@ -342,7 +364,7 @@ module ietf-bgp {
           }
 
           leaf peer-type {
-            type bt:peer-type;
+            type ibt:peer-type;
             config false;
             description
               "The type of peering session associated with this
@@ -403,7 +425,7 @@ module ietf-bgp {
           uses neighbor-group-config;
 
           container graceful-restart {
-            if-feature "bt:graceful-restart";
+            if-feature "ibt:graceful-restart";
             description
               "Parameters relating the graceful restart mechanism for
                BGP.";
@@ -433,7 +455,7 @@ module ietf-bgp {
               type boolean;
               config false;
               description
-                "This flag indicates whether the local neighbor is
+                "This flag indicates whether the local session is
                  currently restarting. The flag is cleared after all
                  NLRI have been advertised to the peer, and the
                  End-of-RIB (EOR) marker has been cleared.";
@@ -443,14 +465,14 @@ module ietf-bgp {
               type enumeration {
                 enum helper-only {
                   description
-                    "The local router is operating in helper-only
+                    "The local system is operating in helper-only
                      mode, and hence will not retain forwarding state
                      during a local session restart, but will do so
                      during a restart of the remote peer";
                 }
                 enum bilateral {
                   description
-                    "The local router is operating in both helper
+                    "The local system is operating in both helper
                      mode, and hence retains forwarding state during
                      a remote restart, and also maintains forwarding
                      state during local session restart";
@@ -534,13 +556,11 @@ module ietf-bgp {
             description
               "This timestamp indicates the time that the BGP session
                last transitioned in or out of the Established state.
-               The value is the timestamp in seconds relative to the
-               Unix Epoch (Jan 1, 1970 00:00:00 UTC).
 
                The BGP session uptime can be computed by clients as
                the difference between this value and the current time
-               in UTC (assuming the session is in the Established
-               state, per the session-state leaf).";
+               (assuming the session is in the Established state,
+               per the session-state leaf).";
             reference
               "RFC 4271: A Border Gateway Protocol 4 (BGP-4),
                Section 8.";
@@ -553,7 +573,6 @@ module ietf-bgp {
             description
               "Information about BGP NOTIFICATION messages, sent and
                received for this neighbor.";
-
             container received {
               description
                 "BGP NOTIFICATION message state received from this
@@ -652,12 +671,12 @@ module ietf-bgp {
               }
             }
             action clear {
-              if-feature "bt:clear-statistics";
+              if-feature "ibt:clear-statistics";
               description
                 "Clear statistics action command.
 
                  Execution of this command should result in all the
-                 counters to be cleared and set to 0.";
+                 statistics to be cleared and set to 0.";
 
               input {
                 leaf clear-at {
@@ -725,7 +744,7 @@ module ietf-bgp {
              Established state.";
         }
         action clear {
-          if-feature "bt:clear-neighbors";
+          if-feature "ibt:clear-neighbors";
           description
             "Clear neighbors action.";
 
@@ -768,7 +787,7 @@ module ietf-bgp {
               }
               case operation-soft-inbound {
                 leaf soft-inbound {
-                  if-feature "bt:route-refresh";
+                  if-feature "ibt:route-refresh";
                   type empty;
                   description
                     "Requests the Adj-Rib-In for this neighbor to be
@@ -814,7 +833,7 @@ module ietf-bgp {
           uses dynamic-peers;
 
           container graceful-restart {
-            if-feature "bt:graceful-restart";
+            if-feature "ibt:graceful-restart";
             description
               "Parameters relating the graceful restart mechanism for
                BGP.";
@@ -844,7 +863,7 @@ module ietf-bgp {
                 "RFC 4724: Graceful Restart Mechanism for BGP.";
               uses mp-afi-safi-config;
               container graceful-restart {
-                if-feature "bt:graceful-restart";
+                if-feature "ibt:graceful-restart";
                 description
                   "Parameters relating to BGP graceful-restart";
                 uses mp-afi-safi-graceful-restart-config;

@@ -5,61 +5,86 @@
     <!-- ietf-bgp with all submodules -->
     <module>
       <name>ietf-bgp</name>
-      <revision>2026-03-02</revision>
+      <revision>2026-10-16</revision>
       <namespace>urn:ietf:params:xml:ns:yang:ietf-bgp</namespace>
       <submodule>
         <name>ietf-bgp-capabilities</name>
-        <revision>2026-03-02</revision>
+        <revision>2026-10-16</revision>
       </submodule>
       <submodule>
         <name>ietf-bgp-common</name>
-        <revision>2026-03-02</revision>
+        <revision>2026-10-16</revision>
       </submodule>
       <submodule>
         <name>ietf-bgp-common-errors</name>
-        <revision>2026-03-02</revision>
+        <revision>2026-10-16</revision>
       </submodule>
       <submodule>
         <name>ietf-bgp-common-multiprotocol</name>
-        <revision>2026-03-02</revision>
+        <revision>2026-10-16</revision>
       </submodule>
       <submodule>
         <name>ietf-bgp-neighbor</name>
-        <revision>2026-03-02</revision>
+        <revision>2026-10-16</revision>
       </submodule>
       <submodule>
         <name>ietf-bgp-rib</name>
-        <revision>2026-03-02</revision>
+        <revision>2026-10-16</revision>
       </submodule>
       <submodule>
         <name>ietf-bgp-rib-attributes</name>
-        <revision>2026-03-02</revision>
+        <revision>2026-10-16</revision>
       </submodule>
       <submodule>
         <name>ietf-bgp-rib-tables</name>
-        <revision>2026-03-02</revision>
+        <revision>2026-10-16</revision>
       </submodule>
     </module>
 
     <!-- ietf-bgp dependencies -->
     <module>
-      <name>iana-bgp-types</name>
-      <revision>2026-03-02</revision>
-      <namespace>urn:ietf:params:xml:ns:yang:iana-bgp-types</namespace>
+      <name>iana-bgp-afi-safi-types</name>
+      <revision>2026-10-16</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:iana-bgp-afi-safi-types</namespace>
+    </module>
+    <module>
+      <name>iana-bgp-capabilities</name>
+      <revision>2026-10-16</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:iana-bgp-capabilities</namespace>
+    </module>
+    <module>
+      <name>ietf-bgp-types</name>
+      <revision>2026-10-16</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-bgp-types</namespace>
+    </module>
+    <module>
+      <name>ietf-bgp-community-types</name>
+      <revision>2026-10-16</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-bgp-community-types</namespace>
+    </module>
+    <module>
+      <name>ietf-bgp-session-security</name>
+      <revision>2026-10-16</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-bgp-session-security</namespace>
+    </module>
+    <module>
+      <name>ietf-yang-semver</name>
+      <revision>2026-03-03</revision>
+      <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-semver</namespace>
     </module>
     <module>
       <name>iana-bgp-community-types</name>
-      <revision>2024-10-21</revision>
+      <revision>2026-10-16</revision>
       <namespace>urn:ietf:params:xml:ns:yang:iana-bgp-community-types</namespace>
     </module>
     <module>
       <name>iana-bgp-rib-types</name>
-      <revision>2026-03-02</revision>
+      <revision>2026-10-16</revision>
       <namespace>urn:ietf:params:xml:ns:yang:iana-bgp-rib-types</namespace>
     </module>
     <module>
       <name>iana-bgp-notification</name>
-      <revision>2026-03-02</revision>
+      <revision>2026-10-16</revision>
       <namespace>urn:ietf:params:xml:ns:yang:iana-bgp-notification</namespace>
     </module>
     <module>

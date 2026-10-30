@@ -4,13 +4,18 @@ submodule ietf-bgp-common {
     prefix bgp;
   }
 
-  import iana-bgp-types {
-    prefix bt;
+  import ietf-bgp-types {
+    prefix ibt;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
-  import iana-bgp-community-types {
-    prefix bct;
+  import ietf-bgp-community-types {
+    prefix ibct;
+    reference
+      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+  }
+  import ietf-bgp-session-security {
+    prefix ibss;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -18,11 +23,6 @@ submodule ietf-bgp-common {
     prefix if;
     reference
       "RFC 8343: A YANG Data Model for Interface Management.";
-  }
-  import ietf-key-chain {
-    prefix key-chain;
-    reference
-      "RFC 8177: YANG Data Model for Key Chains.";
   }
   import ietf-inet-types {
     prefix inet;
@@ -50,7 +50,11 @@ submodule ietf-bgp-common {
     reference
       "RFC 9648: YANG Data Model for TCP.";
   }
-
+  import ietf-yang-semver {
+    prefix ysv;
+    reference
+      "I-D.ietf-netmod-yang-semver: YANG Semantic Versioning";
+  }
   organization
     "IETF IDR Working Group";
   contact
@@ -68,7 +72,7 @@ submodule ietf-bgp-common {
      they may be application to a subset of global, peer-group, or
      neighbor contexts.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code. All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -88,9 +92,10 @@ submodule ietf-bgp-common {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-02 {
+  revision 2026-10-16 {
     description
       "Initial Version";
+    ysv:version 0.0.9;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -274,7 +279,7 @@ submodule ietf-bgp-common {
           RFC 7606: Revised Error Handling for BGP UPDATE Messages.";
     }
     leaf remove-private-as {
-      type bt:remove-private-as-option;
+      type ibt:remove-private-as-option;
       description
         "When this leaf is specified, remove private AS numbers from
          updates sent to peers.";
@@ -283,7 +288,7 @@ submodule ietf-bgp-common {
          Use.";
     }
     container route-flap-damping {
-      if-feature "bt:damping";
+      if-feature "ibt:damping";
       leaf enable {
         type boolean;
         default "false";
@@ -357,16 +362,19 @@ submodule ietf-bgp-common {
       }
       description
         "Routes learned via BGP are subject to weighted route
-         dampening.";
+         damping.";
+      reference
+        "RFC 2439: BGP Route Flap Damping.";
     }
     leaf-list send-community {
-      if-feature "bct:send-communities";
+      if-feature "ibct:send-communities";
       type identityref {
-        base "bct:send-community-feature";
+        base "ibct:send-community-feature";
       }
       description
         "When supported, this tells the router to propagate any
-         prefixes that are attached to these community-types.";
+         communities that are attached to BGP routes for these
+         community-types.";
     }
     leaf description {
       type string;
@@ -374,6 +382,7 @@ submodule ietf-bgp-common {
         "An optional textual description (intended primarily for use
          with a peer or group";
     }
+
     container timers {
       description
         "Timers related to a BGP neighbor";
@@ -489,7 +498,7 @@ submodule ietf-bgp-common {
     }
 
     leaf ttl-security {
-      if-feature "bt:ttl-security";
+      if-feature "ibt:ttl-security";
       type uint8;
       default "255";
       description
@@ -499,84 +508,10 @@ submodule ietf-bgp-common {
          RFC 7454: BGP Operations and Security.";
     }
 
-    container secure-session {
-      must "enabled = 'false' or " +
-           "(enabled = 'true' and options)" {
-        error-message "When secure-session is enabled " +
-          "secure-session options MUST be set";
-      }
-      description
-        "Container for describing how a particular BGP session
-         is to be secured.";
-
-      leaf enabled {
-        type boolean;
-        default "false";
-        description
-          "When set to true, session is secured with the
-           configured options.";
-      }
-
-      container options {
-        description
-          "Options for securing the BGP session.";
-        choice option {
-          case ao {
-            leaf ao-keychain {
-              type key-chain:key-chain-ref;
-              description
-                "Reference to the key chain that will be used by this
-                 model. Applicable for TCP-AO and TCP-MD5 only";
-              reference
-                "RFC 8177: YANG Data Model for Key Chains.";
-            }
-            description
-              "Uses TCP-AO to secure the session. Parameters for
-               those are defined as a grouping in the TCP YANG
-               model.";
-            reference
-              "RFC 5925: The TCP Authentication Option.";
-          }
-
-          case md5 {
-            leaf md5-keychain {
-              type key-chain:key-chain-ref;
-              description
-                "Reference to the key chain that will be used by this
-                 model. Applicable for TCP-AO and TCP-MD5 only";
-              reference
-                "RFC 8177: YANG Data Model for Key Chains.";
-            }
-            description
-              "Uses TCP-MD5 to secure the session. Parameters for
-               those are defined as a grouping in the TCP YANG
-               model.";
-            reference
-              "RFC 5925: The TCP Authentication Option.";
-          }
-
-          case ipsec {
-            leaf sa {
-              type string;
-              description
-                "Security Association (SA) name.";
-            }
-            description
-              "Currently, the IPsec/IKE YANG model has no
-               grouping defined that this model can use. When
-               such a grouping is defined, this model can import
-               the grouping to add the key parameters
-               needed to kick of IKE.";
-          }
-
-          description
-            "Choice of authentication options.";
-        }
-      }
-    }
+    uses "ibss:bgp-session-security";
 
     container bfd {
-      if-feature "bt:bfd";
+      if-feature "ibt:bfd";
       uses bfd-types:client-cfg-parms;
       description
         "BFD client configuration.";
@@ -596,7 +531,7 @@ submodule ietf-bgp-common {
         "Enable or disable the graceful-restart capability.";
     }
     leaf restart-time {
-      type bt:graceful-restart-time-type;
+      type ibt:graceful-restart-time-type;
       description
         "Estimated time (in seconds) for the local BGP speaker to
          restart a session. This value is advertise in the graceful
@@ -808,7 +743,7 @@ submodule ietf-bgp-common {
       reference
         "RFC 4456: BGP Route Reflection.";
       leaf cluster-id {
-        type bt:rr-cluster-id-type;
+        type ibt:rr-cluster-id-type;
         description
           "Route Reflector cluster id to use when local router is
            configured as a route reflector.  Commonly set at the
@@ -869,7 +804,7 @@ submodule ietf-bgp-common {
     description
       "Grouping used to include ADD-PATHs configuration and state.";
     container add-paths {
-      if-feature "bt:add-paths";
+      if-feature "ibt:add-paths";
       description
         "Parameters relating to the advertisement and receipt of
          multiple paths for a single NLRI (add-paths)";
@@ -917,7 +852,7 @@ submodule ietf-bgp-common {
 
   grouping dynamic-peers {
     description
-      "Grouping to contain dyamic BGP peers. Dynamic peers are
+      "Grouping to contain dynamic BGP peers. Dynamic peers are
        configured from a list of IP prefixes matching the IP source
        address of the dynamic peer.";
 
@@ -926,7 +861,7 @@ submodule ietf-bgp-common {
         "Configuration and operational state for dynamically
          configured peers.";
 
-      list dynamic-peer-list {
+      list dynamic-peer {
         key "prefix";
         description
           "List of peers by IP prefix for this configuration scope

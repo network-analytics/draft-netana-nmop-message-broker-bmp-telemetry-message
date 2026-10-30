@@ -4,8 +4,10 @@ submodule ietf-bgp-common-multiprotocol {
     prefix bgp;
   }
 
-  import iana-bgp-types {
-    prefix bt;
+  import iana-bgp-afi-safi-types {
+    prefix bast;
+    reference
+      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
   import ietf-routing-types {
     prefix rt-types;
@@ -14,6 +16,13 @@ submodule ietf-bgp-common-multiprotocol {
   }
   import ietf-routing-policy {
     prefix rt-pol;
+    reference
+      "RFC 9067: A YANG Data Model for Routing Policy.";
+  }
+  import ietf-yang-semver {
+    prefix ysv;
+    reference
+      "I-D.ietf-netmod-yang-semver: YANG Semantic Versioning";
   }
 
   organization
@@ -32,7 +41,7 @@ submodule ietf-bgp-common-multiprotocol {
      for multiple protocols in BGP. The groupings are common across
      multiple contexts.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code. All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -52,9 +61,10 @@ submodule ietf-bgp-common-multiprotocol {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-02 {
+  revision 2026-10-16 {
     description
       "Initial Version";
+    ysv:version 0.0.9;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -135,10 +145,11 @@ submodule ietf-bgp-common-multiprotocol {
       "Configuration parameters used for all BGP AFI-SAFIs";
     leaf name {
       type identityref {
-        base bt:afi-safi-type;
+        base bast:afi-safi-type;
       }
       description
-        "AFI,SAFI";
+        "The AFI/SAFI identifier for this address family
+         configuration entry.";
     }
     leaf enabled {
       type boolean;
@@ -153,10 +164,12 @@ submodule ietf-bgp-common-multiprotocol {
     description
       "A common grouping used for contents of the list that is used
        for AFI-SAFI entries";
-    // import and export policy included for the afi/safi
-    uses rt-pol:apply-policy-group;
+    uses rt-pol:apply-policy-group {
+      description
+        "Import and export policy included for the AFI/SAFI.";
+    }
     container ipv4-unicast {
-      when "derived-from-or-self(../name, 'bt:ipv4-unicast')" {
+      when "derived-from-or-self(../name, 'bast:ipv4-unicast')" {
         description
           "Include this container for IPv4 Unicast specific
            configuration";
@@ -168,7 +181,7 @@ submodule ietf-bgp-common-multiprotocol {
       // placeholder for IPv4 unicast specific configuration
     }
     container ipv6-unicast {
-      when "derived-from-or-self(../name, 'bt:ipv6-unicast')" {
+      when "derived-from-or-self(../name, 'bast:ipv6-unicast')" {
         description
           "Include this container for IPv6 Unicast specific
            configuration";
@@ -182,7 +195,7 @@ submodule ietf-bgp-common-multiprotocol {
     }
     container ipv4-labeled-unicast {
       when "derived-from-or-self(../name, " +
-           "'bt:ipv4-labeled-unicast')" {
+           "'bast:ipv4-labeled-unicast')" {
         description
           "Include this container for IPv4 Labeled Unicast specific
            configuration";
@@ -195,7 +208,7 @@ submodule ietf-bgp-common-multiprotocol {
     }
     container ipv6-labeled-unicast {
       when "derived-from-or-self(../name, " +
-           "'bt:ipv6-labeled-unicast')" {
+           "'bast:ipv6-labeled-unicast')" {
         description
           "Include this container for IPv6 Labeled Unicast specific
            configuration";
@@ -208,7 +221,7 @@ submodule ietf-bgp-common-multiprotocol {
     }
     container l3vpn-ipv4-unicast {
       when "derived-from-or-self(../name, " +
-           "'bt:l3vpn-ipv4-unicast')" {
+           "'bast:l3vpn-ipv4-unicast')" {
         description
           "Include this container for IPv4 Unicast L3VPN specific
            configuration";
@@ -221,7 +234,7 @@ submodule ietf-bgp-common-multiprotocol {
     }
     container l3vpn-ipv6-unicast {
       when "derived-from-or-self(../name, " +
-           "'bt:l3vpn-ipv6-unicast')" {
+           "'bast:l3vpn-ipv6-unicast')" {
         description
           "Include this container for unicast IPv6 L3VPN specific
            configuration";
@@ -235,7 +248,7 @@ submodule ietf-bgp-common-multiprotocol {
     }
     container l3vpn-ipv4-multicast {
       when "derived-from-or-self(../name, " +
-           "'bt:l3vpn-ipv4-multicast')" {
+           "'bast:l3vpn-ipv4-multicast')" {
         description
           "Include this container for multicast IPv6 L3VPN specific
            configuration";
@@ -249,7 +262,7 @@ submodule ietf-bgp-common-multiprotocol {
     }
     container l3vpn-ipv6-multicast {
       when "derived-from-or-self(../name, " +
-           "'bt:l3vpn-ipv6-multicast')" {
+           "'bast:l3vpn-ipv6-multicast')" {
         description
           "Include this container for multicast IPv6 L3VPN specific
            configuration";
@@ -262,7 +275,7 @@ submodule ietf-bgp-common-multiprotocol {
       // options
     }
     container l2vpn-vpls {
-      when "derived-from-or-self(../name, 'bt:l2vpn-vpls')" {
+      when "derived-from-or-self(../name, 'bast:l2vpn-vpls')" {
         description
           "Include this container for BGP-signalled VPLS specific
            configuration";
@@ -275,7 +288,7 @@ submodule ietf-bgp-common-multiprotocol {
       // options
     }
     container l2vpn-evpn {
-      when "derived-from-or-self(../name, 'bt:l2vpn-evpn')" {
+      when "derived-from-or-self(../name, 'bast:l2vpn-evpn')" {
         description
           "Include this container for BGP EVPN specific
            configuration";
@@ -326,7 +339,6 @@ submodule ietf-bgp-common-multiprotocol {
     // across IPv[46] unicast address families.
     uses mp-all-afi-safi-common;
   }
-
   grouping mp-l3vpn-ipv4-ipv6-multicast-common {
     description
       "Common configuration applied across L3VPN for IPv4

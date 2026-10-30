@@ -10,10 +10,21 @@ submodule ietf-bgp-neighbor {
       "RFC 9911: Common YANG Data Types.";
   }
 
-  import iana-bgp-types {
-    prefix bt;
+  import iana-bgp-afi-safi-types {
+    prefix bast;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+  }
+  import ietf-bgp-types {
+    prefix ibt;
+    reference
+      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+  }
+
+  import ietf-yang-semver {
+    prefix ysv;
+    reference
+      "I-D.ietf-netmod-yang-semver: YANG Semantic Versioning";
   }
 
   // Include the common submodule
@@ -36,7 +47,7 @@ submodule ietf-bgp-neighbor {
     "This sub-module contains groupings that are specific to the
      neighbor context of the BGP module.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code. All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -56,9 +67,10 @@ submodule ietf-bgp-neighbor {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-02 {
+  revision 2026-10-16 {
     description
       "Initial Version";
+    ysv:version 0.0.9;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -137,7 +149,7 @@ submodule ietf-bgp-neighbor {
       }
 
       container graceful-restart {
-        if-feature "bt:graceful-restart";
+        if-feature "ibt:graceful-restart";
         description
           "Parameters relating to BGP graceful-restart";
         reference
@@ -243,15 +255,14 @@ submodule ietf-bgp-neighbor {
         "RFC 4271: A Border Gateway Protocol 4 (BGP-4),
          Section 4.5.";
     }
-
-    list afi-safis {
+    list afi-safi {
       key "afi-safi-name";
       description
         "Per-AFI-SAFI message counters";
 
       leaf afi-safi-name {
         type identityref {
-          base bt:afi-safi-type;
+          base bast:afi-safi-type;
         }
         description
           "AFI-SAFI for these message counters.";
@@ -271,7 +282,7 @@ submodule ietf-bgp-neighbor {
            BGP-4.";
       }
       leaf route-refresh {
-        if-feature "bt:route-refresh";
+        if-feature "ibt:route-refresh";
         type yang:zero-based-counter32;
         description
           "Number of BGP ROUTE-REFRESH messages for this peer for

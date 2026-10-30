@@ -20,7 +20,7 @@
           {
             "code": 65,
             "index": 1,
-            "name": "iana-bgp-types:asn32",
+            "name": "iana-bgp-capabilities:asn32",
             "value": {
               "asn32": {
                 "as": 64969
@@ -30,22 +30,22 @@
           {
             "code": 1,
             "index": 1,
-            "name": "iana-bgp-types:mp-bgp",
+            "name": "iana-bgp-capabilities:mp-bgp",
             "value": {
               "mpbgp": {
                 "afi": "ipv4",
                 "safi": "unicast-safi",
-                "name": "iana-bgp-types:ipv4-unicast"
+                "name": "iana-bgp-afi-safi-types:ipv4-unicast"
               }
             }
           },
           {
             "code": 69,
             "index": 1,
-            "name": "iana-bgp-types:add-paths",
+            "name": "iana-bgp-capabilities:add-paths",
             "value": {
               "add-paths": {
-                "afi-safis": [
+                "afi-safi": [
                   {
                     "afi": "ipv4",
                     "safi": "unicast-safi",
@@ -66,7 +66,7 @@
           {
             "code": 65,
             "index": 1,
-            "name": "iana-bgp-types:asn32",
+            "name": "iana-bgp-capabilities:asn32",
             "value": {
               "asn32": {
                 "as": 64969
@@ -76,22 +76,22 @@
           {
             "code": 1,
             "index": 1,
-            "name": "iana-bgp-types:mp-bgp",
+            "name": "iana-bgp-capabilities:mp-bgp",
             "value": {
               "mpbgp": {
                 "afi": "ipv4",
                 "safi": "unicast-safi",
-                "name": "iana-bgp-types:ipv4-unicast"
+                "name": "iana-bgp-afi-safi-types:ipv4-unicast"
               }
             }
           },
           {
             "code": 69,
             "index": 1,
-            "name": "iana-bgp-types:add-paths",
+            "name": "iana-bgp-capabilities:add-paths",
             "value": {
               "add-paths": {
-                "afi-safis": [
+                "afi-safi": [
                   {
                     "afi": "ipv4",
                     "safi": "unicast-safi",

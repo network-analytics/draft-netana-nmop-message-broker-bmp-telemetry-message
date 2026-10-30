@@ -7,15 +7,15 @@ module: ietf-bgp
        |  +--rw treat-as-withdraw?         boolean
        |  +--rw enforce-first-as?          boolean
        |  +--rw identifier?                yang:dotted-quad
-       |  +--rw distance {bt:distance}?
+       |  +--rw distance {ibt:distance}?
        |  |  +--rw external?   uint8
        |  |  +--rw internal?   uint8
        |  +--rw confederation
        |  |  +--rw identifier?   inet:as-number
        |  |  +--rw member-as*    inet:as-number
-       |  +--rw graceful-restart {bt:graceful-restart}?
+       |  +--rw graceful-restart {ibt:graceful-restart}?
        |  |  +--rw enabled?             boolean
-       |  |  +--rw restart-time?        bt:graceful-restart-time-type
+       |  |  +--rw restart-time?        ibt:graceful-restart-time-type
        |  |  +--rw stale-routes-time?   uint32
        |  |  +--rw helper-only?         boolean
        |  +--rw use-multiple-paths
@@ -43,7 +43,7 @@ module: ietf-bgp
        |  |     +--ro statistics
        |  |     |  +--ro total-paths?      yang:gauge32
        |  |     |  +--ro total-prefixes?   yang:gauge32
-       |  |     +--rw graceful-restart {bt:graceful-restart}?
+       |  |     +--rw graceful-restart {ibt:graceful-restart}?
        |  |     |  +--rw enabled?   boolean
        |  |     +--rw route-selection-options
        |  |     |  +--rw always-compare-med?           boolean
@@ -56,7 +56,7 @@ module: ietf-bgp
        |  |     |     +--rw enabled?          boolean
        |  |     |     +--rw igp-multiplier?   uint16
        |  |     |     +--rw med-multiplier?   uint16
-       |  |     +--rw add-paths {bt:add-paths}?
+       |  |     +--rw add-paths {ibt:add-paths}?
        |  |     |  +--rw receive?                  boolean
        |  |     |  +--rw (send)?
        |  |     |  |  +--:(max)
@@ -157,13 +157,14 @@ module: ietf-bgp
        |     +--ro total-paths?      yang:gauge32
        |     +--ro total-prefixes?   yang:gauge32
        +--rw neighbors
-       |  +--rw neighbor* [remote-address]
+       |  +--rw neighbor* [neighbor-key]
+       |  |  +--rw neighbor-key                 -> ../remote-address
        |  |  +--rw remote-address               inet:ip-address
        |  |  +--rw peer-group?                  -> ../../../peer-groups/peer-group/name
        |  |  +--ro local-address?               inet:ip-address
        |  |  +--ro local-port?                  inet:port-number
        |  |  +--ro remote-port?                 inet:port-number
-       |  |  +--ro peer-type?                   bt:peer-type
+       |  |  +--ro peer-type?                   ibt:peer-type
        |  |  +--ro identifier?                  yang:dotted-quad
        |  |  +--ro dynamically-configured?      empty
        |  |  +--rw enabled?                     boolean
@@ -171,8 +172,8 @@ module: ietf-bgp
        |  |  +--rw local-as?                    inet:as-number
        |  |  +--rw treat-as-withdraw?           boolean
        |  |  +--rw enforce-first-as?            boolean
-       |  |  +--rw remove-private-as?           bt:remove-private-as-option
-       |  |  +--rw route-flap-damping {bt:damping}?
+       |  |  +--rw remove-private-as?           ibt:remove-private-as-option
+       |  |  +--rw route-flap-damping {ibt:damping}?
        |  |  |  +--rw enable?           boolean
        |  |  |  +--rw suppress-above?   decimal64
        |  |  |  +--rw reuse-above?      decimal64
@@ -180,7 +181,7 @@ module: ietf-bgp
        |  |  |  +--rw reach-decay?      uint32
        |  |  |  +--rw unreach-decay?    uint32
        |  |  |  +--rw keep-history?     uint32
-       |  |  +--rw send-community*              identityref {bct:send-communities}?
+       |  |  +--rw send-community*              identityref {ibct:send-communities}?
        |  |  +--rw description?                 string
        |  |  +--rw timers
        |  |  |  +--rw connect-retry-interval?             uint16
@@ -196,18 +197,18 @@ module: ietf-bgp
        |  |  |  |  +--rw enabled?        boolean
        |  |  |  |  +--rw multihop-ttl?   uint8
        |  |  |  +--rw passive-mode?     boolean
-       |  |  |  +--rw ttl-security?     uint8 {bt:ttl-security}?
+       |  |  |  +--rw ttl-security?     uint8 {ibt:ttl-security}?
        |  |  |  +--rw secure-session
        |  |  |  |  +--rw enabled?   boolean
        |  |  |  |  +--rw options
        |  |  |  |     +--rw (option)?
-       |  |  |  |        +--:(ao)
+       |  |  |  |        +--:(ao) {bgp-session-security-tcp-ao}?
        |  |  |  |        |  +--rw ao-keychain?    key-chain:key-chain-ref
-       |  |  |  |        +--:(md5)
+       |  |  |  |        +--:(md5) {bgp-session-security-tcp-md5}?
        |  |  |  |        |  +--rw md5-keychain?   key-chain:key-chain-ref
-       |  |  |  |        +--:(ipsec)
+       |  |  |  |        +--:(ipsec) {bgp-session-security-ipsec}?
        |  |  |  |           +--rw sa?             string
-       |  |  |  +--rw bfd {bt:bfd}?
+       |  |  |  +--rw bfd {ibt:bfd}?
        |  |  |     +--rw enabled?                          boolean
        |  |  |     +--rw local-multiplier?                 multiplier {client-base-cfg-parms}?
        |  |  |     +--rw (interval-config-type)? {client-base-cfg-parms}?
@@ -219,14 +220,14 @@ module: ietf-bgp
        |  |  +--rw logging-options
        |  |  |  +--rw log-neighbor-state-changes?   boolean
        |  |  +--rw route-reflector
-       |  |  |  +--rw cluster-id?   bt:rr-cluster-id-type
+       |  |  |  +--rw cluster-id?   ibt:rr-cluster-id-type
        |  |  |  +--rw client?       boolean
        |  |  +--rw as-path-options
        |  |  |  +--rw allow-own-as?             uint8
        |  |  |  +--rw replace-peer-as?          boolean
        |  |  |  +--rw disable-peer-as-filter?   boolean
        |  |  +--rw advertise-inactive-routes?   boolean
-       |  |  +--rw add-paths {bt:add-paths}?
+       |  |  +--rw add-paths {ibt:add-paths}?
        |  |  |  +--rw receive?                  boolean
        |  |  |  +--rw (send)?
        |  |  |  |  +--:(max)
@@ -243,9 +244,9 @@ module: ietf-bgp
        |  |  |  +--rw default-import-policy?   default-policy-type
        |  |  |  +--rw export-policy*           -> /rt-pol:routing-policy/policy-definitions/policy-definition/name
        |  |  |  +--rw default-export-policy?   default-policy-type
-       |  |  +--rw graceful-restart {bt:graceful-restart}?
+       |  |  +--rw graceful-restart {ibt:graceful-restart}?
        |  |  |  +--rw enabled?             boolean
-       |  |  |  +--rw restart-time?        bt:graceful-restart-time-type
+       |  |  |  +--rw restart-time?        ibt:graceful-restart-time-type
        |  |  |  +--rw stale-routes-time?   uint32
        |  |  |  +--rw helper-only?         boolean
        |  |  |  +--ro peer-restart-time?   uint16
@@ -269,7 +270,7 @@ module: ietf-bgp
        |  |  |     |  +--ro sent?                       yang:zero-based-counter32
        |  |  |     |  +--ro installed?                  yang:gauge32
        |  |  |     |  +--ro installed-multiple-paths?   yang:gauge32
-       |  |  |     +--rw graceful-restart {bt:graceful-restart}?
+       |  |  |     +--rw graceful-restart {ibt:graceful-restart}?
        |  |  |     |  +--rw enabled?                            boolean
        |  |  |     |  +--ro received?                           boolean
        |  |  |     |  +--ro advertised?                         boolean
@@ -360,7 +361,7 @@ module: ietf-bgp
        |  |  +--ro session-state?               enumeration
        |  |  +--ro last-established?            yang:date-and-time
        |  |  +--ro capabilities
-       |  |  |  +--ro advertised-capabilities* [code index]
+       |  |  |  +--ro advertised-capability* [code index]
        |  |  |  |  +--ro code     uint8
        |  |  |  |  +--ro index    uint8
        |  |  |  |  +--ro name?    identityref
@@ -370,22 +371,22 @@ module: ietf-bgp
        |  |  |  |     |  +--ro safi?   iana-rt-types:bgp-safi
        |  |  |  |     |  +--ro name?   identityref
        |  |  |  |     +--ro graceful-restart
-       |  |  |  |     |  +--ro flags?           bt:graceful-restart-flags
+       |  |  |  |     |  +--ro flags?           ibt:graceful-restart-flags
        |  |  |  |     |  +--ro unknown-flags?   bits
-       |  |  |  |     |  +--ro restart-time?    bt:graceful-restart-time-type
-       |  |  |  |     |  +--ro afi-safis* []
+       |  |  |  |     |  +--ro restart-time?    ibt:graceful-restart-time-type
+       |  |  |  |     |  +--ro afi-safi* []
        |  |  |  |     |     +--ro afi?                      iana-rt-types:address-family
        |  |  |  |     |     +--ro safi?                     iana-rt-types:bgp-safi
-       |  |  |  |     |     +--ro afi-safi-flags?           bt:graceful-restart-flags-for-afi
+       |  |  |  |     |     +--ro afi-safi-flags?           ibt:graceful-restart-flags-for-afi
        |  |  |  |     |     +--ro afi-safi-unknown-flags?   bits
        |  |  |  |     +--ro asn32
        |  |  |  |     |  +--ro as?   inet:as-number
        |  |  |  |     +--ro add-paths
-       |  |  |  |        +--ro afi-safis* []
+       |  |  |  |        +--ro afi-safi* []
        |  |  |  |           +--ro afi?    iana-rt-types:address-family
        |  |  |  |           +--ro safi?   iana-rt-types:bgp-safi
        |  |  |  |           +--ro mode?   enumeration
-       |  |  |  +--ro received-capabilities* [code index]
+       |  |  |  +--ro received-capability* [code index]
        |  |  |  |  +--ro code     uint8
        |  |  |  |  +--ro index    uint8
        |  |  |  |  +--ro name?    identityref
@@ -395,22 +396,22 @@ module: ietf-bgp
        |  |  |  |     |  +--ro safi?   iana-rt-types:bgp-safi
        |  |  |  |     |  +--ro name?   identityref
        |  |  |  |     +--ro graceful-restart
-       |  |  |  |     |  +--ro flags?           bt:graceful-restart-flags
+       |  |  |  |     |  +--ro flags?           ibt:graceful-restart-flags
        |  |  |  |     |  +--ro unknown-flags?   bits
-       |  |  |  |     |  +--ro restart-time?    bt:graceful-restart-time-type
-       |  |  |  |     |  +--ro afi-safis* []
+       |  |  |  |     |  +--ro restart-time?    ibt:graceful-restart-time-type
+       |  |  |  |     |  +--ro afi-safi* []
        |  |  |  |     |     +--ro afi?                      iana-rt-types:address-family
        |  |  |  |     |     +--ro safi?                     iana-rt-types:bgp-safi
-       |  |  |  |     |     +--ro afi-safi-flags?           bt:graceful-restart-flags-for-afi
+       |  |  |  |     |     +--ro afi-safi-flags?           ibt:graceful-restart-flags-for-afi
        |  |  |  |     |     +--ro afi-safi-unknown-flags?   bits
        |  |  |  |     +--ro asn32
        |  |  |  |     |  +--ro as?   inet:as-number
        |  |  |  |     +--ro add-paths
-       |  |  |  |        +--ro afi-safis* []
+       |  |  |  |        +--ro afi-safi* []
        |  |  |  |           +--ro afi?    iana-rt-types:address-family
        |  |  |  |           +--ro safi?   iana-rt-types:bgp-safi
        |  |  |  |           +--ro mode?   enumeration
-       |  |  |  +--ro negotiated-capabilities*   identityref
+       |  |  |  +--ro negotiated-capability*   identityref
        |  |  +--ro errors
        |  |  |  +--ro received
        |  |  |  |  +--ro last-notification?                 yang:date-and-time
@@ -438,20 +439,20 @@ module: ietf-bgp
        |  |     |  |  +--ro updates?         yang:zero-based-counter32
        |  |     |  |  +--ro update-time?     yang:timeticks
        |  |     |  |  +--ro notifications?   yang:zero-based-counter32
-       |  |     |  |  +--ro afi-safis* [afi-safi-name]
+       |  |     |  |  +--ro afi-safi* [afi-safi-name]
        |  |     |  |     +--ro afi-safi-name    identityref
        |  |     |  |     +--ro updates?         yang:zero-based-counter32
-       |  |     |  |     +--ro route-refresh?   yang:zero-based-counter32 {bt:route-refresh}?
+       |  |     |  |     +--ro route-refresh?   yang:zero-based-counter32 {ibt:route-refresh}?
        |  |     |  |     +--ro end-of-rib?      yang:zero-based-counter32
        |  |     |  +--ro sent
        |  |     |  |  +--ro total?           yang:zero-based-counter32
        |  |     |  |  +--ro updates?         yang:zero-based-counter32
        |  |     |  |  +--ro update-time?     yang:timeticks
        |  |     |  |  +--ro notifications?   yang:zero-based-counter32
-       |  |     |  |  +--ro afi-safis* [afi-safi-name]
+       |  |     |  |  +--ro afi-safi* [afi-safi-name]
        |  |     |  |     +--ro afi-safi-name    identityref
        |  |     |  |     +--ro updates?         yang:zero-based-counter32
-       |  |     |  |     +--ro route-refresh?   yang:zero-based-counter32 {bt:route-refresh}?
+       |  |     |  |     +--ro route-refresh?   yang:zero-based-counter32 {ibt:route-refresh}?
        |  |     |  |     +--ro end-of-rib?      yang:zero-based-counter32
        |  |     |  +--ro errors
        |  |     |     +--ro erroneous-updates-withdrawn?             yang:zero-based-counter32
@@ -459,7 +460,7 @@ module: ietf-bgp
        |  |     +--ro queues
        |  |     |  +--ro input?    yang:gauge32
        |  |     |  +--ro output?   yang:gauge32
-       |  |     +---x clear {bt:clear-statistics}?
+       |  |     +---x clear {ibt:clear-statistics}?
        |  |        +---w input
        |  |        |  +---w clear-at?   yang:date-and-time
        |  |        +--ro output
@@ -484,7 +485,7 @@ module: ietf-bgp
        |  |     +-- last-encapsulated-error?           identityref
        |  |     +-- last-encapsulated-error-code?      uint8
        |  |     +-- last-encapsulated-error-subcode?   uint8
-       |  +---x clear {bt:clear-neighbors}?
+       |  +---x clear {ibt:clear-neighbors}?
        |     +---w input
        |     |  +---w (operation)?
        |     |  |  +--:(operation-admin)
@@ -494,7 +495,7 @@ module: ietf-bgp
        |     |  |  +--:(operation-soft)
        |     |  |  |  +---w soft?           empty
        |     |  |  +--:(operation-soft-inbound)
-       |     |  |     +---w soft-inbound?   empty {bt:route-refresh}?
+       |     |  |     +---w soft-inbound?   empty {ibt:route-refresh}?
        |     |  +---w clear-at?             yang:date-and-time
        |     +--ro output
        |        +--ro clear-finished-at?   yang:date-and-time
@@ -505,8 +506,8 @@ module: ietf-bgp
        |     +--rw local-as?                    inet:as-number
        |     +--rw treat-as-withdraw?           boolean
        |     +--rw enforce-first-as?            boolean
-       |     +--rw remove-private-as?           bt:remove-private-as-option
-       |     +--rw route-flap-damping {bt:damping}?
+       |     +--rw remove-private-as?           ibt:remove-private-as-option
+       |     +--rw route-flap-damping {ibt:damping}?
        |     |  +--rw enable?           boolean
        |     |  +--rw suppress-above?   decimal64
        |     |  +--rw reuse-above?      decimal64
@@ -514,7 +515,7 @@ module: ietf-bgp
        |     |  +--rw reach-decay?      uint32
        |     |  +--rw unreach-decay?    uint32
        |     |  +--rw keep-history?     uint32
-       |     +--rw send-community*              identityref {bct:send-communities}?
+       |     +--rw send-community*              identityref {ibct:send-communities}?
        |     +--rw description?                 string
        |     +--rw timers
        |     |  +--rw connect-retry-interval?             uint16
@@ -530,18 +531,18 @@ module: ietf-bgp
        |     |  |  +--rw enabled?        boolean
        |     |  |  +--rw multihop-ttl?   uint8
        |     |  +--rw passive-mode?     boolean
-       |     |  +--rw ttl-security?     uint8 {bt:ttl-security}?
+       |     |  +--rw ttl-security?     uint8 {ibt:ttl-security}?
        |     |  +--rw secure-session
        |     |  |  +--rw enabled?   boolean
        |     |  |  +--rw options
        |     |  |     +--rw (option)?
-       |     |  |        +--:(ao)
+       |     |  |        +--:(ao) {bgp-session-security-tcp-ao}?
        |     |  |        |  +--rw ao-keychain?    key-chain:key-chain-ref
-       |     |  |        +--:(md5)
+       |     |  |        +--:(md5) {bgp-session-security-tcp-md5}?
        |     |  |        |  +--rw md5-keychain?   key-chain:key-chain-ref
-       |     |  |        +--:(ipsec)
+       |     |  |        +--:(ipsec) {bgp-session-security-ipsec}?
        |     |  |           +--rw sa?             string
-       |     |  +--rw bfd {bt:bfd}?
+       |     |  +--rw bfd {ibt:bfd}?
        |     |     +--rw enabled?                          boolean
        |     |     +--rw local-multiplier?                 multiplier {client-base-cfg-parms}?
        |     |     +--rw (interval-config-type)? {client-base-cfg-parms}?
@@ -553,14 +554,14 @@ module: ietf-bgp
        |     +--rw logging-options
        |     |  +--rw log-neighbor-state-changes?   boolean
        |     +--rw route-reflector
-       |     |  +--rw cluster-id?   bt:rr-cluster-id-type
+       |     |  +--rw cluster-id?   ibt:rr-cluster-id-type
        |     |  +--rw client?       boolean
        |     +--rw as-path-options
        |     |  +--rw allow-own-as?             uint8
        |     |  +--rw replace-peer-as?          boolean
        |     |  +--rw disable-peer-as-filter?   boolean
        |     +--rw advertise-inactive-routes?   boolean
-       |     +--rw add-paths {bt:add-paths}?
+       |     +--rw add-paths {ibt:add-paths}?
        |     |  +--rw receive?                  boolean
        |     |  +--rw (send)?
        |     |  |  +--:(max)
@@ -578,11 +579,11 @@ module: ietf-bgp
        |     |  +--rw export-policy*           -> /rt-pol:routing-policy/policy-definitions/policy-definition/name
        |     |  +--rw default-export-policy?   default-policy-type
        |     +--rw dynamic-peers
-       |     |  +--rw dynamic-peer-list* [prefix]
+       |     |  +--rw dynamic-peer* [prefix]
        |     |     +--rw prefix    inet:ip-prefix
-       |     +--rw graceful-restart {bt:graceful-restart}?
+       |     +--rw graceful-restart {ibt:graceful-restart}?
        |     |  +--rw enabled?             boolean
-       |     |  +--rw restart-time?        bt:graceful-restart-time-type
+       |     |  +--rw restart-time?        ibt:graceful-restart-time-type
        |     |  +--rw stale-routes-time?   uint32
        |     |  +--rw helper-only?         boolean
        |     +--rw prefix-limit
@@ -594,9 +595,9 @@ module: ietf-bgp
        |        +--rw afi-safi* [name]
        |           +--rw name                    identityref
        |           +--rw enabled?                boolean
-       |           +--rw graceful-restart {bt:graceful-restart}?
+       |           +--rw graceful-restart {ibt:graceful-restart}?
        |           |  +--rw enabled?   boolean
-       |           +--rw add-paths {bt:add-paths}?
+       |           +--rw add-paths {ibt:add-paths}?
        |           |  +--rw receive?                  boolean
        |           |  +--rw (send)?
        |           |  |  +--:(max)
@@ -690,17 +691,17 @@ module: ietf-bgp
           |  +--ro attr-set* [index]
           |     +--ro index         uint64
           |     +--ro attributes
-          |        +--ro origin?                bt:bgp-origin-attr-type
+          |        +--ro origin?                ibt:bgp-origin-attr-type
           |        +--ro as-path
           |        |  +--ro segment* []
-          |        |     +--ro type?     bt:as-path-segment-type
+          |        |     +--ro type?     ibt:as-path-segment-type
           |        |     +--ro member*   inet:as-number
           |        +--ro as4-path
           |        |  +--ro segment* []
-          |        |     +--ro type?     bt:as-path-segment-type
+          |        |     +--ro type?     ibt:as-path-segment-type
           |        |     +--ro member*   inet:as-number
           |        +--ro next-hop?              inet:ip-address
-          |        +--ro link-local-next-hop?   inet:ipv6-address
+          |        +--ro link-local-next-hop?   inet:ipv6-address-link-local
           |        +--ro med?                   uint32
           |        +--ro local-pref?            uint32
           |        +--ro aggregator
@@ -730,7 +731,7 @@ module: ietf-bgp
           +--ro large-communities
           |  +--ro large-community* [index]
           |     +--ro index              uint64
-          |     +--ro large-community*   bct:bgp-large-community-type
+          |     +--ro large-community*   ibct:bgp-large-community-type
           +--ro afi-safis
              +--ro afi-safi* [name]
                 +--ro name            identityref
@@ -783,7 +784,7 @@ module: ietf-bgp
                 |        |  |     |     +--ro attr-len?     uint16
                 |        |  |     |     +--ro attr-value?   binary
                 |        |  |     +--ro reject-reason?           union
-                |        |  +--ro clear-routes {bt:clear-routes}?
+                |        |  +--ro clear-routes {ibt:clear-routes}?
                 |        |     +---x clear
                 |        |        +---w input
                 |        |        |  +---w clear-at?   yang:date-and-time
@@ -812,7 +813,7 @@ module: ietf-bgp
                 |        |  |     |     +--ro attr-len?     uint16
                 |        |  |     |     +--ro attr-value?   binary
                 |        |  |     +--ro reject-reason?           union
-                |        |  +--ro clear-routes {bt:clear-routes}?
+                |        |  +--ro clear-routes {ibt:clear-routes}?
                 |        |     +---x clear
                 |        |        +---w input
                 |        |        |  +---w clear-at?   yang:date-and-time
@@ -840,7 +841,7 @@ module: ietf-bgp
                 |        |  |     |     +--ro attr-len?     uint16
                 |        |  |     |     +--ro attr-value?   binary
                 |        |  |     +--ro reject-reason?           union
-                |        |  +--ro clear-routes {bt:clear-routes}?
+                |        |  +--ro clear-routes {ibt:clear-routes}?
                 |        |     +---x clear
                 |        |        +---w input
                 |        |        |  +---w clear-at?   yang:date-and-time
@@ -868,7 +869,7 @@ module: ietf-bgp
                 |           |     |     +--ro attr-len?     uint16
                 |           |     |     +--ro attr-value?   binary
                 |           |     +--ro reject-reason?           union
-                |           +--ro clear-routes {bt:clear-routes}?
+                |           +--ro clear-routes {ibt:clear-routes}?
                 |              +---x clear
                 |                 +---w input
                 |                 |  +---w clear-at?   yang:date-and-time
@@ -923,7 +924,7 @@ module: ietf-bgp
                          |  |     |     +--ro attr-len?     uint16
                          |  |     |     +--ro attr-value?   binary
                          |  |     +--ro reject-reason?           union
-                         |  +--ro clear-routes {bt:clear-routes}?
+                         |  +--ro clear-routes {ibt:clear-routes}?
                          |     +---x clear
                          |        +---w input
                          |        |  +---w clear-at?   yang:date-and-time
@@ -952,7 +953,7 @@ module: ietf-bgp
                          |  |     |     +--ro attr-len?     uint16
                          |  |     |     +--ro attr-value?   binary
                          |  |     +--ro reject-reason?           union
-                         |  +--ro clear-routes {bt:clear-routes}?
+                         |  +--ro clear-routes {ibt:clear-routes}?
                          |     +---x clear
                          |        +---w input
                          |        |  +---w clear-at?   yang:date-and-time
@@ -980,7 +981,7 @@ module: ietf-bgp
                          |  |     |     +--ro attr-len?     uint16
                          |  |     |     +--ro attr-value?   binary
                          |  |     +--ro reject-reason?           union
-                         |  +--ro clear-routes {bt:clear-routes}?
+                         |  +--ro clear-routes {ibt:clear-routes}?
                          |     +---x clear
                          |        +---w input
                          |        |  +---w clear-at?   yang:date-and-time
@@ -1008,7 +1009,7 @@ module: ietf-bgp
                             |     |     +--ro attr-len?     uint16
                             |     |     +--ro attr-value?   binary
                             |     +--ro reject-reason?           union
-                            +--ro clear-routes {bt:clear-routes}?
+                            +--ro clear-routes {ibt:clear-routes}?
                                +---x clear
                                   +---w input
                                   |  +---w clear-at?   yang:date-and-time

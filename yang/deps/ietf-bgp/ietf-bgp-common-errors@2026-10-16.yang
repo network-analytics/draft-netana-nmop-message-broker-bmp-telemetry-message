@@ -3,7 +3,6 @@ submodule ietf-bgp-common-errors {
   belongs-to ietf-bgp {
     prefix bgp;
   }
-
   import iana-bgp-notification {
     prefix bn;
     reference
@@ -13,6 +12,11 @@ submodule ietf-bgp-common-errors {
     prefix yang;
     reference
       "RFC 9911: Common YANG Data Types.";
+  }
+  import ietf-yang-semver {
+    prefix ysv;
+    reference
+      "I-D.ietf-netmod-yang-semver: YANG Semantic Versioning";
   }
 
   organization
@@ -45,15 +49,17 @@ submodule ietf-bgp-common-errors {
      This version of this YANG module is part of RFC XXXX
      (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
      for full legal notices.
+
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
      NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
      'MAY', and 'OPTIONAL' in this document are to be interpreted as
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-02 {
+  revision 2026-10-16 {
     description
       "Initial Version";
+    ysv:version 0.0.9;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }

@@ -58,7 +58,7 @@
               {
                 "code": 65,
                 "index": 1,
-                "name": "iana-bgp-types:asn32",
+                "name": "iana-bgp-capabilities:asn32",
                 "value": {
                   "asn32": {
                     "as": 65001
@@ -68,12 +68,12 @@
               {
                 "code": 1,
                 "index": 1,
-                "name": "iana-bgp-types:mp-bgp",
+                "name": "iana-bgp-capabilities:mp-bgp",
                 "value": {
                   "mpbgp": {
                     "afi": "ipv4",
                     "safi": "unicast-safi",
-                    "name": "iana-bgp-types:ipv4-unicast"
+                    "name": "iana-bgp-afi-safi-types:ipv4-unicast"
                   }
                 }
               }
@@ -88,7 +88,7 @@
               {
                 "code": 65,
                 "index": 1,
-                "name": "iana-bgp-types:asn32",
+                "name": "iana-bgp-capabilities:asn32",
                 "value": {
                   "asn32": {
                     "as": 65002
@@ -98,12 +98,12 @@
               {
                 "code": 1,
                 "index": 1,
-                "name": "iana-bgp-types:mp-bgp",
+                "name": "iana-bgp-capabilities:mp-bgp",
                 "value": {
                   "mpbgp": {
                     "afi": "ipv4",
                     "safi": "unicast-safi",
-                    "name": "iana-bgp-types:ipv4-unicast"
+                    "name": "iana-bgp-afi-safi-types:ipv4-unicast"
                   }
                 }
               }

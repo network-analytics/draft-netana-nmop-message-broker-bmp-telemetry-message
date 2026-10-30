@@ -6,8 +6,8 @@ submodule ietf-bgp-rib-attributes {
 
   // import some basic types
 
-  import iana-bgp-types {
-    prefix bt;
+  import ietf-bgp-types {
+    prefix ibt;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -16,10 +16,20 @@ submodule ietf-bgp-rib-attributes {
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
+  import ietf-bgp-community-types {
+    prefix ibct;
+    reference
+      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+  }
   import ietf-inet-types {
     prefix inet;
     reference
       "RFC 9911: Common YANG Data Types.";
+  }
+  import ietf-yang-semver {
+    prefix ysv;
+    reference
+      "I-D.ietf-netmod-yang-semver: YANG Semantic Versioning";
   }
 
   organization
@@ -37,7 +47,7 @@ submodule ietf-bgp-rib-attributes {
     "This submodule contains common data definitions for BGP
      attributes for use in BGP RIB tables.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code. All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -57,9 +67,10 @@ submodule ietf-bgp-rib-attributes {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-02 {
+  revision 2026-10-16 {
     description
       "Initial version";
+    ysv:version 0.0.9;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -69,7 +80,7 @@ submodule ietf-bgp-rib-attributes {
       "Data for representing BGP AS-PATH segment";
 
     leaf type {
-      type bt:as-path-segment-type;
+      type ibt:as-path-segment-type;
       description
         "The type of AS-PATH segment";
     }
@@ -79,6 +90,7 @@ submodule ietf-bgp-rib-attributes {
         "List of the AS numbers in the AS-PATH segment";
     }
   }
+
   grouping bgp-unknown-attr-top {
     description
       "Unknown path attributes that are not expected to be shared
@@ -141,7 +153,6 @@ submodule ietf-bgp-rib-attributes {
           reference
             "RFC 4271: A Border Gateway Protocol 4 (BGP-4).";
         }
-
         leaf attr-type {
           type uint8;
           description
@@ -204,7 +215,7 @@ submodule ietf-bgp-rib-attributes {
     leaf-list community {
       type union {
         type bct:bgp-well-known-community-type;
-        type bct:bgp-std-community-type;
+        type ibct:bgp-std-community-type;
       }
       description
         "List of standard or well-known BGP community
@@ -229,11 +240,12 @@ submodule ietf-bgp-rib-attributes {
 
     leaf-list ext-community-raw {
       type string {
-        // raw with 8 octets
         pattern 'raw:([0-9A-F][0-9A-F]:){7}[0-9A-F][0-9A-F]';
       }
       description
-        "ext-community type in raw format only.";
+        "Extended community type in raw format only, encoded as
+         raw:(hex-octet):(hex-octet):...:(hex-octet) with 8
+         hex-encoded octets.";
     }
   }
 
@@ -255,13 +267,14 @@ submodule ietf-bgp-rib-attributes {
 
     leaf-list ipv6-ext-community-raw {
       type string {
-        // raw with 20 octets
         pattern 'ipv6-raw:'
              + '([0-9A-Fa-f][0-9A-Fa-f]:){19}'
              + '[0-9A-Fa-f][0-9A-Fa-f]';
       }
       description
-        "IPv6 ext-community type in raw format only.";
+        "IPv6 extended community type in raw format only, encoded as
+         ipv6-raw:(hex-octet):(hex-octet):...:(hex-octet) with 20
+         hex-encoded octets.";
     }
   }
 
@@ -270,7 +283,7 @@ submodule ietf-bgp-rib-attributes {
       "A grouping for all large community parameters.";
 
     leaf-list large-community {
-      type bct:bgp-large-community-type;
+      type ibct:bgp-large-community-type;
       description
         "List of BGP large community attributes.";
       reference

@@ -17,25 +17,27 @@ module: ietf-bmp-message
        |     +-- peer-as               uint32
        |     +-- peer-bgp-id           inet:ipv4-address
        |     +-- timestamp?            yang:date-and-time
+       |     +-- afi-safi-type         identityref
+       |     +-- rib-type              enumeration
        |     +-- rib-entry
-       |     |  +-- afi-safi-type    identityref
        |     |  +-- (entry-type)
        |     |     +--:(route)
-       |     |     |  +-- rib-type                  enumeration
        |     |     |  +-- path-id?                  uint32
        |     |     |  +-- origin?                   union
        |     |     |  +-- nlri
        |     |     |  |  +-- (afi-safi)
        |     |     |  |     +--:(ipv4-unicast)
-       |     |     |  |     |  +-- ipv4-prefix    inet:ipv4-prefix
+       |     |     |  |     |  +-- ipv4-unicast
+       |     |     |  |     |     +-- prefix    inet:ipv4-prefix
        |     |     |  |     +--:(ipv6-unicast)
-       |     |     |  |        +-- ipv6-prefix    inet:ipv6-prefix
+       |     |     |  |        +-- ipv6-unicast
+       |     |     |  |           +-- prefix    inet:ipv6-prefix
        |     |     |  +-- attributes
        |     |     |  |  +-- origin
-       |     |     |  |  |     bt:bgp-origin-attr-type
+       |     |     |  |  |     ibt:bgp-origin-attr-type
        |     |     |  |  +-- as-path
        |     |     |  |  |  +-- segment*
-       |     |     |  |  |     +-- type?     bt:as-path-segment-type
+       |     |     |  |  |     +-- type?     ibt:as-path-segment-type
        |     |     |  |  |     +-- member*   inet:as-number
        |     |     |  |  +-- next-hop?              inet:ip-address
        |     |     |  |  +-- link-local-next-hop?   inet:ipv6-address
@@ -43,7 +45,7 @@ module: ietf-bmp-message
        |     |     |  |  +-- local-pref?            uint32
        |     |     |  |  +-- as4-path
        |     |     |  |  |  +-- segment*
-       |     |     |  |  |     +-- type?     bt:as-path-segment-type
+       |     |     |  |  |     +-- type?     ibt:as-path-segment-type
        |     |     |  |  |     +-- member*   inet:as-number
        |     |     |  |  +-- aggregator
        |     |     |  |  |  +-- as?           inet:as-number
@@ -63,7 +65,7 @@ module: ietf-bmp-message
        |     |     |  |     bct:bgp-ipv6-ext-community-type
        |     |     |  +-- ipv6-ext-community-raw*   string
        |     |     |  +-- large-community*
-       |     |     |  |     bct:bgp-large-community-type
+       |     |     |  |     ibct:bgp-large-community-type
        |     |     |  +-- last-modified?            yang:timeticks
        |     |     |  +-- eligible-route?           boolean
        |     |     |  +-- ineligible-reason?        identityref
@@ -346,22 +348,22 @@ module: ietf-bmp-message
        |     |        |  +-- name?   identityref
        |     |        +-- graceful-restart
        |     |        |  +-- flags?
-       |     |        |  |     bt:graceful-restart-flags
+       |     |        |  |     ibt:graceful-restart-flags
        |     |        |  +-- unknown-flags?   bits
        |     |        |  +-- restart-time?
-       |     |        |  |     bt:graceful-restart-time-type
-       |     |        |  +-- afi-safis*
+       |     |        |  |     ibt:graceful-restart-time-type
+       |     |        |  +-- afi-safi*
        |     |        |     +-- afi?
        |     |        |     |     iana-rt-types:address-family
        |     |        |     +-- safi?
        |     |        |     |     iana-rt-types:bgp-safi
        |     |        |     +-- afi-safi-flags?
-       |     |        |     |     bt:graceful-restart-flags-for-afi
+       |     |        |     |     ibt:graceful-restart-flags-for-afi
        |     |        |     +-- afi-safi-unknown-flags?   bits
        |     |        +-- asn32
        |     |        |  +-- as?   inet:as-number
        |     |        +-- add-paths
-       |     |           +-- afi-safis*
+       |     |           +-- afi-safi*
        |     |              +-- afi?    iana-rt-types:address-family
        |     |              +-- safi?   iana-rt-types:bgp-safi
        |     |              +-- mode?   enumeration
@@ -381,22 +383,22 @@ module: ietf-bmp-message
        |     |        |  +-- name?   identityref
        |     |        +-- graceful-restart
        |     |        |  +-- flags?
-       |     |        |  |     bt:graceful-restart-flags
+       |     |        |  |     ibt:graceful-restart-flags
        |     |        |  +-- unknown-flags?   bits
        |     |        |  +-- restart-time?
-       |     |        |  |     bt:graceful-restart-time-type
-       |     |        |  +-- afi-safis*
+       |     |        |  |     ibt:graceful-restart-time-type
+       |     |        |  +-- afi-safi*
        |     |        |     +-- afi?
        |     |        |     |     iana-rt-types:address-family
        |     |        |     +-- safi?
        |     |        |     |     iana-rt-types:bgp-safi
        |     |        |     +-- afi-safi-flags?
-       |     |        |     |     bt:graceful-restart-flags-for-afi
+       |     |        |     |     ibt:graceful-restart-flags-for-afi
        |     |        |     +-- afi-safi-unknown-flags?   bits
        |     |        +-- asn32
        |     |        |  +-- as?   inet:as-number
        |     |        +-- add-paths
-       |     |           +-- afi-safis*
+       |     |           +-- afi-safi*
        |     |              +-- afi?    iana-rt-types:address-family
        |     |              +-- safi?   iana-rt-types:bgp-safi
        |     |              +-- mode?   enumeration
@@ -466,25 +468,27 @@ module: ietf-bmp-message
              +-- peer-as               uint32
              +-- peer-bgp-id           inet:ipv4-address
              +-- timestamp?            yang:date-and-time
+             +-- afi-safi-type         identityref
+             +-- rib-type              enumeration
              +-- rib-entry
-             |  +-- afi-safi-type    identityref
              |  +-- (entry-type)
              |     +--:(route)
-             |     |  +-- rib-type                  enumeration
              |     |  +-- path-id?                  uint32
              |     |  +-- origin?                   union
              |     |  +-- nlri
              |     |  |  +-- (afi-safi)
              |     |  |     +--:(ipv4-unicast)
-             |     |  |     |  +-- ipv4-prefix    inet:ipv4-prefix
+             |     |  |     |  +-- ipv4-unicast
+             |     |  |     |     +-- prefix    inet:ipv4-prefix
              |     |  |     +--:(ipv6-unicast)
-             |     |  |        +-- ipv6-prefix    inet:ipv6-prefix
+             |     |  |        +-- ipv6-unicast
+             |     |  |           +-- prefix    inet:ipv6-prefix
              |     |  +-- attributes
              |     |  |  +-- origin
-             |     |  |  |     bt:bgp-origin-attr-type
+             |     |  |  |     ibt:bgp-origin-attr-type
              |     |  |  +-- as-path
              |     |  |  |  +-- segment*
-             |     |  |  |     +-- type?     bt:as-path-segment-type
+             |     |  |  |     +-- type?     ibt:as-path-segment-type
              |     |  |  |     +-- member*   inet:as-number
              |     |  |  +-- next-hop?              inet:ip-address
              |     |  |  +-- link-local-next-hop?   inet:ipv6-address
@@ -492,7 +496,7 @@ module: ietf-bmp-message
              |     |  |  +-- local-pref?            uint32
              |     |  |  +-- as4-path
              |     |  |  |  +-- segment*
-             |     |  |  |     +-- type?     bt:as-path-segment-type
+             |     |  |  |     +-- type?     ibt:as-path-segment-type
              |     |  |  |     +-- member*   inet:as-number
              |     |  |  +-- aggregator
              |     |  |  |  +-- as?           inet:as-number
@@ -512,7 +516,7 @@ module: ietf-bmp-message
              |     |  |     bct:bgp-ipv6-ext-community-type
              |     |  +-- ipv6-ext-community-raw*   string
              |     |  +-- large-community*
-             |     |  |     bct:bgp-large-community-type
+             |     |  |     ibct:bgp-large-community-type
              |     |  +-- last-modified?            yang:timeticks
              |     |  +-- eligible-route?           boolean
              |     |  +-- ineligible-reason?        identityref

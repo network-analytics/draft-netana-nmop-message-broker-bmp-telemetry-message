@@ -4,11 +4,20 @@ submodule ietf-bgp-capabilities {
     prefix bgp;
   }
 
-  import iana-bgp-types {
-    prefix bt;
+  import iana-bgp-capabilities {
+    prefix bc;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
-
+  }
+  import iana-bgp-afi-safi-types {
+    prefix bast;
+    reference
+      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+  }
+  import ietf-bgp-types {
+    prefix ibt;
+    reference
+      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
   import iana-routing-types {
     prefix iana-rt-types;
@@ -19,6 +28,11 @@ submodule ietf-bgp-capabilities {
     prefix inet;
     reference
       "RFC 9911: Common YANG Data Types.";
+  }
+  import ietf-yang-semver {
+    prefix ysv;
+    reference
+      "I-D.ietf-netmod-yang-semver: YANG Semantic Versioning";
   }
 
   organization
@@ -36,7 +50,7 @@ submodule ietf-bgp-capabilities {
     "This sub-module contains groupings that are used for BGP
      Capabilities within the BGP module.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2026 IETF Trust and the persons identified as
      authors of the code. All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -56,9 +70,10 @@ submodule ietf-bgp-capabilities {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-03-02 {
+  revision 2026-10-16 {
     description
       "Initial Version";
+    ysv:version 0.0.9;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -66,7 +81,7 @@ submodule ietf-bgp-capabilities {
   grouping bgp-capabilities-common {
     description
       "BGP Capabilities that are used commonly by the
-       advertised-capabilities and received-capabilities lists in the
+       advertised-capability and received-capability lists in the
        bgp-capabilities grouping.";
 
     leaf code {
@@ -94,7 +109,7 @@ submodule ietf-bgp-capabilities {
     }
     leaf name {
       type identityref {
-        base bt:bgp-capability;
+        base bc:bgp-capability;
       }
       description
         "When known, name carries the bgp-capability identity for the
@@ -110,7 +125,7 @@ submodule ietf-bgp-capabilities {
          4.";
 
       container mpbgp {
-        when "derived-from-or-self(../../name, 'bt:mp-bgp')";
+        when "derived-from-or-self(../../name, 'bc:mp-bgp')";
         description
           "Multi-Protocol BGP-specific values.";
         reference
@@ -136,7 +151,7 @@ submodule ietf-bgp-capabilities {
         }
         leaf name {
           type identityref {
-            base bt:afi-safi-type;
+            base bast:afi-safi-type;
           }
           description
             "When known, name carries the BGP AFI-SAFI identity for
@@ -147,14 +162,14 @@ submodule ietf-bgp-capabilities {
 
       container graceful-restart {
         when "derived-from-or-self(../../name, " +
-             "'bt:graceful-restart')";
+             "'bc:graceful-restart')";
         description
           "BGP Graceful Restart-specific values.";
         reference
           "RFC 4724: Graceful Restart Mechanism for BGP.";
 
         leaf flags {
-          type bt:graceful-restart-flags;
+          type ibt:graceful-restart-flags;
           description
             "Restart Flags advertised by the Graceful Restart
              Capability";
@@ -186,7 +201,7 @@ submodule ietf-bgp-capabilities {
         }
 
         leaf restart-time {
-          type bt:graceful-restart-time-type;
+          type ibt:graceful-restart-time-type;
           description
             "The period of time (advertised by the peer) that the
              peer expects a restart of a BGP session to take.";
@@ -195,7 +210,7 @@ submodule ietf-bgp-capabilities {
              3.";
         }
 
-        list afi-safis {
+        list afi-safi {
           description
             "List of AFI/SAFIs advertised by the BGP Graceful Restart
              Capability and their AFI/SAFI-specific Flags.";
@@ -218,7 +233,7 @@ submodule ietf-bgp-capabilities {
                3.";
           }
           leaf afi-safi-flags {
-            type bt:graceful-restart-flags-for-afi;
+            type ibt:graceful-restart-flags-for-afi;
             description
               "Flags for Address Family advertised per-AFI/SAFI in
                the BGP Graceful Restart Capability.";
@@ -277,7 +292,7 @@ submodule ietf-bgp-capabilities {
       }
 
       container asn32 {
-        when "derived-from-or-self(../../name, 'bt:asn32')";
+        when "derived-from-or-self(../../name, 'bc:asn32')";
         description
           "Four-byte AS Number-specific values.";
         reference
@@ -296,13 +311,13 @@ submodule ietf-bgp-capabilities {
       }
 
       container add-paths {
-        when "derived-from-or-self(../../name, 'bt:add-paths')";
+        when "derived-from-or-self(../../name, 'bc:add-paths')";
         description
           "BGP add-paths-specific values.";
         reference
           "RFC 7911: Advertisement of Multiple Paths in BGP.";
 
-        list afi-safis {
+        list afi-safi {
           description
             "List of AFI/SAFIs advertised by the BGP ADD-PATH
              Capability and their AFI/SAFI-specific mode.";
@@ -378,7 +393,7 @@ submodule ietf-bgp-capabilities {
       reference
         "RFC 5492: Capabilities Advertisement with BGP-4.";
 
-      list advertised-capabilities {
+      list advertised-capability {
         key "code index";
         description
           "List of advertised BGP capabilities, per-peer.
@@ -389,7 +404,7 @@ submodule ietf-bgp-capabilities {
         uses bgp-capabilities-common;
       }
 
-      list received-capabilities {
+      list received-capability {
         key "code index";
         description
           "List of received BGP capabilities, per-peer.
@@ -400,9 +415,9 @@ submodule ietf-bgp-capabilities {
         uses bgp-capabilities-common;
       }
 
-      leaf-list negotiated-capabilities {
+      leaf-list negotiated-capability {
         type identityref {
-          base bt:bgp-capability;
+          base bc:bgp-capability;
         }
         description
           "Negotiated BGP capabilities.";

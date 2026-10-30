@@ -18,8 +18,13 @@ module ietf-bgp-rib-entry {
     reference
       "RFC 8022: A YANG Data Model for Routing Management.";
   }
-  import iana-bgp-types {
-    prefix bt;
+  import iana-bgp-afi-safi-types {
+    prefix bast;
+    reference
+      "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
+  }
+  import ietf-bgp-types {
+    prefix ibt;
     reference
       "RFC XXXX: YANG Model for Border Gateway Protocol (BGP-4).";
   }
@@ -120,7 +125,7 @@ module ietf-bgp-rib-entry {
       description
         "BGP path attribute parameters.";
       leaf origin {
-        type bt:bgp-origin-attr-type;
+        type ibt:bgp-origin-attr-type;
         mandatory true;
         description
           "BGP attribute defining the origin of the path information.";
@@ -259,22 +264,59 @@ module ietf-bgp-rib-entry {
 
   grouping rib-entry {
     description
-      "Grouping for a BGP RIB entry. The RIB the entry belongs to is
-       given by the rib-type discriminator; the NLRI and the route
-       data are shared by all RIB types.";
+      "Grouping for a BGP RIB entry. The AFI-SAFI and the RIB the
+       entry belongs to are given by the afi-safi-type and rib-type
+       leaves, placed next to the rib-entry container so that they
+       can be read without parsing the entry itself. The route data
+       is shared by all RIB types; the NLRI is specific to the
+       AFI-SAFI.";
+
+    leaf afi-safi-type {
+      type identityref {
+        base bast:afi-safi-type;
+      }
+      mandatory true;
+      description
+        "AFI,SAFI name.";
+    }
+
+    leaf rib-type {
+      type enumeration {
+        enum loc-rib {
+          description
+            "Main BGP routing table for the local routing instance,
+             containing best-path selections for each prefix.";
+        }
+        enum adj-rib-in-pre {
+          description
+            "Routes received from the neighbor before any local
+             input policy rules or filters have been applied.";
+        }
+        enum adj-rib-in-post {
+          description
+            "Routes received from the neighbor after local input
+             policy rules have been applied.";
+        }
+        enum adj-rib-out-pre {
+          description
+            "Routes eligible to be sent to the neighbor before
+             output policy rules have been applied.";
+        }
+        enum adj-rib-out-post {
+          description
+            "Routes eligible to be sent to the neighbor after
+             output policy rules have been applied.";
+        }
+      }
+      mandatory true;
+      description
+        "The RIB the route or End-of-RIB marker belongs to.";
+    }
 
     container rib-entry {
       description
         "Encapsulates the route entry for the AFI-SAFI given by
-         afi-safi-type.";
-      leaf afi-safi-type {
-        type identityref {
-          base bt:afi-safi-type;
-        }
-        mandatory true;
-        description
-          "AFI,SAFI name.";
-      }
+         afi-safi-type and the RIB given by rib-type.";
 
       choice entry-type {
         mandatory true;
@@ -282,40 +324,6 @@ module ietf-bgp-rib-entry {
           "Either a route or an End-of-RIB marker.";
 
         case route {
-          leaf rib-type {
-            type enumeration {
-              enum loc-rib {
-                description
-                  "Route from the main BGP routing table for the
-                   local routing instance, containing best-path
-                   selections for each prefix.";
-              }
-              enum adj-rib-in-pre-policy {
-                description
-                  "Route received from the neighbor before any local
-                   input policy rules or filters have been applied.";
-              }
-              enum adj-rib-in-post-policy {
-                description
-                  "Route received from the neighbor after local
-                   input policy rules have been applied.";
-              }
-              enum adj-rib-out-pre-policy {
-                description
-                  "Route eligible to be sent to the neighbor before
-                   output policy rules have been applied.";
-              }
-              enum adj-rib-out-post-policy {
-                description
-                  "Route eligible to be sent to the neighbor after
-                   output policy rules have been applied.";
-              }
-            }
-            mandatory true;
-            description
-              "The RIB type from which the route originates.";
-          }
-
           leaf path-id {
             type uint32;
             description
@@ -329,7 +337,7 @@ module ietf-bgp-rib-entry {
           }
 
           leaf origin {
-            when "../rib-type = 'loc-rib'";
+            when "../../rib-type = 'loc-rib'";
             type union {
               type inet:ip-address;
               type identityref {
@@ -347,27 +355,32 @@ module ietf-bgp-rib-entry {
             description
               "The Network Layer Reachability Information of the
                route, selected by afi-safi-type. Further AFI-SAFIs
-               can be supported by augmenting the afi-safi choice.";
+               are supported by augmenting the afi-safi choice with
+               a container named after the AFI-SAFI identity.";
             choice afi-safi {
               mandatory true;
               description
                 "Choice of AFI-SAFI specific NLRI, enforced by the
                  afi-safi-type leaf.";
 
-              case ipv4-unicast {
-                when "derived-from-or-self(../afi-safi-type, "
-                   + "'bt:ipv4-unicast')";
-                leaf ipv4-prefix {
+              container ipv4-unicast {
+                when "derived-from-or-self(../../../afi-safi-type, "
+                   + "'bast:ipv4-unicast')";
+                description
+                  "IPv4 unicast NLRI.";
+                leaf prefix {
                   type inet:ipv4-prefix;
                   mandatory true;
                   description
                     "The IPv4 prefix.";
                 }
               }
-              case ipv6-unicast {
-                when "derived-from-or-self(../afi-safi-type, "
-                   + "'bt:ipv6-unicast')";
-                leaf ipv6-prefix {
+              container ipv6-unicast {
+                when "derived-from-or-self(../../../afi-safi-type, "
+                   + "'bast:ipv6-unicast')";
+                description
+                  "IPv6 unicast NLRI.";
+                leaf prefix {
                   type inet:ipv6-prefix;
                   mandatory true;
                   description
@@ -388,9 +401,9 @@ module ietf-bgp-rib-entry {
             presence
               "Indicates an End-of-RIB marker.";
             description
-              "End-of-RIB marker for the AFI-SAFI given by afi-safi-type;
-               carries no route. The RIB is identified by the flags of
-               the enclosing message (e.g. the Per-Peer Header).";
+              "End-of-RIB marker for the AFI-SAFI given by
+               afi-safi-type and the RIB given by rib-type; carries
+               no route.";
           }
         }
       }
