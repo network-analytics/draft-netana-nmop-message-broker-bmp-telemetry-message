@@ -493,7 +493,7 @@
                   explicitly withdraw, for example the routes of a peer
                   after a Peer Down, or all state of the router when the
                   BMP session ends, with or without a Termination
-                  message. TODO: consider augmenting this to add "dump"?</td>
+                  message.</td>
               </tr>
               <tr>
                 <td>sequence-number</td>
